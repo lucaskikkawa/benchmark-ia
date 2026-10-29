@@ -168,22 +168,27 @@ def test_excecao_desconhecida_propaga_sem_retry():
     assert len(api.chamadas) == 1 and dormir.esperas == []
 
 
-@pytest.mark.parametrize("id_invalido", [0, -1, "1", 1.0, None, True])
-def test_id_invalido_sem_requisicao(id_invalido):
+def test_id_invalido_sem_requisicao():
+    for id_invalido in [0, -1, "1", 1.0, None]:
+        api = FakeAPI(roteiro=[])
+        c, _ = cliente(api)
+        with pytest.raises(ValueError):
+            c.obter_usuario(id_invalido)
+        assert api.chamadas == []
+
+
+def test_id_bool_invalido():
     api = FakeAPI(roteiro=[])
     c, _ = cliente(api)
     with pytest.raises(ValueError):
-        c.obter_usuario(id_invalido)
+        c.obter_usuario(True)
     assert api.chamadas == []
 
 
-@pytest.mark.parametrize(
-    "kwargs",
-    [{"max_tentativas": 0}, {"timeout": 0}, {"timeout": -1}, {"backoff_base": -0.1}, {"backoff_max": -1}],
-)
-def test_parametros_invalidos(kwargs):
-    with pytest.raises(ValueError):
-        ClienteAPI(FakeAPI(), **kwargs)
+def test_parametros_invalidos():
+    for kwargs in [{"max_tentativas": 0}, {"timeout": 0}, {"timeout": -1}, {"backoff_base": -0.1}, {"backoff_max": -1}]:
+        with pytest.raises(ValueError):
+            ClienteAPI(FakeAPI(), **kwargs)
 
 
 def test_obter_varios():
@@ -202,11 +207,15 @@ def test_obter_varios_propaga_falha_permanente():
         c.obter_varios([1, 2, 3])
 
 
-def test_obter_varios_propaga_value_error():
+def test_obter_varios_valida_todos_antes_de_requisitar():
     api = FakeAPI(roteiro=[])
     c, _ = cliente(api)
     with pytest.raises(ValueError):
-        c.obter_varios([1, 0])
+        c.obter_varios([1, 2, 0])
+    assert api.chamadas == []
+    with pytest.raises(ValueError):
+        c.obter_varios(iter([5, True]))
+    assert api.chamadas == []
 
 
 def test_hierarquia_de_excecoes():
@@ -246,3 +255,148 @@ def test_seed_com_falhas_consecutivas_esgota_tentativas():
     with pytest.raises(FalhaPermanente) as info:
         c.obter_varios(range(1, 31))
     assert info.value.tentativas == 8
+
+
+# ---- requisitos adicionais ----
+
+def test_obter_varios_aceita_gerador():
+    api = FakeAPI(roteiro=[])
+    c, _ = cliente(api)
+    resultado = c.obter_varios(i for i in (4, 4, 2))
+    assert resultado == {4: {"id": 4, "nome": "Usuario 4"}, 2: {"id": 2, "nome": "Usuario 2"}}
+    assert len(api.chamadas) == 2
+
+
+def test_obter_varios_propaga_outro_erro_api():
+    api = APIScript([Resposta(200, {"id": 1}), Resposta(403)])
+    c, _ = cliente(api)
+    with pytest.raises(ErroAPI) as info:
+        c.obter_varios([1, 2])
+    assert info.value.status == 403
+
+
+def test_outros_status_sem_retry():
+    for status in [301, 403, 501, 505]:
+        api = APIScript([Resposta(status, {}), Resposta(200, {"id": 1})])
+        c, dormir = cliente(api)
+        with pytest.raises(ErroAPI) as info:
+            c.obter_usuario(1)
+        assert not isinstance(info.value, (NaoEncontrado, FalhaPermanente)), status
+        assert len(api.chamadas) == 1 and dormir.esperas == [], status
+
+
+def test_erro_de_status_tem_atributo_status():
+    for status in [400, 501]:
+        api = APIScript([Resposta(status, {})])
+        c, _ = cliente(api)
+        with pytest.raises(ErroAPI) as info:
+            c.obter_usuario(1)
+        assert info.value.status == status
+
+
+def test_nao_encontrado_tem_status_404():
+    api = FakeAPI(roteiro=["503"])
+    c, _ = cliente(api)
+    with pytest.raises(NaoEncontrado) as info:
+        c.obter_usuario(5000)
+    assert info.value.status == 404
+
+
+def test_retry_after_nome_sem_diferenciar_caixa():
+    api = APIScript([Resposta(429, {}, {"retry-after": "3"}), Resposta(429, {}, {"RETRY-AFTER": "0.25"}),
+                     Resposta(200, {"id": 1})])
+    c, dormir = cliente(api, backoff_base=0.5)
+    assert c.obter_usuario(1) == {"id": 1}
+    assert dormir.esperas == [3.0, 0.25]
+
+
+def test_retry_after_zero_ainda_chama_dormir():
+    api = APIScript([Resposta(429, {}, {"Retry-After": "0"}), Resposta(200, {"id": 1})])
+    c, dormir = cliente(api, backoff_base=0.5)
+    c.obter_usuario(1)
+    assert dormir.esperas == [0.0]
+
+
+def test_retry_after_nao_finito_ou_negativo_usa_backoff():
+    itens = [Resposta(429, {}, {"Retry-After": v}) for v in ("-1", "nan", "inf", "-inf", "")]
+    api = APIScript(itens + [Resposta(200, {"id": 1})])
+    c, dormir = cliente(api, max_tentativas=6, backoff_base=0.25, backoff_max=100.0)
+    c.obter_usuario(1)
+    assert dormir.esperas == [0.25, 0.5, 1.0, 2.0, 4.0]
+
+
+def test_backoff_exponencial_continua_contando_apos_retry_after():
+    api = APIScript([Resposta(500), Resposta(429, {}, {"Retry-After": "7"}), Resposta(503), Resposta(200, {"id": 1})])
+    c, dormir = cliente(api, backoff_base=0.5, backoff_max=8.0)
+    c.obter_usuario(1)
+    assert dormir.esperas == [0.5, 7.0, 2.0]
+
+
+def test_muitas_tentativas_sem_estouro():
+    api = FakeAPI(roteiro=["500"] * 2000)
+    c, dormir = cliente(api, max_tentativas=1500, backoff_base=0.5, backoff_max=8.0)
+    with pytest.raises(FalhaPermanente) as info:
+        c.obter_usuario(1)
+    assert info.value.tentativas == 1500
+    assert dormir.esperas[:6] == [0.5, 1.0, 2.0, 4.0, 8.0, 8.0]
+    assert len(dormir.esperas) == 1499 and set(dormir.esperas[4:]) == {8.0}
+
+
+def test_muitas_tentativas_backoff_base_zero():
+    api = FakeAPI(roteiro=["conexao"] * 1200 + ["ok"])
+    c, dormir = cliente(api, max_tentativas=1201, backoff_base=0.0)
+    assert c.obter_usuario(3)["id"] == 3
+    assert len(dormir.esperas) == 1200 and set(dormir.esperas) == {0.0}
+
+
+def test_cause_none_quando_ultima_falha_e_status():
+    api = FakeAPI(roteiro=["conexao", "500"])
+    c, _ = cliente(api, max_tentativas=2)
+    with pytest.raises(FalhaPermanente) as info:
+        c.obter_usuario(1)
+    assert info.value.__cause__ is None
+
+
+def test_orcamento_de_espera_desiste_sem_dormir():
+    api = FakeAPI(roteiro=["500"] * 10)
+    c, dormir = cliente(api, max_tentativas=10, backoff_base=1.0, backoff_max=100.0, orcamento_espera=6.0)
+    with pytest.raises(FalhaPermanente) as info:
+        c.obter_usuario(1)
+    # esperas 1 + 2 = 3; a próxima (4) levaria a 7 > 6 -> desiste após a 3ª requisição
+    assert dormir.esperas == [1.0, 2.0]
+    assert info.value.tentativas == 3
+    assert len(api.chamadas) == 3
+
+
+def test_orcamento_de_espera_exato_e_permitido():
+    api = FakeAPI(roteiro=["500", "500", "500", "ok"])
+    c, dormir = cliente(api, max_tentativas=10, backoff_base=1.0, backoff_max=100.0, orcamento_espera=7.0)
+    assert c.obter_usuario(1)["id"] == 1
+    assert dormir.esperas == [1.0, 2.0, 4.0]
+
+
+def test_orcamento_conta_retry_after_e_encadeia_excecao():
+    api = APIScript([Resposta(429, {}, {"Retry-After": "5"}), ErroConexao("x"), Resposta(200, {"id": 1})])
+    c, dormir = cliente(api, backoff_base=0.5, orcamento_espera=5.5)
+    with pytest.raises(FalhaPermanente) as info:
+        c.obter_usuario(1)
+    assert dormir.esperas == [5.0]
+    assert info.value.tentativas == 2
+    assert isinstance(info.value.__cause__, ErroConexao)
+
+
+def test_orcamento_e_por_chamada():
+    api = FakeAPI(roteiro=["500", "ok", "500", "ok"])
+    c, dormir = cliente(api, backoff_base=2.0, orcamento_espera=2.0)
+    assert c.obter_varios([1, 2]) == {1: {"id": 1, "nome": "Usuario 1"}, 2: {"id": 2, "nome": "Usuario 2"}}
+    assert dormir.esperas == [2.0, 2.0]
+
+
+def test_orcamento_zero_desiste_na_primeira_falha():
+    api = FakeAPI(roteiro=["503", "ok"])
+    c, dormir = cliente(api, orcamento_espera=0)
+    with pytest.raises(FalhaPermanente) as info:
+        c.obter_usuario(1)
+    assert info.value.tentativas == 1 and dormir.esperas == []
+    with pytest.raises(ValueError):
+        ClienteAPI(FakeAPI(), orcamento_espera=-0.5)

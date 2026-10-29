@@ -11,6 +11,8 @@ def processar_vendas(
     top_n: int = 3,
 ) -> dict:
     """Lê transações de um arquivo CSV, filtra, agrega métricas e salva em JSON."""
+    if type(top_n) is not int:
+        raise TypeError("O parâmetro top_n deve ser um inteiro.")
     if top_n < 1:
         raise ValueError("O parâmetro top_n deve ser pelo menos 1.")
 
@@ -18,13 +20,13 @@ def processar_vendas(
     if not p_csv.is_file():
         raise FileNotFoundError(f"Arquivo CSV não encontrado: {caminho_csv}")
 
-    status_filtro_norm = status_filtro.strip().lower()
+    status_filtro_norm = str(status_filtro).strip().lower()
 
     transacoes_filtradas = []
     por_categoria = defaultdict(float)
     por_cliente = defaultdict(float)
 
-    with open(p_csv, mode="r", encoding="utf-8") as f:
+    with open(p_csv, mode="r", encoding="utf-8-sig") as f:
         leitor = csv.DictReader(f)
         for linha in leitor:
             if not linha:
@@ -57,10 +59,9 @@ def processar_vendas(
         for cat, val in sorted(por_categoria.items(), key=lambda x: x[0])
     }
 
-    # Ordena clientes por valor decrescente e nome alfabético crescente
     clientes_ordenados = sorted(
         por_cliente.items(),
-        key=lambda item: (-item[1], item[0]),
+        key=lambda item: (-round(item[1], 2), item[0]),
     )
     top_clientes = [
         {"cliente": nome, "total": round(val, 2)}

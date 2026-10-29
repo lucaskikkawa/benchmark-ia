@@ -22,10 +22,12 @@ O dicionário `dados` de entrada possui as seguintes informações sobre o clien
 2. O score de fidelidade concede **5 pontos por cada ano ativo** (`anos_ativo * 5`).
 3. O score final é a soma do score base de compras com o score de fidelidade, devendo ser arredondado para 2 casas decimais (`round(..., 2)`).
 4. O dicionário de retorno deve conter obrigatoriamente as chaves:
-   - `"id"`: mesmo id de entrada.
-   - `"nome"`: mesmo nome de entrada.
+   - `"id"`: mesmo id de entrada (preservado).
+   - `"nome"`: mesmo nome de entrada (preservado).
    - `"score"`: número (float ou int) correspondente ao score final calculado.
    - `"categoria"`: uma string não vazia representando o segmento/nível do cliente.
+5. **Imutabilidade**: A função não deve modificar o dicionário `dados` fornecido na entrada nem a lista `compras` nele contida.
+6. A função deve suportar grande volume de compras e entradas com caracteres Unicode em `id` e `nome`. Eventuais campos adicionais presentes em `dados` devem ser tolerados sem interferir no cálculo.
 
 ## Pontos Abertos e Arquivo `SUPOSICOES.md` (OBRIGATÓRIO)
 

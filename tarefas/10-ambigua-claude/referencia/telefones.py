@@ -9,8 +9,9 @@ CODIGO_PAIS = "55"
 # Separadores aceitos dentro de um telefone (além dos dígitos e do '+' inicial).
 _SEPARADORES = re.compile(r"[\s().\-]")
 # Candidato a telefone em texto livre: começa com '+', '(' ou dígito e continua
-# com dígitos/separadores; termina num dígito.
-_CANDIDATO = re.compile(r"(?<![\w+])(?:\+|\()?\d[\d\s().\-]*\d(?!\w)")
+# com dígitos/separadores na mesma linha (espaço/tab, não quebra de linha);
+# termina num dígito que não esteja colado a outra letra/dígito.
+_CANDIDATO = re.compile(r"(?<![\w+])(?:\+|\()?\d[\d \t().\-]*\d(?!\w)")
 
 
 def _ddd_valido(ddd: str) -> bool:

@@ -207,3 +207,138 @@ def test_cruza_meia_noite_e_piso_1_e_2(tmp_path):
     assert equipe["tempo_medio_minutos"] == (20 + 1) // 2
     assert equipe["estourados"] == 0
     assert equipe["pior_id"] == "p"
+
+
+def _texto_canonico(retorno):
+    return json.dumps(retorno, ensure_ascii=False, indent=2) + "\n"
+
+
+def test_json_exato_crlf_aspas_e_strip_agrupa(tmp_path):
+    csv_texto = (
+        "id,equipe,aberto_em,fechado_em,prioridade\r\n"
+        'a10,"São, Paulo",2023-12-31T22:00,2024-01-01T00:00, alta \r\n'
+        'a2," São, Paulo ",2024-01-01T00:00,2024-01-01T02:00,alta\r\n'
+        ",,,,\r\n"
+        "\r\n"
+        "  a , n1 ,2024-05-01T00:00,2024-05-01T00:10,baixa\r\n"
+    )
+    retorno, texto = _rodar(tmp_path, csv_texto)
+    assert texto == _texto_canonico(retorno)
+    assert [item["equipe"] for item in retorno["equipes"]] == ["São, Paulo", "n1"]
+    sao = retorno["equipes"][0]
+    assert sao["chamados"] == 2
+    assert sao["pior_id"] == "a10"
+    assert sao["tempo_medio_minutos"] == (120 + 120) // 2
+    assert sao["estourados"] == 2
+    assert retorno["equipes"][1]["pior_id"] == "a"
+
+
+def test_desempate_lexicografico_nao_numerico(tmp_path):
+    csv_texto = (
+        CABECALHO
+        + "a2,eq,2024-04-01T00:00,2024-04-01T00:30,baixa\n"
+        + "a10,eq,2024-04-01T00:00,2024-04-01T00:30,baixa\n"
+        + "a1,eq,2024-04-01T00:00,2024-04-01T00:01,baixa\n"
+    )
+    retorno, texto = _rodar(tmp_path, csv_texto)
+    assert retorno["equipes"][0]["pior_id"] == "a10"
+    assert texto == _texto_canonico(retorno)
+
+
+def test_ordem_de_code_point_sem_locale(tmp_path):
+    csv_texto = (
+        CABECALHO
+        + "1,a,2024-01-01T00:00,2024-01-01T00:02,baixa\n"
+        + "2,A,2024-01-01T00:00,2024-01-01T00:04,baixa\n"
+        + "3,b,2024-01-01T00:00,2024-01-01T00:01,baixa\n"
+    )
+    retorno, _ = _rodar(tmp_path, csv_texto)
+    assert [item["equipe"] for item in retorno["equipes"]] == ["A", "a", "b"]
+    assert [item["pior_id"] for item in retorno["equipes"]] == ["2", "1", "3"]
+
+
+def test_id_duplicado_so_depois_do_strip(tmp_path):
+    csv_texto = (
+        CABECALHO
+        + "a,eq,2024-01-01T00:00,2024-01-01T00:01,baixa\n"
+        + " a ,eq2,2024-01-02T00:00,2024-01-02T00:01,baixa\n"
+    )
+    with pytest.raises(ValueError):
+        _rodar(tmp_path, csv_texto)
+
+
+def test_id_com_espaco_interno_e_linha_de_virgulas(tmp_path):
+    csv_texto = (
+        CABECALHO
+        + "a b,eq,2024-01-01T00:00,2024-01-01T00:03,media\n"
+        + ",,,,\n"
+        + "   \n"
+    )
+    retorno, _ = _rodar(tmp_path, csv_texto)
+    assert retorno["equipes"][0]["pior_id"] == "a b"
+    assert retorno["equipes"][0]["tempo_medio_minutos"] == 3
+    assert retorno["equipes"][0]["estourados"] == 0
+
+
+def test_vazio_bom_e_cabecalho_com_espaco(tmp_path):
+    with pytest.raises(ValueError):
+        _rodar(tmp_path, "")
+    with pytest.raises(ValueError):
+        _rodar(tmp_path, "id, equipe,aberto_em,fechado_em,prioridade\n")
+    cru = CABECALHO + "1,eq,2024-01-01T00:00,2024-01-01T00:01,baixa\n"
+    csv_path = tmp_path / "chamados.csv"
+    sla_path = tmp_path / "sla.json"
+    saida = tmp_path / "resumo.json"
+    csv_path.write_bytes(b"\xef\xbb\xbf" + cru.encode("utf-8"))
+    sla_path.write_text(json.dumps(SLA), encoding="utf-8")
+    with pytest.raises(ValueError):
+        consolidar(str(csv_path), str(sla_path), str(saida))
+    csv_path.write_text(cru, encoding="utf-8")
+    sla_path.write_bytes(b"\xef\xbb\xbf" + json.dumps(SLA).encode("utf-8"))
+    with pytest.raises(ValueError):
+        consolidar(str(csv_path), str(sla_path), str(saida))
+    sla_path.write_text("", encoding="utf-8")
+    with pytest.raises(ValueError):
+        consolidar(str(csv_path), str(sla_path), str(saida))
+
+
+def test_limite_exato_por_prioridade_e_ano(tmp_path):
+    sla = {"limites_minutos": {"baixa": 1, "media": 100, "alta": 120}}
+    csv_texto = (
+        CABECALHO
+        + "z,eq,2023-12-31T23:00,2024-01-01T01:00,alta\n"
+        + "a,eq,2024-01-01T00:00,2024-01-01T00:01,baixa\n"
+        + "m,eq,2024-01-01T00:00,2024-01-01T01:40,media\n"
+    )
+    retorno, _ = _rodar(tmp_path, csv_texto, sla=sla)
+    equipe = retorno["equipes"][0]
+    assert equipe["estourados"] == 0
+    assert equipe["pior_id"] == "z"
+    assert equipe["tempo_medio_minutos"] == (120 + 1 + 100) // 3
+
+
+def test_muitas_linhas_preserva_totais(tmp_path):
+    linhas = [
+        f"id{i:04d},eq,2024-01-01T00:00,2024-01-01T00:{i % 60:02d},baixa"
+        for i in range(30)
+    ]
+    retorno, texto = _rodar(tmp_path, CABECALHO + "\n".join(linhas) + "\n")
+    duracoes = [i % 60 for i in range(30)]
+    assert retorno["equipes"][0]["chamados"] == 30
+    assert retorno["equipes"][0]["tempo_medio_minutos"] == sum(duracoes) // 30
+    assert retorno["equipes"][0]["pior_id"] == "id0029"
+    assert retorno["equipes"][0]["estourados"] == 0
+    assert texto == _texto_canonico(retorno)
+
+
+def test_sla_limite_negativo_e_csv_ausente_com_sla_presente(tmp_path):
+    csv_texto = CABECALHO + "1,eq,2024-01-01T00:00,2024-01-01T00:01,baixa\n"
+    with pytest.raises(ValueError):
+        _rodar(
+            tmp_path,
+            csv_texto,
+            sla={"limites_minutos": {"baixa": -1, "media": 10, "alta": 10}},
+        )
+    csv_path, sla_path, saida = _gravar(tmp_path, csv_texto)
+    with pytest.raises(FileNotFoundError):
+        consolidar(str(tmp_path / "nao.csv"), sla_path, saida)

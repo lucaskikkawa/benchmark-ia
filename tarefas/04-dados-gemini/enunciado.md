@@ -21,12 +21,14 @@ O arquivo CSV de entrada possui cabeçalho com os seguintes campos:
 
 ### Comportamento:
 1. **Validação de Parâmetros e Arquivos**:
-   - Se `caminho_csv` não existir ou não for um arquivo, deve levantar `FileNotFoundError`.
+   - Se `caminho_csv` não existir ou não for um arquivo regular, deve levantar `FileNotFoundError`.
+   - Se `top_n` não for um número inteiro (`type(top_n) is int`), levanta `TypeError`.
    - Se `top_n < 1`, deve levantar `ValueError`.
 2. **Leitura e Filtragem**:
-   - Abra o arquivo com codificação UTF-8.
+   - Abra o arquivo com codificação UTF-8 (suportando eventuais cabeçalhos/linhas com espaços ou BOM).
+   - Se o arquivo CSV for completamente vazio (0 bytes), deve considerar que não há transações e retornar métricas zeradas.
    - Filtre apenas as linhas onde o campo `status` seja igual a `status_filtro` (comparação case-insensitive e sem espaços em branco nas pontas, por exemplo `"Concluido "` é igual a `"concluido"`).
-   - Ignore linhas com valores inválidos (não conversíveis para float, ou com valores negativos).
+   - Ignore linhas vazias ou com valores inválidos (não conversíveis para float, ou com valores negativos).
 3. **Métricas Agregadas**:
    - `"total_transacoes"`: número inteiro de transações filtradas válidas.
    - `"receita_total"`: soma dos valores válidos filtrados, arredondada para 2 casas decimais (`float`).
@@ -37,5 +39,6 @@ O arquivo CSV de entrada possui cabeçalho com os seguintes campos:
      - Ordenação: maior total primeiro (decrescente). Em caso de empate de total, desempate por ordem alfabética do nome do cliente (crescente).
 4. **Escrita do JSON**:
    - Salve o dicionário resultante no caminho indicado por `caminho_json_saida` em formato JSON, formatado com `indent=2` e `ensure_ascii=False`.
+   - Caso os diretórios pais do caminho de saída não existam, sua implementação deve criá-los automaticamente.
 5. **Retorno**:
    - Retorne o dicionário calculado.

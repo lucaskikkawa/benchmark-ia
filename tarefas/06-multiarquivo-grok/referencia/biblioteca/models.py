@@ -16,7 +16,11 @@ class Livro:
     exemplares: int
 
     def __post_init__(self) -> None:
-        if not isinstance(self.isbn, str) or len(self.isbn) != 13 or not self.isbn.isdigit():
+        if (
+            not isinstance(self.isbn, str)
+            or len(self.isbn) != 13
+            or any(caractere not in "0123456789" for caractere in self.isbn)
+        ):
             raise ErroBiblioteca("isbn invalido")
         if not isinstance(self.titulo, str):
             raise ErroBiblioteca("titulo invalido")

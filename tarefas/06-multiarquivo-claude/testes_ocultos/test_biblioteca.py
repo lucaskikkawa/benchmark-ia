@@ -15,6 +15,7 @@ from biblioteca import (
     Livro,
     LivroIndisponivel,
     LivroNaoEncontrado,
+    RenovacaoNegada,
     ServicoEmprestimos,
 )
 
@@ -77,7 +78,7 @@ def test_modelos_sao_dataclasses_imutaveis():
 
 
 def test_hierarquia_de_excecoes():
-    for exc in (LivroNaoEncontrado, LivroIndisponivel, LimiteEmprestimos, EmprestimoNaoEncontrado):
+    for exc in (LivroNaoEncontrado, LivroIndisponivel, LimiteEmprestimos, EmprestimoNaoEncontrado, RenovacaoNegada):
         assert issubclass(exc, BibliotecaErro)
     assert issubclass(BibliotecaErro, Exception)
 
@@ -166,9 +167,9 @@ def test_devolver_no_prazo_e_com_atraso(acervo):
 
 
 def test_devolver_multa_arredondada(acervo):
-    s = ServicoEmprestimos(acervo, prazo_dias=0, multa_diaria=0.1)
+    s = ServicoEmprestimos(acervo, prazo_dias=1, multa_diaria=0.1)
     s.emprestar("1", "ana", D0)
-    assert s.devolver("1", D0 + timedelta(days=3)) == 0.3
+    assert s.devolver("1", D0 + timedelta(days=4)) == 0.3
 
 
 def test_devolver_erros(servico):
@@ -195,3 +196,162 @@ def test_emprestimos_de_ordenado(servico):
     servico.emprestar("4", "bia", D0)
     assert [e.isbn for e in servico.emprestimos_de("ana")] == ["1", "2", "3"]
     assert servico.emprestimos_de("ninguem") == []
+
+
+# ---- requisitos adicionais ----
+
+def test_all_exato():
+    import biblioteca
+
+    assert sorted(biblioteca.__all__) == sorted([
+        "Livro", "Emprestimo", "Acervo", "ServicoEmprestimos", "BibliotecaErro", "LivroNaoEncontrado",
+        "LivroIndisponivel", "LimiteEmprestimos", "EmprestimoNaoEncontrado", "RenovacaoNegada",
+    ])
+    assert len(biblioteca.__all__) == 10
+
+
+def test_emprestimo_campo_renovacoes():
+    e = Emprestimo("9", "ana", D0, D0)
+    assert e.renovacoes == 0
+    assert [f.name for f in dataclasses.fields(Emprestimo)] == [
+        "isbn", "usuario", "data_emprestimo", "data_prevista", "renovacoes"
+    ]
+
+
+def test_livro_valida_campos():
+    for args in [("", "T", "A"), ("1", "   ", "A"), ("1", "T", "\t\n")]:
+        with pytest.raises(ValueError):
+            Livro(*args)
+    for args in [(1, "T", "A"), ("1", None, "A"), ("1", "T", b"A")]:
+        with pytest.raises(TypeError):
+            Livro(*args)
+
+
+def test_adicionar_nao_livro(acervo):
+    with pytest.raises(TypeError):
+        acervo.adicionar(("6", "T", "A"))
+    assert len(acervo) == 5
+
+
+def test_buscar_por_autor_casefold_e_trecho_vazio():
+    a = Acervo()
+    a.adicionar(Livro("1", "Valsas", "Johann Strauß"))
+    a.adicionar(Livro("2", "Óperas", "ÉMILE ZOLA"))
+    a.adicionar(Livro("3", "Contos", "Ana"))
+    assert [l.isbn for l in a.buscar_por_autor("STRAUSS")] == ["1"]
+    assert [l.isbn for l in a.buscar_por_autor("émile")] == ["2"]
+    assert [l.isbn for l in a.buscar_por_autor("")] == ["3", "1", "2"]  # "Óperas" > "Valsas" (str)
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [{"limite_por_usuario": 0}, {"prazo_dias": 0}, {"prazo_dias": -3}, {"multa_diaria": -0.5}, {"max_renovacoes": -1}],
+)
+def test_construtor_valida_parametros(acervo, kwargs):
+    with pytest.raises(ValueError):
+        ServicoEmprestimos(acervo, **kwargs)
+
+
+def test_construtor_aceita_limites(acervo):
+    ServicoEmprestimos(acervo, limite_por_usuario=1, prazo_dias=1, multa_diaria=0, max_renovacoes=0)
+
+
+def test_servico_usa_o_mesmo_acervo(acervo):
+    s = ServicoEmprestimos(acervo)
+    acervo.adicionar(Livro("10", "Novo", "Autor"))
+    assert s.disponivel("10") is True
+    assert s.emprestar("10", "ana", D0).isbn == "10"
+
+
+def test_renovar_basico(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=10)
+    s.emprestar("1", "ana", D0)
+    r = s.renovar("1", D0 + timedelta(days=4))
+    assert r == Emprestimo("1", "ana", D0, D0 + timedelta(days=14), 1)
+    assert s.emprestimos_de("ana") == [r]
+    assert s.disponivel("1") is False
+
+
+def test_renovar_nunca_encurta_o_prazo(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=10)
+    s.emprestar("1", "ana", D0)
+    s.renovar("1", D0 + timedelta(days=8))            # prevista: D0+18
+    r = s.renovar("1", D0 + timedelta(days=1))        # D0+11 < D0+18 -> mantém
+    assert r.data_prevista == D0 + timedelta(days=18)
+    assert r.renovacoes == 2
+
+
+def test_renovar_no_dia_previsto_e_permitido(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=7)
+    s.emprestar("1", "ana", D0)
+    r = s.renovar("1", D0 + timedelta(days=7))
+    assert r.data_prevista == D0 + timedelta(days=14)
+
+
+def test_renovar_atrasado_e_negado_sem_alterar(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=7)
+    original = s.emprestar("1", "ana", D0)
+    with pytest.raises(RenovacaoNegada):
+        s.renovar("1", D0 + timedelta(days=8))
+    assert s.emprestimos_de("ana") == [original]
+
+
+def test_renovar_limite_de_renovacoes(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=7)  # max_renovacoes padrão = 2
+    s.emprestar("1", "ana", D0)
+    s.renovar("1", D0 + timedelta(days=1))
+    antes = s.renovar("1", D0 + timedelta(days=2))
+    with pytest.raises(RenovacaoNegada):
+        s.renovar("1", D0 + timedelta(days=3))
+    assert s.emprestimos_de("ana") == [antes]
+
+    a = Acervo()
+    a.adicionar(Livro("x", "T", "A"))
+    s0 = ServicoEmprestimos(a, max_renovacoes=0)
+    s0.emprestar("x", "bia", D0)
+    with pytest.raises(RenovacaoNegada):
+        s0.renovar("x", D0)
+
+
+def test_renovar_erros_na_ordem(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=7)
+    with pytest.raises(LivroNaoEncontrado):
+        s.renovar("99", D0)
+    with pytest.raises(EmprestimoNaoEncontrado):
+        s.renovar("1", D0)
+    s.emprestar("1", "ana", D0 + timedelta(days=5))
+    with pytest.raises(ValueError):
+        s.renovar("1", D0)
+    assert s.emprestimos_de("ana")[0].renovacoes == 0
+
+
+def test_devolver_usa_prazo_renovado(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=10, multa_diaria=2.0)
+    s.emprestar("1", "ana", D0)
+    s.renovar("1", D0 + timedelta(days=10))           # prevista: D0+20
+    assert s.devolver("1", D0 + timedelta(days=20)) == 0.0
+    s.emprestar("1", "ana", D0)
+    s.renovar("1", D0 + timedelta(days=5))            # prevista: D0+15
+    assert s.devolver("1", D0 + timedelta(days=18)) == 6.0
+
+
+def test_emprestimos_de_reordena_apos_renovar(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=10)
+    s.emprestar("1", "ana", D0)
+    s.emprestar("2", "ana", D0 + timedelta(days=3))
+    s.renovar("1", D0 + timedelta(days=9))            # "1" vence em D0+19, depois de "2" (D0+13)
+    assert [e.isbn for e in s.emprestimos_de("ana")] == ["2", "1"]
+
+
+def test_atrasados(acervo):
+    s = ServicoEmprestimos(acervo, prazo_dias=5)
+    s.emprestar("3", "ana", D0)                       # vence D0+5
+    s.emprestar("1", "bia", D0)                       # vence D0+5
+    s.emprestar("2", "caio", D0 + timedelta(days=2))  # vence D0+7
+    s.emprestar("4", "ana", D0 + timedelta(days=10))  # vence D0+15
+    assert s.atrasados(D0 + timedelta(days=5)) == []
+    assert [e.isbn for e in s.atrasados(D0 + timedelta(days=6))] == ["1", "3"]
+    assert [e.isbn for e in s.atrasados(D0 + timedelta(days=30))] == ["1", "3", "2", "4"]
+    s.devolver("1", D0 + timedelta(days=6))
+    s.renovar("2", D0 + timedelta(days=7))            # vence D0+12
+    assert [e.isbn for e in s.atrasados(D0 + timedelta(days=8))] == ["3"]

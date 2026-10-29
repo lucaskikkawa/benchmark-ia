@@ -5,4 +5,5 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - analisador_vendas.py
-revisao: Cobertos normalização de status, zero, filtro vazio, diretório, ordenação, top 1, arredondamento e JSON UTF-8.
+revisao: Normalização de status/espaços, arredondamento da média por receita já arredondada e desempate de top_n.
+endurecimento: "Criação de diretórios de saída inexistentes, suporte a CSV de zero bytes, tolerância a espaços e BOM UTF-8, validação de tipo de top_n e dataset volumoso com 1000 linhas."

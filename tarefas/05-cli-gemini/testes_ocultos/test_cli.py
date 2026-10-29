@@ -52,8 +52,6 @@ def test_flag_top_palavras(arquivo_exemplo):
     assert res.returncode == 0
     saida = res.stdout
     assert "Top Palavras:" in saida
-    # Palavras: ola:1, mundo:2, python:2, e:1, incrivel:1
-    # mundo e python tem 2 ocorrencias cada; desempate alfabético: mundo, python
     assert saida.splitlines() == ["Top Palavras:", "  - mundo: 2", "  - python: 2"]
 
 
@@ -76,8 +74,25 @@ def test_flag_saida_arquivo(arquivo_exemplo, tmp_path):
     assert out_file.read_text(encoding="utf-8").strip() == "Linhas: 3"
 
 
+def test_flag_saida_cria_subdiretorios_inexistentes(arquivo_exemplo, tmp_path):
+    out_file = tmp_path / "nivel1" / "nivel2" / "saida_aninhada.txt"
+    res = run_cli(arquivo_exemplo, "-l", "-o", str(out_file))
+    assert res.returncode == 0
+    assert res.stdout == f"Salvo em {out_file}\n"
+    assert out_file.is_file()
+    assert out_file.read_text(encoding="utf-8").strip() == "Linhas: 3"
+
+
 def test_arquivo_inexistente_exit_1(tmp_path):
     res = run_cli(str(tmp_path / "arquivo_fantasma.txt"))
+    assert res.returncode == 1
+    assert res.stderr.startswith("Erro")
+
+
+def test_caminho_e_diretorio_exit_1(tmp_path):
+    diretorio = tmp_path / "meu_diretorio"
+    diretorio.mkdir()
+    res = run_cli(str(diretorio))
     assert res.returncode == 1
     assert res.stderr.startswith("Erro")
 
@@ -85,7 +100,6 @@ def test_arquivo_inexistente_exit_1(tmp_path):
 def test_top_invalido_exit_2(arquivo_exemplo):
     res = run_cli(arquivo_exemplo, "--top", "0")
     assert res.returncode == 2
-    # Erros de sintaxe podem usar a mensagem padrão do argparse.
 
 
 def test_sem_argumentos_exit_2():
@@ -147,3 +161,22 @@ def test_json_gravado_em_arquivo(arquivo_exemplo, tmp_path):
     assert res.returncode == 0
     assert res.stdout == f"Salvo em {saida}\n"
     assert json.loads(saida.read_text(encoding="utf-8")) == {"palavras": 7}
+
+
+def test_quebras_de_linha_crlf_e_lf_mistas(tmp_path):
+    arquivo = tmp_path / "crlf.txt"
+    arquivo.write_bytes(b"Linha 1\r\nLinha 2\nLinha 3\r\n")
+    res = run_cli(str(arquivo), "--json", "-l", "-p")
+    assert res.returncode == 0
+    dados = json.loads(res.stdout)
+    assert dados["linhas"] == 3
+    assert dados["palavras"] == 6
+
+
+def test_pontuacoes_aninhadas_e_aspas_multiplas(tmp_path):
+    arquivo = tmp_path / "aninhado.txt"
+    arquivo.write_text('"""[[[palavra]]]""" ...palavra... ((palavra))!?', encoding="utf-8")
+    res = run_cli(str(arquivo), "--json", "--top", "1")
+    assert res.returncode == 0
+    dados = json.loads(res.stdout)
+    assert dados["top_palavras"] == [{"palavra": "palavra", "ocorrencias": 3}]

@@ -33,4 +33,13 @@ ausente lança `ErroPermanente`. `.chamadas` registra `(chave, timeout, evento)`
 Para testar sem espera real, injete `dormir=lista.append`. O avaliador também usa
 outros objetos com a mesma interface `get`, sem acessar rede.
 
+Subclasses das exceções transitórias também permitem retry. Exceções de
+`dormir` propagam imediatamente mesmo se forem `TimeoutError` ou
+`ErroTemporario`: não são falhas de `api.get`. Cada chamada independente
+recomeça o índice do backoff em zero; não retenha contadores entre chamadas.
+Valide todos os parâmetros antes dos efeitos mesmo com sucesso imediato.
+As chaves podem ser vazias ou conter Unicode e devem passar intactas.
+Os testes podem solicitar até 40 tentativas, sempre com callback sem espera
+real; calcule os atrasos pela fórmula indicada, sem arredondamento ou teto.
+
 Ambiente: Python 3.11, somente biblioteca padrão na solução; sem rede.

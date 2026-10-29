@@ -23,21 +23,17 @@ def test_processamento_basico(csv_basico, tmp_path):
     res = processar_vendas(str(csv_basico), str(saida), status_filtro="concluido", top_n=2)
 
     assert res["total_transacoes"] == 4
-    # 50 + 120.50 + 30 + 15.25 = 215.75
     assert res["receita_total"] == 215.75
-    # 215.75 / 4 = 53.9375 -> 53.94
     assert res["ticket_medio"] == 53.94
     assert res["por_categoria"] == {
         "Eletronicos": 120.50,
         "Livros": 95.25,
     }
-    # Alice: 80.0, Bob: 135.75
     assert res["top_clientes"] == [
         {"cliente": "Bob", "total": 135.75},
         {"cliente": "Alice", "total": 80.0},
     ]
 
-    # Verifica se arquivo JSON foi gerado corretamente
     assert saida.is_file()
     dados_salvos = json.loads(saida.read_text(encoding="utf-8"))
     assert dados_salvos == res
@@ -62,6 +58,20 @@ def test_csv_apenas_cabecalho(tmp_path):
     assert res["ticket_medio"] == 0.0
     assert res["por_categoria"] == {}
     assert res["top_clientes"] == []
+
+
+def test_csv_totalmente_vazio_zero_bytes(tmp_path):
+    arquivo = tmp_path / "zero_bytes.csv"
+    arquivo.write_bytes(b"")
+    saida = tmp_path / "saida_zero.json"
+
+    res = processar_vendas(str(arquivo), str(saida))
+    assert res["total_transacoes"] == 0
+    assert res["receita_total"] == 0.0
+    assert res["ticket_medio"] == 0.0
+    assert res["por_categoria"] == {}
+    assert res["top_clientes"] == []
+    assert saida.is_file()
 
 
 def test_linhas_com_valores_invalidos(tmp_path):
@@ -91,7 +101,6 @@ def test_desempate_alfabetico_top_clientes(tmp_path):
     )
     saida = tmp_path / "saida_empate.json"
     res = processar_vendas(str(arquivo), str(saida), top_n=3)
-    # Empate de 100.0, desempate alfabético: Arthur, Bruno, Zelia
     assert res["top_clientes"] == [
         {"cliente": "Arthur", "total": 100.0},
         {"cliente": "Bruno", "total": 100.0},
@@ -102,7 +111,6 @@ def test_desempate_alfabetico_top_clientes(tmp_path):
 def test_top_n_maior_que_clientes_existentes(csv_basico, tmp_path):
     saida = tmp_path / "saida_top_grande.json"
     res = processar_vendas(str(csv_basico), str(saida), top_n=50)
-    # Apenas Alice e Bob compraram no status concluido
     assert len(res["top_clientes"]) == 2
 
 
@@ -111,11 +119,18 @@ def test_arquivo_inexistente(tmp_path):
         processar_vendas(str(tmp_path / "nao_existe.csv"), str(tmp_path / "saida.json"))
 
 
-def test_top_n_invalido(csv_basico, tmp_path):
+def test_top_n_invalido_valor(csv_basico, tmp_path):
     with pytest.raises(ValueError):
         processar_vendas(str(csv_basico), str(tmp_path / "saida.json"), top_n=0)
     with pytest.raises(ValueError):
         processar_vendas(str(csv_basico), str(tmp_path / "saida.json"), top_n=-3)
+
+
+def test_top_n_invalido_tipo(csv_basico, tmp_path):
+    with pytest.raises(TypeError):
+        processar_vendas(str(csv_basico), str(tmp_path / "saida.json"), top_n=True)  # type: ignore
+    with pytest.raises(TypeError):
+        processar_vendas(str(csv_basico), str(tmp_path / "saida.json"), top_n=2.5)  # type: ignore
 
 
 def test_diretorio_nao_e_arquivo_csv(tmp_path):
@@ -163,21 +178,40 @@ def test_zero_valor_vazio_ordem_categorias_e_top_um(tmp_path):
     assert res["top_clientes"] == [{"cliente": "Ana", "total": 10.0}]
 
 
-def test_arredondamento_agregados_e_json_utf8(tmp_path):
-    entrada = tmp_path / "acentos.csv"
-    entrada.write_text(
-        "id_transacao,data,cliente,categoria,valor,status\n"
-        "1,2026-01-01,João,Ação,0.334,concluido\n"
-        "2,2026-01-01,João,Ação,0.334,concluido\n",
-        encoding="utf-8",
+def test_cria_subdiretorios_de_saida_automaticamente(csv_basico, tmp_path):
+    saida_profunda = tmp_path / "profundo" / "nivel2" / "nivel3" / "resultado.json"
+    res = processar_vendas(str(csv_basico), str(saida_profunda))
+    assert saida_profunda.is_file()
+    assert json.loads(saida_profunda.read_text(encoding="utf-8")) == res
+
+
+def test_bom_utf8_e_espacos_nas_colunas(tmp_path):
+    entrada = tmp_path / "bom.csv"
+    conteudo = (
+        "\ufeffid_transacao,data,cliente,categoria,valor,status\n"
+        "1,2026-01-01,  Maria Clara  ,  Roupas & Acessórios  ,  150.25  ,  concluido  \n"
     )
-    saida = tmp_path / "saida.json"
+    entrada.write_text(conteudo, encoding="utf-8")
+    saida = tmp_path / "saida_bom.json"
     res = processar_vendas(str(entrada), str(saida))
-    assert res["receita_total"] == 0.67
-    assert res["ticket_medio"] == 0.34  # média a partir da receita já arredondada
-    assert res["por_categoria"] == {"Ação": 0.67}
-    assert res["top_clientes"] == [{"cliente": "João", "total": 0.67}]
-    texto = saida.read_text(encoding="utf-8")
-    assert json.loads(texto) == res
-    # A ordem das chaves do objeto JSON não é especificada.
-    assert texto.rstrip("\n") == json.dumps(json.loads(texto), indent=2, ensure_ascii=False)
+    assert res["total_transacoes"] == 1
+    assert res["receita_total"] == 150.25
+    assert res["por_categoria"] == {"Roupas & Acessórios": 150.25}
+    assert res["top_clientes"] == [{"cliente": "Maria Clara", "total": 150.25}]
+
+
+def test_dataset_grande(tmp_path):
+    linhas = ["id_transacao,data,cliente,categoria,valor,status"]
+    for i in range(1, 1001):
+        cliente = f"Cliente_{i % 50}"
+        cat = f"Cat_{i % 5}"
+        valor = f"{10.0 + (i % 100) * 0.5:.2f}"
+        linhas.append(f"{i},2026-01-01,{cliente},{cat},{valor},concluido")
+
+    arquivo = tmp_path / "grande.csv"
+    arquivo.write_text("\n".join(linhas), encoding="utf-8")
+    saida = tmp_path / "saida_grande.json"
+    res = processar_vendas(str(arquivo), str(saida), top_n=5)
+    assert res["total_transacoes"] == 1000
+    assert len(res["por_categoria"]) == 5
+    assert len(res["top_clientes"]) == 5

@@ -105,3 +105,54 @@ def test_nao_muta_a_entrada():
     copia = list(provas)
     fechar_boletim(provas)
     assert provas == copia
+
+
+def test_half_up_quebra_round_e_decimal_do_float():
+    _assert_boletim([0.015], 0.02, "D", False, None)
+    _assert_boletim([0.005], 0.01, "D", False, None)
+    _assert_boletim([0.004], 0.0, "D", False, None)
+    _assert_boletim([8.995], 9.0, "A", True, None)
+    _assert_boletim([9.995], 10.0, "A", True, None)
+    _assert_boletim([4.995], 5.0, "C", True, None)
+    _assert_boletim([6.994], 6.99, "C", True, None)
+    _assert_boletim([1.255], 1.26, "D", False, None)
+
+
+def test_arredonda_so_a_media_final():
+    _assert_boletim([1.005, 1.004], 1.0, "D", False, None)
+    _assert_boletim([1.004, 1.004, 1.004], 1.0, "D", False, None)
+    _assert_boletim([2.005, 2.004], 2.0, "D", False, None)
+
+
+def test_descarte_so_a_primeira_ocorrencia():
+    _assert_boletim([5, 1, 1, 9], 5.0, "C", True, 1.0)
+    _assert_boletim([7, 7, 7, 7], 7.0, "B", True, 7.0)
+    _assert_boletim([0, 0, 0, 10], 3.33, "D", False, 0.0)
+    _assert_boletim([10, 10, 10, 10], 10.0, "A", True, 10.0)
+    _assert_boletim([9.5, 0.015, 9.5, 9.5], 9.5, "A", True, 0.015)
+
+
+def test_ausencia_no_meio_nao_completa_quatro():
+    _assert_boletim([None, 10, 0, None], 5.0, "C", True, None)
+    with pytest.raises(ValueError):
+        fechar_boletim([None, None, None, None])
+    _assert_boletim([1, None, None, 1], 1.0, "D", False, None)
+
+
+def test_fronteiras_fechadas_e_tipos_limite():
+    _assert_boletim([0, 10], 5.0, "C", True, None)
+    _assert_boletim([-0.0], 0.0, "D", False, None)
+    with pytest.raises(ValueError):
+        fechar_boletim([10.0000001])
+    with pytest.raises(ValueError):
+        fechar_boletim([-0.0000001])
+    with pytest.raises(ValueError):
+        fechar_boletim([float("-inf")])
+    with pytest.raises(TypeError):
+        fechar_boletim([1 + 0j])
+    with pytest.raises(TypeError):
+        fechar_boletim([1, True, 2])
+    provas = [1, 2, 3, 4]
+    copia = list(provas)
+    fechar_boletim(provas)
+    assert provas == copia

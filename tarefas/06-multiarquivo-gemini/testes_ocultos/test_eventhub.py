@@ -68,8 +68,6 @@ def test_fifo_mesma_prioridade():
     eventos = [bus.publish("logs", {"indice": i}, priority=Priority.NORMAL) for i in (1, 2, 3)]
 
     bus.dispatch_all()
-    # Usa os timestamps observados, sem supor que o relógio de parede é monotônico.
-    # sorted é estável, preservando FIFO nos empates de timestamp.
     assert ordem_execucao == [e.payload["indice"] for e in sorted(eventos, key=lambda e: e.timestamp)]
 
 
@@ -84,7 +82,7 @@ def test_unsubscribe():
     bus.unsubscribe("alerta", handler)
     bus.publish("alerta", {"msg": "alerta 2"})
     bus.dispatch_all()
-    assert len(handler.recebidos) == 1  # não deve ter recebido o segundo
+    assert len(handler.recebidos) == 1
 
 
 def test_dead_letter_queue_captura_erro():
@@ -223,3 +221,48 @@ def test_falha_com_dlq_nao_impede_outros_handlers():
     assert bus.dispatch_all() == 1
     assert recebidos == [ev]
     assert dlq.get_failed_events() == [(ev, "Falha proposital de processamento")]
+
+
+def test_falha_sem_dlq_propaga_excecao():
+    bus = EventBus(dlq=None)
+    bus.subscribe("t", FailingHandler())
+    bus.publish("t", {})
+    with pytest.raises(RuntimeError) as exc_info:
+        bus.dispatch_next()
+    assert "Falha proposital" in str(exc_info.value)
+
+
+def test_despacho_topico_sem_handlers():
+    bus = EventBus()
+    ev = bus.publish("sem_inscritos", {"msg": "perdido"})
+    assert bus.dispatch_next() is True
+    assert bus.dispatch_next() is False
+    assert bus.get_history() == [ev]
+
+
+def test_handler_publica_novo_evento_durante_despacho():
+    bus = EventBus()
+    ordem = []
+
+    def primeiro_handler(ev):
+        ordem.append("primeiro")
+        bus.publish("segundo_topico", {}, priority=Priority.HIGH)
+
+    def segundo_handler(ev):
+        ordem.append("segundo")
+
+    bus.subscribe("primeiro_topico", primeiro_handler)
+    bus.subscribe("segundo_topico", segundo_handler)
+
+    bus.publish("primeiro_topico", {})
+    total = bus.dispatch_all()
+    assert total == 2
+    assert ordem == ["primeiro", "segundo"]
+
+
+def test_get_history_imutabilidade():
+    bus = EventBus()
+    bus.publish("topico", {"item": 1})
+    historico = bus.get_history()
+    historico.clear()
+    assert len(bus.get_history()) == 1

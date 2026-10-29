@@ -6,3 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - relatorio.py
+endurecimento: "equivalência com o original embutido como oráculo: floats que mudam na 2ª casa (t*(1-taxa)), ordem/forma da soma do TOTAL, inf/nan, ordem das exceções em pedidos malformados, tipo exato; constantes TAXAS_DESCONTO/TAXAS_PADRAO/LIMITE_FAIXA_ALTA consultadas na chamada; 400 casos aleatórios"

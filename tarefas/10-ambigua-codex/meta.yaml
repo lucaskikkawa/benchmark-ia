@@ -7,3 +7,4 @@ comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - organizador.py
 - SUPOSICOES.md
+endurecimento: "Cópias rasas com aliases, extras, repetições em volume e empates sem política imposta."

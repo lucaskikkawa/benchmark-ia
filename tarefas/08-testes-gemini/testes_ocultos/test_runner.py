@@ -31,8 +31,6 @@ def executar_suite_isolada(modulo: Path):
 def test_suite_passa_no_modulo_original():
     tests_dir = ROOT_DIR / "tests"
     assert tests_dir.is_dir(), "Diretório 'tests/' não encontrado no diretório raiz da solução."
-    # Deixa o pytest descobrir também subpastas e arquivos *_test.py.
-    # Original e mutantes recebem a mesma estrutura isolada de arquivos.
     res = executar_suite_isolada(ROOT_DIR / "validador.py")
     assert res.returncode == 0, (
         f"A suíte de testes do candidato falhou ao rodar contra o módulo original correto!\n"
@@ -45,8 +43,6 @@ def executar_mutante(nome_mutante: str):
     assert mutante_file.is_file(), f"Arquivo do mutante não encontrado: {mutante_file}"
 
     res = executar_suite_isolada(mutante_file)
-    # Código 1 indica falha de testes; erros de coleta, uso, ausência de testes
-    # e interrupções não demonstram que a suíte detectou o bug do mutante.
     assert res.returncode == 1, (
         f"O mutante {nome_mutante} não foi eliminado por uma falha de teste "
         f"(código esperado 1, obtido {res.returncode}).\n"
@@ -92,3 +88,11 @@ def test_mata_mutante_09():
 
 def test_mata_mutante_10():
     executar_mutante("mutante_10")
+
+
+def test_mata_mutante_11():
+    executar_mutante("mutante_11")
+
+
+def test_mata_mutante_12():
+    executar_mutante("mutante_12")

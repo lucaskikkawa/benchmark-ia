@@ -1,5 +1,10 @@
+from collections import deque
 import pytest
 from solucao import resumir_intervalos
+
+
+class IntSubclasse(int):
+    pass
 
 
 def test_lista_vazia():
@@ -67,13 +72,55 @@ def test_inteiros_sem_limite_de_32_ou_64_bits():
     assert resumir_intervalos([n + 1, -n, n]) == f"{-n}, {n}-{n + 1}"
 
 
-@pytest.mark.parametrize("entrada", [(1, 2), {1, 2}, 123, {}])
+@pytest.mark.parametrize("entrada", [(1, 2), {1, 2}, 123, {}, deque([1, 2]), range(5)])
 def test_outros_containers_nao_sao_listas(entrada):
     with pytest.raises(TypeError):
         resumir_intervalos(entrada)
 
 
-@pytest.mark.parametrize("elemento", [False, None, [2], 2.0])
+@pytest.mark.parametrize("elemento", [False, True, None, [2], 2.0, (1,), "1", 1.0])
 def test_elementos_estritamente_inteiros(elemento):
     with pytest.raises(TypeError):
         resumir_intervalos([1, elemento, 3])
+
+
+def test_rejeita_subclasses_personalizadas_de_int():
+    custom_int = IntSubclasse(10)
+    with pytest.raises(TypeError):
+        resumir_intervalos([1, 2, custom_int, 4])
+
+
+def test_nao_muta_lista_original():
+    original = [5, 3, 1, 4, 2]
+    copia = list(original)
+    resultado = resumir_intervalos(original)
+    assert resultado == "1-5"
+    assert original == copia, "A função modificou a lista recebida como argumento!"
+
+
+def test_grande_volume_de_dados():
+    # 20.000 elementos alternando blocos consecutivos e isolados
+    dados = []
+    # Bloco 0 a 999
+    dados.extend(range(0, 1000))
+    # Pares entre 2000 e 6000 (isolados)
+    dados.extend(range(2000, 6000, 2))
+    # Bloco 10000 a 11000 com duplicatas
+    dados.extend(range(10000, 11001))
+    dados.extend(range(10000, 10500))
+    # Desordena propositalmente
+    import random
+    rng = random.Random(42)
+    rng.shuffle(dados)
+
+    res = resumir_intervalos(dados)
+    assert res.startswith("0-999, 2000, 2002, ")
+    assert res.endswith(", 10000-11000")
+
+
+def test_apenas_negativos_consecutivos_e_isolados():
+    assert resumir_intervalos([-10, -9, -5, -4, -3, -1]) == "-10--9, -5--3, -1"
+
+
+def test_repeticao_massiva_mesmo_elemento():
+    assert resumir_intervalos([-7] * 5000) == "-7"

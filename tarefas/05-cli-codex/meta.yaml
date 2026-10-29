@@ -6,3 +6,4 @@ timeout_min: 5
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - cli.py
+endurecimento: "Flag top, Unicode difícil, volume, importação sem efeitos e main repetível."

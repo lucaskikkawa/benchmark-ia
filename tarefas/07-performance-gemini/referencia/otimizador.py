@@ -4,11 +4,19 @@ def maior_subarray_soma(numeros: list[int], alvo: int) -> int:
     Complexidade de tempo: O(N) usando mapa de somas acumuladas.
     Complexidade de espaço: O(N).
     """
+    if type(alvo) is not int:
+        raise TypeError("alvo deve ser um int primitivo")
+    if not isinstance(numeros, list):
+        raise TypeError("numeros deve ser uma lista")
+
     soma_acumulada = 0
     maior_comprimento = 0
     primeira_ocorrencia = {0: -1}
 
     for indice, valor in enumerate(numeros):
+        if type(valor) is not int:
+            raise TypeError(f"Elemento inválido: {valor!r}. Esperado int.")
+
         soma_acumulada += valor
         diferenca = soma_acumulada - alvo
 

@@ -131,7 +131,6 @@ def test_arredondamento_e_desconto_100():
     c = CarrinhoDeCompras()
     c.adicionar_item("Item 1", 10.333, 1)
     c.adicionar_item("Item 2", 20.333, 2)
-    # subtotal: 10.333 + 40.666 = 50.999 -> arredonda para 51.0
     assert c.calcular_subtotal() == 51.0
     c.aplicar_cupom("GRATIS", 100.0)
     assert c.calcular_total() == 0.0
@@ -145,3 +144,86 @@ def test_listar_itens_ordenacao_alfabetica():
     itens = c.listar_itens()
     nomes = [item["nome"] for item in itens]
     assert nomes == ["Apontador", "Caderno", "Zebra de Pelúcia"]
+
+
+def test_isolamento_profundo_dicionario_construtor():
+    dict_externo = {"Caneta": {"preco": 2.5, "quantidade": 2}}
+    c = CarrinhoDeCompras(dict_externo)
+    # Modificações no dict original ou no dict aninhado não afetam o carrinho
+    dict_externo["Caneta"]["preco"] = 999.0
+    dict_externo["Caneta"]["quantidade"] = 100
+    dict_externo["Novo"] = {"preco": 10.0, "quantidade": 1}
+
+    itens = c.listar_itens()
+    assert len(itens) == 1
+    assert itens[0]["preco"] == 2.5
+    assert itens[0]["quantidade"] == 2
+    assert c.calcular_subtotal() == 5.0
+
+
+def test_isolamento_dicionarios_listar_itens():
+    c = CarrinhoDeCompras()
+    c.adicionar_item("Lápis", 2.0, 5)
+    itens = c.listar_itens()
+    # Modifica o dict retornado
+    itens[0]["preco"] = 100.0
+    itens[0]["quantidade"] = 999
+    # Estado interno permanece inalterado
+    assert c.calcular_subtotal() == 10.0
+    assert c.listar_itens()[0]["preco"] == 2.0
+
+
+def test_validacao_tipos_adicionar_item():
+    c = CarrinhoDeCompras()
+    # Tipos incorretos para nome
+    with pytest.raises((ValueError, TypeError)):
+        c.adicionar_item("", 10.0, 1)
+    with pytest.raises((ValueError, TypeError)):
+        c.adicionar_item("   ", 10.0, 1)
+    with pytest.raises(TypeError):
+        c.adicionar_item(123, 10.0, 1)  # type: ignore
+
+    # Tipos incorretos para preco (bool é subclasse de int)
+    with pytest.raises(TypeError):
+        c.adicionar_item("Item", True, 1)  # type: ignore
+    with pytest.raises(TypeError):
+        c.adicionar_item("Item", "10.0", 1)  # type: ignore
+
+    # Tipos incorretos para quantidade
+    with pytest.raises(TypeError):
+        c.adicionar_item("Item", 10.0, 1.5)  # type: ignore
+    with pytest.raises(TypeError):
+        c.adicionar_item("Item", 10.0, True)  # type: ignore
+
+
+def test_validacao_tipos_cupom():
+    c = CarrinhoDeCompras()
+    with pytest.raises((ValueError, TypeError)):
+        c.aplicar_cupom("", 10.0)
+    with pytest.raises((ValueError, TypeError)):
+        c.aplicar_cupom("   ", 10.0)
+    with pytest.raises(TypeError):
+        c.aplicar_cupom(123, 10.0)  # type: ignore
+    with pytest.raises(TypeError):
+        c.aplicar_cupom("PROMO", True)  # type: ignore
+    with pytest.raises(TypeError):
+        c.aplicar_cupom("PROMO", "10")  # type: ignore
+
+
+def test_remover_item_tipo_quantidade_invalido():
+    c = CarrinhoDeCompras()
+    c.adicionar_item("Livro", 30.0, 5)
+    with pytest.raises(TypeError):
+        c.remover_item("Livro", 1.5)  # type: ignore
+    with pytest.raises(TypeError):
+        c.remover_item("Livro", True)  # type: ignore
+
+
+def test_ordenacao_unicode_e_acentos():
+    c = CarrinhoDeCompras()
+    c.adicionar_item("Óleo", 10.0, 1)
+    c.adicionar_item("Água", 3.0, 2)
+    c.adicionar_item("Café", 15.0, 1)
+    c.adicionar_item("Açúcar", 5.0, 2)
+    nomes = [it["nome"] for it in c.listar_itens()]
+    assert nomes == sorted(["Óleo", "Água", "Café", "Açúcar"])

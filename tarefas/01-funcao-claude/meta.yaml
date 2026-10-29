@@ -6,3 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
+endurecimento: "unidade w; dígitos só ASCII (rejeita ١/１/ſ/K); inteiros com milhares de dígitos exatos (limite int->str); tempo linear em ~1 MB de espaços (mata regex com backtracking); subclasse de str e bool"

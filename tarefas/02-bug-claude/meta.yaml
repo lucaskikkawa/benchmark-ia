@@ -6,3 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - intervalos.py
+endurecimento: "docstring exige iterável qualquer (gerador/tupla), pares em lista, TypeError p/ não-int e bool, não mutar entrada; inicial ganhou sort in-place e validação que consome gerador; testes com 200k intervalos e oráculo aleatório"

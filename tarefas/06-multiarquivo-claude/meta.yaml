@@ -9,3 +9,4 @@ arquivos_solucao:
 - biblioteca/modelos.py
 - biblioteca/acervo.py
 - biblioteca/emprestimos.py
+endurecimento: "novos requisitos: Livro valida campos (TypeError/ValueError), adicionar só Livro, busca com casefold e trecho vazio, validação do construtor, max_renovacoes + renovar() (ordem de erros, prazo nunca encurta, RenovacaoNegada), atrasados(), Emprestimo.renovacoes, __all__ exato, serviço enxerga o acervo vivo"

@@ -6,3 +6,4 @@ comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - carrinho.py
 revisao: Testes via API pública; cobertos remoção excedente, cupom zero/substituição, arredondamento e carrinho vazio.
+endurecimento: "Isolamento de estado interno (cópia profunda no construtor e em listar_itens), validação estrita de tipos com rejeição de bool e float em inteiros, validação de strings vazias e ordenação com unicode."

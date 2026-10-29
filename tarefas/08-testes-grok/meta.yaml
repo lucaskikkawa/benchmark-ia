@@ -6,3 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - tests/test_descontos.py
+endurecimento: "mutantes sutis de subtração no NATAL, cupom em branco, 1900 e ano 1"

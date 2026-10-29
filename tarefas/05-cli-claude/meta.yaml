@@ -6,3 +6,4 @@ timeout_min: 5
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - freq.py
+endurecimento: "nova opção -x/--excluir repetível (com -i compara após lower); -i aplica str.lower() por palavra após extrair (İ, ß, ǅ; não casefold); sem normalização NFD; dígitos Unicode separam; stdin sempre UTF-8 estrito mesmo com terminal latin-1; arquivos grandes"

@@ -52,8 +52,11 @@ def test_oraculo_pequeno_deterministico():
 
 
 @pytest.mark.parametrize('modo,n,alvo,esperado', [
-    ('distintos', 200_000, 199_999, 100_000),
-    ('repetidos', 150_000, 0, 150_000 * 149_999 // 2),
+    ('distintos', 1_000_000, 999_999, 500_000),
+    ('repetidos', 1_000_000, 0, 1_000_000 * 999_999 // 2),
+    ('permutados', 600_000, 599_999, 300_000),
+    ('blocos', 800_000, 2, 400_000 * 400_000),
+    ('sem_pares', 800_000, -1, 0),
 ])
 def test_limite_de_tempo(modo, n, alvo, esperado):
     script = """
@@ -62,7 +65,17 @@ import sys
 from time import perf_counter
 from pares import contar_pares
 modo, n, alvo = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
-dados = list(range(n)) if modo == 'distintos' else [0] * n
+if modo == 'distintos':
+    dados = list(range(n))
+elif modo == 'permutados':
+    # Permutação bijetiva não ordenada, sem custo de shuffle aleatório.
+    dados = [(i * 104729) % n for i in range(n)]
+elif modo == 'blocos':
+    dados = iter([-7] * (n//2) + [9] * (n//2))
+elif modo == 'sem_pares':
+    dados = iter(range(n))
+else:
+    dados = [0] * n
 inicio = perf_counter()
 resultado = contar_pares(dados, alvo)
 duracao = perf_counter() - inicio
@@ -71,11 +84,11 @@ print(json.dumps([resultado, duracao]))
     try:
         r = subprocess.run([sys.executable, '-c', script, modo, str(n), str(alvo)],
                            cwd=Path(__file__).resolve().parents[1], capture_output=True,
-                           text=True, timeout=5)
+                           text=True, timeout=12)
     except subprocess.TimeoutExpired:
-        pytest.fail('Algoritmo excedeu o limite externo de 5 segundos')
+        pytest.fail('Algoritmo excedeu o limite externo de 12 segundos')
     assert r.returncode == 0, r.stderr
     # Usa a última linha: prints acidentais da solução não devem quebrar a medição.
     resultado, duracao = json.loads(r.stdout.strip().splitlines()[-1])
     assert resultado == esperado
-    assert duracao < 2.0, f'Chamada levou {duracao:.3f}s, limite 2s'
+    assert duracao < 5.0, f'Chamada levou {duracao:.3f}s, limite 5s'

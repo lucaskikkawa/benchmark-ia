@@ -25,6 +25,10 @@ MUTANTES = [
     "m08_cupom_vazio.py",
     "m09_cupom_fora_da_janela.py",
     "m10_preco_negativo.py",
+    "m11_natal_por_subtracao.py",
+    "m12_espacos_viram_vazio.py",
+    "m13_1900_bissexto.py",
+    "m14_rejeita_ano_1.py",
 ]
 
 

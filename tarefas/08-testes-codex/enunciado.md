@@ -28,9 +28,16 @@ do avaliador ou o ambiente para distinguir implementações. Não substitua a fu
 que está testando nem escreva implementações alternativas de carrinho.
 
 A avaliação primeiro roda sua suíte no módulo correto (deve passar) e depois em
-10 cópias com um bug cada. Cada mutante é um teste independente do benchmark,
+14 cópias com um bug cada. Cada mutante é um teste independente do benchmark,
 aprovado quando sua suíte tem falha de teste nele (exit code 1). Erros de coleta,
 nenhum teste ou timeout não contam como mutante morto. Cada execução da suíte
 precisa terminar em até 8 segundos. Não é necessário usar plugins de pytest.
+
+Os inteiros têm precisão arbitrária e o resultado deve ser exato, inclusive
+acima de 2**53. Cubra também truncamento agregado entre linhas, preservação
+após erro e validação de linhas posteriores a uma linha de quantidade zero.
+A lista deve permanecer intacta também quando a função lançar `ValueError`.
+Essas regras são de comportamento público; não se exige quantidade mínima
+de testes nem qualquer organização específica além de `tests/`.
 
 Ambiente: Python 3.11, somente biblioteca padrão na solução; sem rede.

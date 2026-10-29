@@ -66,3 +66,23 @@ def test_nao_altera_itens_e_repeticao_independente():
     assert calcular_total(itens) == 450
     assert itens == antes
     assert calcular_total(itens) == 450
+
+
+def test_precisao_acima_do_limite_de_float():
+    # O centavo baixo não pode desaparecer na conversão para double.
+    assert calcular_total([(1, 2**60 + 1)]) == 2**60 + 1
+    assert calcular_total([(3, 10**70 + 1)], desconto=33, frete=7) == (
+        3 * (10**70 + 1) * 67 // 100 + 7)
+
+
+def test_zero_no_meio_nao_encerra_carrinho():
+    assert calcular_total([(1, 7), (0, 50), (2, 11)], frete=3) == 32
+
+
+@pytest.mark.parametrize('itens', [[(0, 0), (1, -1)], [(0, 50), (-1, 2)],
+                                 [(1, 7), (1, -1)], [(0, -1)]])
+def test_erro_posterior_nao_altera_entrada(itens):
+    antes = deepcopy(itens)
+    with pytest.raises(ValueError):
+        calcular_total(itens)
+    assert itens == antes

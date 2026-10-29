@@ -9,3 +9,4 @@ arquivos_solucao:
 - biblioteca/models.py
 - biblioteca/catalogo.py
 - biblioteca/emprestimos.py
+endurecimento: "sem DV do ISBN, estoque por serviço, falha não altera estado, prazo atravessa o ano"

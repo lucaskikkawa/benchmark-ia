@@ -6,3 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
+endurecimento: "n=200000 no subprocesso, inteiros de 10**18 e produtos assimétricos de frequência"

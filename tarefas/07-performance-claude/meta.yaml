@@ -6,3 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
+endurecimento: "novos parâmetros comprimento_min/comprimento_max (janela deslizante de prefixos, O(n)) com ValueError e casos min>max/min>n; inteiros > 64 bits; desempenho em subprocesso com 300k e janelas de milhares (mata O(n·L)); oráculo independente por busca binária"

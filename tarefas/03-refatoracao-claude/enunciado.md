@@ -2,7 +2,10 @@
 
 O arquivo `relatorio.py` (no diretório de trabalho) contém `gerar_relatorio(pedidos)`, que funciona,
 mas é difícil de ler e manter. **Refatore `relatorio.py`** mantendo exatamente o mesmo comportamento
-observável de `gerar_relatorio` (mesma string retornada, mesmas exceções) para qualquer entrada.
+observável de `gerar_relatorio` (mesma string retornada, caractere a caractere, e mesmo tipo de exceção)
+para qualquer entrada — inclusive valores `float` "difíceis" (arredondamento na 2ª casa, valores
+enormes, `inf`/`nan`), tipos de cliente desconhecidos e pedidos/itens malformados (chaves ausentes).
+Os testes comparam a sua versão com a original em muitas entradas.
 
 ## Entrada
 
@@ -37,5 +40,15 @@ ser **maior que 1000** (exatamente 1000 usa a taxa da coluna "até 1000"):
 | `atacado` | 5% | 8% |
 | qualquer outro | 0% | 2% |
 
-As taxas devem ficar definidas em um único lugar (ex.: uma constante do módulo), não espalhadas em if/elif.
+As taxas devem ficar definidas em um único lugar, nestas constantes do módulo (não espalhadas em if/elif):
+
+```python
+LIMITE_FAIXA_ALTA = 1000
+TAXAS_DESCONTO: dict[str, tuple[float, float]]  # tipo -> (taxa até o limite, taxa acima): "vip" e "atacado"
+TAXAS_PADRAO: tuple[float, float]               # (taxa até o limite, taxa acima) dos demais tipos
+```
+
+`calcular_desconto` deve consultar essas constantes no momento da chamada (alterar
+`relatorio.TAXAS_DESCONTO`, `relatorio.TAXAS_PADRAO` ou `relatorio.LIMITE_FAIXA_ALTA` muda o resultado).
+O tipo do cliente é comparado exatamente (`"VIP"` não é `"vip"`).
 Use apenas a biblioteca padrão e não crie outros arquivos obrigatórios.

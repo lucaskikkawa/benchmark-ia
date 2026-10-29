@@ -1,8 +1,9 @@
 tipo: 09-api
 autor: gemini
 revisor: codex
-timeout_min: 5
+timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - cliente_resiliente.py
-revisao: Removida mensagem exata não especificada; ampliadas coberturas 2xx, retry, backoff, 4xx, limite de uma tentativa e delegação.
+revisao: Validação de status_code numérico em ApiError e sleep_fn com backoff correto.
+endurecimento: "Validação estrita de todos os parâmetros numéricos no construtor, preservação obrigatória de status_code no esgotamento de tentativas HTTP e rejeição imediata de status 3xx não-retentáveis."

@@ -68,8 +68,8 @@ def _minutos(texto: str) -> int:
     if (
         len(texto) != 5
         or texto[2] != ":"
-        or not texto[:2].isdigit()
-        or not texto[3:].isdigit()
+        or any(caractere not in "0123456789" for caractere in texto[:2])
+        or any(caractere not in "0123456789" for caractere in texto[3:])
     ):
         raise ValueError(f"horario invalido: {texto}")
     hora = int(texto[:2])

@@ -1,7 +1,7 @@
 def classificar_cliente(dados: dict) -> dict:
     """Calcula o score e determina a categoria do cliente."""
-    cliente_id = str(dados.get("id", ""))
-    nome = str(dados.get("nome", ""))
+    cliente_id = dados["id"]
+    nome = dados["nome"]
     compras = dados.get("compras", [])
     anos_ativo = int(dados.get("anos_ativo", 0))
 

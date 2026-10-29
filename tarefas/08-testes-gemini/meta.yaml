@@ -5,4 +5,5 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - tests/test_validador.py
-revisao: Dez mutantes reais e distintos mantidos; execução isolada, descoberta recursiva, timeout e rejeição de erros de coleta como eliminação.
+revisao: Tolerância a subpastas em tests/, timeout por execução e código de saída 1 estrito para mutantes.
+endurecimento: "Inclusão de 12 mutantes sutis com bugs off-by-one em tamanhos e faixas de força, tabs/newlines em isspace, pontuação fora do conjunto permitido, repetições no final e parâmetros customizados do construtor."

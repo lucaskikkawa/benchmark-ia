@@ -15,8 +15,8 @@ def pares_com_soma(nums: list[int], alvo: int) -> int:
 - Lista vazia ou com um elemento devolve `0`.
 - Não altere `nums`.
 - `nums` tem de ser `list`. Cada elemento e `alvo` têm de ser `int`. `bool` não conta como `int` (`TypeError`). Outro tipo → `TypeError`.
-- A resposta cabe num `int` do Python. Não materialize a lista de pares: com dezenas de milhares de valores iguais a resposta passa de 10^9.
-- Há teste com `n = 100_000`. Um laço duplo não termina no limite de 2 segundos. Uma passagem com contagem de frequências (ou dois ponteiros depois de ordenar **uma cópia**) passa.
+- A resposta cabe num `int` do Python (não use inteiro de largura fixa). Valores como `10**18` e negativos grandes são válidos. Não materialize a lista de pares: com dezenas de milhares de valores iguais a resposta passa de 10^9.
+- Há teste com `n = 200_000`. Um laço duplo não termina no limite de 3 segundos. Uma passagem com contagem de frequências (ou dois ponteiros depois de ordenar **uma cópia**) passa. A medição roda em subprocesso.
 
 ## Exemplos
 
@@ -28,4 +28,6 @@ pares_com_soma([1, 3, 1, 3], 4)  # 4
 pares_com_soma([2, 2, 2], 4)     # 3
 pares_com_soma([0, 0, 0, 0], 0)  # 6
 pares_com_soma([-2, 0, 2, -2], 0)  # 2
+pares_com_soma([5, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2], 7)  # 35
+pares_com_soma([10**18, -(10**18), 10**18], 0)  # 2
 ```

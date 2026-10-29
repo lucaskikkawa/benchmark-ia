@@ -70,6 +70,45 @@ def test_urgente_false_em_texto_comum():
     assert isinstance(resultado["categoria"], str)
 
 
+def test_unicode_sem_normalizar_nem_medir_bytes():
+    assert _nucleo("a\u0301")["tamanho"] == 2
+    assert _nucleo("\u00a0")["tamanho"] == 1
+    assert _nucleo("\u00a0")["categoria"] != "vazia"
+    assert _nucleo("\u200b")["tamanho"] == 1
+    assert _nucleo("\u200b")["urgente"] is False
+    assert _nucleo("\ud800")["tamanho"] == 1
+    assert _nucleo("\ud800")["urgente"] is False
+    assert _nucleo("ação")["tamanho"] == 4
+    assert len("ação".encode("utf-8")) != 4
+    assert _nucleo("こんにちは")["tamanho"] == 5
+    assert _nucleo("vazia")["categoria"] != "vazia"
+    assert _nucleo("vazia")["tamanho"] == 5
+    assert _nucleo("\n\n")["categoria"] != "vazia"
+
+
+def test_lookalike_e_texto_longo():
+    assert _nucleo("URGENT\u0415")["urgente"] is False
+    assert _nucleo("URGENT\u0415")["tamanho"] == 7
+    cauda = "a" * 100_000 + "URGENTE"
+    resultado = _nucleo(cauda)
+    assert resultado["urgente"] is True
+    assert resultado["tamanho"] == 100_007
+    assert resultado["categoria"] != "vazia"
+    meio = "x" * 50_000 + "URGENTE" + "y" * 50_000
+    assert _nucleo(meio)["urgente"] is True
+    assert _nucleo(meio)["tamanho"] == 100_007
+    assert _nucleo("UR\u200bGENTE")["urgente"] is False
+    assert _nucleo("UR\u200bGENTE")["tamanho"] == 8
+
+
+def test_tipos_de_bytes_e_determinismo_em_texto_grande():
+    for valor in (bytearray(b"URGENTE"), memoryview(b"URGENTE")):
+        with pytest.raises(TypeError):
+            classificar_mensagem(valor)
+    texto = "\ud800" + " " * 1000 + "urgente"
+    assert classificar_mensagem(texto) == classificar_mensagem(texto)
+
+
 def test_suposicoes_existe_e_tem_substancia():
     caminho = RAIZ / "SUPOSICOES.md"
     assert caminho.is_file(), "Arquivo SUPOSICOES.md não encontrado"

@@ -10,6 +10,14 @@ class Livro:
     titulo: str
     autor: str
 
+    def __post_init__(self) -> None:
+        for campo in ("isbn", "titulo", "autor"):
+            valor = getattr(self, campo)
+            if not isinstance(valor, str):
+                raise TypeError(f"{campo} deve ser str, recebido {type(valor).__name__}")
+            if not valor.strip():
+                raise ValueError(f"{campo} não pode ser vazio")
+
 
 @dataclass(frozen=True)
 class Emprestimo:
@@ -17,6 +25,7 @@ class Emprestimo:
     usuario: str
     data_emprestimo: date
     data_prevista: date
+    renovacoes: int = 0
 
 
 class BibliotecaErro(Exception):
@@ -37,3 +46,7 @@ class LimiteEmprestimos(BibliotecaErro):
 
 class EmprestimoNaoEncontrado(BibliotecaErro):
     """Não há empréstimo ativo para o livro."""
+
+
+class RenovacaoNegada(BibliotecaErro):
+    """Empréstimo atrasado ou com o máximo de renovações."""

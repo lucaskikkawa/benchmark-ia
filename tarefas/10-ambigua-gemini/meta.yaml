@@ -6,4 +6,5 @@ comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
 - SUPOSICOES.md
-revisao: Removidos mínimo arbitrário de documentação e strip da categoria; ampliados casos apenas do núcleo explícito.
+revisao: Núcleo inequívoco com arredondamento estrito e arquivo SUPOSICOES.md obrigatório.
+endurecimento: "Verificação de existência e tamanho de SUPOSICOES.md, imutabilidade do dicionário de entrada, preservação de identificadores com caracteres especiais/Unicode e suporte a grandes volumes de compras."

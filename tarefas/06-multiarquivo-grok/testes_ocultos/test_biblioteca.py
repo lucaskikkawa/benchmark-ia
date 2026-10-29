@@ -138,3 +138,95 @@ def test_api_publica_e_imports_relativos():
     for nome in ("__init__.py", "catalogo.py", "emprestimos.py"):
         texto = (raiz / nome).read_text(encoding="utf-8")
         assert "from ." in texto
+
+
+def test_isbn_sem_digito_verificador_e_frozen():
+    livro = Livro("9780000000001", "Titulo", 1)
+    assert livro.isbn == "9780000000001"
+    with pytest.raises(Exception):
+        livro.titulo = "Outro"
+    with pytest.raises(ErroBiblioteca):
+        Livro("9780000000001 ", "Titulo", 1)
+    with pytest.raises(ErroBiblioteca):
+        Livro("978000000000\uff11", "Titulo", 1)
+
+
+def test_listar_devolve_lista_nova():
+    catalogo = _catalogo()
+    primeira = catalogo.listar()
+    primeira.clear()
+    primeira.append(Livro("9780000000003", "Extra", 1))
+    assert [livro.isbn for livro in catalogo.listar()] == [ISBN_A, ISBN_B]
+
+
+def test_mesmo_usuario_nao_pega_dois_exemplares():
+    catalogo = Catalogo()
+    catalogo.adicionar(Livro(ISBN_B, "Policarpo", 3))
+    servico = ServicoEmprestimos(catalogo)
+    servico.emprestar(ISBN_B, "Ana Maria", "2024-06-01")
+    with pytest.raises(ErroBiblioteca):
+        servico.emprestar(ISBN_B, "Ana Maria", "2024-06-02")
+    assert servico.disponiveis(ISBN_B) == 2
+    servico.emprestar(ISBN_B, "Ana  Maria", "2024-06-02")
+    assert servico.disponiveis(ISBN_B) == 1
+    with pytest.raises(ErroBiblioteca):
+        servico.emprestar(ISBN_B, "\u00a0", "2024-06-03")
+    assert servico.disponiveis(ISBN_B) == 1
+
+
+def test_servicos_nao_compartilham_estoque():
+    catalogo = Catalogo()
+    catalogo.adicionar(Livro(ISBN_A, "Unico", 1))
+    um = ServicoEmprestimos(catalogo)
+    dois = ServicoEmprestimos(catalogo)
+    um.emprestar(ISBN_A, "Ana", "2024-07-01")
+    assert um.disponiveis(ISBN_A) == 0
+    assert dois.disponiveis(ISBN_A) == 1
+    dois.emprestar(ISBN_A, "Bia", "2024-07-01")
+    assert dois.ativos() == [(ISBN_A, "Bia", "2024-07-01")]
+    assert um.ativos() == [(ISBN_A, "Ana", "2024-07-01")]
+
+
+def test_falha_nao_altera_estado():
+    servico = ServicoEmprestimos(_catalogo())
+    with pytest.raises(ErroBiblioteca):
+        servico.emprestar(ISBN_A, "Ana", "2024-02-30")
+    with pytest.raises(ErroBiblioteca):
+        servico.emprestar(" 9780000000001", "Ana", "2024-01-01")
+    with pytest.raises(ErroBiblioteca):
+        servico.emprestar(ISBN_A, "Ana", "1900-02-29")
+    assert servico.disponiveis(ISBN_A) == 1
+    assert servico.ativos() == []
+    servico.emprestar(ISBN_A, "Ana", "2024-01-10")
+    with pytest.raises(ErroBiblioteca):
+        servico.devolver(ISBN_A, "Ana", "2024-01-09")
+    assert servico.disponiveis(ISBN_A) == 0
+    assert servico.ativos() == [(ISBN_A, "Ana", "2024-01-10")]
+
+
+def test_prazo_atravessa_mes_e_ano():
+    servico = ServicoEmprestimos(_catalogo())
+    servico.emprestar(ISBN_A, "Ana", "2024-01-31")
+    assert servico.devolver(ISBN_A, "Ana", "2024-02-14") == 0
+    servico.emprestar(ISBN_A, "Ana", "2024-01-31")
+    assert servico.devolver(ISBN_A, "Ana", "2024-02-15") == 1
+    servico.emprestar(ISBN_B, "Ana", "2024-12-20")
+    assert servico.devolver(ISBN_B, "Ana", "2025-01-03") == 0
+    servico.emprestar(ISBN_B, "Bia", "2024-12-20")
+    assert servico.devolver(ISBN_B, "Bia", "2025-01-04") == 1
+    servico.emprestar(ISBN_A, "Ana", "0001-12-25")
+    assert servico.devolver(ISBN_A, "Ana", "0002-01-08") == 0
+
+
+def test_ativos_ordem_de_code_point():
+    catalogo = Catalogo()
+    catalogo.adicionar(Livro(ISBN_A, "Titulo", 3))
+    servico = ServicoEmprestimos(catalogo)
+    servico.emprestar(ISBN_A, "á", "2024-08-01")
+    servico.emprestar(ISBN_A, "a", "2024-08-01")
+    servico.emprestar(ISBN_A, "A", "2024-08-01")
+    assert servico.ativos() == [
+        (ISBN_A, "A", "2024-08-01"),
+        (ISBN_A, "a", "2024-08-01"),
+        (ISBN_A, "á", "2024-08-01"),
+    ]

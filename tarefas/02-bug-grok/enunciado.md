@@ -28,7 +28,7 @@ Não altere a lista recebida.
 
 1. Separe as notas válidas, na ordem original, ignorando `None`.
 2. Só quando houver **exatamente 4** notas válidas, descarte **uma** ocorrência do menor valor (se houver empate, remova só a primeira). Com 1, 2 ou 3 notas válidas não se descarta nada. O campo `descartada` é esse valor convertido com `float`, ou `None` se nada foi descartado.
-3. Converta cada nota restante com `Decimal(str(nota))` (não use `Decimal(nota)` direto num float). A média é `(soma / n).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)` e o campo `media` é `float` desse resultado.
+3. Converta cada nota restante com `Decimal(str(nota))` (não use `Decimal(nota)` direto num float, nem `round`). Some todas e só então divida por `n`. Arredonde **uma vez**, a média já dividida: `(soma / n).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`. Não arredonde nota a nota antes de somar. O campo `media` é `float` desse resultado. O valor cabe em `[0, 10]` e pode chegar a `10.0` por arredondamento (entrada `9.995`).
 4. Conceito em cima da média já arredondada, limites inclusivos:
    - `>= 9` → `"A"`
    - `>= 7` → `"B"`
@@ -62,6 +62,12 @@ fechar_boletim([1.0, 1.01])        # media 1.01, descartada None
 fechar_boletim([1, 2, 3, 4])       # descarta 1.0, media 3.0, conceito "D"
 fechar_boletim([10, 0, 10, 10])    # descarta 0.0, media 10.0, conceito "A"
 fechar_boletim([None, 8, 8])       # media 8.0, descartada None
+fechar_boletim([0.015])            # media 0.02  (HALF_UP; round(0.015, 2) não serve)
+fechar_boletim([8.995])            # media 9.0, conceito "A"
+fechar_boletim([9.995])            # media 10.0, conceito "A"
+fechar_boletim([1.005, 1.004])     # sem descarte; soma 2.009 / 2 = 1.0045 → media 1.0
+fechar_boletim([5, 1, 1, 9])       # descarta só o primeiro 1.0; media 5.0
+fechar_boletim([7, 7, 7, 7])       # descarta 7.0; media 7.0, conceito "B"
 fechar_boletim([])                  # ValueError
 fechar_boletim([None, None])        # ValueError
 fechar_boletim([1, 1, 1, 1, 1])     # ValueError

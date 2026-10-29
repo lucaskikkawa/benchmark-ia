@@ -6,3 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - frete.py
+endurecimento: "FAIXAS lida em cada chamada e expresso com // no total ímpar 2505"

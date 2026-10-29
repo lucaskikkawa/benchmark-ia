@@ -31,6 +31,8 @@ def validar_senha(senha: str, tamanho_minimo: int = 8) -> list[str]:
         problemas.append("sem_maiuscula")
     if not any(c.islower() for c in senha):
         problemas.append("sem_minuscula")
+    if not any(c in "0123456789" for c in senha):
+        problemas.append("sem_digito")
     if not any(c in ESPECIAIS for c in senha):
         problemas.append("sem_especial")
     if any(c.isspace() for c in senha):
@@ -56,7 +58,7 @@ def pontuar_senha(senha: str) -> int:
         any(c in ESPECIAIS for c in senha),
     ]
     pontos += 15 * sum(categorias)
-    trincas = sum(1 for i in range(len(senha) - 2) if senha[i] == senha[i + 1] == senha[i + 2])
+    trincas = sum(1 for i in range(len(senha) - 3) if senha[i] == senha[i + 1] == senha[i + 2])
     pontos -= 10 * trincas
     return max(0, min(100, pontos))
 

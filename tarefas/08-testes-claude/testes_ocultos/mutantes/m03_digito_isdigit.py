@@ -31,7 +31,7 @@ def validar_senha(senha: str, tamanho_minimo: int = 8) -> list[str]:
         problemas.append("sem_maiuscula")
     if not any(c.islower() for c in senha):
         problemas.append("sem_minuscula")
-    if not any(c in "0123456789" for c in senha):
+    if not any(c.isdigit() for c in senha):
         problemas.append("sem_digito")
     if not any(c in ESPECIAIS for c in senha):
         problemas.append("sem_especial")
@@ -69,6 +69,8 @@ def classificar(senha: str) -> str:
     - "invalida" se validar_senha(senha) contiver "espaco";
     - senão, pela pontuação: < 50 -> "fraca"; < 80 -> "media"; caso contrário "forte".
     """
+    if "espaco" in validar_senha(senha):
+        return "invalida"
     pontos = pontuar_senha(senha)
     if pontos < 50:
         return "fraca"

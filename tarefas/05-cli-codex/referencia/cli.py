@@ -16,6 +16,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Conte palavras separadas por espaços.")
     parser.add_argument('arquivo', type=Path)
     parser.add_argument('--minimo', type=inteiro_positivo, default=1)
+    parser.add_argument('--top', type=inteiro_positivo, default=None)
     parser.add_argument('--ignorar-caixa', action='store_true')
     parser.add_argument('--json', action='store_true', dest='como_json')
     args = parser.parse_args(argv)
@@ -29,6 +30,8 @@ def main(argv=None) -> int:
     contagens = Counter(palavras)
     ordenadas = sorted(((p, n) for p, n in contagens.items() if n >= args.minimo),
                        key=lambda item: (-item[1], item[0]))
+    if args.top is not None:
+        ordenadas = ordenadas[:args.top]
     if args.como_json:
         print(json.dumps([{'palavra': p, 'contagem': n} for p, n in ordenadas], ensure_ascii=False))
     else:

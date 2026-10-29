@@ -56,6 +56,13 @@ def test_confere_com_forca_bruta_em_amostra():
     nums = [(-1) ** i * (i % 17) for i in range(80)]
     for alvo in (-10, 0, 4, 15):
         assert pares_com_soma(nums, alvo) == _bruto(nums, alvo)
+    import random
+
+    gerador = random.Random(0)
+    for _ in range(15):
+        amostra = [gerador.randint(-30, 30) for _ in range(40)]
+        alvo = gerador.randint(-40, 40)
+        assert pares_com_soma(amostra, alvo) == _bruto(amostra, alvo)
 
 
 def test_tipos_invalidos():
@@ -79,17 +86,35 @@ def test_produto_de_grupos_grandes_sem_materializar():
     assert pares_com_soma(nums, 3) == n * n
 
 
+def test_frequencias_assimetricas_e_inteiros_grandes():
+    assert pares_com_soma([5, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2], 7) == 35
+    assert pares_com_soma([2, 2, 2, 3], 4) == 3
+    enorme = 10**18
+    nums = [enorme, -enorme, enorme, 0]
+    copia = list(nums)
+    assert pares_com_soma(nums, 0) == 2
+    assert pares_com_soma(nums, enorme) == 2
+    assert nums == copia
+    assert pares_com_soma([-(10**18), -(10**18)], -(2 * 10**18)) == 1
+    assert pares_com_soma([], 10**18) == 0
+
+
 SCRIPT_PERF = """
 import json, sys, time
 sys.path.insert(0, sys.argv[1])
 from solucao import pares_com_soma
 
 caso = sys.argv[2]
-n = 100_000
+n = 200_000
 if caso == "zeros":
     nums = [0] * n
     alvo = 0
     esperado = n * (n - 1) // 2
+elif caso == "pares":
+    metade = n // 2
+    nums = [1] * metade + [2] * metade
+    alvo = 3
+    esperado = metade * metade
 else:
     nums = list(range(n))
     alvo = n - 1
@@ -98,7 +123,13 @@ else:
 inicio = time.perf_counter()
 resultado = pares_com_soma(nums, alvo)
 duracao = time.perf_counter() - inicio
-preservou = (nums == ([0] * n if caso == "zeros" else list(range(n))))
+if caso == "zeros":
+    original = [0] * n
+elif caso == "pares":
+    original = [1] * (n // 2) + [2] * (n // 2)
+else:
+    original = list(range(n))
+preservou = nums == original
 print(json.dumps([resultado, duracao, esperado, preservou]))
 """
 
@@ -113,19 +144,19 @@ def _medir(caso):
             env=env,
             capture_output=True,
             text=True,
-            timeout=5,
+            timeout=8,
         )
     except subprocess.TimeoutExpired:
-        pytest.fail(f"caso {caso!r} excedeu o limite de 5s (solução muito lenta)")
+        pytest.fail(f"caso {caso!r} excedeu o limite de 8s (solução muito lenta)")
     assert proc.returncode == 0, proc.stderr
     return json.loads(proc.stdout.strip().splitlines()[-1])
 
 
-def test_performance_cem_mil():
-    for caso in ("zeros", "sequencia"):
+def test_performance_duzentos_mil():
+    for caso in ("zeros", "sequencia", "pares"):
         resultado, duracao, esperado, preservou = _medir(caso)
         assert resultado == esperado
-        assert duracao < 2.0, f"caso {caso} levou {duracao:.3f}s (limite 2.0s)"
+        assert duracao < 3.0, f"caso {caso} levou {duracao:.3f}s (limite 3.0s)"
         assert preservou is True
 
 

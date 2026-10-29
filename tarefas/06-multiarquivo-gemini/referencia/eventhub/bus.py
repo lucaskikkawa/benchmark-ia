@@ -51,6 +51,8 @@ class EventBus:
             except Exception as exc:
                 if self.dlq is not None:
                     self.dlq.add(event, str(exc))
+                else:
+                    raise
 
         return True
 

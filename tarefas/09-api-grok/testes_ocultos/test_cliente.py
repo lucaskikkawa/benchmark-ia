@@ -155,3 +155,112 @@ def test_max_tentativas_1_no_pedido_normal():
     obtido = baixar_pedidos(api, ["solo"], max_tentativas=1, backoff_s=0, timeout_s=1)
     assert obtido == [payload_pedido(9, "solo")]
     assert api.tentativas("solo") == 1
+
+
+def test_id_repetido_nao_usa_cache():
+    api = LojaAPI(4)
+    ids = ["p", "p", "q"]
+    obtido = baixar_pedidos(api, ids, max_tentativas=3, backoff_s=0, timeout_s=1)
+    assert obtido == [payload_pedido(4, item) for item in ids]
+    assert api.tentativas("p") == 2
+    assert api.tentativas("q") == 1
+
+
+def test_prefixo_e_id_vazio_nao_repete():
+    api = LojaAPI(0)
+    with pytest.raises(LojaErroCliente):
+        baixar_pedidos(
+            api,
+            ["missing-down-x", "depois"],
+            max_tentativas=4,
+            backoff_s=0.2,
+            timeout_s=1,
+        )
+    assert api.tentativas("missing-down-x") == 1
+    assert api.tentativas("depois") == 0
+
+    api = LojaAPI(0)
+    inicio = time.perf_counter()
+    with pytest.raises(LojaErroCliente):
+        baixar_pedidos(api, [""], max_tentativas=4, backoff_s=0.2, timeout_s=1)
+    assert time.perf_counter() - inicio < 0.15
+
+    api = LojaAPI(0)
+    obtido = baixar_pedidos(
+        api,
+        ["flaky-missing-x"],
+        max_tentativas=4,
+        backoff_s=0,
+        timeout_s=1,
+    )
+    assert obtido == [payload_pedido(0, "flaky-missing-x")]
+    assert api.tentativas("flaky-missing-x") == 2
+
+
+def test_slow_seed_impar_duas_esperas():
+    api = LojaAPI(1)
+    inicio = time.perf_counter()
+    obtido = baixar_pedidos(
+        api,
+        ["slow-1"],
+        max_tentativas=4,
+        backoff_s=0,
+        timeout_s=0.15,
+    )
+    gasto = time.perf_counter() - inicio
+    assert obtido == [payload_pedido(1, "slow-1")]
+    assert api.tentativas("slow-1") == 3
+    assert gasto < LojaAPI.ATRASO_S * 0.75
+
+
+def test_timeout_interrompe_o_resto_e_uma_tentativa():
+    api = LojaAPI(0)
+    inicio = time.perf_counter()
+    with pytest.raises(TempoEsgotado):
+        baixar_pedidos(
+            api,
+            ["timeout-z", "depois"],
+            max_tentativas=2,
+            backoff_s=0,
+            timeout_s=0.15,
+        )
+    assert api.tentativas("timeout-z") == 2
+    assert api.tentativas("depois") == 0
+    assert time.perf_counter() - inicio < LojaAPI.ATRASO_S * 0.75
+
+    api = LojaAPI(0)
+    inicio = time.perf_counter()
+    with pytest.raises(TempoEsgotado):
+        baixar_pedidos(
+            api,
+            ["slow-x", "nao"],
+            max_tentativas=1,
+            backoff_s=0.2,
+            timeout_s=0.15,
+        )
+    assert api.tentativas("slow-x") == 1
+    assert api.tentativas("nao") == 0
+    assert time.perf_counter() - inicio < 0.45
+
+
+def test_tuple_e_backoff_de_uma_falha():
+    api = LojaAPI(0)
+    with pytest.raises(TypeError):
+        baixar_pedidos(api, ("a", "b"))
+    with pytest.raises(TypeError):
+        baixar_pedidos(api, [], max_tentativas=1.5)
+    assert api.tentativas("a") == 0
+
+    inicio = time.perf_counter()
+    obtido = baixar_pedidos(
+        api,
+        ["flaky-once"],
+        max_tentativas=5,
+        backoff_s=0.25,
+        timeout_s=1,
+    )
+    gasto = time.perf_counter() - inicio
+    assert obtido == [payload_pedido(0, "flaky-once")]
+    assert api.tentativas("flaky-once") == 2
+    assert gasto >= 0.2
+    assert gasto < 0.55

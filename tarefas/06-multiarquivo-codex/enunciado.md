@@ -34,4 +34,12 @@ inválido lançam `ValueError`; JSON inválido também deve ser `ValueError` (a 
 nativa de json atende). Erros de arquivo podem propagar. A ordem deve ser mantida.
 Lista vazia gera `[]`. Use imports relativos entre os módulos do pacote.
 
+Movimentos podem vir de um iterável de passagem única. O construtor de
+`Movimento` apenas armazena os campos, mesmo para valores que o carregador
+rejeitaria; a validação de JSON pertence a `persistencia.py`. Inteiros de saldos
+e deltas têm precisão arbitrária, sem conversão para float. SKUs são chaves
+exatas, sem strip, casefold ou normalização Unicode. Falhas na aplicação de
+movimentos também não podem alterar `iniciais`. Chamadas independentes não
+compartilham resultados. Os testes podem carregar 20.000 movimentos.
+
 Ambiente: Python 3.11, somente biblioteca padrão na solução; sem rede.

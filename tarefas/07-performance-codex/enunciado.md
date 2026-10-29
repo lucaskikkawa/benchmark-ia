@@ -15,10 +15,19 @@ vezes. Vazio e um elemento produzem zero. Não modifique listas recebidas e acei
 geradores de uma passagem. Nenhuma validação de outros tipos é exigida.
 
 Use tempo esperado O(n) e memória O(k), k = quantidade de valores distintos.
-Os testes geram entradas de até 200.000 elementos e exigem que cada chamada
-nessas entradas termine em menos de 2 segundos (medição com `perf_counter`, sem
-incluir geração/importação). Um processo auxiliar é encerrado após 5 segundos
+Os testes geram entradas de até 1.000.000 de elementos e exigem que cada chamada
+nessas entradas termine em menos de 5 segundos (medição com `perf_counter`, sem
+incluir geração/importação). Um processo auxiliar é encerrado após 12 segundos
 para evitar travamento de soluções quadráticas. Não use acesso à rede, cache
 persistente ou dependências. Exemplo: `[1, 3, 2, 2]`, alvo 4, retorna 2.
+
+Inteiros podem exceder 64 bits e devem ser comparados com exatidão.
+A memória O(k) também vale para geradores: não materialize toda a entrada.
+Além da medição de tempo em subprocesso, há uma medição separada com
+`tracemalloc` para um gerador de 1.000.000 de valores, com no máximo quatro
+valores distintos: o pico adicional deve ser menor que 4 MiB. A medição de
+memória não está sujeita ao limite de 5 segundos da medição de tempo; seu
+processo tem limite externo folgado de 30 segundos. Não retenha estado entre
+chamadas.
 
 Ambiente: Python 3.11, somente biblioteca padrão na solução; sem rede.

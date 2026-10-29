@@ -8,6 +8,10 @@ class ItemPedido:
     quantidade: int = 1
     peso_kg: float = 0.5
 
+    def __post_init__(self) -> None:
+        if self.preco < 0.0 or self.quantidade < 1 or self.peso_kg < 0.0:
+            raise ValueError("Valores inválidos para ItemPedido.")
+
     @property
     def subtotal(self) -> float:
         return round(self.preco * self.quantidade, 2)
@@ -26,10 +30,13 @@ class CalculadoraFrete:
 
     @classmethod
     def calcular(cls, tipo: str, peso_kg: float, valor_total: float) -> float:
+        if valor_total < 0 or peso_kg < 0:
+            raise ValueError("Peso ou valor total não podem ser negativos.")
+
         if valor_total >= 200.0:
             return 0.0
 
-        tipo_normalizado = tipo.lower()
+        tipo_normalizado = str(tipo).strip().lower()
         if tipo_normalizado not in cls.TAXAS_BASE:
             raise ValueError(f"Tipo de frete desconhecido: {tipo}")
 
@@ -40,7 +47,10 @@ class CalculadoraFrete:
 class CalculadoraDesconto:
     @classmethod
     def calcular(cls, categoria_cliente: str, valor_total: float) -> float:
-        cat = categoria_cliente.lower()
+        if valor_total < 0:
+            raise ValueError("Valor total não pode ser negativo.")
+
+        cat = str(categoria_cliente).strip().lower()
         if cat == "prata":
             taxa = 0.05 if valor_total >= 100.0 else 0.0
         elif cat == "ouro":

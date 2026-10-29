@@ -94,3 +94,28 @@ def test_data_invalida():
 
 def test_ano_bissexto_valido_sem_cupom():
     _checar(80, None, "2024-02-29", 80, None)
+    _checar(80, None, "2000-02-29", 80, None)
+
+
+def test_seculo_nao_bissexto_e_ano_um():
+    for hoje in ("1900-02-29", "2100-02-29"):
+        with pytest.raises(ValueError):
+            aplicar_desconto(100, None, hoje)
+    _checar(1, "NATAL", "0001-12-25", 0, "NATAL")
+    _checar(100, "NATAL", "9999-12-24", 85, "NATAL")
+    _checar(6, "NATAL", "0001-12-26", 6, None)
+
+
+def test_formulas_inteiras_em_preco_baixo():
+    _checar(1, "NATAL", "2024-12-25", 0, "NATAL")
+    _checar(6, "NATAL", "2024-12-24", 5, "NATAL")
+    _checar(6, "BEMVINDO", "2024-06-15", 4, "BEMVINDO")
+    _checar(1, "OFF5", HOJE, 0, "OFF5")
+    _checar(0, "OFF10", HOJE, 0, "OFF10")
+    _checar(0, "NATAL", "2024-12-25", 0, "NATAL")
+
+
+def test_cupom_so_com_espaco_e_desconhecido():
+    for cupom in (" ", "\t", "   ", "\n"):
+        with pytest.raises(ValueError):
+            aplicar_desconto(100, cupom, HOJE)

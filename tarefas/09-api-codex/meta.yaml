@@ -6,3 +6,4 @@ timeout_min: 5
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - cliente.py
+endurecimento: "Subclasses, falhas transitórias no callback, backoff longo e chamadas independentes."

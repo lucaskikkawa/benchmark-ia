@@ -7,3 +7,4 @@ comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
 - SUPOSICOES.md
+endurecimento: "núcleo Unicode sem normalizar: surrogate, lookalike, NBSP, texto longo e a palavra vazia"

@@ -6,3 +6,4 @@ comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
 revisao: Adicionadas bordas de duplicatas, inteiros grandes, containers e tipos inválidos.
+endurecimento: "Imutabilidade da lista de entrada, rejeição estrita de subclasses de int (como bool e tipos derivados), grandes volumes de dados desordenados e bordas com negativos e inteiros arbitrários."

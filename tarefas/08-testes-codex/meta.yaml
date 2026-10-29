@@ -6,3 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - tests/test_carrinho.py
+endurecimento: "14 mutantes: precisão, truncamento por linha, validação tardia e mutação após erro."

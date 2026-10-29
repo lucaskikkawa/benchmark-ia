@@ -1,8 +1,9 @@
 tipo: 05-cli
 autor: gemini
 revisor: codex
-timeout_min: 5
+timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - contatexto.py
-revisao: Removida mensagem obrigatória em erro de sintaxe; alinhado prefixo operacional; cobertos tokens, JSON, leitura e timeout de subprocesso.
+revisao: Normalização de pontuação/espaços, prefixo Erro em stderr e tolerância a arquivo vazio.
+endurecimento: "Criação de subdiretórios pais para flag de saída, rejeição explícita de diretório como arquivo de entrada, arquivos com quebras de linha CRLF/LF mistas e pontuações aninhadas."
