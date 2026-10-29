@@ -170,7 +170,11 @@ def main():
         if hidden.is_dir():
             shutil.copytree(hidden, testdir / "testes_ocultos", dirs_exist_ok=True)
         py = os.environ.get("BENCH_PY", str(ROOT / ".bench-py" / "bin" / "python"))
-        configured_test = shlex.split(str(meta.get("cmd_teste", "pytest -q testes_ocultos")))
+        configured_test = shlex.split(str(meta.get("comando_teste") or meta.get("cmd_teste") or "pytest -q testes_ocultos"))
+        if configured_test[:3] in (["python", "-m", "pytest"], ["python3", "-m", "pytest"]):
+            configured_test = ["pytest", *configured_test[3:]]
+        elif configured_test and configured_test[0] in ("python", "python3"):
+            configured_test[0] = py
         if configured_test == ["pytest", "-q", "testes_ocultos"]:
             test_cmd = ["unshare", "-rn", py, "-m", "pytest", "-q", "-p", "no:cacheprovider",
                         "--junitxml=junit.xml", "testes_ocultos"]
