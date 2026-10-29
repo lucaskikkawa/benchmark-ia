@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Clareza do código refatorado."
+    niveis:
+      0: "Mantém nomes de 1 letra (r, t, s, c) e o if/elif aninhado original, apenas movido para funções."
+      1: "Nomes melhores e funções extraídas, mas ainda com trechos longos ou aninhamento desnecessário."
+      2: "Nomes descritivos, funções curtas com responsabilidade única, sem aninhamento de mais de 2 níveis."
+  - id: erros_bordas
+    max: 2
+    descricao: "Preservação de comportamento nas bordas."
+    niveis:
+      0: "Muda comportamento em alguma borda (limite de 1000, tipo desconhecido, lista vazia, qtd negativa)."
+      1: "Preserva as bordas testadas, mas introduz diferença sutil (ex.: arredonda antes de somar, total geral somado em outra ordem, engole exceções)."
+      2: "Comportamento idêntico ao original em todas as bordas, incluindo a ValueError de qtd negativa e o limite '> 1000'."
+  - id: idiomatico
+    max: 2
+    descricao: "Python idiomático."
+    niveis:
+      0: "Concatenação de strings em laço e '%' format mantidos; if c in r / else para acumular."
+      1: "Parte modernizada (f-strings ou dict.get), mas ainda com construções verbosas."
+      2: "f-strings, dict.get/defaultdict para acumular, '\\n'.join para montar o texto, type hints."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Facilidade de mudar regras de desconto."
+    niveis:
+      0: "Taxas continuam espalhadas em if/elif; adicionar um tipo de cliente exige mexer na lógica."
+      1: "Taxas parcialmente centralizadas (ex.: dict só para um dos limites, ou o valor 1000 repetido)."
+      2: "Taxas e limite em constantes únicas; adicionar um tipo de cliente é adicionar uma entrada na tabela."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Atendimento à estrutura pedida."
+    niveis:
+      0: "Falta alguma das funções exigidas ou gerar_relatorio não as usa (lógica duplicada)."
+      1: "Funções exigidas presentes e usadas, mas sem docstrings ou type hints."
+      2: "As 4 funções públicas com as assinaturas pedidas, docstrings curtas e gerar_relatorio compondo as demais."

@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Organização do script."
+    niveis:
+      0: "Toda a lógica no nível do módulo ou em um main() longo misturando parsing, leitura, contagem e impressão."
+      1: "Algumas funções, mas responsabilidades misturadas (ex.: contagem que também imprime)."
+      2: "Funções separadas para parser, leitura, contagem e formatação; main() curto orquestrando."
+  - id: erros_bordas
+    max: 2
+    descricao: "Códigos de saída e mensagens de erro."
+    niveis:
+      0: "Traceback para arquivo inexistente/UTF-8 inválido, ou exit codes diferentes dos especificados."
+      1: "Trata arquivo inexistente, mas não diretório/permissão/UTF-8, ou aceita -n 0/negativo."
+      2: "Exit 0/1/2 conforme especificado, 'erro: ' em stderr com uma linha, validação de N/K via type= do argparse, stdin com '-'."
+  - id: idiomatico
+    max: 2
+    descricao: "Python idiomático."
+    niveis:
+      0: "Lê sys.argv manualmente ou conta palavras com dict e laços manuais complexos."
+      1: "Usa argparse e Counter, mas com construções verbosas ou sys.exit espalhado em funções internas."
+      2: "argparse com choices/type/store_true, Counter, sorted com key, with open(..., encoding='utf-8'), if __name__ == '__main__': sys.exit(main())."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Testabilidade e extensibilidade."
+    niveis:
+      0: "Impossível reutilizar sem subprocess (efeitos colaterais na importação)."
+      1: "Importável, mas main() não aceita argv ou a lógica de contagem depende de args do argparse."
+      2: "main(argv=None) -> int; contagem como função pura; adicionar um formato exige mudar um único ponto."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Atendimento às instruções e ajuda da CLI."
+    niveis:
+      0: "Nome do script, flags ou formato de saída diferentes do especificado."
+      1: "Interface correta, mas --help sem descrições das opções ou sem docstring do módulo."
+      2: "Interface exata, --help descritivo (description e help em cada opção) e docstring do módulo."

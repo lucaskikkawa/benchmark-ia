@@ -1,0 +1,29 @@
+legibilidade:
+  max: 2
+  0: "Código difícil de ler, sem separação entre leitura, filtragem e agregação dos dados."
+  1: "Código legível, mas com lógica de ordenação e tratamento de dicionários confusa."
+  2: "Código altamente legível, bem estruturado, com nomes significativos para variáveis e coleções."
+
+erros_bordas:
+  max: 2
+  0: "Não valida inexistência do CSV, não valida top_n, ou lança exceção não tratada em CSVs vazios ou linhas inválidas."
+  1: "Trata arquivo inexistente, mas falha no desempate de clientes, em valores negativos/inválidos ou em divisão por zero no ticket médio."
+  2: "Trata com perfeição todos os casos de borda: arquivo inexistente, top_n inválido, linhas corrompidas, divisão por zero, e desempate alfabético."
+
+idiomatico:
+  max: 2
+  0: "Não utiliza módulos csv e json da stdlib (faz parsing manual com split/strip) ou ignora contexto with."
+  1: "Usa csv e json, mas sem DictReader ou com loops desnecessariamente complexos para agregações."
+  2: "Usa csv.DictReader, json.dump com indent e ensure_ascii, e coleções adequadas (ex: defaultdict/Counter ou sorted com tuplas de chave)."
+
+manutenibilidade:
+  max: 2
+  0: "Tudo acoplado em um bloco monolítico, tornando difícil alterar o formato de entrada ou saída."
+  1: "Código funcional, porém com regras de parsing misturadas às regras de agregação financeira."
+  2: "Separação clara entre passos de validação, extração de dados, cálculo de estatísticas e serialização JSON."
+
+documentacao_instrucoes:
+  max: 2
+  0: "Não segue a assinatura indicada ou não gera o arquivo JSON no caminho solicitado."
+  1: "Gera o arquivo e segue a assinatura, mas sem docstring explicativa e sem type hints adequados."
+  2: "Assinatura e retorno idênticos ao especificado, type hints completos e docstring clara detalhando parâmetros e formato de saída."

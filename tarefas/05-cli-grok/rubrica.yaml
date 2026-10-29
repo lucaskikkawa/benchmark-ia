@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Organização do script de agenda."
+    niveis:
+      0: "argparse, regras e JSON no mesmo bloco, com prints espalhados e números mágicos de saída."
+      1: "Há subcomandos separados, mas a validação do JSON se mistura com o texto da listagem."
+      2: "Parser, carga/gravação e cada subcomando em funções curtas; mensagens de erro num só lugar."
+  - id: erros_bordas
+    max: 2
+    descricao: "Códigos de saída e mensagens literais."
+    niveis:
+      0: "Erro de regra termina em traceback, código 0 ou 1, ou escreve o erro no stdout."
+      1: "A maioria sai com código 2, mas alguma mensagem difere do enunciado (acento, dois-pontos, texto a mais) ou o stdout não fica vazio."
+      2: "Cada erro de regra usa a mensagem exata, código 2 e stdout vazio; argparse continua com código 2; sucesso não escreve stderr."
+  - id: idiomatico
+    max: 2
+    descricao: "argparse e pathlib/json."
+    niveis:
+      0: "Lê sys.argv na mão ou monta o JSON com concatenação."
+      1: "Usa argparse, mas sem subparsers required, ou compara prioridade com vários ifs soltos em vez de choices e um mapa de ordem."
+      2: "subparsers, choices, store_true, json.dumps com ensure_ascii=False e indent=2, datas com datetime.date."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Incluir uma prioridade ou um campo novo."
+    niveis:
+      0: "A ordem alta/media/baixa está copiada na validação, na ordenação e no help em literais divergentes."
+      1: "As três prioridades estão numa tupla, mas a ordem de listagem é outro if/elif."
+      2: "Prioridades e a ordem de listagem saem de uma única estrutura; o schema do item é validado num ponto só."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Contrato de stdout e do arquivo."
+    niveis:
+      0: "O script não se chama agenda_cli.py ou não implementa os três subcomandos."
+      1: "Os comandos existem, mas a listagem não é TSV ou o JSON não guarda proximo_id."
+      2: "Saída ok id=N, TSV pedido e JSON com proximo_id e tarefas, como no enunciado; docstring ou help descreve os subcomandos."

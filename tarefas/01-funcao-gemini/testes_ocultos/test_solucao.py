@@ -56,3 +56,24 @@ def test_entrada_nao_lista():
         resumir_intervalos("1, 2, 3")  # type: ignore
     with pytest.raises(TypeError):
         resumir_intervalos(None)  # type: ignore
+
+
+def test_apenas_duplicatas():
+    assert resumir_intervalos([0, 0, 0]) == "0"
+
+
+def test_inteiros_sem_limite_de_32_ou_64_bits():
+    n = 10**30
+    assert resumir_intervalos([n + 1, -n, n]) == f"{-n}, {n}-{n + 1}"
+
+
+@pytest.mark.parametrize("entrada", [(1, 2), {1, 2}, 123, {}])
+def test_outros_containers_nao_sao_listas(entrada):
+    with pytest.raises(TypeError):
+        resumir_intervalos(entrada)
+
+
+@pytest.mark.parametrize("elemento", [False, None, [2], 2.0])
+def test_elementos_estritamente_inteiros(elemento):
+    with pytest.raises(TypeError):
+        resumir_intervalos([1, elemento, 3])

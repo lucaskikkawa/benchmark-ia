@@ -1,0 +1,8 @@
+tipo: 02-bug
+autor: codex
+revisor: claude
+revisao: "sem mudanças"
+timeout_min: 3
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - "janelas.py"

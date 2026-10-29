@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Leitura do laço de retentativa."
+    niveis:
+      0: "Timeout, backoff e classificação do erro no mesmo bloco com flags numéricas sem nome."
+      1: "Dá para achar o laço, mas o cálculo do sleep e a decisão de desistir estão inline e repetidos."
+      2: "Função de uma chamada com prazo, função de um id e baixar_pedidos só orquestra a lista."
+  - id: erros_bordas
+    max: 2
+    descricao: "404 sem retry, 503 com limite, timeout que não espera o atraso inteiro."
+    niveis:
+      0: "Repete LojaErroCliente, desiste no primeiro 503 ou espera o sleep da API em toda chamada lenta."
+      1: "Retry e timeout existem, mas o backoff não segue 2 ** (i - 1), o último erro se perde ou um id posterior ainda é chamado depois da falha."
+      2: "404 imediato, 503 e timeout até max_tentativas, TempoEsgotado só no esgotamento, espera abandonada antes de ATRASO_S e validação de max_tentativas."
+  - id: idiomatico
+    max: 2
+    descricao: "Timeout em thread e exceções da API."
+    niveis:
+      0: "Usa socket, requests ou time.sleep(ATRASO_S) fixo; ou captura Exception e engole o 404."
+      1: "Thread ou executor com prazo, mas junta a thread até o fim no timeout ou captura Exception amplo e traduz tudo para TempoEsgotado."
+      2: "Thread daemon (ou equivalente) com join(timeout) sem bloquear até o sleep da API; except específico para LojaErroCliente e LojaIndisponivel."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Trocar a política de retry sem reescrever o cliente."
+    niveis:
+      0: "Prefixos missing-/flaky-/slow- tratados por nome dentro do cliente."
+      1: "A política é genérica, mas o fator 2 do backoff e a lista de exceções retentáveis estão soltos no laço."
+      2: "Nenhum prefixo da API no cliente; exceções retentáveis e a fórmula do backoff concentradas."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Arquivo cliente.py e contrato público."
+    niveis:
+      0: "Não há cliente.py, ou a função não se chama baixar_pedidos, ou loja_api.py foi editado."
+      1: "A assinatura existe, sem TempoEsgotado ou sem docstring."
+      2: "TempoEsgotado e baixar_pedidos com os argumentos nomeados do enunciado e docstring do que é retentado."

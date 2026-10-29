@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Separação entre leitura, conta e gravação."
+    niveis:
+      0: "Um único bloco abre CSV, interpreta data e monta JSON com variáveis de uma letra."
+      1: "Há funções, mas a duração, o estouro e o pior id ficam num laço difícil de reler."
+      2: "Leitura do SLA, leitura do CSV, agregação e gravação estão separadas e os nomes batem com o domínio (equipe, duração, estourados)."
+  - id: erros_bordas
+    max: 2
+    descricao: "CSV, datas, SLA e empate de pior id."
+    niveis:
+      0: "Ignora cabeçalho errado, aceita prioridade fora da lista ou usa >= no SLA."
+      1: "O exemplo principal passa, mas falha em duração 0, empate lexicográfico, id duplicado, limite bool ou média com piso."
+      2: "ValueError nos dados inválidos, FileNotFoundError se o arquivo não existe, estouro estrito, piso da média e desempate pelo menor id."
+  - id: idiomatico
+    max: 2
+    descricao: "csv, json e datetime da stdlib."
+    niveis:
+      0: "Parte o CSV no vírgula com split, ou calcula minuto com float solto."
+      1: "Usa csv e json, mas monta a string JSON na mão ou converte data com fatiamento frágil."
+      2: "csv.reader ou DictReader, json.dumps com ensure_ascii=False e indent=2, datetime.strptime ou fromisoformat no formato pedido."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Acrescentar uma prioridade."
+    niveis:
+      0: "Os nomes baixa/media/alta estão repetidos em vários ifs de conta."
+      1: "A lista de prioridades existe, mas o cálculo do resumo ainda cita uma prioridade específica."
+      2: "Prioridades e campos do CSV ficam em constantes; a agregação não menciona uma prioridade pelo nome."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Assinatura e formato de saída."
+    niveis:
+      0: "Função ou arquivo com outro nome, ou não grava o JSON pedido."
+      1: "consolidar existe com a assinatura certa, sem docstring, ou o retorno diverge do arquivo."
+      2: "Docstring descreve os três caminhos, o retorno é o dict gravado e o JSON termina com quebra de linha."

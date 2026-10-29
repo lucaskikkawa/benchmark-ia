@@ -1,0 +1,13 @@
+Vou revisar as 10 tarefas em `tarefas/*-claude/`: primeiro mapeio a estrutura e leio enunciado, testes ocultos, referência e inicial de cada uma.O critério está no plano do benchmark. Agora leio enunciados, testes, referência e metadados das 10 tarefas Claude.A estrutura está clara. Vou rodar a referência de cada tarefa e checar bordas numéricas que os testes podem estar deixando passar.A suíte está mapeada. Vou rodar a referência de cada tarefa e checar bordas numéricas que os testes podem estar deixando passar.A referência passa nas 10 tarefas. O limite de 2s da tarefa 07 fica em torno de 0,1s, e os mutantes da 08 são bugs reais. Vou corrigir lacunas e testes mais estritos do que o enunciado.Revisei as 10 tarefas `tarefas/*-claude/`. A referência de cada uma passa em `python -m pytest -q testes_ocultos` (100%). Nas tarefas 02 e 03, o código inicial continua falhando.
+
+- **01-funcao-claude** — sem mudanças. Formato, bordas, erros e tipos já estão cobertos. Os testes são determinísticos e não usam rede.
+- **02-bug-claude** — sem mudanças. Lista vazia, ordem, contato, intervalo contido, inválidos e `total_coberto` batem com as docstrings.
+- **03-refatoracao-claude** — `formatar_relatorio` aceita o dict já em ordem alfabética. A ordenação continua exigida na saída de `gerar_relatorio`. Entrou o uso de `calcular_subtotal` e quantidade zero.
+- **04-dados-claude** — o JSON gravado precisa de `indent=2`. `total_geral` é a soma dos totais de região já arredondados (`0.001` + `0.004` dá `0.0`, não `0.01`).
+- **05-cli-claude** — diretório e UTF-8 inválido exigem stdout vazio e uma única linha `erro:` em stderr. O top padrão 10 confere as dez primeiras palavras no empate.
+- **06-multiarquivo-claude** — limite padrão 3, multa padrão `1.0`, `LivroNaoEncontrado` antes do limite, `Emprestimo` imutável, pacote com exatamente os 4 arquivos e import relativo também em `__init__.py`.
+- **07-performance-claude** — sem mudanças. A referência fica em cerca de 0,1 s para 300 mil elementos. O teto de 2 s mata uma solução quadrática, e o subprocesso encerra em 8 s.
+- **08-testes-claude** — sem mudanças. Os 11 mutantes são bugs reais e distintos (limites, categorias, trincas, piso, faixas e `invalida`). A suíte de referência elimina todos.
+- **09-api-claude** — `NaoEncontrado` e `FalhaPermanente` herdam de `ErroAPI`. `obter_varios` propaga `ValueError`. Um 4xx no meio do retry vira `ErroAPI` na hora, com uma espera só depois do 503.
+- **10-ambigua-claude** — entram só regras explícitas: número sem DDD (`987654321`) e celular de 9 dígitos que não começa com 9 (`11876543210`). DDD fora da lista oficial, prefixo `0` e primeiro dígito de fixo continuam fora dos testes. `SUPOSICOES.md` só é checado como arquivo não vazio.
+EXIT 0 SECS 1188

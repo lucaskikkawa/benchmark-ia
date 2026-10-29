@@ -1,0 +1,8 @@
+tipo: 09-api
+autor: grok
+revisor: gemini
+revisao: "sem mudanças"
+timeout_min: 5
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - cliente.py

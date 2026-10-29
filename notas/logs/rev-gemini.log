@@ -1,0 +1,61 @@
+A revisão das 10 tarefas em [`tarefas/*-grok/`](file:///workspace/benchmark-ia/tarefas) foi concluída e validada em diretórios temporários com 100% de aprovação no comando `python -m pytest -q testes_ocultos`.
+
+---
+
+### Resumo da Revisão e Mudanças por Tarefa
+
+1. **[`tarefas/01-funcao-grok`](file:///workspace/benchmark-ia/tarefas/01-funcao-grok)**
+   - **Verificações:** Função `horas_livres` cobre casos normais, bordas de minutos/dias (inclusive `24:00`), fusão e descarte de intervalos vazios, validações de tipo e formato. Determinística e sem rede. 26 casos de teste.
+   - **Mudanças:** Sem mudanças de código/enunciado.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/01-funcao-grok/meta.yaml):** `revisor: gemini`, `revisao: "sem mudanças"`.
+
+2. **[`tarefas/02-bug-grok`](file:///workspace/benchmark-ia/tarefas/02-bug-grok)**
+   - **Verificações:** Função `fechar_boletim` em [`boletim.py`](file:///workspace/benchmark-ia/tarefas/02-bug-grok/referencia/boletim.py). Trata arredondamento half-up com Decimal, notas na fronteira (`0`, `5`, `7`, `9`, `10`), descarte condicional estrito a 4 notas e ausências (`None`). A versão inicial falha em 9 testes e a referência passa em todos (11 testes).
+   - **Mudanças:** Sem mudanças de código/enunciado.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/02-bug-grok/meta.yaml):** `revisor: gemini`, `revisao: "sem mudanças"`.
+
+3. **[`tarefas/03-refatoracao-grok`](file:///workspace/benchmark-ia/tarefas/03-refatoracao-grok)**
+   - **Verificações:** Contrato de [`frete.py`](file:///workspace/benchmark-ia/tarefas/03-refatoracao-grok/referencia/frete.py) mantido, expondo `TabelaFrete` e `faixa_de_peso`. Cobertura de fronteiras de peso (1 a 30.000g) e distâncias (0 a 3.000km). A versão inicial falha pela ausência das novas estruturas e a referência passa em 10 testes.
+   - **Mudanças:** Sem mudanças de código/enunciado.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/03-refatoracao-grok/meta.yaml):** `revisor: gemini`, `revisao: "sem mudanças"`.
+
+4. **[`tarefas/04-dados-grok`](file:///workspace/benchmark-ia/tarefas/04-dados-grok)**
+   - **Verificações:** Função `consolidar` em [`solucao.py`](file:///workspace/benchmark-ia/tarefas/04-dados-grok/referencia/solucao.py). Cobre ordenação lexicográfica, desempate de `pior_id`, fuso/meia-noite, UTF-8 sem escape, estrito estouro de SLA (`duracao > limite`) e validações de cabeçalho/SLA. 13 testes determinísticos.
+   - **Mudanças:** Sem mudanças de código/enunciado.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/04-dados-grok/meta.yaml):** `revisor: gemini`, `revisao: "sem mudanças"`.
+
+5. **[`tarefas/05-cli-grok`](file:///workspace/benchmark-ia/tarefas/05-cli-grok)**
+   - **Verificações:** CLI [`agenda_cli.py`](file:///workspace/benchmark-ia/tarefas/05-cli-grok/referencia/agenda_cli.py) via subprocess com subcomandos `adicionar`, `listar` e `concluir`.
+   - **Mudanças:** Em [`testes_ocultos/test_agenda.py`](file:///workspace/benchmark-ia/tarefas/05-cli-grok/testes_ocultos/test_agenda.py), adicionado `PYTHONIOENCODING=utf-8` no subprocesso (para não depender do locale da máquina avaliadora) e `timeout=5` na chamada `_run` para impedir que loops infinitos travem a execução do benchmark. 10 testes mantidos.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/05-cli-grok/meta.yaml):** `revisor: gemini`, `revisao: "testes: subprocess com PYTHONIOENCODING=utf-8 e timeout=5 para evitar travamento e independência de locale"`.
+
+6. **[`tarefas/06-multiarquivo-grok`](file:///workspace/benchmark-ia/tarefas/06-multiarquivo-grok)**
+   - **Verificações:** Pacote modular `biblioteca` com exatamente 4 arquivos ([`__init__.py`](file:///workspace/benchmark-ia/tarefas/06-multiarquivo-grok/referencia/biblioteca/__init__.py), [`models.py`](file:///workspace/benchmark-ia/tarefas/06-multiarquivo-grok/referencia/biblioteca/models.py), [`catalogo.py`](file:///workspace/benchmark-ia/tarefas/06-multiarquivo-grok/referencia/biblioteca/catalogo.py) e [`emprestimos.py`](file:///workspace/benchmark-ia/tarefas/06-multiarquivo-grok/referencia/biblioteca/emprestimos.py)). Testes verificam isolamento de responsabilidades, regras de empréstimo/prazo e uso de imports relativos (`from .`). 10 testes.
+   - **Mudanças:** Sem mudanças de código/enunciado.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/06-multiarquivo-grok/meta.yaml):** `revisor: gemini`, `revisao: "sem mudanças"`.
+
+7. **[`tarefas/07-performance-grok`](file:///workspace/benchmark-ia/tarefas/07-performance-grok)**
+   - **Verificações:** `pares_com_soma` contra entradas de $N=100.000$. Solução $O(N)$ roda em $\approx 0{,}01\text{s}$, bem abaixo do teto de $2{,}0\text{s}$.
+   - **Mudanças:** Em [`testes_ocultos/test_pares.py`](file:///workspace/benchmark-ia/tarefas/07-performance-grok/testes_ocultos/test_pares.py), o teste de desempenho (`test_performance_cem_mil`) foi encapsulado para rodar em subprocesso com `timeout=5`. Isso evita que soluções quadráticas $O(N^2)$ congelem a suíte inteira até o timeout do container, garantindo que apenas o teste de desempenho falhe e os demais 10 testes funcionais pontuem normalmente. 11 testes mantidos.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/07-performance-grok/meta.yaml):** `revisor: gemini`, `revisao: "testes: medição de desempenho em subprocesso isolado com timeout de 5s para evitar travamento da suíte em soluções quadráticas"`.
+
+8. **[`tarefas/08-testes-grok`](file:///workspace/benchmark-ia/tarefas/08-testes-grok)**
+   - **Verificações:** Os 10 mutantes em [`testes_ocultos/mutantes/`](file:///workspace/benchmark-ia/tarefas/08-testes-grok/testes_ocultos/mutantes) representam bugs reais, distintos e sutis (erro no percentual de 10% e 5%, ausência de piso no desconto fixo, erro nas datas limites de início/fim de `BEMVINDO`, dia 24 ignorado no cupom `NATAL`, supressão de exceção em cupom desconhecido, cupom vazio não tratado, cupom fora da janela aplicado indevidamente e inversão de preço negativo). A suíte de referência mata todos os 10 mutantes e passa no código limpo.
+   - **Mudanças:** Em [`testes_ocultos/test_mutantes.py`](file:///workspace/benchmark-ia/tarefas/08-testes-grok/testes_ocultos/test_mutantes.py), adicionado `PYTHONIOENCODING=utf-8` no ambiente de subprocesso dos mutantes. 11 testes mantidos.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/08-testes-grok/meta.yaml):** `revisor: gemini`, `revisao: "testes: adicionado PYTHONIOENCODING=utf-8 na execução dos mutantes"`.
+
+9. **[`tarefas/09-api-grok`](file:///workspace/benchmark-ia/tarefas/09-api-grok)**
+   - **Verificações:** Cliente `baixar_pedidos` contra [`loja_api.py`](file:///workspace/benchmark-ia/tarefas/09-api-grok/inicial/loja_api.py). Mock local em processo sem sockets, determinístico via seeds, com testes de backoff exponencial, cancelamento de espera no timeout e propagação de erros 404/503. 13 testes determinísticos.
+   - **Mudanças:** Sem mudanças de código/enunciado.
+   - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/09-api-grok/meta.yaml):** `revisor: gemini`, `revisao: "sem mudanças"`.
+
+10. **[`tarefas/10-ambigua-grok`](file:///workspace/benchmark-ia/tarefas/10-ambigua-grok)**
+    - **Verificações:** Os testes em [`test_classificar.py`](file:///workspace/benchmark-ia/tarefas/10-ambigua-grok/testes_ocultos/test_classificar.py) avaliam estritamente o núcleo explícito (`urgente`, `tamanho`, string vazia $\to$ `"vazia"` e demais $\neq$ `"vazia"`, tipos inválidos e determinismo). Não há asserções sobre regras heurísticas deixadas abertas.
+    - **Mudanças:** Adicionada asserção explícita de existência do arquivo [`SUPOSICOES.md`](file:///workspace/benchmark-ia/tarefas/10-ambigua-grok/referencia/SUPOSICOES.md) (`assert caminho.is_file()`) antes da leitura para mensagem de erro amigável caso não seja gerado. 8 testes mantidos.
+    - **[`meta.yaml`](file:///workspace/benchmark-ia/tarefas/10-ambigua-grok/meta.yaml):** `revisor: gemini`, `revisao: "testes: asserção explícita de existência do arquivo SUPOSICOES.md"`.
+
+---
+
+### Resultado Final da Validação
+Todas as 10 tarefas passaram em 100% dos testes executados no ambiente temporário isolado (`inicial` + `referencia` + `testes_ocultos`).
+EXIT 0 SECS 999

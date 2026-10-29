@@ -1,0 +1,25 @@
+Criei as 10 tarefas em `tarefas/NN-slug-claude/`. Cada uma tem todos os arquivos pedidos e as pastas de outros autores ficaram intactas. Para validar, montei um diretório temporário com `inicial/` + `referencia/` + `testes_ocultos/` e rodei `python -m pytest -q testes_ocultos`. A referência passou 100% nas 10, tanto no Python 3.12 do `.bench-py` quanto num 3.11.17.
+
+| Tarefa | O que o modelo faz | Testes |
+|---|---|---|
+| 01-funcao | `solucao.py`: `parse_duracao("2d 3h 4m 5s") -> int` | 39 |
+| 02-bug | corrige `intervalos.py` (4 bugs: lista vazia, ordenação, intervalos que se tocam, intervalo contido) | 15 (o `inicial/` falha 7) |
+| 03-refatoracao | refatora `relatorio.py` e extrai `calcular_subtotal`, `calcular_desconto` e `formatar_relatorio` | 20 (o `inicial/` falha 13, todos de estrutura) |
+| 04-dados | `resumir_vendas(csv, json) -> dict`, com validação de linhas e agregação por região | 22 |
+| 05-cli | `freq.py` (argparse, `-n -m -i --formato`, stdin, saída 0/1/2); testes via subprocess | 19 |
+| 06-multiarquivo | pacote `biblioteca/` com 4 arquivos (modelos, acervo, empréstimos) e imports relativos | 18 |
+| 07-performance | `contar_subarrays_soma`, n=300k, limite de 2s | 16 |
+| 08-testes | o modelo escreve `tests/test_senhas.py`; o runner avalia contra 11 mutantes | 14 |
+| 09-api | `cliente.py` com retry, backoff, Retry-After e timeout sobre o `FakeAPI` em processo | 30 |
+| 10-ambigua | `telefones.py` (normalizar e extrair telefones) + `SUPOSICOES.md` | 23 |
+
+**Decisões de projeto:**
+- **07:** a chamada grande roda num subprocesso com timeout de 8s. Uma solução O(n²) falha só nos 3 testes de desempenho e não trava a suíte. Confirmei: força bruta perde só esses 3 e passa nos outros 13.
+- **08:** um mutante só conta como morto se a suíte do modelo passar no módulo correto, então uma suíte que sempre falha não pontua. Sem `tests/`, só passa 1 dos 14 testes (o que conta os mutantes).
+- **09:** não há socket nem sleep real. O `FakeAPI` simula a latência e o cliente recebe a função `dormir` por injeção. Isso importa porque o runner roda os testes com `unshare -rn`, o que derruba até o loopback.
+- **10:** os testes cobrem só os exemplos explícitos do enunciado e checam que `SUPOSICOES.md` existe e não está vazio. A qualidade das suposições fica para a rubrica.
+
+**O runner não vai ler alguns campos:** o `runner/run.py` atual busca `timeout_s` e `cmd_teste` no `meta.yaml`, mas segui seu formato (`timeout_min` e `comando_teste`). Do jeito que está, o runner ignora esses campos e usa os padrões dele: 300s e `pytest -q testes_ocultos`, que dá o mesmo resultado. Quem precisa mudar é o runner ou o meta, você decide.
+
+**Branch e commit:** não fiz commit. O diretório de trabalho é compartilhado com as sessões dos outros autores, e o checkout atual está no branch `ambiente`, não em `tarefas` como no início.
+EXIT 0 SECS 807

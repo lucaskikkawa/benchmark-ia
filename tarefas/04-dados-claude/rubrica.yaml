@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Clareza do pipeline ler -> validar -> filtrar -> agregar -> escrever."
+    niveis:
+      0: "Tudo em uma função longa com laços e ifs aninhados; difícil identificar as etapas."
+      1: "Etapas identificáveis, mas misturadas (validação e agregação no mesmo bloco extenso)."
+      2: "Etapas separadas (ex.: função de validação/conversão de linha e de agregação), nomes descritivos."
+  - id: erros_bordas
+    max: 2
+    descricao: "Validação de linhas e erros de arquivo."
+    niveis:
+      0: "Linha inválida derruba a execução (exceção não tratada) ou é agregada; coluna ausente não gera ValueError."
+      1: "Trata a maioria das linhas inválidas, mas erra alguma regra (preço '2,50', quantidade 0, valores com espaços, contagem de inválidas canceladas)."
+      2: "Todas as regras de validação, ValueError claro com as colunas ausentes, FileNotFoundError propagado, CSV vazio tratado."
+  - id: idiomatico
+    max: 2
+    descricao: "Uso idiomático da stdlib."
+    niveis:
+      0: "Parsing manual com split(',') ou leitura sem encoding explícito."
+      1: "Usa csv/json, mas com acumulação verbosa (if chave in dict / else) ou arquivos sem with."
+      2: "csv.DictReader, json.dump(s) com ensure_ascii=False, with/pathlib, Counter/defaultdict/setdefault, type hints."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Facilidade de mudar regras (ex.: nova métrica por região)."
+    niveis:
+      0: "Valores mágicos repetidos ('concluida', nomes de colunas) e lógica duplicada."
+      1: "Algumas constantes, mas adicionar métrica exige mexer em vários lugares."
+      2: "Colunas/status em constantes; agregação encapsulada (função ou classe) fácil de estender."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Atendimento às instruções."
+    niveis:
+      0: "Não grava o arquivo, não retorna o dict, ou assinatura/arquivo diferentes do pedido."
+      1: "Grava e retorna, mas ignora algum detalhe (indent=2, ordem das regiões, arredondamento final) ou sem docstring."
+      2: "solucao.py com resumir_vendas(entrada, saida) -> dict, saída exata, docstring explicando o contrato."

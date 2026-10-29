@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Divisão entre modelo, catálogo e empréstimos."
+    niveis:
+      0: "Regras de empréstimo dentro de models.py, ou um único arquivo concentra catálogo e datas."
+      1: "Os quatro arquivos existem, mas a validação de data ou de usuário está copiada em emprestar e devolver."
+      2: "Cada módulo tem uma responsabilidade; data, usuário e prazo de 14 dias aparecem uma vez."
+  - id: erros_bordas
+    max: 2
+    descricao: "ISBN, estoque, prazo e devolução."
+    niveis:
+      0: "Aceita ISBN com hífen, empresta sem exemplar ou deixa devolver duas vezes."
+      1: "O fluxo principal passa, mas erra uma borda: mesmo usuário, atraso no 14º dia, data anterior, ano bissexto ou exemplares bool."
+      2: "ErroBiblioteca nos casos do enunciado; atraso 0 até a data prevista; 15º dia atrasa 1; devolução libera exemplar."
+  - id: idiomatico
+    max: 2
+    descricao: "dataclass, datas e imports do pacote."
+    niveis:
+      0: "Imports absolutos quebrados, dict solto no lugar de Livro, ou data fatiada na mão."
+      1: "Usa dataclass e datetime, mas o pacote importa com biblioteca.models em vez de import relativo."
+      2: "frozen dataclass, date.fromisoformat e timedelta, imports relativos nos três módulos que cruzam o pacote."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Trocar o prazo de 14 dias ou a regra do ISBN."
+    niveis:
+      0: "14 e 13 aparecem em mais de um módulo, ou o serviço guarda exemplares copiados em vez de consultar o catálogo."
+      1: "O prazo está numa constante, mas disponiveis recalcula a regra de ISBN por conta própria."
+      2: "ISBN validado só em Livro; estoque lido do catálogo; prazo numa constante de emprestimos.py."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "API pública do pacote."
+    niveis:
+      0: "Falta arquivo, classe ou __init__ não exporta os quatro nomes."
+      1: "Dá para importar os nomes, mas sem __all__ ou sem docstring nas classes."
+      2: "__init__ exporta Livro, ErroBiblioteca, Catalogo e ServicoEmprestimos; classes com docstring curta do papel de cada uma."

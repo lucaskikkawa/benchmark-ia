@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Organização da correção em boletim.py."
+    niveis:
+      0: "A correção acrescenta ifs especiais em cima do fluxo antigo, ou a função continua invertendo a lista e misturando validação com média."
+      1: "O resultado fica certo, mas validação, descarte e conceito ainda estão no mesmo bloco longo."
+      2: "Etapas legíveis (validar, descartar, média com Decimal, conceito), sem efeito colateral na lista de entrada."
+  - id: erros_bordas
+    max: 2
+    descricao: "Ausência, nota 10, quantidade de provas e tipos."
+    niveis:
+      0: "Continua tratando None como zero, rejeitando 10, aceitando mais de 4 itens ou devolvendo dict na lista vazia."
+      1: "A maioria das bordas passa, mas ainda erra uma entre: descarte com menos de 4 notas, half-up, conceito em 9/7/5, mutação da lista ou bool."
+      2: "TypeError e ValueError conforme o enunciado; None ignorado; 0 e 10 aceitos; descarte só com 4 notas válidas; lista intacta."
+  - id: idiomatico
+    max: 2
+    descricao: "Uso de Decimal e checagens idiomáticas."
+    niveis:
+      0: "Média em float com corte via int(), ou comparação de tipo frágil que aceita bool como nota."
+      1: "Usa Decimal, mas com Decimal(nota) em float, round() bancário ou vários except genéricos."
+      2: "Decimal(str(nota)), ROUND_HALF_UP, math.isfinite ou equivalente, e isinstance que exclui bool."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Onde vivem as regras do boletim."
+    niveis:
+      0: "Limiares 9, 7 e 5 e o número 4 de provas repetidos em ramos copiados."
+      1: "Funciona, mas o conceito está numa cadeia de ifs colada ao cálculo da média, difícil de ajustar isoladamente."
+      2: "Limiares e tamanho máximo concentrados; dá para mudar o conceito sem reler o descarte."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Assinatura preservada e contrato visível."
+    niveis:
+      0: "Renomeia a função, muda o arquivo ou adiciona dependência fora da stdlib."
+      1: "Assinatura correta, docstring ausente ou ainda descrevendo o comportamento antigo (None como zero, descarte sempre)."
+      2: "Docstring alinhada ao contrato: ausências, descarte só com 4 notas, half-up e faixas de conceito."

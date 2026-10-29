@@ -1,0 +1,30 @@
+legibilidade:
+  max: 2
+  descricao:
+    0: "Nomes não distinguem tentativa, timeout e atraso."
+    1: "Nomes claros, mas fluxo de retry é difícil de acompanhar."
+    2: "Parâmetros, contador e retorno tornam o fluxo de retry direto."
+erros_bordas:
+  max: 2
+  descricao:
+    0: "Repete erros permanentes ou engole a falha final."
+    1: "Repete erros corretos, mas dorme após última falha ou valida tarde."
+    2: "Valida antes dos efeitos, repete só transitórios e preserva a última exceção."
+idiomatico:
+  max: 2
+  descricao:
+    0: "Captura Exception indiscriminadamente ou usa rede real."
+    1: "Usa exceções específicas com ramos repetidos."
+    2: "Usa laço limitado, exceções específicas e raise para preservar a instância."
+manutenibilidade:
+  max: 2
+  descricao:
+    0: "Acopla o cliente ao roteiro interno de FakeAPI."
+    1: "Aceita outra API, mas fixa a espera em time.sleep."
+    2: "Depende apenas de get e do callback dormir injetável, sem estado global."
+documentacao_instrucoes:
+  max: 2
+  descricao:
+    0: "Interface pedida ausente."
+    1: "Interface presente, sem explicar timeout e tentativas."
+    2: "Docstring explica timeout por chamada e backoff entre falhas transitórias."

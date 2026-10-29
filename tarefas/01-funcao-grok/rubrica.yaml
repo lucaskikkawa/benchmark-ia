@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Clareza do cálculo de trechos livres."
+    niveis:
+      0: "Um bloco só, com parsing, recorte, fusão e buracos misturados e nomes de uma letra."
+      1: "Dá para seguir o fluxo, mas parsing e fusão ficam no mesmo laço ou repetem a formatação HH:MM."
+      2: "Funções separadas para converter horário, fundir intervalos e montar as folgas; nomes descrevem o papel."
+  - id: erros_bordas
+    max: 2
+    descricao: "Rejeição de horário, janela e intervalo inválidos."
+    niveis:
+      0: "Aceita horário malformado, janela invertida ou intervalo com início depois do fim, ou troca TypeError por ValueError (ou o contrário) nos casos do enunciado."
+      1: "Cobre o caminho feliz e a maioria das bordas, mas erra uma entre: duração zero, encostar sem sobrepor, 24:00, recorte fora da janela ou tipo errado."
+      2: "TypeError e ValueError nos casos pedidos; duração zero ignorada; adjacentes fundidos; 24:00 só como extremo final válido."
+  - id: idiomatico
+    max: 2
+    descricao: "Estilo Python e stdlib."
+    niveis:
+      0: "Índices manuais frágeis, except nu ou conversão via eval/exec."
+      1: "Funciona com range(len()) desnecessário, concatenação de strings ou vários ifs repetidos para cada campo."
+      2: "minutos inteiros, sort estável, desempacotamento e f-string com largura; sem dependência fora da stdlib."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Facilidade de mudar a regra da janela sem reescrever o parser."
+    niveis:
+      0: "O número 24 ou 1440 aparece espalhado e a fusão está copiada em mais de um lugar."
+      1: "A regra está correta, mas parser e calendário compartilham detalhes (formato e limite do dia no mesmo trecho)."
+      2: "Limite do dia e formato HH:MM definidos uma vez; a função pública só orquestra validar, recortar, fundir e subtrair."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Arquivo, assinatura e contrato."
+    niveis:
+      0: "Não é solucao.py, a função não se chama horas_livres ou a assinatura é outra."
+      1: "Arquivo e assinatura corretos, sem docstring ou sem anotações de tipo."
+      2: "solucao.py expõe horas_livres com anotações de tipo e docstring que descreve a janela semiaberta e as exceções."

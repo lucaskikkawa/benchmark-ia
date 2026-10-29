@@ -1,0 +1,29 @@
+legibilidade:
+  max: 2
+  0: "Testes desorganizados com asserts confusos, nomes genéricos como test_1, test_2 sem clareza de intenção."
+  1: "Testes organizados com nomes razoáveis, mas com pouca parametrização ou mensagens de falha vagas."
+  2: "Testes expressivos e bem nomeados (ex: test_requer_maiuscula, test_proibe_espacos_em_branco), facilitando diagnóstico imediato."
+
+erros_bordas:
+  max: 2
+  0: "Suíte cobre apenas o caso feliz (senha válida), deixando escapar a maioria das regras e mutantes."
+  1: "Cobre casos de borda de tamanho, mas esquece regras pontuais como repetição consecutiva ou tipos de força."
+  2: "Cobre exaustivamente todas as regras: limites estritos de tamanho, proibição de repetições triplas, espaços e níveis de força."
+
+idiomatico:
+  max: 2
+  0: "Usa padrão unittest antigo ou try/except manual em vez de pytest e fixtures idiomáticas."
+  1: "Usa pytest básico, mas sem fixtures reutilizáveis ou parametrização quando cabível."
+  2: "Usa pytest com fixtures idiomáticas, assert statements claros e isolamento adequado de casos de teste."
+
+manutenibilidade:
+  max: 2
+  0: "Testes frágeis altamente acoplados entre si, com dependência de ordem de execução ou estado compartilhado."
+  1: "Testes independentes, porém com código repetitivo de instanciação e setup."
+  2: "Alta independência e modularidade, cada função de teste foca em exatamente um invariante ou comportamento isolado."
+
+documentacao_instrucoes:
+  max: 2
+  0: "Não cria os arquivos dentro do diretório tests/ conforme requisitado no enunciado."
+  1: "Cria dentro de tests/, mas sem docstrings explicativas nos testes."
+  2: "Atende perfeitamente à estrutura de diretórios tests/ com documentação clara do propósito de cada teste."

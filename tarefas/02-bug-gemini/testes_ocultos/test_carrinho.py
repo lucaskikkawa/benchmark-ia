@@ -6,9 +6,8 @@ def test_instancias_independentes():
     c1 = CarrinhoDeCompras()
     c2 = CarrinhoDeCompras()
     c1.adicionar_item("Livro", 50.0, 1)
-    assert "Livro" in c1.itens
-    assert "Livro" not in c2.itens
-    assert len(c2.itens) == 0
+    assert [item["nome"] for item in c1.listar_itens()] == ["Livro"]
+    assert c2.listar_itens() == []
 
 
 def test_adicionar_item_valido_e_atualizacao():
@@ -40,15 +39,60 @@ def test_remover_item_parcial_e_total():
     c = CarrinhoDeCompras()
     c.adicionar_item("Borracha", 1.50, 5)
     c.remover_item("Borracha", 2)
-    assert c.itens["Borracha"]["quantidade"] == 3
+    assert c.listar_itens()[0]["quantidade"] == 3
 
     # Removendo quantidade igual ou maior que a existente
     c.remover_item("Borracha", 3)
-    assert "Borracha" not in c.itens
+    assert c.listar_itens() == []
 
     c.adicionar_item("Lápis", 1.0, 2)
     c.remover_item("Lápis")  # None remove tudo
-    assert "Lápis" not in c.itens
+    assert c.listar_itens() == []
+
+
+def test_remover_quantidade_maior_que_estoque():
+    c = CarrinhoDeCompras()
+    c.adicionar_item("Livro", 10.0, 2)
+    c.remover_item("Livro", 3)
+    assert c.listar_itens() == []
+    assert c.calcular_total() == 0.0
+
+
+def test_carrinho_vazio_e_remocao_de_cupom_inexistente():
+    c = CarrinhoDeCompras()
+    c.remover_cupom()
+    assert c.listar_itens() == []
+    assert c.calcular_subtotal() == 0.0
+    assert c.calcular_desconto() == 0.0
+    assert c.calcular_total() == 0.0
+
+
+def test_cupom_zero_substitui_anterior():
+    c = CarrinhoDeCompras()
+    c.adicionar_item("Livro", 100.0)
+    c.aplicar_cupom("METADE", 50)
+    c.aplicar_cupom("ZERO", 0)
+    assert c.calcular_desconto() == 0.0
+    assert c.calcular_total() == 100.0
+    c.aplicar_cupom("NOVO", 25)
+    assert c.calcular_total() == 75.0
+
+
+def test_arredondamento_do_desconto_e_total():
+    c = CarrinhoDeCompras()
+    c.adicionar_item("A", 0.334)
+    c.adicionar_item("B", 0.334)
+    assert c.calcular_subtotal() == 0.67
+    c.aplicar_cupom("FRACAO", 33)
+    assert c.calcular_desconto() == 0.22
+    assert c.calcular_total() == 0.45
+
+
+def test_itens_fornecidos_ao_construtor():
+    c = CarrinhoDeCompras({"Livro": {"preco": 12.5, "quantidade": 2}})
+    assert c.listar_itens() == [
+        {"nome": "Livro", "preco": 12.5, "quantidade": 2, "total": 25.0}
+    ]
 
 
 def test_remover_item_erros():

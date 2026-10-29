@@ -1,0 +1,32 @@
+As 10 tarefas do autor `gemini` foram criadas e validadas com sucesso dentro de `tarefas/`:
+
+### Tarefas Criadas
+
+1. [`tarefas/01-funcao-gemini/`](file:///workspace/benchmark-ia/tarefas/01-funcao-gemini) (`01-funcao`): Resumo e agrupamento de intervalos inteiros em strings (`resumir_intervalos`).
+2. [`tarefas/02-bug-gemini/`](file:///workspace/benchmark-ia/tarefas/02-bug-gemini) (`02-bug`): Correção de bugs de lógica, argumentos mutáveis padrão e arredondamento na classe `CarrinhoDeCompras`.
+3. [`tarefas/03-refatoracao-gemini/`](file:///workspace/benchmark-ia/tarefas/03-refatoracao-gemini) (`03-refatoracao`): Refatoração de processador de pedidos procedural legado para arquitetura orientada a objetos com `ItemPedido`, `CalculadoraFrete`, `CalculadoraDesconto` e `Pedido`.
+4. [`tarefas/04-dados-gemini/`](file:///workspace/benchmark-ia/tarefas/04-dados-gemini) (`04-dados`): Processamento, filtragem, métricas de agregação e exportação em JSON de transações de vendas a partir de CSV (`processar_vendas`).
+5. [`tarefas/05-cli-gemini/`](file:///workspace/benchmark-ia/tarefas/05-cli-gemini) (`05-cli`): CLI completa com `argparse` para análise de métricas de texto, flags individuais/combinadas, exportação em arquivo e JSON, e códigos de saída padronizados (`contatexto.py`).
+6. [`tarefas/06-multiarquivo-gemini/`](file:///workspace/benchmark-ia/tarefas/06-multiarquivo-gemini) (`06-multiarquivo`): Barramento de eventos em memória (`eventhub`) distribuído em 4 arquivos (`__init__.py`, `models.py`, `handlers.py`, `bus.py`) com despacho priorizado e fila de cartas mortas (`DeadLetterQueue`).
+7. [`tarefas/07-performance-gemini/`](file:///workspace/benchmark-ia/tarefas/07-performance-gemini) (`07-performance`): Algoritmo linear $O(N)$ para encontrar o comprimento máximo de subarray contíguo com soma alvo (`maior_subarray_soma`), testado contra 250.000 inteiros com limite de tempo estrito (< 1.5s).
+8. [`tarefas/08-testes-gemini/`](file:///workspace/benchmark-ia/tarefas/08-testes-gemini) (`08-testes`): Escrita de suíte de testes em `tests/` para `ValidadorSenha`, avaliada via *mutation testing* contra 10 mutantes em `testes_ocultos/mutantes/`.
+9. [`tarefas/09-api-gemini/`](file:///workspace/benchmark-ia/tarefas/09-api-gemini) (`09-api`): Cliente de API resiliente (`ClienteResiliente`) com retries, exponential backoff, timeout e tratamento de erros transitórios vs. não recuperáveis integrando com `FakeApiServer` em processo.
+10. [`tarefas/10-ambigua-gemini/`](file:///workspace/benchmark-ia/tarefas/10-ambigua-gemini) (`10-ambigua`): Classificação e pontuação de clientes (`classificar_cliente`) com requisitos abertos de categorização e tratamento de bordas, validando o núcleo explícito e exigindo documentação em `SUPOSICOES.md`.
+
+---
+
+### Estrutura e Conformidade
+
+Cada tarefa contém:
+- `enunciado.md`: Especificação com assinaturas, arquivos a criar/editar e regras.
+- `inicial/`: Código-base ou `.gitkeep`.
+- `testes_ocultos/`: $\ge 8$ testes em `pytest` cobrindo casos normais e bordas, incluindo `conftest.py` configurando o `sys.path`.
+- `rubrica.yaml`: 5 critérios (`legibilidade`, `erros_bordas`, `idiomatico`, `manutenibilidade`, `documentacao_instrucoes`) com notas 0, 1 e 2 (soma 10).
+- `meta.yaml`: Metadados completos com timeouts configurados (3 min padrão; 5 min para 05, 06 e 09).
+- `referencia/`: Implementação de referência completa.
+
+### Validação Executada em Isolamento
+
+- **Suíte de Referência**: 100% dos testes passaram em diretório temporário para todas as 10 tarefas.
+- **Tarefas 02 e 03**: Confirmado que o código em `inicial/` falha nos testes ocultos conforme especificado.
+EXIT 0 SECS 835

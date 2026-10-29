@@ -1,0 +1,30 @@
+legibilidade:
+  max: 2
+  descricao:
+    0: "Nomes confundem saldo inicial, delta e saldo atual."
+    1: "Nomes claros em parte dos módulos."
+    2: "Modelos, operações e persistência têm nomes alinhados ao estoque."
+erros_bordas:
+  max: 2
+  descricao:
+    0: "Aceita saldo negativo e JSON sem validação."
+    1: "Valida apenas saldos ou apenas JSON."
+    2: "Valida cada saldo intermediário e a forma do JSON, inclusive bool e campos ausentes."
+idiomatico:
+  max: 2
+  descricao:
+    0: "Não usa dataclass imutável ou faz parsing manual de JSON."
+    1: "Usa dataclass/json, mas com imports absolutos internos ou cópia confusa."
+    2: "Usa dataclass frozen, json, imports relativos e cópia explícita dos saldos."
+manutenibilidade:
+  max: 2
+  descricao:
+    0: "Concentra toda a implementação em __init__ ou cria módulos extras."
+    1: "Usa quatro módulos, mas mistura persistência e operações."
+    2: "Separa modelo, cálculo e leitura nos módulos pedidos e reexporta em __init__."
+documentacao_instrucoes:
+  max: 2
+  descricao:
+    0: "Exports ou arquivos pedidos ausentes."
+    1: "APIs presentes sem descrever ordem e saldo negativo."
+    2: "Documenta imutabilidade, aplicação em ordem e formato JSON nas APIs."

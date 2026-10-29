@@ -1,0 +1,29 @@
+legibilidade:
+  max: 2
+  0: "Código confuso, com variáveis de uma letra ou lógicas desnecessariamente convolutas para controle de índices."
+  1: "Código compreensível, mas com comentários escassos ou nomes de variáveis pouco expressivos sobre somas acumuladas."
+  2: "Código claro, autoexplicativo, com nomenclatura intuitiva (soma_acumulada, diferenca, primeira_ocorrencia)."
+
+erros_bordas:
+  max: 2
+  0: "Falha em listas vazias, listas contendo apenas zeros ou quando o alvo não está presente."
+  1: "Trata lista vazia, mas falha em casos com números negativos ou quando o primeiro elemento é a solução."
+  2: "Trata com precisão todos os casos de borda: lista vazia, sequências de zeros, números negativos e desempate para o maior subarray."
+
+idiomatico:
+  max: 2
+  0: "Usa loops while indexados manualmente ou construções ineficientes em vez de dicionários e enumerate."
+  1: "Usa dicionários, mas com checagens redundantes ou manipulações repetitivas de chaves."
+  2: "Usa enumerate e lookup direto em dicionário (tabela hash O(1)) de forma pythônica e concisa."
+
+manutenibilidade:
+  max: 2
+  0: "Algoritmo com complexidade O(N^2) ou código difícil de refatorar e analisar complexidade."
+  1: "Complexidade O(N), porém com lógica densa reunida em um único bloco sem separação conceitual."
+  2: "Algoritmo ótimo linear O(N), perfeitamente estruturado e facilmente compreensível para manutenção futura."
+
+documentacao_instrucoes:
+  max: 2
+  0: "Não inclui docstring ou não especifica a complexidade assintótica do algoritmo."
+  1: "Inclui docstring simples, mas com tipagem incompleta ou sem menção às garantias de complexidade."
+  2: "Docstring completa explicando o funcionamento, garantias de complexidade de tempo/espaço O(N) e type hints estritos."

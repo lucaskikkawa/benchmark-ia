@@ -1,0 +1,17 @@
+Vou criar as 10 tarefas no padrão pedido e, em seguida, validar cada uma com a solução de referência. Primeiro verifico a estrutura existente para não alterar pastas de outros autores.Há tarefas de outros autores. Vou só olhar o formato de `meta.yaml` e `rubrica.yaml` para alinhar o esquema, sem alterar essas pastas.O formato das tarefas existentes está claro. Vou criar as 10 pastas do autor `grok`, com domínios diferentes das outras, e validar a referência em seguida.As 10 tarefas estão em `tarefas/NN-slug-grok/`. A solução de referência de cada uma passa em todos os testes ocultos.
+
+| Pasta | O que o modelo entrega |
+|---|---|
+| `01-funcao-grok` | `solucao.py`: folgas `horas_livres` numa janela `HH:MM` |
+| `02-bug-grok` | corrigir `boletim.py` |
+| `03-refatoracao-grok` | refatorar `frete.py` com `TabelaFrete` e `faixa_de_peso` |
+| `04-dados-grok` | `solucao.py`: CSV de chamados + SLA JSON |
+| `05-cli-grok` | `agenda_cli.py` |
+| `06-multiarquivo-grok` | pacote `biblioteca` (4 arquivos) |
+| `07-performance-grok` | `solucao.py`: `pares_com_soma` em tempo linear |
+| `08-testes-grok` | `tests/test_descontos.py` (10 mutantes) |
+| `09-api-grok` | `cliente.py`: retry, backoff e timeout sobre `loja_api.py` |
+| `10-ambigua-grok` | `solucao.py` e `SUPOSICOES.md` |
+
+Validação: cópia de `inicial/` + `referencia/` + `testes_ocultos/` e `python -m pytest -q testes_ocultos` passa nas 10. Em `02-bug-grok`, só `inicial/` falha (9 falhas, 2 passam). Em `03-refatoracao-grok`, o `cotar` antigo passa nos 8 testes de comportamento e falha nos 2 que exigem `TabelaFrete` e `faixa_de_peso`.
+EXIT 0 SECS 1614

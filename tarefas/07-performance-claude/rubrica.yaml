@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Clareza do algoritmo."
+    niveis:
+      0: "Código confuso (índices manuais, variáveis de 1 letra sem explicação) mesmo que rápido."
+      1: "Algoritmo correto e legível, mas nomes pouco expressivos ou passos implícitos."
+      2: "Laço único com nomes que explicam a ideia (prefixo, ocorrências) e comentário curto da invariante."
+  - id: erros_bordas
+    max: 2
+    descricao: "Correção nas bordas."
+    niveis:
+      0: "Erra lista vazia, k=0 com zeros, negativos ou esquece o prefixo vazio (subarrays iniciando no índice 0)."
+      1: "Correto nas bordas testadas, mas modifica a entrada ou depende de suposições não documentadas (ex.: só positivos)."
+      2: "Correto para vazia, zeros, negativos, k negativo e inteiros grandes, sem modificar nums."
+  - id: idiomatico
+    max: 2
+    descricao: "Python idiomático."
+    niveis:
+      0: "range(len()) com acesso por índice, construção de lista de prefixos e busca linear nela."
+      1: "Usa dict, mas com if chave in dict/else verbosos ou estruturas auxiliares desnecessárias."
+      2: "defaultdict/Counter ou dict.get, iteração direta sobre os valores, type hints."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Complexidade adequada e simplicidade."
+    niveis:
+      0: "Solução O(n^2) ou pior, ou com otimizações frágeis específicas dos testes."
+      1: "O(n), mas com memória extra desnecessária (lista completa de prefixos além do dict) ou código especulativo."
+      2: "O(n) tempo, O(n) memória no pior caso, sem estruturas redundantes; função pura e independente."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Atendimento às instruções e documentação."
+    niveis:
+      0: "Arquivo/assinatura diferentes do pedido ou uso de bibliotecas fora da stdlib (ex.: numpy)."
+      1: "Arquivo e assinatura corretos, sem docstring ou sem indicação da complexidade."
+      2: "Assinatura exata, docstring explicando a ideia (somas de prefixo) e a complexidade O(n)."
