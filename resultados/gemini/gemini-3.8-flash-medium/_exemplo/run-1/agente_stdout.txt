@@ -1,0 +1,6 @@
+A tarefa foi concluída. O arquivo [soma.py](file:///tmp/bench-6pzhbyq5/soma.py) foi criado com a função `soma_pares`:
+
+```python
+def soma_pares(nums: list[int]) -> int:
+    return sum(n for n in nums if n % 2 == 0)
+```

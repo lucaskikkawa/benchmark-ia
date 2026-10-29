@@ -1,0 +1,29 @@
+legibilidade:
+  max: 2
+  0: "Código confuso, com nomes de variáveis de uma letra ou sem sentido, difícil de acompanhar a lógica de agrupamento."
+  1: "Código compreensível, mas com variáveis pouco expressivas ou lógica de formatação de intervalos densa."
+  2: "Código claro, com nomes descritivos (ex: inicio, anterior, intervalos), lógica linear e fácil de entender."
+
+erros_bordas:
+  max: 2
+  0: "Não valida tipo de entrada ou falha em listas vazias, números negativos ou valores duplicados."
+  1: "Trata lista vazia e duplicatas, mas falha na validação estrita de tipos (ex: aceita bool ou float) ou em sequências negativas."
+  2: "Trata com perfeição lista vazia, elementos negativos, duplicatas, lista de 1 elemento e rejeita tipos inválidos (incluindo bool)."
+
+idiomatico:
+  max: 2
+  0: "Usa padrões não idiomáticos, como loops com índices manuais desnecessários e concatenação repetida de strings via operador +."
+  1: "Usa sorted e set, mas faz construções redundantes ou manipulação manual ineficiente de listas."
+  2: "Usa recursos idiomáticos do Python (sorted, set, f-strings, str.join) de forma limpa e eficiente."
+
+manutenibilidade:
+  max: 2
+  0: "Função monolítica complexa, propensa a erros off-by-one em qualquer alteração de formato."
+  1: "Lógica funcional, porém com acoplamento entre a identificação dos blocos e a formatação das strings."
+  2: "Estrutura bem organizada, separando claramente a deduplicação/ordenação, a detecção de continuidade e a geração da saída."
+
+documentacao_instrucoes:
+  max: 2
+  0: "Sem docstring ou comentários, e não segue a assinatura especificada no enunciado."
+  1: "Segue a assinatura correta, mas possui docstring incompleta ou ausente e sem anotações de tipo."
+  2: "Segue exatamente a assinatura com type hints corretos e inclui docstring clara explicando comportamento e exceções."

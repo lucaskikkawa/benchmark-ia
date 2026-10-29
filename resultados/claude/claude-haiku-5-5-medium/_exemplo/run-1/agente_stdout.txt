@@ -1,0 +1,11 @@
+Criei `soma.py` neste diretório com a função pedida no enunciado:
+
+```python
+def soma_pares(nums: list[int]) -> int:
+    """Retorna a soma dos números pares da lista (lista vazia retorna 0)."""
+    return sum(n for n in nums if n % 2 == 0)
+```
+
+Testei com lista vazia (retorna 0), lista só de ímpares (0), mistura de pares e ímpares (`[2, 3, 4]` → 6), negativos (`[-2, -3, 0]` → -2) e um único par. Todos passaram.
+
+Não usei as ferramentas de documentos do Claude nem criei nenhum outro arquivo. Como o enunciado pedia só o `soma.py`, não adicionei testes ao projeto.
