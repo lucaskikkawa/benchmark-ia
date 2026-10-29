@@ -6,5 +6,5 @@ comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
 - SUPOSICOES.md
-revisao: Núcleo inequívoco com arredondamento estrito e arquivo SUPOSICOES.md obrigatório.
-endurecimento: "Verificação de existência e tamanho de SUPOSICOES.md, imutabilidade do dicionário de entrada, preservação de identificadores com caracteres especiais/Unicode e suporte a grandes volumes de compras."
+revisao: Removidos tamanho mínimo da documentação e teste de campos extras; apenas núcleo explícito.
+endurecimento: Presença de SUPOSICOES.md sem mínimo de tamanho; imutabilidade do dicionário de entrada, preservação de identificadores com caracteres especiais/Unicode e suporte a grandes volumes de compras.

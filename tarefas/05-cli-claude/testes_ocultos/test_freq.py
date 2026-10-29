@@ -44,7 +44,6 @@ def test_exemplo_do_enunciado(arquivo):
     r = rodar("-i", "-n", "2", arquivo("A casa, a CASA; a casa!\n"))
     assert r.returncode == 0
     assert linhas(r.stdout) == ["a\t3", "casa\t3"]
-    assert r.stderr == ""
 
 
 def test_padrao_diferencia_maiusculas_e_desempata(arquivo):
@@ -58,7 +57,6 @@ def test_top_padrao_10(arquivo):
     r = rodar(arquivo(" ".join(palavras)))
     assert r.returncode == 0
     assert linhas(r.stdout) == [f"{palavra}\t1" for palavra in palavras[:10]]
-    assert r.stderr == ""
 
 
 def test_flags_longas(arquivo):

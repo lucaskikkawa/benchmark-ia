@@ -8,5 +8,5 @@ arquivos_solucao:
 - eventhub/models.py
 - eventhub/handlers.py
 - eventhub/bus.py
-revisao: Tipagem de timestamp/payload, desacoplamento de relógio e cópia em get_failed_events.
-endurecimento: "Propagação obrigatória de exceções quando dlq é None, eventos encadeados gerados dentro de handlers, despacho de tópicos sem inscritos e imutabilidade do histórico retornado."
+revisao: Ordem de publicação no histórico explicitada; demais exigências têm base no contrato.
+endurecimento: Propagação obrigatória de exceções quando dlq é None, eventos encadeados gerados dentro de handlers, despacho de tópicos sem inscritos e imutabilidade do histórico retornado.

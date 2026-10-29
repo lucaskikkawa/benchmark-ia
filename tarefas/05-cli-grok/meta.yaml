@@ -6,4 +6,4 @@ timeout_min: 5
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - agenda_cli.py
-endurecimento: "buracos de id, arquivo inválido preservado, strip Unicode e ano gregoriano"
+endurecimento: buracos de id, arquivo inválido preservado, strip Unicode e ano gregoriano

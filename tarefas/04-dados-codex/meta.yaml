@@ -1,9 +1,9 @@
 tipo: 04-dados
 autor: codex
 revisor: claude
-revisao: sem mudanças
+revisao: 'enunciado: explicita que minimo_centavos não-int (inclusive None, já testado) gera ValueError'
 timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - vendas.py
-endurecimento: "BOM, CSV multilinha, números ASCII estritos, validação tardia e saída preservada."
+endurecimento: BOM, CSV multilinha, números ASCII estritos, validação tardia e saída preservada.

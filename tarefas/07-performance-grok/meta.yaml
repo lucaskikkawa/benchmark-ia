@@ -1,9 +1,9 @@
 tipo: 07-performance
 autor: grok
 revisor: gemini
-revisao: 'testes: medição de desempenho em subprocesso isolado com timeout de 5s para evitar travamento da suíte em soluções quadráticas'
+revisao: 'testes: medição de desempenho em subprocesso isolado com timeout de 8s para evitar travamento da suíte em soluções quadráticas'
 timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
-endurecimento: "n=200000 no subprocesso, inteiros de 10**18 e produtos assimétricos de frequência"
+endurecimento: n=200000 no subprocesso, inteiros de 10**18 e produtos assimétricos de frequência

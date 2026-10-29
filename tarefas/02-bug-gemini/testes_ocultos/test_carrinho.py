@@ -176,9 +176,9 @@ def test_isolamento_dicionarios_listar_itens():
 def test_validacao_tipos_adicionar_item():
     c = CarrinhoDeCompras()
     # Tipos incorretos para nome
-    with pytest.raises((ValueError, TypeError)):
+    with pytest.raises(ValueError):
         c.adicionar_item("", 10.0, 1)
-    with pytest.raises((ValueError, TypeError)):
+    with pytest.raises(ValueError):
         c.adicionar_item("   ", 10.0, 1)
     with pytest.raises(TypeError):
         c.adicionar_item(123, 10.0, 1)  # type: ignore
@@ -198,9 +198,9 @@ def test_validacao_tipos_adicionar_item():
 
 def test_validacao_tipos_cupom():
     c = CarrinhoDeCompras()
-    with pytest.raises((ValueError, TypeError)):
+    with pytest.raises(ValueError):
         c.aplicar_cupom("", 10.0)
-    with pytest.raises((ValueError, TypeError)):
+    with pytest.raises(ValueError):
         c.aplicar_cupom("   ", 10.0)
     with pytest.raises(TypeError):
         c.aplicar_cupom(123, 10.0)  # type: ignore

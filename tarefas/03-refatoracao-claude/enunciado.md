@@ -5,6 +5,7 @@ mas é difícil de ler e manter. **Refatore `relatorio.py`** mantendo exatamente
 observável de `gerar_relatorio` (mesma string retornada, caractere a caractere, e mesmo tipo de exceção)
 para qualquer entrada — inclusive valores `float` "difíceis" (arredondamento na 2ª casa, valores
 enormes, `inf`/`nan`), tipos de cliente desconhecidos e pedidos/itens malformados (chaves ausentes).
+A lista `pedidos` e os dicts aninhados não são modificados.
 Os testes comparam a sua versão com a original em muitas entradas.
 
 ## Entrada

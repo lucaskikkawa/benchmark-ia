@@ -1,10 +1,10 @@
 tipo: 10-ambigua
 autor: claude
 revisor: grok
-revisao: 'testes: núcleo explícito ganhou celular sem 9 e número sem DDD; suposições continuam fora'
+revisao: sem mudanças
 timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - telefones.py
 - SUPOSICOES.md
-endurecimento: "núcleo explícito ampliado: separadores repetidos/combinados, DDD sem dígito 0, fixo começa com 2-5, nunca completar/cortar dígitos; extração: ignora CPF/CNPJ/datas/CEP/valores, não recorta de sequência maior, separação por quebra de linha/;/,// e pontuação final, texto com 5000 telefones; casos ambíguos (0 inicial, 55 sem +, ramal, tipos) continuam fora dos testes"
+endurecimento: 'núcleo explícito ampliado: separadores repetidos/combinados, DDD sem dígito 0, fixo começa com 2-5, nunca completar/cortar dígitos; extração: ignora CPF/CNPJ/datas/CEP/valores, não recorta de sequência maior, separação por quebra de linha/;/,// e pontuação final, texto com 5000 telefones; casos ambíguos (0 inicial, 55 sem +, ramal, tipos) continuam fora dos testes'

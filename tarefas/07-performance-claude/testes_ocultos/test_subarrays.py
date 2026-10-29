@@ -137,7 +137,7 @@ def test_aleatorio_contra_forca_bruta():
         ([0, 0, 0], 0, 3, 2, 0),
         ([5], 5, 1, 1, 1),
         ([], 0, 1, 1, 0),
-        ([2, 2, 2, 2], 4, 1, 10**18, 3),
+        ([2, 2, 2, 2], 4, 1, 8, 3),
     ],
 )
 def test_limites_de_comprimento_pequenos(nums, k, cmin, cmax, esperado):

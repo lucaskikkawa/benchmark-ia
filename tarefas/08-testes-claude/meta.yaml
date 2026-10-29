@@ -6,4 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - tests/test_senhas.py
-endurecimento: "14 mutantes; trocados os 2 mais óbvios e acrescentados 3 sutis: dígito via isdigit (Unicode), classificar só com espaço/tab/quebra, ESPECIAIS sem _, última trinca ignorada, sem checagem de tipo (só morre com bytes/list)"
+endurecimento: '14 mutantes; trocados os 2 mais óbvios e acrescentados 3 sutis: dígito via isdigit (Unicode), classificar só com espaço/tab/quebra, ESPECIAIS sem _, última trinca ignorada, sem checagem de tipo (só morre com bytes/list)'

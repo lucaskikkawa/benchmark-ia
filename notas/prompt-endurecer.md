@@ -1,0 +1,7 @@
+Você é o AUTOR das tarefas tarefas/*-__AUTOR__/ de um benchmark de programação Python (diretório atual). No piloto, todos os modelos tiraram 100% nos testes ocultos: eles não diferenciam ninguém. Endureça as SUAS 10 tarefas (só essas pastas) num só passo:
+- Testes ocultos (testes_ocultos/) mais difíceis: mais casos de borda, entradas maiores ou mais estranhas (unicode, vazios, enormes, tipos limite), requisitos implícitos razoáveis. Onde fizer sentido, deixe o enunciado.md um pouco mais exigente (novos requisitos explícitos). Meta: um modelo bom tira ~70-90%, sem 100% garantido.
+- REGRA: nenhum teste pode exigir algo sem base no enunciado (se o teste exige, o enunciado diz ou é consequência direta). Sem testes frágeis (mensagens exatas não especificadas, ordem não especificada, tempo apertado demais, dependência de locale/rede).
+- Tipo 07: limite de tempo continua rodando a medição em subprocesso; entrada maior é ok. Tipo 08: pode adicionar mutantes mais sutis (manter ~10-14) em testes_ocultos/mutantes/. Tipos 02/03: inicial/ continua falhando. Tipo 10: só núcleo explícito + SUPOSICOES.md.
+- Atualize referencia/ para passar 100%. Não altere rubrica.yaml. No meta.yaml mantenha timeout_min (<=5) e comando_teste e acrescente `endurecimento: "<resumo curto>"`.
+- Valide cada tarefa: dir temporário com inicial/ + referencia/ + testes_ocultos/, rode `python -m pytest -q testes_ocultos` → 100%. Ou rode `python3 scripts/validar.py -__AUTOR__`.
+Não peça confirmação. Ao final liste as mudanças por tarefa.

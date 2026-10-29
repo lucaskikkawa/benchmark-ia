@@ -28,6 +28,8 @@ def processar_vendas(
 
     with open(p_csv, mode="r", encoding="utf-8-sig") as f:
         leitor = csv.DictReader(f)
+        if leitor.fieldnames is not None:
+            leitor.fieldnames = [nome.strip() for nome in leitor.fieldnames]
         for linha in leitor:
             if not linha:
                 continue

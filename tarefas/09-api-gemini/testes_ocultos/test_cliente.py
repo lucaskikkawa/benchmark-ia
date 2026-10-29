@@ -180,6 +180,19 @@ def test_validacao_parametros_construtor():
         ClienteResiliente(servidor=servidor, timeout=-1.0)
 
 
+@pytest.mark.parametrize("parametro", ["backoff_base", "backoff_fator", "timeout"])
+@pytest.mark.parametrize("valor", [True, False, "1", None])
+def test_parametros_numericos_rejeitam_tipos_invalidos(parametro, valor):
+    with pytest.raises(ValueError):
+        ClienteResiliente(FakeApiServer(), **{parametro: valor})
+
+
+@pytest.mark.parametrize("valor", [1.0, "3", None])
+def test_max_tentativas_exige_inteiro_primitivo(valor):
+    with pytest.raises(ValueError):
+        ClienteResiliente(FakeApiServer(), max_tentativas=valor)
+
+
 @pytest.mark.parametrize("status", [200, 201, 204, 206, 299])
 def test_sucesso_qualquer_2xx(status):
     servidor = FakeApiServer()

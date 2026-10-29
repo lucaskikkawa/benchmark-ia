@@ -1,0 +1,22 @@
+Vou revisar as 10 tarefas `*-claude`: primeiro o enunciado, os testes ocultos e o `meta.yaml` de cada uma, para barrar exigências sem base, testes frágeis e mutantes equivalentes.Os `meta.yaml` já têm uma revisão anterior. Vou cruzar o prompt de revisão com enunciados, testes e referências das 10 tarefas endurecidas.O enunciado da tarefa 01 já cobre os casos novos. Sigo para as outras nove, comparando cada teste com o que o enunciado realmente promete.A suíte da tarefa 02 estourou 300 s no código inicial: o `assert` de 200 mil intervalos faz o pytest montar um diff enorme. Vou corrigir isso e os outros testes que exigem algo fora do enunciado ou podem travar fora de subprocesso.O código inicial da tarefa 02 ainda gasta 30 s: o `assert` da lista de 200 mil intervalos dispara o diff do pytest. A comparação da mutação vai sair do `assert`.Revisão das 10 tarefas `*-claude` concluída. `python3 scripts/validar.py -claude`: referência 100% nas 10. O `inicial/` de 02 falha (19 testes) e o de 03 falha (8 testes). `rubrica.yaml` e `referencia/` ficaram como estavam.
+
+**01-funcao** — sem mudanças. Tempo da suíte 0,06 s, com a medição grande em subprocesso e folga sobre o limite de 1 s.
+
+**02-bug** — a comparação de 200 mil intervalos saiu do `assert`. O diff do pytest nessa lista estourou o timeout de 300 s no código inicial; agora a falha sai em 0,6 s.
+
+**03-refatoracao** — o enunciado passa a dizer que `pedidos` e os dicts aninhados não são alterados, que é o que o teste já cobrava.
+
+**04-dados** — sem mudanças. Casos novos (BOM, CSV, `int`/`float`, ordem de `str`, erro que não mexe em `saida`) estão no enunciado.
+
+**05-cli** — removida a exigência de stderr vazio no sucesso. O enunciado só fixa stderr nos erros.
+
+**06-multiarquivo** — imports relativos passam a ser checados pela AST, então um comentário ou docstring com `from biblioteca` não reprova. O enunciado explicita que a busca ordena por comparação simples de `str`.
+
+**07-performance** — `comprimento_max=10**18` saiu do teste em processo (um laço até esse valor travava a suíte). O caso equivalente usa limite 8. Os limites de 2 s seguem em subprocesso; a suíte inteira leva 1,7 s.
+
+**08-testes** — sem mudanças. Os 14 mutantes diferem do original e a suíte de referência mata todos.
+
+**09-api** — sem mudanças. Orçamento, `Retry-After`, `.status` e gerador estão no enunciado; a seed é fixa e não há sleep real.
+
+**10-ambigua** — sem mudanças. Os testes ficam no núcleo explícito (separadores, DDD, fixo/celular, extração). `SUPOSICOES.md` só é checado como arquivo não vazio.
+EXIT 0 SECS 2465

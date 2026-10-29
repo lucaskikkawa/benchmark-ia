@@ -1,3 +1,4 @@
+import ast
 import dataclasses
 import subprocess
 import sys
@@ -53,9 +54,14 @@ def test_submodulos_e_imports_relativos():
     assert emprestimos.ServicoEmprestimos is ServicoEmprestimos
     assert modelos.Livro is Livro and modelos.Emprestimo is Emprestimo
     for nome in ("__init__.py", "acervo.py", "emprestimos.py"):
-        fonte = (PACOTE / nome).read_text(encoding="utf-8")
-        assert "from ." in fonte, f"{nome} deve usar import relativo"
-        assert "from biblioteca" not in fonte and "import biblioteca" not in fonte
+        arvore = ast.parse((PACOTE / nome).read_text(encoding="utf-8"))
+        relativos = [n for n in ast.walk(arvore) if isinstance(n, ast.ImportFrom) and n.level >= 1]
+        assert relativos, f"{nome} deve usar import relativo"
+        for no in ast.walk(arvore):
+            if isinstance(no, ast.Import):
+                assert all(alias.name.split(".")[0] != "biblioteca" for alias in no.names), nome
+            elif isinstance(no, ast.ImportFrom) and no.level == 0:
+                assert (no.module or "").split(".")[0] != "biblioteca", nome
 
 
 def test_importavel_de_outro_diretorio(tmp_path):

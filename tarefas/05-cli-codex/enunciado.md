@@ -1,8 +1,9 @@
 # Contador de palavras pela linha de comando
 
 Crie `cli.py`, executável por `python cli.py ARQUIVO [flags]`, usando `argparse`.
-Exponha também `main(argv=None) -> int`, que retorna 0 em sucesso. No uso como
-script, encerre com o código correspondente.
+Exponha também `main(argv=None) -> int`, que retorna 0 em sucesso; com
+`argv=None`, use `sys.argv[1:]` (padrão do argparse). No uso como script,
+encerre com o código correspondente.
 
 Leia ARQUIVO como UTF-8. Palavras são tokens de `str.split()` (qualquer espaço
 em branco); pontuação faz parte do token. A CLI aceita:

@@ -1,9 +1,9 @@
 tipo: 09-api
 autor: claude
 revisor: grok
-revisao: 'testes: hierarquia ErroAPI, ValueError em obter_varios e 4xx no meio do retry'
+revisao: sem mudanças
 timeout_min: 5
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - cliente.py
-endurecimento: "novos requisitos: orcamento_espera (desiste sem dormir; tentativas = requisições feitas), .status nos ErroAPI de HTTP, qualquer status não previsto sem retry (301/501), Retry-After sem diferenciar caixa e só finito >= 0, backoff sem OverflowError com milhares de tentativas, __cause__ None se última falha foi status, obter_varios aceita gerador e valida todos os ids antes"
+endurecimento: 'novos requisitos: orcamento_espera (desiste sem dormir; tentativas = requisições feitas), .status nos ErroAPI de HTTP, qualquer status não previsto sem retry (301/501), Retry-After sem diferenciar caixa e só finito >= 0, backoff sem OverflowError com milhares de tentativas, __cause__ None se última falha foi status, obter_varios aceita gerador e valida todos os ids antes'

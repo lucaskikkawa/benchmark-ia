@@ -69,4 +69,5 @@ O arquivo `processador.py` deve definir e exportar:
 
 ### 5. `processar_pedidos(pedidos: list[dict]) -> list[dict]`
 - Recebe a lista de pedidos no formato de dicionário bruto, instancia as entidades modeladas e retorna a lista de dicionários resultantes de cada `pedido.para_dict()`.
+- Preserva a ordem dos pedidos recebidos. Cada dicionário usa os mesmos nomes de atributos de `Pedido` e `ItemPedido`; campos opcionais ausentes assumem os padrões dessas classes.
 - Pedidos com lista `itens` ausente ou vazia devem ser processados normalmente (com subtotal 0.0, desconto 0.0 e frete calculado para peso 0.0).

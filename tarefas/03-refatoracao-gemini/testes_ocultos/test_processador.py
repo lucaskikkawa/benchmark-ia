@@ -203,6 +203,8 @@ def test_pedido_delega_calculos(monkeypatch):
                     itens=[ItemPedido(nome="X", preco=12.5, quantidade=2, peso_kg=0.2)])
     assert pedido.calcular_desconto() == 7.0
     assert pedido.calcular_frete() == 8.0
+    assert ("desconto", "vip", 25.0) in chamadas
+    assert ("frete", "expresso", 0.4, 25.0) in chamadas
 
 
 def test_arredondamento_por_item_vs_soma_global():
@@ -213,6 +215,12 @@ def test_arredondamento_por_item_vs_soma_global():
     itens = [ItemPedido(nome=f"Item {i}", preco=1.004, quantidade=1, peso_kg=0.01) for i in range(100)]
     pedido = Pedido(id="ARRED-1", cliente="Cliente Teste", itens=itens)
     assert pedido.calcular_total_itens() == 100.00
+
+
+def test_arredondamento_de_peso_por_item_antes_de_somar():
+    itens = [ItemPedido(nome="X", preco=1.0, peso_kg=0.0004) for _ in range(100)]
+    pedido = Pedido(id="PESO", cliente="A", itens=itens)
+    assert pedido.calcular_peso_total() == 0.0
 
 
 def test_pedidos_com_unicode_e_volume():

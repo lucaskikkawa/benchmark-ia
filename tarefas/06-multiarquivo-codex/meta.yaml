@@ -9,4 +9,4 @@ arquivos_solucao:
 - estoque/modelos.py
 - estoque/operacoes.py
 - estoque/persistencia.py
-endurecimento: "Validação JSON ampliada, integração em volume, saldos exatos e imutabilidade em falhas."
+endurecimento: Validação JSON ampliada, integração em volume, saldos exatos e imutabilidade em falhas.

@@ -52,7 +52,7 @@ Implemente o pacote Python `eventhub` estruturado exatamente nos seguintes 4 arq
   - `dispatch_all(self) -> int`:
     - Processa todos os eventos pendentes chamando `dispatch_next()` repetidamente e retorna o número total de eventos despachados.
   - `get_history(self, topic: str | None = None) -> list[Event]`:
-    - Retorna uma nova lista (cópia) contendo os eventos publicados até o momento. Se `topic` for fornecido, filtra apenas os eventos daquele tópico. Modificações na lista retornada não devem impactar o histórico interno.
+    - Retorna uma nova lista (cópia) contendo os eventos em ordem de publicação. Se `topic` for fornecido, filtra apenas os eventos daquele tópico, preservando essa ordem. Modificações na lista retornada não devem impactar o histórico interno.
 
 ### 4. `eventhub/__init__.py`
 Deve exportar os símbolos principais na raiz do pacote via imports relativos:

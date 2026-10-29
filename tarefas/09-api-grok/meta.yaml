@@ -1,9 +1,9 @@
 tipo: 09-api
 autor: grok
 revisor: gemini
-revisao: sem mudanças
+revisao: 'testes: ampliada a margem de tempo em asserções de backoff e erro imediato para evitar falso negativo'
 timeout_min: 5
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - cliente.py
-endurecimento: "sem cache de id, timeout interrompe a lista, slow com duas esperas e tuple rejeitado"
+endurecimento: sem cache de id, timeout interrompe a lista, slow com duas esperas e tuple rejeitado

@@ -33,10 +33,11 @@ após `strip()`, aceite apenas a gramática `[+-]?[0-9]+` (dígitos ASCII); zero
 à esquerda e sinal `+` são válidos, mas underscores, dígitos Unicode, decimais
 e notação exponencial não são. O inteiro resultante deve ser >= 0. Mantenha
 aritmética inteira exata, inclusive além de 64 bits. `minimo_centavos` precisa
-ser exatamente `int` (bool, float e str geram `ValueError`, também sem alterar
-a saída). Linhas com campos faltando são ignoradas se não pagas; se pagas,
-campos obrigatórios faltantes são inválidos. Arquivo vazio não tem cabeçalho
-válido. Preserve quebras de linha e aspas internas de produtos cotados; não
-normalize Unicode, caixa ou espaços internos. Os testes podem ter 30.000 linhas.
+ser exatamente `int` (qualquer outro tipo, como bool, float, str ou None, gera
+`ValueError`, também sem alterar a saída). Linhas com campos faltando são
+ignoradas se não pagas; se pagas, campos obrigatórios faltantes são inválidos.
+Arquivo vazio não tem cabeçalho válido. Preserve quebras de linha e aspas
+internas de produtos cotados; não normalize Unicode, caixa ou espaços internos.
+Os testes podem ter 30.000 linhas.
 
 Ambiente: Python 3.11, somente biblioteca padrão na solução; sem rede.

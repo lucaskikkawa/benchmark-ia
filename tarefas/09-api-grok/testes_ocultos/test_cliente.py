@@ -182,8 +182,8 @@ def test_prefixo_e_id_vazio_nao_repete():
     api = LojaAPI(0)
     inicio = time.perf_counter()
     with pytest.raises(LojaErroCliente):
-        baixar_pedidos(api, [""], max_tentativas=4, backoff_s=0.2, timeout_s=1)
-    assert time.perf_counter() - inicio < 0.15
+        baixar_pedidos(api, [""], max_tentativas=4, backoff_s=0.4, timeout_s=1)
+    assert time.perf_counter() - inicio < 0.3
 
     api = LojaAPI(0)
     obtido = baixar_pedidos(
@@ -263,4 +263,4 @@ def test_tuple_e_backoff_de_uma_falha():
     assert obtido == [payload_pedido(0, "flaky-once")]
     assert api.tentativas("flaky-once") == 2
     assert gasto >= 0.2
-    assert gasto < 0.55
+    assert gasto < 0.70

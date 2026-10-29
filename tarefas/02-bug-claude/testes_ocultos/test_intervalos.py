@@ -160,5 +160,13 @@ def test_entrada_grande():
         a = rng.randint(-10**9, 10**9)
         intervalos.append((a, a + rng.randint(0, 5_000)))
     copia = list(intervalos)
-    assert mesclar_intervalos(intervalos) == forca_bruta(copia)
-    assert intervalos == copia
+    obtido = mesclar_intervalos(intervalos)
+    esperado = forca_bruta(copia)
+    # Fora do assert: o diff do pytest em ~1e5 tuplas trava a suíte por minutos.
+    if intervalos != copia:
+        pytest.fail("a entrada foi modificada")
+    if obtido != esperado:
+        for indice, (a, b) in enumerate(zip(obtido, esperado)):
+            if a != b:
+                pytest.fail(f"divergiu no índice {indice}: {a} != {b} (len {len(obtido)} vs {len(esperado)})")
+        pytest.fail(f"tamanhos diferentes: {len(obtido)} vs {len(esperado)}")

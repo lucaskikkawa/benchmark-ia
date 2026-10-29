@@ -5,5 +5,5 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - processador.py
-revisao: Normalização de categoria/frete, arredondamentos e valores padrão.
-endurecimento: "Validações de domínio em ItemPedido, CalculadoraFrete e CalculadoraDesconto, verificação estrita de pré-arredondamento item-a-item vs soma global e suporte a pedidos com caracteres unicode e volume."
+revisao: Ordem e padrões da entrada explícitos; delegação e arredondamento de peso por item.
+endurecimento: Validações de domínio em ItemPedido, CalculadoraFrete e CalculadoraDesconto, verificação estrita de pré-arredondamento item-a-item vs soma global e suporte a pedidos com caracteres unicode e volume.

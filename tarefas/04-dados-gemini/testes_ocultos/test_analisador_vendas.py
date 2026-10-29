@@ -188,7 +188,7 @@ def test_cria_subdiretorios_de_saida_automaticamente(csv_basico, tmp_path):
 def test_bom_utf8_e_espacos_nas_colunas(tmp_path):
     entrada = tmp_path / "bom.csv"
     conteudo = (
-        "\ufeffid_transacao,data,cliente,categoria,valor,status\n"
+        "\ufeff id_transacao , data , cliente , categoria , valor , status \n"
         "1,2026-01-01,  Maria Clara  ,  Roupas & Acessórios  ,  150.25  ,  concluido  \n"
     )
     entrada.write_text(conteudo, encoding="utf-8")

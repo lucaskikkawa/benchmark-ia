@@ -1,9 +1,9 @@
 tipo: 07-performance
 autor: codex
 revisor: claude
-revisao: 'testes: lê só a última linha do stdout do processo auxiliar (prints da solução não quebram a medição)'
+revisao: sem mudanças
 timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - pares.py
-endurecimento: "Até um milhão de valores, distribuições adversas e memória O(k) medida em subprocesso."
+endurecimento: Até um milhão de valores, distribuições adversas e memória O(k) medida em subprocesso.

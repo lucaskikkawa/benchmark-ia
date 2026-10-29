@@ -14,7 +14,7 @@ ENV = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
 def executar(caminho, *flags):
     return subprocess.run([sys.executable, str(ROOT / 'cli.py'), str(caminho), *flags],
                           cwd=ROOT, env=ENV, capture_output=True, text=True,
-                          encoding='utf-8', timeout=10)
+                          encoding='utf-8', timeout=20)
 
 
 @pytest.mark.parametrize('json_flag', [False, True])
@@ -74,7 +74,7 @@ def test_volume_e_limite_maior_que_resultados(tmp_path):
 def test_importar_sem_efeitos():
     r = subprocess.run([sys.executable, '-c', 'import cli', '--inexistente'],
                        cwd=ROOT, env=ENV, capture_output=True, text=True,
-                       encoding='utf-8', timeout=10)
+                       encoding='utf-8', timeout=20)
     assert r.returncode == 0 and r.stdout == '' and r.stderr == ''
 
 

@@ -5,5 +5,5 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - otimizador.py
-revisao: Medição em subprocesso isolado (timeout 15s/limite 5s) e oráculo independente.
-endurecimento: "Validação estrita de tipo int (rejeitando bool e floats), escala aumentada para 350.000 elementos e casos com inteiros gigantes."
+revisao: sem mudanças
+endurecimento: Validação estrita de tipo int (rejeitando bool e floats), escala aumentada para 350.000 elementos e casos com inteiros gigantes.

@@ -42,7 +42,7 @@ Exceções (todas herdam de `BibliotecaErro(Exception)`): `LivroNaoEncontrado`, 
 - `obter(isbn: str) -> Livro` — `LivroNaoEncontrado` se não existir.
 - `buscar_por_autor(trecho: str) -> list[Livro]` — livros cujo `autor` contém `trecho`, sem diferenciar
   maiúsculas/minúsculas (compare com `str.casefold()`; `"STRAUSS"` encontra `"Strauß"`), ordenados por
-  `titulo` e depois `isbn`. Trecho vazio encontra todos.
+  `titulo` e depois `isbn` (comparação simples de `str`, sem locale). Trecho vazio encontra todos.
 - `__len__()` — quantidade de livros; `__contains__(isbn)` — `isbn in acervo`.
 
 ## `emprestimos.py` — `class ServicoEmprestimos`

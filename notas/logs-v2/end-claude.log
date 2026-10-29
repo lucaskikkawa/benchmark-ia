@@ -1,0 +1,61 @@
+Pronto: as 10 tarefas `*-claude` estão endurecidas e `python3 scripts/validar.py -claude` dá OK em todas. Cada referência passa 100%, o inicial das tipo 02/03 continua falhando e a referência da 08 mata os 14 mutantes. Os `rubrica.yaml` não foram alterados. Cada `meta.yaml` mantém `timeout_min` (≤5) e `comando_teste` e ganhou `endurecimento`.
+
+Para calibrar a dificuldade, rodei uma solução "de modelo bom" contra os testes novos: a referência antiga, adaptada às novas assinaturas quando preciso. Ela tira entre 69% e 94% conforme a tarefa. Juntei casos fáceis num mesmo teste para que não diluíssem a nota.
+
+## Mudanças por tarefa
+
+**01-funcao** (referência antiga: 19/23)
+- Enunciado: nova unidade `w` (semana); só dígitos ASCII; inteiros com milhares de dígitos e resultado exato; tempo linear em entradas de ~1 MB feitas de espaços.
+- Testes: rejeita dígitos não ASCII (`١`, `１`, `²`) e letras parecidas com unidades (`ſ`, sinal de Kelvin, `ｈ`), que passam por `re.IGNORECASE`, `upper()` ou `casefold()`. Também cobrem 10 mil dígitos (o `int()` do Python recusa mais de 4300), subclasse de `str`, `bool` e desempenho medido em subprocesso, que derruba regex com backtracking.
+- Referência: virou um leitor linear, sem regex com backtracking.
+
+**02-bug** (só os bugs relatados corrigidos: 18/26; inicial falha 19)
+- Docstring: aceita qualquer iterável (gerador, tupla, pares em lista); `TypeError` para valores não int e para `bool`; valida tudo antes de produzir resultado.
+- Inicial: ganhou dois bugs novos, um `sort()` que altera a entrada e uma validação que esgota o gerador.
+- Testes: comparação com um oráculo em 500 casos aleatórios e em 200 mil intervalos.
+
+**03-refatoracao** (referência antiga: 30/32)
+- Os testes têm o original embutido como oráculo e comparam a saída em valores float em que `t*(1-taxa)` muda a 2ª casa, na ordem e forma da soma do TOTAL, em `inf`/`nan`, em 400 casos aleatórios e no tipo da exceção em pedidos malformados (a ordem de acesso às chaves importa).
+- Novas constantes exigidas: `TAXAS_DESCONTO`, `TAXAS_PADRAO` e `LIMITE_FAIXA_ALTA`, consultadas no momento da chamada.
+
+**04-dados**
+- Novos requisitos: BOM UTF-8; nomes de coluna com espaços e CRLF; campos entre aspas com vírgula e quebra de linha; linha com número de campos diferente do cabeçalho é inválida; preço `nan`/`inf` é inválido; conversão exatamente como `int()`/`float()` (`+3`, `1e2`).
+- Também: "concluída" com acento não conta; desempate por comparação simples de `str`; tipos float/int no JSON; criar os diretórios pais de `saida`; em erro, `saida` não é criado nem alterado; arquivo vazio dá `ValueError`; teste com 100 mil linhas.
+
+**05-cli** (referência antiga com `-x`: 24/27)
+- Nova opção `-x/--excluir`, repetível.
+- Com `-i`, `str.lower()` é aplicado a cada palavra depois de extraída (casos `İ`, `ß`, `ǅ`; sem `casefold`).
+- Sem normalização NFD; dígitos de outros alfabetos separam palavras.
+- A entrada padrão (`-`) é sempre lida como UTF-8 estrito, mesmo com o terminal em latin-1.
+
+**06-multiarquivo**
+- Novos requisitos: `RenovacaoNegada`, `Emprestimo.renovacoes`, `max_renovacoes`, `renovar()` (ordem dos erros, prazo nunca encurta) e `atrasados()`.
+- Também: validação no construtor e em `Livro`; `adicionar` só aceita `Livro`; busca com `casefold` e trecho vazio; `__all__` exato; o serviço enxerga livros adicionados ao acervo depois.
+
+**07-performance**
+- Novos parâmetros `comprimento_min`/`comprimento_max`, resolvidos com janela deslizante de prefixos em O(n), com `ValueError` para valores inválidos.
+- Testes com inteiros acima de 64 bits e quatro medições novas em subprocesso com 300 mil elementos e janelas de milhares, que derrubam soluções O(n·L). O oráculo é independente (busca binária).
+
+**08-testes** (suíte antiga: mata 10 de 14)
+- Agora são 14 mutantes. Saíram os dois mais óbvios e entraram cinco sutis: dígito via `isdigit` (pega dígitos Unicode); `classificar` reconhece só espaço, tab e quebra de linha; `ESPECIAIS` sem `_`; última trinca ignorada; sem checagem de tipo (só morre testando com `bytes` ou `list`).
+- A suíte de referência foi ampliada para matar os 14.
+
+**09-api**
+- Novo `orcamento_espera`: desiste sem dormir, e `.tentativas` passa a ser o número de requisições feitas.
+- `ErroAPI` vindo de status HTTP tem `.status`; qualquer status não previsto (301, 501…) não é repetido.
+- `Retry-After`: nome sem diferenciar maiúsculas e só aceito se finito ≥ 0.
+- Backoff sem `OverflowError` com 1500 tentativas.
+- `__cause__` é `None` quando a última falha foi um status.
+- `obter_varios` aceita gerador e valida todos os ids antes de requisitar.
+
+**10-ambigua** (referência antiga: 41/42)
+- Núcleo explícito ampliado: separadores repetidos ou combinados; DDD sem dígito 0; fixo começa com 2–5; nunca completar nem cortar dígitos.
+- Extração: ignora CPF, CNPJ, datas, CEP e valores; não recorta telefone de uma sequência maior de dígitos; telefones separados por quebra de linha, `;`, `,`, `/` e seguidos de pontuação; teste com 5000 telefones.
+- Os casos ambíguos (`0` inicial, `55` sem `+`, ramal, tipos) continuam fora dos testes. O `SUPOSICOES.md` da referência foi ajustado.
+
+## Observações
+- Rodei tudo em Python 3.13. O teste da soma do TOTAL na 03 compara com o original na mesma versão do Python, então funciona em qualquer versão, mas no 3.11 o `sum()` antigo não é pego por ele.
+- `validar.py` reescreve `notas/validacao.json`, que agora só tem as tarefas `-claude`.
+- O `git status` mostra muitas alterações em pastas `-codex`, `-gemini` e `-grok` que não são minhas (provavelmente outras sessões trabalhando no mesmo diretório). Não mexi nelas.
+- Nada foi commitado. Só as remoções dos dois mutantes antigos da 08 estão no stage, via `git rm`.
+EXIT 0 SECS 1146

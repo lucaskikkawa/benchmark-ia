@@ -32,6 +32,7 @@ A avaliação da sua suíte será realizada por um executor automatizado que:
   7. **Não pode** conter espaços em branco (`c.isspace()`, incluindo espaços comuns, tabulações e quebras de linha).
   8. **Não pode** conter 3 caracteres repetidos consecutivos em qualquer parte da senha, inclusive no final (ex.: `"aaa"`, `"111"`).
   - Retorna `(True, [])` se todas as regras forem cumpridas, ou `(False, lista_de_mensagens_de_erro)` caso haja violações (acumulando todos os erros identificados).
+  - O texto e a ordem das mensagens de erro não fazem parte do contrato; os testes não devem depender deles.
 
 - `calcular_forca(self, senha: str) -> str`:
   - Se a senha for inválida perante `validar(senha)`: retorna `"invalida"`.

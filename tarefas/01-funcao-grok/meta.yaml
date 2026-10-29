@@ -6,4 +6,4 @@ timeout_min: 3
 comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
 - solucao.py
-endurecimento: "dígitos ASCII, validar antes de ignorar, fusão depois do recorte, list exata e 24:00"
+endurecimento: dígitos ASCII, validar antes de ignorar, fusão depois do recorte, list exata e 24:00

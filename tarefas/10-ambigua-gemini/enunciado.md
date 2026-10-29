@@ -27,7 +27,7 @@ O dicionário `dados` de entrada possui as seguintes informações sobre o clien
    - `"score"`: número (float ou int) correspondente ao score final calculado.
    - `"categoria"`: uma string não vazia representando o segmento/nível do cliente.
 5. **Imutabilidade**: A função não deve modificar o dicionário `dados` fornecido na entrada nem a lista `compras` nele contida.
-6. A função deve suportar grande volume de compras e entradas com caracteres Unicode em `id` e `nome`. Eventuais campos adicionais presentes em `dados` devem ser tolerados sem interferir no cálculo.
+6. A função deve suportar grande volume de compras e entradas com caracteres Unicode em `id` e `nome`.
 
 ## Pontos Abertos e Arquivo `SUPOSICOES.md` (OBRIGATÓRIO)
 

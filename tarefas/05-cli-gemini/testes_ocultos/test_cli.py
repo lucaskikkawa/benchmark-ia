@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -9,7 +10,9 @@ CLI_PATH = str(Path(__file__).resolve().parent.parent / "contatexto.py")
 
 def run_cli(*args):
     cmd = [sys.executable, CLI_PATH, *args]
-    return subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", timeout=10)
+    ambiente = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
+    return subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8",
+                          env=ambiente, timeout=10)
 
 
 @pytest.fixture

@@ -1,0 +1,53 @@
+Vou endurecer só as 10 tarefas `*-grok`: primeiro mapeio o formato, os testes ocultos e a referência de cada uma.As 10 pastas `*-grok` estão mapeadas. Agora leio enunciados, testes e referências para ver onde os casos ainda são fáceis demais.Os testes atuais cobrem o caminho feliz e poucas bordas. Vou fechar requisitos que ficaram soltos e acrescentar casos que um modelo bom costuma errar, sem exigir nada fora do enunciado.As 10 tarefas `*-grok` foram endurecidas. A referência passa 100% em todas. Em `02` e `03`, `inicial/` continua falhando. `rubrica.yaml` não foi alterado. Cada `meta.yaml` ganhou `endurecimento` e manteve `timeout_min` e `comando_teste`.
+
+Validação: `python3 scripts/validar.py -grok`.
+
+| Tarefa | Referência | Inicial |
+|---|---|---|
+| 01-funcao | 33 passed | — |
+| 02-bug | 16 passed | 14 failed, 2 passed |
+| 03-refatoracao | 12 passed | 3 failed, 9 passed |
+| 04-dados | 22 passed | — |
+| 05-cli | 15 passed | — |
+| 06-multiarquivo | 17 passed | — |
+| 07-performance | 12 passed | — |
+| 08-testes | 15 passed | — |
+| 09-api | 18 passed | — |
+| 10-ambigua | 11 passed | — |
+
+### 01-funcao-grok
+Horário só com dígitos ASCII e `:` U+003A. `24:00` não vira `00:00`. `ocupados` tem de ser `list`. Formato inválido ou intervalo invertido é erro mesmo fora da janela ou com duração zero. A fusão acontece depois do recorte. A lista externa e as listas internas não são alteradas. Há uma grade de 720 intervalos e uma amostra aleatória conferida minuto a minuto.
+
+### 02-bug-grok
+A média só é arredondada no fim, com `Decimal(str(nota))` e `ROUND_HALF_UP`. Casos que separam isso de `round` e de `Decimal(float)`: `0.015` → `0.02`, `8.995` → `9.0` (A), `9.995` → `10.0` (A), e `[1.005, 1.004]` → `1.0`. O descarte tira só a primeira ocorrência do menor valor, inclusive quando todas as notas são iguais.
+
+### 03-refatoracao-grok
+`cotar`, `TabelaFrete.cotar` e `faixa_de_peso` leem `TabelaFrete.FAIXAS` em cada chamada. O teste troca a tupla e exige o resultado novo. Expresso de `2505` é `(2505 * 3) // 2 = 3757`.
+
+### 04-dados-grok
+CSV com aspas, `\r\n`, linha `,,,,` e agrupamento depois do `strip` (`" n1 "` com `"n1"`, `"a"` com `" a "`). BOM é `ValueError`. Desempate lexicográfico: `"a10" < "a2"`. Ordem de code point, sem locale. O JSON gravado é exatamente `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`. Duração pode cruzar o ano, no limite exato do SLA.
+
+### 05-cli-grok
+Buraco de id é válido: ids `1` e `3` com `proximo_id` `5` geram `ok id=5`. `listar` não reescreve o arquivo. `adicionar` num JSON inválido devolve `erro: arquivo invalido` e deixa os bytes como estavam. `str.strip` inclui `\u00a0`. `1900-02-29` e `2100-02-29` são inválidos; `2000-02-29` e `0001-12-25` são válidos. Chave extra, id duplicado, `concluida` `1` e `proximo_id` float ou bool invalidam o arquivo. `--id 01` conclui o id `1`.
+
+### 06-multiarquivo-grok
+ISBN de 13 dígitos ASCII, sem dígito verificador (`9780000000001` entra). `listar` devolve lista nova. Dois `ServicoEmprestimos` no mesmo catálogo não compartilham empréstimos. O mesmo usuário não leva dois exemplares do mesmo ISBN. Falha em `emprestar` ou `devolver` não muda o estado. O prazo de 14 dias atravessa mês e ano, inclusive a partir de `0001-12-25`. A ordem de `ativos` é code point (`A`, `a`, `á`).
+
+### 07-performance-grok
+A medição continua em subprocesso, agora com `n = 200_000` e limite de 3 s (timeout do processo 8 s), nos casos de zeros, sequência e pares `1+2`. Há frequências assimétricas (`5 * 7 = 35`), inteiros `10**18` e mais amostras conferidas por força bruta.
+
+### 08-testes-grok
+Quatro mutantes novos, 14 no total:
+- `m11` calcula o NATAL como `preco - (preco * 15) // 100`
+- `m12` trata cupom só de espaço como vazio
+- `m13` aceita `1900-02-29`
+- `m14` rejeita ano menor que 1900
+
+O enunciado fixa a fórmula com `//`, o calendário gregoriano (anos 1 a 9999) e `" "` como `ValueError`. A suíte de referência mata os 14.
+
+### 09-api-grok
+Id repetido não usa cache. `tuple` não é `list`. `missing-down-x` não é retentado; `""` também não, e sem backoff. `flaky-missing-x` segue a regra flaky. `slow-` com seed ímpar estoura duas vezes e só então devolve o pedido. Timeout na última tentativa não chama o id seguinte e não dorme o `ATRASO_S` inteiro. Um único backoff de `0.25` s fica entre `0.2` s e `0.55` s.
+
+### 10-ambigua-grok
+Só o núcleo explícito e a existência de `SUPOSICOES.md`. Sem normalização Unicode: `"a\u0301"` tem tamanho 2, `\ud800` tem tamanho 1 e não levanta, NBSP e zero-width contam, `"vazia"` não é a categoria vazia. Lookalike cirílico não é `URGENTE`. `URGENTE` no fim de um texto de 100 mil caracteres conta, com `tamanho` igual a `len`. `bytes`, `bytearray` e `memoryview` são `TypeError`.
+EXIT 0 SECS 1347

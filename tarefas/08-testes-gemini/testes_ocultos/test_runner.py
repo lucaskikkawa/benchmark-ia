@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import shutil
 import subprocess
 import sys
@@ -11,8 +12,10 @@ MUTANTES_DIR = Path(__file__).resolve().parent / "mutantes"
 
 def run_candidate_tests(workdir: Path):
     cmd = [sys.executable, "-m", "pytest", "-q", "tests"]
+    ambiente = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
     try:
-        return subprocess.run(cmd, cwd=str(workdir), capture_output=True, text=True, timeout=10)
+        return subprocess.run(cmd, cwd=str(workdir), capture_output=True, text=True,
+                              encoding="utf-8", env=ambiente, timeout=10)
     except subprocess.TimeoutExpired:
         pytest.fail("A suíte do candidato excedeu o limite de 10s; timeout não elimina mutantes.")
 

@@ -43,7 +43,7 @@ A classe `CarrinhoDeCompras` deve conter os seguintes métodos:
   - Retorna `subtotal - desconto`, arredondado para 2 casas decimais (nunca inferior a 0.0).
 
 - `listar_itens(self) -> list[dict]`:
-  - Retorna nova lista de novos dicionários com os itens presentes, **ordenados alfabeticamente pelo nome do item**:
+  - Retorna nova lista de novos dicionários com os itens presentes, **ordenados pelo nome do item usando a ordem lexicográfica padrão do Python (`sorted`, sem locale)**, inclusive para nomes com acentos:
     ```python
     [
         {

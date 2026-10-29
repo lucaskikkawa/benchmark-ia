@@ -99,7 +99,7 @@ def test_nao_muta_lista_original():
 
 
 def test_grande_volume_de_dados():
-    # 20.000 elementos alternando blocos consecutivos e isolados
+    # Blocos consecutivos, valores isolados e duplicatas, em ordem embaralhada.
     dados = []
     # Bloco 0 a 999
     dados.extend(range(0, 1000))
@@ -114,8 +114,8 @@ def test_grande_volume_de_dados():
     rng.shuffle(dados)
 
     res = resumir_intervalos(dados)
-    assert res.startswith("0-999, 2000, 2002, ")
-    assert res.endswith(", 10000-11000")
+    esperado = ", ".join(["0-999", *map(str, range(2000, 6000, 2)), "10000-11000"])
+    assert res == esperado
 
 
 def test_apenas_negativos_consecutivos_e_isolados():
