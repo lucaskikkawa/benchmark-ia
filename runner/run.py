@@ -31,14 +31,43 @@ def copy_contents(src, dst):
             shutil.copy2(item, target)
 
 
+HOME = os.path.expanduser("~")
+RO_SYS = ["/usr", "/bin", "/sbin", "/lib", "/lib64", "/etc", "/opt", "/run", "/node_modules"]
+RO_HOME = [".local", ".profile", ".bashrc", ".gitconfig", "cli-config"]
+RW_HOME = [".codex", ".claude", ".claude.json", ".grok", ".gemini", ".cache", ".npm", ".config/gh"]
+
+
+def bwrap(cmd, wd):
+    """Agente vê só a pasta da execução (rw), binários (ro) e configs das CLIs."""
+    b = ["bwrap", "--die-with-parent", "--unshare-pid", "--proc", "/proc", "--dev", "/dev",
+         "--tmpfs", "/tmp", "--tmpfs", "/home", "--dir", HOME]
+    for d in RO_SYS:
+        if os.path.exists(d):
+            b += ["--ro-bind", d, d]
+    for d in RO_HOME:
+        x = os.path.join(HOME, d)
+        if os.path.exists(x):
+            b += ["--ro-bind", x, x]
+    for d in RW_HOME:
+        x = os.path.join(HOME, d)
+        if os.path.exists(x):
+            b += ["--bind", x, x]
+    b += ["--bind", str(wd), str(wd), "--chdir", str(wd), "--setenv", "HOME", HOME, "--"]
+    return b + cmd
+
+
 def command_for(empresa, modelo, esforco, wd):
+    return bwrap(_agent_cmd(empresa, modelo, esforco, wd), wd)
+
+
+def _agent_cmd(empresa, modelo, esforco, wd):
     if empresa == "codex":
         return ["codex", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox",
                 "-C", str(wd), "-m", modelo, "-c", f"model_reasoning_effort={esforco}", PROMPT]
     if empresa == "claude":
         return ["claude", "-p", PROMPT, "--dangerously-skip-permissions", "--model", modelo, "--effort", esforco]
     if empresa == "gemini":
-        return ["agy", "-p", PROMPT, "--model", modelo, "--effort", esforco, "--dangerously-skip-permissions"]
+        return ["agy", "-p", PROMPT, "--model", f"{modelo}-{esforco}", "--dangerously-skip-permissions"]
     return ["grok", "-p", PROMPT, "-m", modelo, "--effort", esforco,
             "--permission-mode", "bypassPermissions", "--cwd", str(wd)]
 

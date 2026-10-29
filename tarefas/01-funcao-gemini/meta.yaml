@@ -1,0 +1,7 @@
+tipo: 01-funcao
+autor: gemini
+revisor: ""
+timeout_min: 3
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - solucao.py
