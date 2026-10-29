@@ -40,7 +40,7 @@ gemini→codex, codex→claude, claude→grok, grok→gemini. Campo `revisor` e 
 | Endurecimento (4 em paralelo, 17:50) | Codex 6m47s · Gemini 17m08s · Claude 19m06s · Grok 22m27s → ~23 min |
 | Revisão cruzada (4 em paralelo, 18:13) | Claude 3m14s · Codex 4m26s · Gemini 17m05s · Grok 41m05s → ~41 min |
 | Validação, estimativa com Haiku, relatório, PR | ~10 min |
-| **Total** | **~1h25 (17:49–19:10), com uma interrupção no meio (sem retrabalho)** |
+| **Total** | **~1h17 (17:49–19:06), com uma interrupção no meio (sem retrabalho)** |
 
 ## Padronização
 - rubrica.yaml: `itens:` lista de 5 {id, criterio, 0, 1, 2} nas 40.
