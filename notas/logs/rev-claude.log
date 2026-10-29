@@ -1,0 +1,28 @@
+Revisei as 10 tarefas `*-codex`. As suítes estão bem feitas: não encontrei nenhum teste injusto nem enunciado que precisasse mudar. Fiz só dois ajustes de robustez, em 05 e 07. Rodei os testes de cada tarefa num dir temporário com inicial/+referencia/+testes_ocultos/ e todas passam 100%. Em todos os `meta.yaml` defini `revisor: claude` e preenchi o `revisao`.
+
+O comando `python` não existe nesta máquina, então validei com `python3` (3.13, não o 3.11 do enunciado). O comando de cada `meta.yaml` não mudou.
+
+| Tarefa | Mudança | Testes |
+|---|---|---|
+| 01-funcao | sem mudanças | 12 passed |
+| 02-bug | sem mudanças | 12 passed (o código inicial falha 5) |
+| 03-refatoracao | sem mudanças | 10 passed (o código inicial falha 2) |
+| 04-dados | sem mudanças | 15 passed |
+| 05-cli | o subprocess dos testes agora roda com `PYTHONIOENCODING=utf-8` | 18 passed |
+| 06-multiarquivo | sem mudanças | 22 passed |
+| 07-performance | os testes leem só a última linha do stdout do processo que mede o tempo | 11 passed |
+| 08-testes | sem mudanças | 11 passed |
+| 09-api | sem mudanças | 22 passed |
+| 10-ambigua | sem mudanças | 11 passed |
+
+**Os dois ajustes:**
+- **05-cli:** a saída do processo filho tem acentos (JSON com `chá`, `á`) e saía na codificação do locale do avaliador. Com locale diferente de UTF-8, o teste daria resultado diferente conforme a máquina, inclusive para a referência. Agora a codificação é fixa.
+- **07-performance:** um `print` qualquer na solução quebrava a leitura do JSON com `[resultado, duração]`, e a falha não tinha a ver com desempenho. Os limites de tempo não mudaram.
+
+**Por tarefa:**
+- **Tipo 07:** os limites são razoáveis. A referência leva ~0,05s para 200k elementos, contra 2s permitidos por chamada e 5s no total. Testei uma solução quadrática e ela reprova nos dois testes de tempo, como esperado.
+- **Tipo 08:** os 10 mutantes são bugs reais e diferentes entre si: produto trocado por soma, sinal do desconto, arredondamento para cima, frete em carrinho vazio, frete omitido, desconto até 101, quantidade −1 aceita, preço −1 aceito, linha de quantidade zero contando como unidade, e lista de entrada ordenada (alterada). Os dois de frete se distinguem: um cobra frete até no carrinho vazio, o outro só nas linhas de quantidade zero. Nenhum mutante é equivalente ao código correto, e a suíte de referência mata os 10. A execução é isolada (sem plugins, timeout de 8s).
+- **Tipo 10:** os testes só verificam o núcleo explícito (filtrar pendentes, prioridade decrescente, cópias rasas, repetições mantidas, entrada intacta) e a existência do `SUPOSICOES.md`. Empates são checados sem impor ordem, e nenhum teste usa entrada fora do domínio.
+- **Rede e determinismo:** nenhuma suíte usa rede. Os testes com aleatoriedade usam seed fixa (07 e o `FakeAPI` do 09), e as pausas do 09 são injetadas, sem espera real.
+- **Cobertura:** as bordas pedidas pelos enunciados estão cobertas: vazio, duplicatas, negativos, geradores, entrada não alterada, `ValueError` e saída preservada em erro.
+EXIT 0 SECS 125
