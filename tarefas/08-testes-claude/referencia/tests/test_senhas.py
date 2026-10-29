@@ -127,3 +127,51 @@ def test_classificar_invalida_com_espaco():
 
 def test_classificar_curta_nao_e_invalida():
     assert classificar("a") == "fraca"
+
+
+# ---------------- bordas de definição (Unicode, tipos, constante) ----------------
+
+@pytest.mark.parametrize("digito", ["٣", "１", "²", "১"])
+def test_digito_nao_ascii_nao_conta(digito):
+    # "de 0 a 9": dígitos de outros alfabetos não contam (embora str.isdigit() seja True).
+    assert validar_senha("Abcdefg!" + digito) == ["sem_digito"]
+    assert pontuar_senha("ab" + digito) == 3 * 2 + 15
+
+
+def test_sublinhado_e_especial():
+    assert validar_senha("Abcdefg1_") == []
+    assert pontuar_senha("x_") == 4 + 15 + 15
+
+
+def test_especiais_exatos():
+    assert ESPECIAIS == frozenset("!@#$%&*?-_")
+    for nao_especial in ".,;:/+=^~()[]{}<>'\"\\|`":
+        assert "sem_especial" in validar_senha("Abcdef1" + nao_especial)
+
+
+@pytest.mark.parametrize("branco", ["\r", "\x0b", "\x0c", " ", " ", "　"])
+def test_qualquer_isspace_e_espaco(branco):
+    assert validar_senha("Abcd" + branco + "ef1!") == ["espaco"]
+    assert classificar("Abcdefghij" + branco + "1!xyz") == "invalida"
+
+
+def test_espaco_e_ultimo_da_lista():
+    assert validar_senha(" ") == ["curta", "sem_maiuscula", "sem_minuscula", "sem_digito", "sem_especial", "espaco"]
+
+
+@pytest.mark.parametrize("valor", [b"Abcdef1!", ["A", "b", "1", "!"], ("A", "b"), bytearray(b"Ab1!")])
+def test_tipos_iteraveis_nao_str(valor):
+    with pytest.raises(TypeError):
+        validar_senha(valor)
+
+
+def test_trinca_no_final():
+    assert pontuar_senha("Abc1!zzz") == 16 + 60 - 10
+    assert pontuar_senha("aaa") == max(0, 6 + 15 - 10)
+    assert pontuar_senha("Ab1!xyzwvuuu") == 24 + 60 - 10
+
+
+def test_letras_sem_caixa_nao_contam():
+    # "中" é letra (isalpha), mas não é maiúscula nem minúscula.
+    assert validar_senha("中中中中1!ab") == ["sem_maiuscula"]
+    assert validar_senha("中中中中1!AB") == ["sem_minuscula"]

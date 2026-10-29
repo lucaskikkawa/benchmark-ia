@@ -1,9 +1,17 @@
-def unir_intervalos(intervalos) -> list[tuple[int, int]]:
-    """Retorne a união ordenada de intervalos fechados, sem alterar a entrada."""
+def unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]:
+    """Una intervalos fechados em O(n log n), com recorte opcional e sem mutação."""
+    if limites is not None:
+        minimo, maximo = limites
+        if minimo > maximo:
+            raise ValueError("limites invertidos")
     ordenados = []
     for inicio, fim in intervalos:
         if inicio > fim:
             raise ValueError("início maior que fim")
+        if limites is not None:
+            inicio, fim = max(inicio, minimo), min(fim, maximo)
+            if inicio > fim:
+                continue
         ordenados.append((inicio, fim))
     ordenados.sort()
     resultado = []

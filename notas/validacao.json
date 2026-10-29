@@ -1,170 +1,170 @@
 {
  "01-funcao-claude": {
-  "ref": "39 passed in 0.04s",
+  "ref": "23 passed in 0.12s",
   "erros": []
  },
  "01-funcao-codex": {
-  "ref": "12 passed in 0.01s",
+  "ref": "25 passed in 0.10s",
   "erros": []
  },
  "01-funcao-gemini": {
-  "ref": "22 passed in 0.02s",
+  "ref": "33 passed in 0.02s",
   "erros": []
  },
  "01-funcao-grok": {
-  "ref": "26 passed in 0.02s",
+  "ref": "33 passed in 0.04s",
   "erros": []
  },
  "02-bug-claude": {
-  "ref": "15 passed in 0.02s",
-  "inicial": "7 failed, 8 passed in 0.04s",
+  "ref": "26 passed in 0.48s",
+  "inicial": "19 failed, 7 passed in 0.46s",
   "erros": []
  },
  "02-bug-codex": {
-  "ref": "12 passed in 0.01s",
-  "inicial": "5 failed, 7 passed in 0.02s",
+  "ref": "21 passed in 0.06s",
+  "inicial": "12 failed, 9 passed in 0.09s",
   "erros": []
  },
  "02-bug-gemini": {
-  "ref": "14 passed in 0.02s",
-  "inicial": "13 failed, 1 passed in 0.05s",
+  "ref": "20 passed in 0.03s",
+  "inicial": "19 failed, 1 passed in 0.07s",
   "erros": []
  },
  "02-bug-grok": {
-  "ref": "11 passed in 0.02s",
-  "inicial": "9 failed, 2 passed in 0.04s",
+  "ref": "16 passed in 0.01s",
+  "inicial": "14 failed, 2 passed in 0.06s",
   "erros": []
  },
  "03-refatoracao-claude": {
-  "ref": "22 passed in 0.03s",
-  "inicial": "14 failed, 8 passed in 0.05s",
+  "ref": "32 passed in 0.04s",
+  "inicial": "8 failed, 24 passed in 0.07s",
   "erros": []
  },
  "03-refatoracao-codex": {
-  "ref": "10 passed in 0.01s",
-  "inicial": "2 failed, 8 passed in 0.02s",
+  "ref": "19 passed in 0.04s",
+  "inicial": "10 failed, 9 passed in 0.06s",
   "erros": []
  },
  "03-refatoracao-gemini": {
-  "ref": "19 passed in 0.04s",
-  "inicial": "1 error in 0.07s",
+  "ref": "24 passed in 0.03s",
+  "inicial": "1 error in 0.09s",
   "erros": []
  },
  "03-refatoracao-grok": {
-  "ref": "10 passed in 0.02s",
-  "inicial": "2 failed, 8 passed in 0.03s",
+  "ref": "12 passed in 0.02s",
+  "inicial": "3 failed, 9 passed in 0.03s",
   "erros": []
  },
  "04-dados-claude": {
-  "ref": "23 passed in 0.05s",
+  "ref": "32 passed in 0.44s",
   "erros": []
  },
  "04-dados-codex": {
-  "ref": "15 passed in 0.03s",
+  "ref": "47 passed in 0.21s",
   "erros": []
  },
  "04-dados-gemini": {
-  "ref": "13 passed in 0.04s",
+  "ref": "17 passed in 0.04s",
   "erros": []
  },
  "04-dados-grok": {
-  "ref": "13 passed in 0.04s",
+  "ref": "22 passed in 0.08s",
   "erros": []
  },
  "05-cli-claude": {
-  "ref": "19 passed in 0.72s",
+  "ref": "27 passed in 0.98s",
   "erros": []
  },
  "05-cli-codex": {
-  "ref": "18 passed in 0.50s",
+  "ref": "28 passed in 0.74s",
   "erros": []
  },
  "05-cli-gemini": {
-  "ref": "18 passed in 0.58s",
+  "ref": "22 passed in 0.56s",
   "erros": []
  },
  "05-cli-grok": {
-  "ref": "10 passed in 0.94s",
+  "ref": "15 passed in 1.35s",
   "erros": []
  },
  "06-multiarquivo-claude": {
-  "ref": "19 passed in 0.06s",
+  "ref": "40 passed in 0.08s",
   "erros": []
  },
  "06-multiarquivo-codex": {
-  "ref": "22 passed in 0.03s",
+  "ref": "42 passed in 0.16s",
   "erros": []
  },
  "06-multiarquivo-gemini": {
-  "ref": "14 passed in 0.02s",
+  "ref": "18 passed in 0.03s",
   "erros": []
  },
  "06-multiarquivo-grok": {
-  "ref": "10 passed in 0.02s",
+  "ref": "17 passed in 0.03s",
   "erros": []
  },
  "07-performance-claude": {
-  "ref": "16 passed in 0.46s",
+  "ref": "36 passed in 1.95s",
   "erros": []
  },
  "07-performance-codex": {
-  "ref": "11 passed in 0.10s",
+  "ref": "17 passed in 1.49s",
   "erros": []
  },
  "07-performance-gemini": {
-  "ref": "13 passed in 0.37s",
+  "ref": "15 passed in 0.45s",
   "erros": []
  },
  "07-performance-grok": {
-  "ref": "11 passed in 0.08s",
+  "ref": "12 passed in 0.30s",
   "erros": []
  },
  "08-testes-claude": {
-  "ref": "14 passed in 3.28s",
+  "ref": "17 passed in 4.06s",
   "erros": []
  },
  "08-testes-codex": {
-  "ref": "11 passed in 1.79s",
+  "ref": "15 passed in 2.51s",
   "erros": []
  },
  "08-testes-gemini": {
-  "ref": "11 passed in 2.43s",
+  "ref": "13 passed in 2.97s",
   "erros": []
  },
  "08-testes-grok": {
-  "ref": "11 passed in 2.34s",
+  "ref": "15 passed in 3.50s",
   "erros": []
  },
  "09-api-claude": {
-  "ref": "33 passed in 0.03s",
+  "ref": "42 passed in 0.05s",
   "erros": []
  },
  "09-api-codex": {
-  "ref": "22 passed in 0.02s",
+  "ref": "38 passed in 0.04s",
   "erros": []
  },
  "09-api-gemini": {
-  "ref": "29 passed in 0.03s",
+  "ref": "46 passed in 0.04s",
   "erros": []
  },
  "09-api-grok": {
-  "ref": "13 passed in 1.08s",
+  "ref": "18 passed in 2.10s",
   "erros": []
  },
  "10-ambigua-claude": {
-  "ref": "25 passed in 0.02s",
+  "ref": "42 passed in 0.04s",
   "erros": []
  },
  "10-ambigua-codex": {
-  "ref": "11 passed in 0.01s",
+  "ref": "14 passed in 0.13s",
   "erros": []
  },
  "10-ambigua-gemini": {
-  "ref": "14 passed in 0.02s",
+  "ref": "17 passed in 0.02s",
   "erros": []
  },
  "10-ambigua-grok": {
-  "ref": "8 passed in 0.02s",
+  "ref": "11 passed in 0.02s",
   "erros": []
  }
 }

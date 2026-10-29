@@ -31,17 +31,10 @@ def test_negativos_e_positivos():
 
 
 def test_todos_zeros():
-    # Qualquer subarray de zeros soma 0. O maior é a lista inteira (tamanho 5).
     assert maior_subarray_soma([0, 0, 0, 0, 0], 0) == 5
 
 
 def test_multiplos_subarrays_pega_o_maior():
-    # [3, 1, -1, 1, -1, 1] com alvo 3
-    # Subarrays com soma 3:
-    # [3] (len 1)
-    # [3, 1, -1] (len 3)
-    # [3, 1, -1, 1, -1] (len 5)
-    # Deve retornar 5
     assert maior_subarray_soma([3, 1, -1, 1, -1, 1], 3) == 5
 
 
@@ -75,9 +68,30 @@ def test_alvos_negativos_e_repeticao_de_somas():
     assert maior_subarray_soma([1, 0, 0, 0], 1) == 4
 
 
+def test_validacao_tipos_entradas():
+    with pytest.raises(TypeError):
+        maior_subarray_soma([1, 2, "3", 4], 5)
+    with pytest.raises(TypeError):
+        maior_subarray_soma([1, 2.0, 3], 6)
+    with pytest.raises(TypeError):
+        maior_subarray_soma([1, True, 3], 4)
+    with pytest.raises(TypeError):
+        maior_subarray_soma("123", 3)  # type: ignore
+    with pytest.raises(TypeError):
+        maior_subarray_soma([1, 2, 3], 3.0)  # type: ignore
+    with pytest.raises(TypeError):
+        maior_subarray_soma([1, 2, 3], True)  # type: ignore
+
+
+def test_inteiros_gigantes():
+    n = 10**30
+    dados = [n, -n, n, n, -n]
+    assert maior_subarray_soma(dados, n) == 5
+
+
 @pytest.mark.parametrize("caso", ["alternados", "prefixos_distintos", "aleatorio"])
 def test_performance_entrada_grande(caso, tmp_path):
-    tamanho = 250_000
+    tamanho = 350_000
     if caso == "alternados":
         dados, alvo, esperado = [1, -1] * (tamanho // 2), 1, tamanho - 1
     elif caso == "prefixos_distintos":
@@ -85,8 +99,6 @@ def test_performance_entrada_grande(caso, tmp_path):
     else:
         rng = random.Random(42)
         dados, alvo = [rng.randint(-5, 5) for _ in range(tamanho)], 42
-        # Oráculo independente: agrupa a primeira e a última posição de cada
-        # soma prefixada e compara os extremos de grupos separados pelo alvo.
         primeiras, ultimas = {0: 0}, {0: 0}
         soma = 0
         for posicao, valor in enumerate(dados, 1):
@@ -98,8 +110,6 @@ def test_performance_entrada_grande(caso, tmp_path):
             for soma, posicao in primeiras.items() if soma + alvo in ultimas
         ])
 
-    # A geração, a serialização e o oráculo ficam fora da medição. O processo
-    # separado também permite interromper soluções quadráticas que não retornam.
     programa = """
 import json
 import sys

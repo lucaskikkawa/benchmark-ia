@@ -10,6 +10,8 @@ class Acervo:
         self._livros: dict[str, Livro] = {}
 
     def adicionar(self, livro: Livro) -> None:
+        if not isinstance(livro, Livro):
+            raise TypeError(f"esperado Livro, recebido {type(livro).__name__}")
         if livro.isbn in self._livros:
             raise ValueError(f"ISBN já cadastrado: {livro.isbn}")
         self._livros[livro.isbn] = livro

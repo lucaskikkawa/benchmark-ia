@@ -10,7 +10,6 @@ def test_suposicoes_arquivo_existe():
     assert arquivo_suposicoes.is_file(), (
         "O arquivo SUPOSICOES.md é obrigatório e não foi encontrado na raiz do projeto."
     )
-    # Conteúdo e profundidade pertencem à rubrica qualitativa, sem tamanho mínimo.
 
 
 def test_calculo_score_basico():
@@ -118,5 +117,47 @@ def test_nucleo_com_entradas_nao_negativas(compras, anos, score):
     assert res["id"] == "c"
     assert res["nome"] == "N"
     assert type(res["score"]) in (int, float)
+    assert type(res["score"]) is not bool
     assert res["score"] == score
     assert isinstance(res["categoria"], str) and len(res["categoria"]) > 0
+
+
+def test_nao_modifica_dicionario_de_entrada():
+    cliente = {
+        "id": "CLI-MUT",
+        "nome": "Cliente Imutável",
+        "compras": [50.0, 75.0],
+        "anos_ativo": 2,
+    }
+    import copy
+    copia_cliente = copy.deepcopy(cliente)
+    classificar_cliente(cliente)
+    assert cliente == copia_cliente, "A função modificou o dicionário recebido como entrada!"
+
+
+def test_identificadores_unicode():
+    cliente = {
+        "id": "ID-★-999/ã",
+        "nome": "José François 🚀",
+        "compras": [250.0],
+        "anos_ativo": 4,
+    }
+    res = classificar_cliente(cliente)
+    assert res["id"] == "ID-★-999/ã"
+    assert res["nome"] == "José François 🚀"
+    # 250 * 0.1 = 25.0; 4 * 5 = 20.0 -> score = 45.0
+    assert res["score"] == 45.0
+
+
+def test_grande_volume_de_compras():
+    # 10.000 compras de 12.34
+    compras = [12.34] * 10000
+    # soma = 123400.0 -> 10% = 12340.0; anos 10 -> 50.0; total = 12390.0
+    cliente = {
+        "id": "CLI-BIG",
+        "nome": "Cliente Corporativo",
+        "compras": compras,
+        "anos_ativo": 10,
+    }
+    res = classificar_cliente(cliente)
+    assert res["score"] == 12390.0

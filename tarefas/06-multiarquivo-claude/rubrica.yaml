@@ -1,37 +1,26 @@
-total_max: 10
 itens:
-  - id: legibilidade
-    max: 2
-    descricao: "Clareza das classes e métodos."
-    niveis:
-      0: "Métodos longos com lógica duplicada (ex.: validação de isbn repetida em cada método) e nomes pouco claros."
-      1: "Legível, mas com métodos extensos ou estado interno difícil de entender (várias estruturas redundantes)."
-      2: "Métodos curtos, estado interno mínimo e nomeado (ex.: dict isbn -> empréstimo ativo), regras fáceis de localizar."
-  - id: erros_bordas
-    max: 2
-    descricao: "Exceções e regras de negócio."
-    niveis:
-      0: "Usa exceções genéricas (Exception/KeyError vazando) ou não aplica limite/indisponibilidade."
-      1: "Exceções corretas na maioria dos casos, mas erra a ordem das verificações, o atraso (data prevista) ou altera estado antes de validar."
-      2: "Todas as exceções específicas, ordem correta, devolução inválida não altera estado, multa arredondada."
-  - id: idiomatico
-    max: 2
-    descricao: "Python idiomático."
-    niveis:
-      0: "Sem dataclasses, busca linear em listas para tudo, comparação de datas por string."
-      1: "Dataclasses e date/timedelta, mas sem frozen, com getters/setters desnecessários ou sorted sem key."
-      2: "dataclass(frozen=True), dict para índice, timedelta, sorted com key, __len__/__contains__, type hints, raise ... from None."
-  - id: manutenibilidade
-    max: 2
-    descricao: "Modularidade e coesão entre os arquivos."
-    niveis:
-      0: "Imports absolutos/circulares, lógica de empréstimo dentro do Acervo ou tudo em um só módulo."
-      1: "Separação correta, mas ServicoEmprestimos acessa atributos privados do Acervo ou parâmetros fixos (limite, prazo) no código."
-      2: "Cada módulo com responsabilidade única, imports relativos, Serviço usa só a API pública do Acervo, __all__ no __init__."
-  - id: documentacao_instrucoes
-    max: 2
-    descricao: "Atendimento às instruções."
-    niveis:
-      0: "Estrutura de arquivos diferente da pedida ou API pública incompleta no __init__."
-      1: "Estrutura e API corretas, mas sem docstrings nos módulos/classes."
-      2: "Exatamente os 4 arquivos, API completa reexportada e docstrings curtas em módulos e classes."
+- id: legibilidade
+  criterio: Clareza das classes e métodos.
+  0: 'Métodos longos com lógica duplicada (ex.: validação de isbn repetida em cada método) e nomes pouco claros.'
+  1: Legível, mas com métodos extensos ou estado interno difícil de entender (várias estruturas redundantes).
+  2: 'Métodos curtos, estado interno mínimo e nomeado (ex.: dict isbn -> empréstimo ativo), regras fáceis de localizar.'
+- id: erros_bordas
+  criterio: Exceções e regras de negócio.
+  0: Usa exceções genéricas (Exception/KeyError vazando) ou não aplica limite/indisponibilidade.
+  1: Exceções corretas na maioria dos casos, mas erra a ordem das verificações, o atraso (data prevista) ou altera estado antes de validar.
+  2: Todas as exceções específicas, ordem correta, devolução inválida não altera estado, multa arredondada.
+- id: idiomatico
+  criterio: Python idiomático.
+  0: Sem dataclasses, busca linear em listas para tudo, comparação de datas por string.
+  1: Dataclasses e date/timedelta, mas sem frozen, com getters/setters desnecessários ou sorted sem key.
+  2: dataclass(frozen=True), dict para índice, timedelta, sorted com key, __len__/__contains__, type hints, raise ... from None.
+- id: manutenibilidade
+  criterio: Modularidade e coesão entre os arquivos.
+  0: Imports absolutos/circulares, lógica de empréstimo dentro do Acervo ou tudo em um só módulo.
+  1: Separação correta, mas ServicoEmprestimos acessa atributos privados do Acervo ou parâmetros fixos (limite, prazo) no código.
+  2: Cada módulo com responsabilidade única, imports relativos, Serviço usa só a API pública do Acervo, __all__ no __init__.
+- id: documentacao_instrucoes
+  criterio: Atendimento às instruções.
+  0: Estrutura de arquivos diferente da pedida ou API pública incompleta no __init__.
+  1: Estrutura e API corretas, mas sem docstrings nos módulos/classes.
+  2: Exatamente os 4 arquivos, API completa reexportada e docstrings curtas em módulos e classes.

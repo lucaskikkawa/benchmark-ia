@@ -24,4 +24,11 @@ entrega e precisa conter texto não vazio. Não há formato ou palavras obrigat�
 Os testes verificam apenas o núcleo acima e a existência desse documento; não
 impõem ordem entre empates nem comportamento para entradas fora do domínio.
 
+No núcleo, a cópia rasa preserva também quaisquer campos extras e a identidade
+de objetos neles contidos (por exemplo, uma lista em `etiquetas`). Cada ocorrência
+tem seu próprio dicionário de saída, inclusive se o MESMO dicionário aparecer
+várias vezes na entrada. Não normalize títulos. As entradas válidas podem ter
+até 30.000 ocorrências e empates extensos. As verificações continuam sem impor
+política de desempate ou regras para entradas inválidas.
+
 Ambiente: Python 3.11, somente biblioteca padrão na solução; sem rede.

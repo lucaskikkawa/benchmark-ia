@@ -1,29 +1,26 @@
-legibilidade:
-  max: 2
-  0: "Código confuso, com cálculos misturados e sem nomes de variáveis compreensíveis."
-  1: "Código legível, mas com lógica de categorização ou desvios condicionais pouco claros."
-  2: "Código extremamente limpo, linear e expressivo, com separação evidente entre score de compras, fidelidade e categorização."
-
-erros_bordas:
-  max: 2
-  0: "Falha quando lista de compras é vazia, anos_ativo é zero ou em arredondamento de centavos."
-  1: "Trata compras vazias e anos zero, mas com imprecisões no arredondamento decimal ou campos faltantes."
-  2: "Trata com exatidão compras vazias, anos ativo zero, arredondamento correto de 2 casas decimais e preservação estrita de chaves."
-
-idiomatico:
-  max: 2
-  0: "Usa construções não idiomáticas, como loops manuais para somas simples e manipulações frágeis de dicionário."
-  1: "Usa sum e dicts, mas sem aproveitar métodos seguros como dict.get ou expressões pythônicas."
-  2: "Código pythônico e seguro usando sum, dict.get com valores padrão, f-strings e estruturas concisas."
-
-manutenibilidade:
-  max: 2
-  0: "Regras de pontuação e categorização acopladas em blocos rígidos difíceis de ajustar."
-  1: "Código funcional, porém com faixas de pontuação codificadas diretamente sem fácil configuração."
-  2: "Boa separação lógica, permitindo fácil alteração das regras de categoria e dos pesos de pontuação."
-
-documentacao_instrucoes:
-  max: 2
-  0: "Não criou o arquivo SUPOSICOES.md ou o arquivo está vazio/genérico sem tratar as ambiguidades da tarefa."
-  1: "Criou o arquivo SUPOSICOES.md, mas tratou apenas uma das ambiguidades de forma superficial."
-  2: "Arquivo SUPOSICOES.md completo, bem fundamentado e estruturado, justificando claramente as decisões sobre faixas de categoria, valores negativos, anos ativos e campos extras."
+itens:
+- id: legibilidade
+  criterio: legibilidade
+  0: Código confuso, com cálculos misturados e sem nomes de variáveis compreensíveis.
+  1: Código legível, mas com lógica de categorização ou desvios condicionais pouco claros.
+  2: Código extremamente limpo, linear e expressivo, com separação evidente entre score de compras, fidelidade e categorização.
+- id: erros_bordas
+  criterio: erros bordas
+  0: Falha quando lista de compras é vazia, anos_ativo é zero ou em arredondamento de centavos.
+  1: Trata compras vazias e anos zero, mas com imprecisões no arredondamento decimal ou campos faltantes.
+  2: Trata com exatidão compras vazias, anos ativo zero, arredondamento correto de 2 casas decimais e preservação estrita de chaves.
+- id: idiomatico
+  criterio: idiomatico
+  0: Usa construções não idiomáticas, como loops manuais para somas simples e manipulações frágeis de dicionário.
+  1: Usa sum e dicts, mas sem aproveitar métodos seguros como dict.get ou expressões pythônicas.
+  2: Código pythônico e seguro usando sum, dict.get com valores padrão, f-strings e estruturas concisas.
+- id: manutenibilidade
+  criterio: manutenibilidade
+  0: Regras de pontuação e categorização acopladas em blocos rígidos difíceis de ajustar.
+  1: Código funcional, porém com faixas de pontuação codificadas diretamente sem fácil configuração.
+  2: Boa separação lógica, permitindo fácil alteração das regras de categoria e dos pesos de pontuação.
+- id: documentacao_instrucoes
+  criterio: documentacao instrucoes
+  0: Não criou o arquivo SUPOSICOES.md ou o arquivo está vazio/genérico sem tratar as ambiguidades da tarefa.
+  1: Criou o arquivo SUPOSICOES.md, mas tratou apenas uma das ambiguidades de forma superficial.
+  2: Arquivo SUPOSICOES.md completo, bem fundamentado e estruturado, justificando claramente as decisões sobre faixas de categoria, valores negativos, anos ativos e campos extras.

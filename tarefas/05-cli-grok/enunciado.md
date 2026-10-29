@@ -34,17 +34,20 @@ Formato (UTF-8, `indent=2`, `ensure_ascii=False`, quebra de linha final):
 Na leitura, qualquer JSON que não siga esse formato gera `erro: arquivo invalido` (código 2). Exija:
 
 - objeto com exatamente as chaves `proximo_id` e `tarefas`;
-- `proximo_id` inteiro ≥ 1 (`bool` não vale) e **maior** que todo `id` já usado (se não houver tarefas, só ≥ 1);
+- `proximo_id` inteiro ≥ 1 (`bool` não vale; `1.0` também não) e **maior** que todo `id` já usado (se não houver tarefas, só ≥ 1). Buracos são válidos: ids `1` e `3` com `proximo_id` `5` podem ser listados. O próximo `adicionar` grava id `5`, não `4` e não `max+1`;
 - `tarefas` é uma lista de objetos com exatamente `id`, `titulo`, `prioridade`, `prazo`, `concluida`;
 - `id` inteiro ≥ 1, único, não `bool`;
-- `titulo` string não vazia, sem `\n`, `\r` ou `\t`;
+- `titulo` string não vazia depois das regras abaixo, sem `\n`, `\r` ou `\t`, e sem espaço nas pontas (o arquivo já deve estar normalizado; título `"  a  "` ou `"\n"` é inválido);
 - `prioridade` é `baixa`, `media` ou `alta`;
-- `prazo` é `null` ou `YYYY-MM-DD` de um dia real;
-- `concluida` é bool.
+- `prazo` é `null` ou `YYYY-MM-DD` de um dia real no calendário gregoriano de `datetime.date` (anos 1 a 9999). `2000-02-29` existe; `1900-02-29` e `2100-02-29` não;
+- `concluida` é bool (`0` e `1` não valem).
+- `id` duplicado, chave a mais ou chave a menos torna o arquivo inválido.
 
 ## adicionar
 
-- `--titulo` é obrigatório. Vale o texto depois de `strip`. Se ficar vazio: `erro: titulo vazio`.
+- `--titulo` é obrigatório. Vale o texto depois de `str.strip` (isso inclui espaços Unicode, como `\u00a0`). Se ficar vazio: `erro: titulo vazio`.
+- `adicionar` em arquivo que já existe e é inválido: `erro: arquivo invalido`, e o arquivo **permanece byte a byte** como estava.
+- `listar` não reescreve o arquivo.
 - Se o título (já sem espaços das pontas) contiver `\n`, `\r` ou `\t`: `erro: titulo invalido`.
 - `--prioridade` obrigatória, uma das três opções.
 - `--prazo` opcional. Se vier, tem de ser uma data real `YYYY-MM-DD`; senão `erro: prazo invalido`. Ausente grava `null`.
@@ -68,7 +71,7 @@ id	prioridade	estado	prazo	titulo
 
 ## concluir
 
-- `--id` inteiro. Se não existir: `erro: id inexistente`.
+- `--id` inteiro (`01` é o id `1`). Se não existir: `erro: id inexistente`.
 - Se já estiver concluída: `erro: ja concluida`.
 - Senão marque `concluida` true, grave o arquivo e imprima `ok id=N\n` com código 0.
 

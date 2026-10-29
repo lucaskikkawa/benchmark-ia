@@ -10,6 +10,7 @@ from .modelos import (
     Livro,
     LivroIndisponivel,
     LivroNaoEncontrado,
+    RenovacaoNegada,
 )
 
 __all__ = [
@@ -21,5 +22,6 @@ __all__ = [
     "Livro",
     "LivroIndisponivel",
     "LivroNaoEncontrado",
+    "RenovacaoNegada",
     "ServicoEmprestimos",
 ]

@@ -9,20 +9,25 @@ Sua tarefa é corrigir e refatorar o arquivo `carrinho.py` na raiz do diretório
 A classe `CarrinhoDeCompras` deve conter os seguintes métodos:
 
 - `__init__(self, itens: dict | None = None) -> None`:
-  Inicializa o carrinho. Instâncias diferentes NÃO devem compartilhar o dicionário de itens.
+  - Inicializa o carrinho. Instâncias diferentes NÃO devem compartilhar o dicionário de itens.
+  - Se `itens` for fornecido, deve criar uma cópia isolada (incluindo os dicionários internos de cada item) para garantir que alterações externas posteriores não modifiquem o carrinho.
 
 - `adicionar_item(self, nome: str, preco: float, quantidade: int = 1) -> None`:
-  - Deve validar se `preco > 0` e se `quantidade > 0`; caso contrário, levanta `ValueError`.
+  - `nome` deve ser uma string não vazia (`isinstance(nome, str)` e `nome.strip() != ""`); caso contrário, levanta `ValueError` (se vazia/em branco) ou `TypeError` (se não for string).
+  - `preco` deve ser `int` ou `float` (rejeitando `bool`) estritamente positivo (`preco > 0`). Se `<= 0`, levanta `ValueError`; se não for numérico, levanta `TypeError`.
+  - `quantidade` deve ser um número inteiro (`type(quantidade) is int`) estritamente positivo (`quantidade > 0`). Se `<= 0`, levanta `ValueError`; se não for `int`, levanta `TypeError`.
   - Se o item já existir no carrinho, incrementa a quantidade existente e atualiza o preço unitário para o novo valor informado.
 
 - `remover_item(self, nome: str, quantidade: int | None = None) -> None`:
   - Se `nome` não estiver no carrinho, levanta `KeyError`.
+  - Se `quantidade` for informada e não for `int` (rejeitando `bool`), levanta `TypeError`.
   - Se `quantidade` for informada e for `<= 0`, levanta `ValueError`.
   - Se `quantidade is None` ou se `quantidade >= quantidade_atual`, remove completamente o item do carrinho.
   - Se `quantidade < quantidade_atual`, subtrai a quantidade correspondente.
 
 - `aplicar_cupom(self, codigo: str, desconto_porcentagem: float) -> None`:
-  - `desconto_porcentagem` deve estar entre `0` e `100` (inclusive). Se for menor que 0 ou maior que 100, levanta `ValueError`.
+  - `codigo` deve ser uma string não vazia (`isinstance(codigo, str)` e `codigo.strip() != ""`); caso contrário, levanta `ValueError` (se vazia/em branco) ou `TypeError` (se não for string).
+  - `desconto_porcentagem` deve ser `int` ou `float` (rejeitando `bool`) entre `0` e `100` (inclusive). Se menor que 0 ou maior que 100, levanta `ValueError`; se não for numérico, levanta `TypeError`.
   - Substitui qualquer cupom anteriormente aplicado.
 
 - `remover_cupom(self) -> None`:
@@ -38,7 +43,7 @@ A classe `CarrinhoDeCompras` deve conter os seguintes métodos:
   - Retorna `subtotal - desconto`, arredondado para 2 casas decimais (nunca inferior a 0.0).
 
 - `listar_itens(self) -> list[dict]`:
-  - Retorna lista de dicionários com os itens presentes, **ordenados alfabeticamente pelo nome do item**:
+  - Retorna nova lista de novos dicionários com os itens presentes, **ordenados pelo nome do item usando a ordem lexicográfica padrão do Python (`sorted`, sem locale)**, inclusive para nomes com acentos:
     ```python
     [
         {
@@ -50,3 +55,4 @@ A classe `CarrinhoDeCompras` deve conter os seguintes métodos:
         ...
     ]
     ```
+  - Alterações nos dicionários retornados não devem impactar o estado interno do carrinho.

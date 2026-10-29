@@ -1,29 +1,26 @@
-legibilidade:
-  max: 2
-  0: "Código procedural confuso, com parsing manual de sys.argv ou blocos misturados sem funções auxiliares."
-  1: "Usa argparse, mas com código extenso no bloco principal e pouca clareza na formatação das saídas."
-  2: "Código claro e modular, separando configuração de argumentos, processamento textual e formatação de saídas."
-
-erros_bordas:
-  max: 2
-  0: "Não diferencia códigos de saída (ex: lança traceback não tratado ou sai sempre com 0 ou 1) ou quebra com arquivo vazio."
-  1: "Trata arquivo inexistente com exit code 1, mas falha na validação de --top < 1 (exit code 2) ou no tratamento de pontuação."
-  2: "Mapeamento rigoroso de códigos de saída (0 para sucesso, 1 para arquivo inexistente na stderr, 2 para argumentos inválidos), arquivos vazios e pontuação."
-
-idiomatico:
-  max: 2
-  0: "Não utiliza argparse ou sys.exit de forma idiomática (ex: faz checagem ingênua de flags em sys.argv)."
-  1: "Usa argparse e json, mas com contagens manuais ineficientes em vez de Counter/splitlines."
-  2: "Usa argparse com flags idiomáticas, collections.Counter para contagem de palavras e pathlib.Path com context managers."
-
-manutenibilidade:
-  max: 2
-  0: "Alta duplicação de lógica entre saídas texto e JSON, tornando difícil adicionar novas métricas."
-  1: "Código estruturado, mas lógica de cálculo de métricas entrelaçada com impressão em stdout."
-  2: "Excelente divisão de responsabilidades, facilitando adição de novas métricas ou formatos de saída sem reescrever a CLI."
-
-documentacao_instrucoes:
-  max: 2
-  0: "Não atende à especificação de nomes de flags, mensagens de saída ou parâmetros posicionais."
-  1: "Atende à especificação das flags, mas com descrições help ausentes no parser e sem docstrings."
-  2: "Help do argparse detalhado e explicativo para cada opção, docstrings informativas e atendimento estrito ao formato exigido."
+itens:
+- id: legibilidade
+  criterio: legibilidade
+  0: Código procedural confuso, com parsing manual de sys.argv ou blocos misturados sem funções auxiliares.
+  1: Usa argparse, mas com código extenso no bloco principal e pouca clareza na formatação das saídas.
+  2: Código claro e modular, separando configuração de argumentos, processamento textual e formatação de saídas.
+- id: erros_bordas
+  criterio: erros bordas
+  0: 'Não diferencia códigos de saída (ex: lança traceback não tratado ou sai sempre com 0 ou 1) ou quebra com arquivo vazio.'
+  1: Trata arquivo inexistente com exit code 1, mas falha na validação de --top < 1 (exit code 2) ou no tratamento de pontuação.
+  2: Mapeamento rigoroso de códigos de saída (0 para sucesso, 1 para arquivo inexistente na stderr, 2 para argumentos inválidos), arquivos vazios e pontuação.
+- id: idiomatico
+  criterio: idiomatico
+  0: 'Não utiliza argparse ou sys.exit de forma idiomática (ex: faz checagem ingênua de flags em sys.argv).'
+  1: Usa argparse e json, mas com contagens manuais ineficientes em vez de Counter/splitlines.
+  2: Usa argparse com flags idiomáticas, collections.Counter para contagem de palavras e pathlib.Path com context managers.
+- id: manutenibilidade
+  criterio: manutenibilidade
+  0: Alta duplicação de lógica entre saídas texto e JSON, tornando difícil adicionar novas métricas.
+  1: Código estruturado, mas lógica de cálculo de métricas entrelaçada com impressão em stdout.
+  2: Excelente divisão de responsabilidades, facilitando adição de novas métricas ou formatos de saída sem reescrever a CLI.
+- id: documentacao_instrucoes
+  criterio: documentacao instrucoes
+  0: Não atende à especificação de nomes de flags, mensagens de saída ou parâmetros posicionais.
+  1: Atende à especificação das flags, mas com descrições help ausentes no parser e sem docstrings.
+  2: Help do argparse detalhado e explicativo para cada opção, docstrings informativas e atendimento estrito ao formato exigido.

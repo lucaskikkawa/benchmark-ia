@@ -2,6 +2,7 @@
 
 import csv
 import json
+import math
 from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -35,20 +36,25 @@ class _AcumuladorRegiao:
         mais_vendido = min(self.quantidade_por_produto.items(), key=lambda par: (-par[1], par[0]))[0]
         return {
             "quantidade_total": self.quantidade_total,
-            "total_vendas": round(self.total_vendas, 2),
+            "total_vendas": float(round(self.total_vendas, 2)),
             "produto_mais_vendido": mais_vendido,
         }
 
 
 def _converter_linha(linha: dict) -> _Venda | None:
     """Converte uma linha do CSV em _Venda, ou None se a linha for inválida."""
-    valores = {chave: (valor or "").strip() for chave, valor in linha.items() if chave is not None}
+    # DictReader: campos a mais ficam sob a chave None; campos a menos viram None.
+    if None in linha or any(valor is None for valor in linha.values()):
+        return None
+    valores = {chave: valor.strip() for chave, valor in linha.items()}
     try:
         quantidade = int(valores["quantidade"])
         preco = float(valores["preco_unitario"])
     except ValueError:
         return None
-    if not valores["regiao"] or not valores["produto"] or quantidade <= 0 or preco < 0:
+    if not valores["regiao"] or not valores["produto"] or quantidade <= 0:
+        return None
+    if not math.isfinite(preco) or preco < 0:
         return None
     return _Venda(valores["regiao"], valores["produto"], quantidade, preco, valores["status"])
 
@@ -58,7 +64,8 @@ def resumir_vendas(entrada: str | Path, saida: str | Path) -> dict:
     acumuladores: dict[str, _AcumuladorRegiao] = {}
     linhas_invalidas = 0
 
-    with open(entrada, encoding="utf-8", newline="") as arquivo:
+    # utf-8-sig: aceita (e descarta) BOM no início do arquivo.
+    with open(entrada, encoding="utf-8-sig", newline="") as arquivo:
         leitor = csv.DictReader(arquivo)
         faltando = COLUNAS_OBRIGATORIAS - {c.strip() for c in leitor.fieldnames or []}
         if faltando:
@@ -75,8 +82,10 @@ def resumir_vendas(entrada: str | Path, saida: str | Path) -> dict:
     regioes = {regiao: acumuladores[regiao].resumo() for regiao in sorted(acumuladores)}
     resumo = {
         "regioes": regioes,
-        "total_geral": round(sum(r["total_vendas"] for r in regioes.values()), 2),
+        "total_geral": round(sum((r["total_vendas"] for r in regioes.values()), 0.0), 2),
         "linhas_invalidas": linhas_invalidas,
     }
-    Path(saida).write_text(json.dumps(resumo, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    saida = Path(saida)
+    saida.parent.mkdir(parents=True, exist_ok=True)
+    saida.write_text(json.dumps(resumo, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return resumo

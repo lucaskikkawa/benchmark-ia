@@ -1,11 +1,12 @@
 tipo: 06-multiarquivo
 autor: gemini
 revisor: codex
-timeout_min: 5
-comando_teste: "python -m pytest -q testes_ocultos"
+timeout_min: 3
+comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
-  - eventhub/__init__.py
-  - eventhub/models.py
-  - eventhub/handlers.py
-  - eventhub/bus.py
-revisao: "Cobertos modelos, exports, duplicatas, isolamento, cópia da DLQ e continuidade após falha; ordenação sem relógio monotônico presumido."
+- eventhub/__init__.py
+- eventhub/models.py
+- eventhub/handlers.py
+- eventhub/bus.py
+revisao: Ordem de publicação no histórico explicitada; demais exigências têm base no contrato.
+endurecimento: Propagação obrigatória de exceções quando dlq é None, eventos encadeados gerados dentro de handlers, despacho de tópicos sem inscritos e imutabilidade do histórico retornado.

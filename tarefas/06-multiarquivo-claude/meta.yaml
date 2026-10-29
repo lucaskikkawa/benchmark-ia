@@ -1,11 +1,12 @@
 tipo: 06-multiarquivo
 autor: claude
 revisor: grok
-revisao: "testes: limite e multa padrão, ordem das verificações, Emprestimo imutável, pacote exato e imports do __init__"
+revisao: imports relativos via AST; busca ordena por comparação simples de str
 timeout_min: 5
-comando_teste: "python -m pytest -q testes_ocultos"
+comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
-  - biblioteca/__init__.py
-  - biblioteca/modelos.py
-  - biblioteca/acervo.py
-  - biblioteca/emprestimos.py
+- biblioteca/__init__.py
+- biblioteca/modelos.py
+- biblioteca/acervo.py
+- biblioteca/emprestimos.py
+endurecimento: 'novos requisitos: Livro valida campos (TypeError/ValueError), adicionar só Livro, busca com casefold e trecho vazio, validação do construtor, max_renovacoes + renovar() (ordem de erros, prazo nunca encurta, RenovacaoNegada), atrasados(), Emprestimo.renovacoes, __all__ exato, serviço enxerga o acervo vivo'

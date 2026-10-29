@@ -1,11 +1,12 @@
 tipo: 06-multiarquivo
 autor: codex
 revisor: claude
-revisao: "sem mudanças"
+revisao: sem mudanças
 timeout_min: 5
-comando_teste: "python -m pytest -q testes_ocultos"
+comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
-  - "estoque/__init__.py"
-  - "estoque/modelos.py"
-  - "estoque/operacoes.py"
-  - "estoque/persistencia.py"
+- estoque/__init__.py
+- estoque/modelos.py
+- estoque/operacoes.py
+- estoque/persistencia.py
+endurecimento: Validação JSON ampliada, integração em volume, saldos exatos e imutabilidade em falhas.

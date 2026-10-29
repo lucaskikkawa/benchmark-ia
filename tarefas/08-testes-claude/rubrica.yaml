@@ -1,37 +1,26 @@
-total_max: 10
 itens:
-  - id: legibilidade
-    max: 2
-    descricao: "Clareza da suíte de testes."
-    niveis:
-      0: "Poucos testes gigantes com dezenas de asserts sem relação; nomes genéricos (test_1, test_a)."
-      1: "Testes separados, mas nomes pouco descritivos ou valores esperados sem explicação (números mágicos)."
-      2: "Um comportamento por teste, nomes que descrevem a regra testada, valores esperados derivados de forma legível (ex.: 4 * 2 + 15)."
-  - id: erros_bordas
-    max: 2
-    descricao: "Cobertura de bordas da especificação."
-    niveis:
-      0: "Só casos felizes; não testa exceções nem limites."
-      1: "Testa exceções e algumas bordas, mas omite limites exatos (tamanho == mínimo, pontuação 50/80, 20 caracteres, piso 0) ou espaços não-literais (tab)."
-      2: "Cobre TypeError/ValueError, limites exatos de tamanho e faixas, ordem dos problemas, trincas sobrepostas, piso/teto da pontuação e brancos variados."
-  - id: idiomatico
-    max: 2
-    descricao: "Uso idiomático de pytest."
-    niveis:
-      0: "Usa unittest verboso sem necessidade, try/except manual no lugar de pytest.raises, ou prints."
-      1: "Usa pytest, mas repete testes quase idênticos em vez de parametrizar."
-      2: "pytest.raises, pytest.mark.parametrize para variações, asserts simples e diretos."
-  - id: manutenibilidade
-    max: 2
-    descricao: "Robustez e independência dos testes."
-    niveis:
-      0: "Testes dependem de ordem/estado compartilhado, aleatoriedade sem seed ou copiam a implementação para calcular o esperado."
-      1: "Independentes, mas frágeis (ex.: comparam mensagens de exceção ou detalhes internos não especificados)."
-      2: "Independentes, determinísticos, testam só o contrato público das docstrings."
-  - id: documentacao_instrucoes
-    max: 2
-    descricao: "Atendimento às instruções."
-    niveis:
-      0: "Altera senhas.py, suíte fora de tests/ ou que não passa no módulo correto."
-      1: "tests/test_senhas.py correto, mas sem organização por função testada nem docstring/comentários de seção."
-      2: "Suíte em tests/test_senhas.py, passa no módulo correto, agrupada por função (seções/classes) com comentários breves onde a regra não é óbvia."
+- id: legibilidade
+  criterio: Clareza da suíte de testes.
+  0: Poucos testes gigantes com dezenas de asserts sem relação; nomes genéricos (test_1, test_a).
+  1: Testes separados, mas nomes pouco descritivos ou valores esperados sem explicação (números mágicos).
+  2: 'Um comportamento por teste, nomes que descrevem a regra testada, valores esperados derivados de forma legível (ex.: 4 * 2 + 15).'
+- id: erros_bordas
+  criterio: Cobertura de bordas da especificação.
+  0: Só casos felizes; não testa exceções nem limites.
+  1: Testa exceções e algumas bordas, mas omite limites exatos (tamanho == mínimo, pontuação 50/80, 20 caracteres, piso 0) ou espaços não-literais (tab).
+  2: Cobre TypeError/ValueError, limites exatos de tamanho e faixas, ordem dos problemas, trincas sobrepostas, piso/teto da pontuação e brancos variados.
+- id: idiomatico
+  criterio: Uso idiomático de pytest.
+  0: Usa unittest verboso sem necessidade, try/except manual no lugar de pytest.raises, ou prints.
+  1: Usa pytest, mas repete testes quase idênticos em vez de parametrizar.
+  2: pytest.raises, pytest.mark.parametrize para variações, asserts simples e diretos.
+- id: manutenibilidade
+  criterio: Robustez e independência dos testes.
+  0: Testes dependem de ordem/estado compartilhado, aleatoriedade sem seed ou copiam a implementação para calcular o esperado.
+  1: 'Independentes, mas frágeis (ex.: comparam mensagens de exceção ou detalhes internos não especificados).'
+  2: Independentes, determinísticos, testam só o contrato público das docstrings.
+- id: documentacao_instrucoes
+  criterio: Atendimento às instruções.
+  0: Altera senhas.py, suíte fora de tests/ ou que não passa no módulo correto.
+  1: tests/test_senhas.py correto, mas sem organização por função testada nem docstring/comentários de seção.
+  2: Suíte em tests/test_senhas.py, passa no módulo correto, agrupada por função (seções/classes) com comentários breves onde a regra não é óbvia.

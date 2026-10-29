@@ -1,30 +1,26 @@
-legibilidade:
-  max: 2
-  descricao:
-    0: "Nomes não distinguem valor, complemento e frequência."
-    1: "Nomes são claros, mas a contagem de pares não é explicável pelo fluxo."
-    2: "Nomes evidenciam soma de frequências anteriores e total de pares."
-erros_bordas:
-  max: 2
-  descricao:
-    0: "Conta elemento consigo ou perde duplicatas."
-    1: "Conta casos comuns, mas perde vazio, negativos ou geradores."
-    2: "Conta índices distintos, duplicatas, negativos, zeros e geradores sem mutação."
-idiomatico:
-  max: 2
-  descricao:
-    0: "Enumera todos os pares ou usa dependências externas."
-    1: "Usa dicionário, mas mantém listas auxiliares de pares."
-    2: "Usa frequência em dict/Counter e aritmética inteira em uma passagem."
-manutenibilidade:
-  max: 2
-  descricao:
-    0: "Inclui atalhos para entradas específicas ou estado global."
-    1: "Algoritmo geral, mas com caminhos duplicados para valores repetidos."
-    2: "Regra única de complemento, estado local e memória O(k)."
-documentacao_instrucoes:
-  max: 2
-  descricao:
-    0: "Arquivo ou assinatura ausente."
-    1: "Interface correta sem explicar pares ou complexidade."
-    2: "Docstring esclarece i < j e a estratégia/complexidade linear."
+itens:
+- id: legibilidade
+  criterio: legibilidade
+  0: Nomes não distinguem valor, complemento e frequência.
+  1: Nomes são claros, mas a contagem de pares não é explicável pelo fluxo.
+  2: Nomes evidenciam soma de frequências anteriores e total de pares.
+- id: erros_bordas
+  criterio: erros bordas
+  0: Conta elemento consigo ou perde duplicatas.
+  1: Conta casos comuns, mas perde vazio, negativos ou geradores.
+  2: Conta índices distintos, duplicatas, negativos, zeros e geradores sem mutação.
+- id: idiomatico
+  criterio: idiomatico
+  0: Enumera todos os pares ou usa dependências externas.
+  1: Usa dicionário, mas mantém listas auxiliares de pares.
+  2: Usa frequência em dict/Counter e aritmética inteira em uma passagem.
+- id: manutenibilidade
+  criterio: manutenibilidade
+  0: Inclui atalhos para entradas específicas ou estado global.
+  1: Algoritmo geral, mas com caminhos duplicados para valores repetidos.
+  2: Regra única de complemento, estado local e memória O(k).
+- id: documentacao_instrucoes
+  criterio: documentacao instrucoes
+  0: Arquivo ou assinatura ausente.
+  1: Interface correta sem explicar pares ou complexidade.
+  2: Docstring esclarece i < j e a estratégia/complexidade linear.

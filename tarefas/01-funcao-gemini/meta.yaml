@@ -2,7 +2,8 @@ tipo: 01-funcao
 autor: gemini
 revisor: codex
 timeout_min: 3
-comando_teste: "python -m pytest -q testes_ocultos"
+comando_teste: python -m pytest -q testes_ocultos
 arquivos_solucao:
-  - solucao.py
-revisao: "Adicionadas bordas de duplicatas, inteiros grandes, containers e tipos inválidos."
+- solucao.py
+revisao: Oráculo completo no caso volumoso; mantidos tipos estritos e imutabilidade.
+endurecimento: Imutabilidade da lista de entrada, rejeição estrita de subclasses de int (como bool e tipos derivados), grandes volumes de dados desordenados e bordas com negativos e inteiros arbitrários.

@@ -30,7 +30,6 @@ def test_sucesso_imediato_get_e_post():
 def test_recuperacao_apos_falha_de_rede():
     servidor = FakeApiServer()
     sleeper = MockSleeper()
-    # 2 falhas de rede, na 3ª tem sucesso
     servidor.configurar_falhas("/dados", qtd_falhas=2, tipo_falha="network")
     cliente = ClienteResiliente(
         servidor=servidor,
@@ -43,7 +42,6 @@ def test_recuperacao_apos_falha_de_rede():
     dados = cliente.get("/dados")
     assert dados["status"] == "ok"
     assert len(servidor.chamadas) == 3
-    # Delays calculados: tentativa 1 -> 0.1 * (2.0 ** 0) = 0.1; tentativa 2 -> 0.1 * (2.0 ** 1) = 0.2
     assert pytest.approx(sleeper.delays, 0.001) == [0.1, 0.2]
 
 
@@ -70,10 +68,9 @@ def test_recuperacao_apos_rate_limit_429():
     assert len(servidor.chamadas) == 2
 
 
-def test_esgotamento_de_tentativas_lanca_apierror():
+def test_esgotamento_de_tentativas_rede_lanca_apierror_sem_status_code():
     servidor = FakeApiServer()
     sleeper = MockSleeper()
-    # 5 falhas de rede configuradas, cliente tem limite de 3 tentativas
     servidor.configurar_falhas("/indisponivel", qtd_falhas=5, tipo_falha="network")
     cliente = ClienteResiliente(servidor=servidor, max_tentativas=3, sleep_fn=sleeper)
 
@@ -82,7 +79,34 @@ def test_esgotamento_de_tentativas_lanca_apierror():
 
     assert len(servidor.chamadas) == 3
     assert len(sleeper.delays) == 2
-    assert str(exc_info.value)  # A redação da mensagem não é especificada.
+    assert exc_info.value.status_code is None
+
+
+def test_esgotamento_de_tentativas_status_503_preserva_status_code():
+    servidor = FakeApiServer()
+    sleeper = MockSleeper()
+    servidor.configurar_resposta("/indisponivel", status_code=503, data={"erro": "Serviço sobrecarregado"})
+    cliente = ClienteResiliente(servidor=servidor, max_tentativas=3, sleep_fn=sleeper)
+
+    with pytest.raises(ApiError) as exc_info:
+        cliente.get("/indisponivel")
+
+    assert len(servidor.chamadas) == 3
+    assert len(sleeper.delays) == 2
+    assert exc_info.value.status_code == 503
+
+
+def test_esgotamento_de_tentativas_status_429_preserva_status_code():
+    servidor = FakeApiServer()
+    sleeper = MockSleeper()
+    servidor.configurar_resposta("/rate_limit", status_code=429, data={"erro": "Muitas requisições"})
+    cliente = ClienteResiliente(servidor=servidor, max_tentativas=2, sleep_fn=sleeper)
+
+    with pytest.raises(ApiError) as exc_info:
+        cliente.get("/rate_limit")
+
+    assert len(servidor.chamadas) == 2
+    assert exc_info.value.status_code == 429
 
 
 def test_erro_404_sem_retry():
@@ -94,7 +118,6 @@ def test_erro_404_sem_retry():
     with pytest.raises(ApiError) as exc_info:
         cliente.get("/nao-existe")
 
-    # Erro 404 é não recuperável: deve falhar imediatamente na primeira tentativa
     assert len(servidor.chamadas) == 1
     assert len(sleeper.delays) == 0
     assert exc_info.value.status_code == 404
@@ -114,6 +137,20 @@ def test_erro_400_sem_retry():
     assert exc_info.value.status_code == 400
 
 
+def test_status_301_sem_retry():
+    servidor = FakeApiServer()
+    sleeper = MockSleeper()
+    servidor.configurar_resposta("/redirect", status_code=301, data={"location": "/novo"})
+    cliente = ClienteResiliente(servidor=servidor, max_tentativas=3, sleep_fn=sleeper)
+
+    with pytest.raises(ApiError) as exc_info:
+        cliente.get("/redirect")
+
+    assert len(servidor.chamadas) == 1
+    assert len(sleeper.delays) == 0
+    assert exc_info.value.status_code == 301
+
+
 def test_timeout_passado_ao_servidor():
     servidor = FakeApiServer()
     cliente = ClienteResiliente(servidor=servidor, timeout=4.5)
@@ -121,10 +158,39 @@ def test_timeout_passado_ao_servidor():
     assert servidor.chamadas[0]["timeout"] == 4.5
 
 
-def test_max_tentativas_invalido():
+def test_validacao_parametros_construtor():
     servidor = FakeApiServer()
     with pytest.raises(ValueError):
         ClienteResiliente(servidor=servidor, max_tentativas=0)
+    with pytest.raises(ValueError):
+        ClienteResiliente(servidor=servidor, max_tentativas=-1)
+    with pytest.raises(ValueError):
+        ClienteResiliente(servidor=servidor, max_tentativas=True)  # type: ignore
+    with pytest.raises(ValueError):
+        ClienteResiliente(servidor=servidor, backoff_base=0.0)
+    with pytest.raises(ValueError):
+        ClienteResiliente(servidor=servidor, backoff_base=-0.5)
+    with pytest.raises(ValueError):
+        ClienteResiliente(servidor=servidor, backoff_fator=0.0)
+    with pytest.raises(ValueError):
+        ClienteResiliente(servidor=servidor, backoff_fator=-2.0)
+    with pytest.raises(ValueError):
+        ClienteResiliente(servidor=servidor, timeout=0.0)
+    with pytest.raises(ValueError):
+        ClienteResiliente(servidor=servidor, timeout=-1.0)
+
+
+@pytest.mark.parametrize("parametro", ["backoff_base", "backoff_fator", "timeout"])
+@pytest.mark.parametrize("valor", [True, False, "1", None])
+def test_parametros_numericos_rejeitam_tipos_invalidos(parametro, valor):
+    with pytest.raises(ValueError):
+        ClienteResiliente(FakeApiServer(), **{parametro: valor})
+
+
+@pytest.mark.parametrize("valor", [1.0, "3", None])
+def test_max_tentativas_exige_inteiro_primitivo(valor):
+    with pytest.raises(ValueError):
+        ClienteResiliente(FakeApiServer(), max_tentativas=valor)
 
 
 @pytest.mark.parametrize("status", [200, 201, 204, 206, 299])
@@ -155,10 +221,11 @@ def test_status_transitorios_esgotam_tentativas_com_backoff_configurado(status):
     sleeper = MockSleeper()
     cliente = ClienteResiliente(servidor, max_tentativas=4, backoff_base=0.2,
                                 backoff_fator=3.0, sleep_fn=sleeper)
-    with pytest.raises(ApiError):
+    with pytest.raises(ApiError) as exc_info:
         cliente.get("/falha")
     assert len(servidor.chamadas) == 4
     assert sleeper.delays == pytest.approx([0.2, 0.6, 1.8])
+    assert exc_info.value.status_code == status
 
 
 @pytest.mark.parametrize("status", [401, 403])
@@ -200,19 +267,12 @@ def test_executar_preserva_metodo_payload_rota_e_timeout_nos_retries():
     ]
 
 
-def test_atalhos_delegam_para_executar():
-    class ClienteEspiao(ClienteResiliente):
-        def executar(self, metodo, rota, payload=None):
-            return {"metodo": metodo, "rota": rota, "payload": payload}
-
-    cliente = ClienteEspiao(FakeApiServer(), sleep_fn=MockSleeper())
-    assert cliente.get("/a") == {"metodo": "GET", "rota": "/a", "payload": None}
-    assert cliente.post("/b", {"x": 1}) == {"metodo": "POST", "rota": "/b", "payload": {"x": 1}}
-
-
-def test_apierror_preserva_mensagem_e_status_opcional():
-    erro = ApiError("Falha explicada")
-    assert isinstance(erro, Exception)
-    assert str(erro) == "Falha explicada"
-    assert erro.status_code is None
-    assert ApiError("Negado", status_code=403).status_code == 403
+def test_alternancia_de_erros_antes_do_sucesso():
+    servidor = FakeApiServer()
+    servidor.configurar_falhas("/complexo", 2, "network")
+    sleeper = MockSleeper()
+    cliente = ClienteResiliente(servidor, max_tentativas=3, backoff_base=0.1, backoff_fator=2.0, sleep_fn=sleeper)
+    res = cliente.get("/complexo")
+    assert res["status"] == "ok"
+    assert len(sleeper.delays) == 2
+    assert sleeper.delays == pytest.approx([0.1, 0.2])

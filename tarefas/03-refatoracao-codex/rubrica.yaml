@@ -1,30 +1,26 @@
-legibilidade:
-  max: 2
-  descricao:
-    0: "Mantém nomes a, b, c, x e y no resumo."
-    1: "Substitui parte dos nomes opacos."
-    2: "Todos os acumuladores e pedidos têm nomes que descrevem seu papel."
-erros_bordas:
-  max: 2
-  descricao:
-    0: "Perde categorias ou o truncamento por linha."
-    1: "Preserva totais usuais, mas perde vazio ou categoria zerada."
-    2: "Preserva vazio, zeros, descontos extremos, truncamento e entrada."
-idiomatico:
-  max: 2
-  descricao:
-    0: "Usa floats para centavos ou dependências externas."
-    1: "Usa inteiros, mas mantém acesso ou acumulação repetitivos."
-    2: "Usa aritmética inteira, iteração direta e acumulação de dicionário clara."
-manutenibilidade:
-  max: 2
-  descricao:
-    0: "Não extrai subtotal ou não o usa no resumo."
-    1: "Extrai subtotal, mas repete o cálculo dentro do resumo."
-    2: "Centraliza a fórmula em subtotal e delega uma vez por pedido."
-documentacao_instrucoes:
-  max: 2
-  descricao:
-    0: "Não fornece as duas funções públicas."
-    1: "Fornece as funções, sem explicar o truncamento."
-    2: "Mantém as interfaces e documenta truncamento por linha e resumo."
+itens:
+- id: legibilidade
+  criterio: legibilidade
+  0: Mantém nomes a, b, c, x e y no resumo.
+  1: Substitui parte dos nomes opacos.
+  2: Todos os acumuladores e pedidos têm nomes que descrevem seu papel.
+- id: erros_bordas
+  criterio: erros bordas
+  0: Perde categorias ou o truncamento por linha.
+  1: Preserva totais usuais, mas perde vazio ou categoria zerada.
+  2: Preserva vazio, zeros, descontos extremos, truncamento e entrada.
+- id: idiomatico
+  criterio: idiomatico
+  0: Usa floats para centavos ou dependências externas.
+  1: Usa inteiros, mas mantém acesso ou acumulação repetitivos.
+  2: Usa aritmética inteira, iteração direta e acumulação de dicionário clara.
+- id: manutenibilidade
+  criterio: manutenibilidade
+  0: Não extrai subtotal ou não o usa no resumo.
+  1: Extrai subtotal, mas repete o cálculo dentro do resumo.
+  2: Centraliza a fórmula em subtotal e delega uma vez por pedido.
+- id: documentacao_instrucoes
+  criterio: documentacao instrucoes
+  0: Não fornece as duas funções públicas.
+  1: Fornece as funções, sem explicar o truncamento.
+  2: Mantém as interfaces e documenta truncamento por linha e resumo.

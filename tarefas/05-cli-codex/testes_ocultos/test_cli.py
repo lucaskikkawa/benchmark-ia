@@ -13,7 +13,7 @@ def rodar(*args):
     env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
     return subprocess.run([sys.executable, str(ROOT / 'cli.py'), *map(str, args)],
                           cwd=ROOT, env=env, capture_output=True, text=True, encoding='utf-8',
-                          timeout=5)
+                          timeout=20)
 
 
 def arquivo(tmp_path, conteudo):

@@ -1,37 +1,26 @@
-total_max: 10
 itens:
-  - id: legibilidade
-    max: 2
-    descricao: "Organização da suíte em tests/."
-    niveis:
-      0: "Um teste gigante com números sem nome, ou asserts sem relação clara com a regra."
-      1: "Os casos estão separados, mas vários cenários compartilham o mesmo teste sem dizer qual regra cobrem."
-      2: "Um teste (ou bloco nomeado) por regra: percentual, piso do FIXO500, janela, Natal, erros. Nomes descrevem o caso."
-  - id: erros_bordas
-    max: 2
-    descricao: "Fronteiras que distinguem o módulo correto de um quase correto."
-    niveis:
-      0: "Só o caminho feliz (OFF10 em preço redondo e None). Não olha piso, data limite nem cupom vazio."
-      1: "Cobre a maior parte das regras, mas deixa passar uma fronteira entre: 2024-01-01, 2024-12-31, 24/12, preço menor que 500, string vazia ou preço negativo."
-      2: "A suíte falha em cada uma dessas fronteiras se a implementação errar, e passa no módulo correto."
-  - id: idiomatico
-    max: 2
-    descricao: "pytest idiomático, sem depender do texto interno do módulo."
-    niveis:
-      0: "Compara a saída com prints, usa unittest.mock no relógio real ou lê o fonte de descontos.py para decidir o assert."
-      1: "Usa pytest, mas repete a chamada e os três asserts em vez de um helper, ou depende da mensagem exata da exceção sem necessidade."
-      2: "pytest.raises para tipo de exceção, asserts no dict de retorno e parametrização ou helper para os casos parecidos."
-  - id: manutenibilidade
-    max: 2
-    descricao: "Facilidade de acrescentar um cupom novo na suíte."
-    niveis:
-      0: "Datas e códigos mágicos espalhados, expectativa calculada à mão em cada linha sem relação com a regra."
-      1: "Há uma tabela de casos, mas preço, data e cupom estão em asserts soltos difíceis de estender."
-      2: "Casos de cupom em estrutura única (lista ou parametrize) com final esperado explícito; erro e sucesso não se misturam."
-  - id: documentacao_instrucoes
-    max: 2
-    descricao: "A suíte testa o contrato e não altera o módulo."
-    niveis:
-      0: "Altera descontos.py, coloca testes fora de tests/test_*.py ou a suíte não importa aplicar_desconto."
-      1: "O arquivo certo existe e importa a função, mas não documenta no nome ou num comentário curto o que cada grupo cobre."
-      2: "tests/test_descontos.py importa aplicar_desconto, não muda o módulo e os nomes dos testes bastam para saber a regra exercitada."
+- id: legibilidade
+  criterio: Organização da suíte em tests/.
+  0: Um teste gigante com números sem nome, ou asserts sem relação clara com a regra.
+  1: Os casos estão separados, mas vários cenários compartilham o mesmo teste sem dizer qual regra cobrem.
+  2: 'Um teste (ou bloco nomeado) por regra: percentual, piso do FIXO500, janela, Natal, erros. Nomes descrevem o caso.'
+- id: erros_bordas
+  criterio: Fronteiras que distinguem o módulo correto de um quase correto.
+  0: Só o caminho feliz (OFF10 em preço redondo e None). Não olha piso, data limite nem cupom vazio.
+  1: 'Cobre a maior parte das regras, mas deixa passar uma fronteira entre: 2024-01-01, 2024-12-31, 24/12, preço menor que 500, string vazia ou preço negativo.'
+  2: A suíte falha em cada uma dessas fronteiras se a implementação errar, e passa no módulo correto.
+- id: idiomatico
+  criterio: pytest idiomático, sem depender do texto interno do módulo.
+  0: Compara a saída com prints, usa unittest.mock no relógio real ou lê o fonte de descontos.py para decidir o assert.
+  1: Usa pytest, mas repete a chamada e os três asserts em vez de um helper, ou depende da mensagem exata da exceção sem necessidade.
+  2: pytest.raises para tipo de exceção, asserts no dict de retorno e parametrização ou helper para os casos parecidos.
+- id: manutenibilidade
+  criterio: Facilidade de acrescentar um cupom novo na suíte.
+  0: Datas e códigos mágicos espalhados, expectativa calculada à mão em cada linha sem relação com a regra.
+  1: Há uma tabela de casos, mas preço, data e cupom estão em asserts soltos difíceis de estender.
+  2: Casos de cupom em estrutura única (lista ou parametrize) com final esperado explícito; erro e sucesso não se misturam.
+- id: documentacao_instrucoes
+  criterio: A suíte testa o contrato e não altera o módulo.
+  0: Altera descontos.py, coloca testes fora de tests/test_*.py ou a suíte não importa aplicar_desconto.
+  1: O arquivo certo existe e importa a função, mas não documenta no nome ou num comentário curto o que cada grupo cobre.
+  2: tests/test_descontos.py importa aplicar_desconto, não muda o módulo e os nomes dos testes bastam para saber a regra exercitada.

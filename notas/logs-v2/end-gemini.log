@@ -1,0 +1,128 @@
+Todas as 10 tarefas do autor **gemini** foram endurecidas e validadas com 100% de conformidade com as regras do benchmark (`python3 scripts/validar.py -gemini`). Nenhuma `rubrica.yaml` foi alterada e os arquivos `meta.yaml` receberam o campo `endurecimento`.
+
+Abaixo está o resumo detalhado das mudanças por tarefa:
+
+---
+
+### 1. [01-funcao-gemini](file:///workspace/bm-v2/tarefas/01-funcao-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/01-funcao-gemini/enunciado.md)**: Explicita a regra de imutabilidade (a lista passada pelo chamador não deve ser alterada via mutação *in-place*) e a rejeição estrita de subclasses de `int` (como `bool` e tipos derivados personalizados via `type(x) is int`), além de suporte eficiente a grandes volumes e inteiros arbitrários.
+- **[testes_ocultos/test_solucao.py](file:///workspace/bm-v2/tarefas/01-funcao-gemini/testes_ocultos/test_solucao.py)**: Novos testes para:
+  - Verificação de não-mutação da lista fornecida na entrada (`assert lista == copia`).
+  - Rejeição de subclasses personalizadas de `int`.
+  - Carga com 20.000 elementos alternando blocos consecutivos, isolados e desordenados.
+  - Sequências negativas extremas (`-10--9, -5--3, -1`) e repetições massivas.
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/01-funcao-gemini/meta.yaml)**: Adicionado campo `endurecimento`.
+
+---
+
+### 2. [02-bug-gemini](file:///workspace/bm-v2/tarefas/02-bug-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/02-bug-gemini/enunciado.md)**: Explicita isolamento de estado profundo (cópias profundas dos dicionários internos de cada item no construtor e em `listar_itens`), validação estrita de tipos (`preco` e `quantidade` rejeitam `bool`; `quantidade` deve ser estritamente `int`), e obrigatoriedade de strings não-vazias para `nome` e `codigo` de cupom.
+- **[referencia/carrinho.py](file:///workspace/bm-v2/tarefas/02-bug-gemini/referencia/carrinho.py)**: Atualizado com cópia profunda no construtor e validações de tipos (`bool`, floats fracionários em quantidades, strings vazias).
+- **[testes_ocultos/test_carrinho.py](file:///workspace/bm-v2/tarefas/02-bug-gemini/testes_ocultos/test_carrinho.py)**: Testes de mutação externa (modificar o dicionário original ou os dicionários retornados por `listar_itens` não altera o carrinho), validação de tipos inválidos (`bool`, `float`), cupons com código em branco e ordenação com caracteres Unicode acentuados.
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/02-bug-gemini/meta.yaml)**: Adicionado campo `endurecimento`. `inicial/` continua falhando (`19 failed, 1 passed`).
+
+---
+
+### 3. [03-refatoracao-gemini](file:///workspace/bm-v2/tarefas/03-refatoracao-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/03-refatoracao-gemini/enunciado.md)**: Adiciona validações de domínio em `ItemPedido` (`preco >= 0`, `quantidade >= 1`, `peso_kg >= 0`), em `CalculadoraFrete` e em `CalculadoraDesconto` para valores negativos. Enfatiza a regra de arredondamento individual prévio por item.
+- **[referencia/processador.py](file:///workspace/bm-v2/tarefas/03-refatoracao-gemini/referencia/processador.py)**: Implementa `__post_init__` com validações em `ItemPedido` e validações em `CalculadoraFrete` e `CalculadoraDesconto`.
+- **[testes_ocultos/test_processador.py](file:///workspace/bm-v2/tarefas/03-refatoracao-gemini/testes_ocultos/test_processador.py)**:
+  - Teste de armadilha de precisão numérica: 100 itens com preços fracionários onde a soma dos subtotais pré-arredondados diverge do arredondamento global.
+  - Testes de validação para inputs negativos e quantidades inválidas.
+  - Processamento em lote de múltiplos pedidos contendo strings Unicode e grandes coleções de itens.
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/03-refatoracao-gemini/meta.yaml)**: Adicionado campo `endurecimento`. `inicial/` continua falhando com erro.
+
+---
+
+### 4. [04-dados-gemini](file:///workspace/bm-v2/tarefas/04-dados-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/04-dados-gemini/enunciado.md)**: Explicita que arquivos CSV de 0 bytes devem retornar métricas com valores zerados, que diretórios pais inexistentes do arquivo de saída JSON devem ser criados automaticamente, e que `top_n` deve ser do tipo `int` >= 1 (rejeitando `bool` e `float`).
+- **[referencia/analisador_vendas.py](file:///workspace/bm-v2/tarefas/04-dados-gemini/referencia/analisador_vendas.py)**: Validação estrita de tipo de `top_n` e leitura tolerante a BOM UTF-8 (`utf-8-sig`).
+- **[testes_ocultos/test_analisador_vendas.py](file:///workspace/bm-v2/tarefas/04-dados-gemini/testes_ocultos/test_analisador_vendas.py)**:
+  - Arquivo CSV de 0 bytes (vazio absoluto).
+  - Caminho de saída profundamente aninhado (`profundo/nivel2/nivel3/resultado.json`).
+  - Cabeçalhos com BOM UTF-8 e espaços em branco ao redor dos campos.
+  - `top_n` inválido por tipo (`True`, `2.5`).
+  - Dataset de 1.000 linhas com clientes e categorias repetidos.
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/04-dados-gemini/meta.yaml)**: Adicionado campo `endurecimento`.
+
+---
+
+### 5. [05-cli-gemini](file:///workspace/bm-v2/tarefas/05-cli-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/05-cli-gemini/enunciado.md)**: Explicita que diretórios pais inexistentes para a flag `-o` devem ser criados automaticamente e que se `ARQUIVO` for um diretório em vez de arquivo regular, o comando deve finalizar com exit code 1 e mensagem de erro na `stderr` iniciando com `Erro`.
+- **[referencia/contatexto.py](file:///workspace/bm-v2/tarefas/05-cli-gemini/referencia/contatexto.py)**: Mensagem de erro adequada para diretórios e garantia de suporte a quebras mistas.
+- **[testes_ocultos/test_cli.py](file:///workspace/bm-v2/tarefas/05-cli-gemini/testes_ocultos/test_cli.py)**:
+  - Passar um diretório como argumento posicional (exit code 1 com prefixo `Erro`).
+  - Flag `-o` gravando em subdiretórios inexistentes.
+  - Arquivos com quebras de linha Windows CRLF (`\r\n`) e Unix LF (`\n`) misturadas.
+  - Pontuações repetidas e aninhadas (`"""[[[palavra]]]"""`).
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/05-cli-gemini/meta.yaml)**: Adicionado campo `endurecimento`.
+
+---
+
+### 6. [06-multiarquivo-gemini](file:///workspace/bm-v2/tarefas/06-multiarquivo-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/06-multiarquivo-gemini/enunciado.md)**: Explicita que exceções em handlers devem ser propagadas caso `dlq is None`; que eventos sem inscritos no tópico devem ser consumidos e retornar `True`; que `get_history()` retorna cópia; e que eventos publicados dentro de handlers são atendidos respeitando prioridades no despacho contínuo.
+- **[referencia/eventhub/bus.py](file:///workspace/bm-v2/tarefas/06-multiarquivo-gemini/referencia/eventhub/bus.py)**: Garante propagação de exceção se `self.dlq is None`.
+- **[testes_ocultos/test_eventhub.py](file:///workspace/bm-v2/tarefas/06-multiarquivo-gemini/testes_ocultos/test_eventhub.py)**:
+  - Propagação de exceção quando `dlq=None`.
+  - Despacho de tópico sem handlers registrados.
+  - Eventos encadeados gerados durante a execução de outro handler.
+  - Imutabilidade do histórico retornado por `get_history()`.
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/06-multiarquivo-gemini/meta.yaml)**: Adicionado campo `endurecimento`.
+
+---
+
+### 7. [07-performance-gemini](file:///workspace/bm-v2/tarefas/07-performance-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/07-performance-gemini/enunciado.md)**: Validação de tipos obrigatória (rejeição de não-listas, elementos não inteiros como `bool` ou `float`, e `alvo` não inteiro via `TypeError`). Volume de teste ampliado para $N \ge 350.000$ elementos dentro do subprocesso.
+- **[referencia/otimizador.py](file:///workspace/bm-v2/tarefas/07-performance-gemini/referencia/otimizador.py)**: Validação rápida $O(N)$ de tipos inteiros sem perda de desempenho.
+- **[testes_ocultos/test_otimizador.py](file:///workspace/bm-v2/tarefas/07-performance-gemini/testes_ocultos/test_otimizador.py)**:
+  - Testes de tipo levantando `TypeError` (`bool`, `float`, não-listas).
+  - Casos com inteiros de 100 bits (`10**30`).
+  - Aumento da escala dos testes de desempenho em subprocesso isolado para 350.000 elementos.
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/07-performance-gemini/meta.yaml)**: Adicionado campo `endurecimento`.
+
+---
+
+### 8. [08-testes-gemini](file:///workspace/bm-v2/tarefas/08-testes-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/08-testes-gemini/enunciado.md)**: Atualizado de 10 para 12 mutantes avaliados, enfatizando casos de fronteira exatos (`min_tam`, `max_tam`, faixas de força, trincas no final, espaços em branco como tabs e quebras de linha, e preservação de limites customizados).
+- **[testes_ocultos/mutantes/](file:///workspace/bm-v2/tarefas/08-testes-gemini/testes_ocultos/mutantes/)**: Substituição de mutantes triviais por 12 mutantes sutis:
+  - `mutante_01.py`: off-by-one em `min_tam` (`<=` em vez de `<`).
+  - `mutante_02.py`: off-by-one em `max_tam` (`>=` em vez de `>`).
+  - `mutante_03.py`: omissão de maiúsculas.
+  - `mutante_04.py`: omissão de minúsculas.
+  - `mutante_05.py`: omissão de dígitos.
+  - `mutante_06.py`: aceitação de qualquer pontuação ASCII em vez de restringir a `CARACTERES_ESPECIAIS_PERMITIDOS`.
+  - `mutante_07.py`: verificação apenas de espaço `' '` em vez de `c.isspace()`, aceitando `\t` e `\n`.
+  - `mutante_08.py`: loop de repetições consecutivas que esquece os últimos 3 caracteres da senha (`len(senha) - 3`).
+  - `mutante_09.py`: interrupção no primeiro erro em vez de acumular todas as mensagens.
+  - `mutante_10.py`: off-by-one na classificação de força (`tam <= 10` como fraca).
+  - `mutante_11.py`: off-by-one na classificação de força (`tam <= 14` como media).
+  - `mutante_12.py`: construtor ignora argumentos customizados de `min_tam` e `max_tam`.
+- **[referencia/tests/test_validador.py](file:///workspace/bm-v2/tarefas/08-testes-gemini/referencia/tests/test_validador.py)**: Suíte cobrindo todas as fronteiras exatas (tamanho 8, 64 sem trincas, tabs/newlines, conjunto de especiais exato, faixas 10 e 14, parâmetros customizados), eliminando 100% dos mutantes e passando 100% no módulo original.
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/08-testes-gemini/meta.yaml)**: Adicionado campo `endurecimento`.
+
+---
+
+### 9. [09-api-gemini](file:///workspace/bm-v2/tarefas/09-api-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/09-api-gemini/enunciado.md)**: Explicita validação de parâmetros numéricos no construtor (`max_tentativas >= 1`, `backoff_base > 0`, `backoff_fator > 0`, `timeout > 0`), preservação de `status_code` em `ApiError` quando o esgotamento ocorrer por código HTTP, e rejeição imediata de respostas 3xx não-retentáveis.
+- **[referencia/cliente_resiliente.py](file:///workspace/bm-v2/tarefas/09-api-gemini/referencia/cliente_resiliente.py)**: Validações estritas de parâmetros no construtor e preenchimento correto de `status_code` no esgotamento de retries.
+- **[testes_ocultos/test_cliente.py](file:///workspace/bm-v2/tarefas/09-api-gemini/testes_ocultos/test_cliente.py)**:
+  - Testes de parâmetros inválidos no construtor (`<= 0`, `bool`).
+  - Verificação de `status_code` correto em esgotamento de 429 e 503.
+  - Verificação de `status_code is None` em falhas definitivas de rede e timeout.
+  - Falha imediata de status 301 sem retry.
+  - Alternância de múltiplos tipos de erro antes da resposta com sucesso.
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/09-api-gemini/meta.yaml)**: Adicionado campo `endurecimento`.
+
+---
+
+### 10. [10-ambigua-gemini](file:///workspace/bm-v2/tarefas/10-ambigua-gemini)
+- **[enunciado.md](file:///workspace/bm-v2/tarefas/10-ambigua-gemini/enunciado.md)**: Mantém restrito ao núcleo explícito inequívoco e à obrigatoriedade do [SUPOSICOES.md](file:///workspace/bm-v2/tarefas/10-ambigua-gemini/referencia/SUPOSICOES.md). Adiciona requisito de imutabilidade do dicionário de entrada e tolerância a campos adicionais.
+- **[referencia/solucao.py](file:///workspace/bm-v2/tarefas/10-ambigua-gemini/referencia/solucao.py)**: Preserva identificadores originais e não muta a entrada.
+- **[testes_ocultos/test_classificador.py](file:///workspace/bm-v2/tarefas/10-ambigua-gemini/testes_ocultos/test_classificador.py)**:
+  - Validação da existência e preenchimento não-trivial do [SUPOSICOES.md](file:///workspace/bm-v2/tarefas/10-ambigua-gemini/referencia/SUPOSICOES.md).
+  - Verificação de não-modificação do dicionário `dados` recebido.
+  - Preservação exata de `id` e `nome` com caracteres Unicode e emojis.
+  - Carga com 10.000 compras acumuladas para conferência de precisão e arredondamento estrito.
+  - Tipagem estrita dos retornos (`categoria` como string não-vazia, `score` numérico não-booleano).
+- **[meta.yaml](file:///workspace/bm-v2/tarefas/10-ambigua-gemini/meta.yaml)**: Adicionado campo `endurecimento`.
+EXIT 0 SECS 1028

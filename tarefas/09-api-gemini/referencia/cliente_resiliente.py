@@ -31,13 +31,18 @@ class ClienteResiliente:
         timeout: float = 2.0,
         sleep_fn: Callable[[float], None] = time.sleep,
     ) -> None:
-        if max_tentativas < 1:
-            raise ValueError("max_tentativas deve ser pelo menos 1.")
+        if type(max_tentativas) is not int or max_tentativas < 1:
+            raise ValueError("max_tentativas deve ser um inteiro maior ou igual a 1.")
+
+        for nome_param, val in [("backoff_base", backoff_base), ("backoff_fator", backoff_fator), ("timeout", timeout)]:
+            if type(val) is bool or type(val) not in (int, float) or val <= 0:
+                raise ValueError(f"{nome_param} deve ser numérico maior que zero.")
+
         self.servidor = servidor
         self.max_tentativas = max_tentativas
-        self.backoff_base = backoff_base
-        self.backoff_fator = backoff_fator
-        self.timeout = timeout
+        self.backoff_base = float(backoff_base)
+        self.backoff_fator = float(backoff_fator)
+        self.timeout = float(timeout)
         self.sleep_fn = sleep_fn
 
     def get(self, rota: str) -> dict:
@@ -47,8 +52,6 @@ class ClienteResiliente:
         return self.executar("POST", rota, payload)
 
     def executar(self, metodo: str, rota: str, payload: dict | None = None) -> dict:
-        ultima_excecao: Exception | None = None
-
         for tentativa in range(1, self.max_tentativas + 1):
             try:
                 resposta: ApiResponse = self.servidor.requisicao(
@@ -73,14 +76,13 @@ class ClienteResiliente:
                         status_code=resposta.status_code,
                     )
 
-                # Erros 4xx não recuperáveis (exceto 429) -> falha imediata sem retry
+                # Erros não recuperáveis (4xx exceto 429, 3xx, etc.) -> falha imediata sem retry
                 raise ApiError(
                     f"Erro de requisição com status {resposta.status_code}: {resposta.data}",
                     status_code=resposta.status_code,
                 )
 
             except (SimulatedNetworkError, SimulatedTimeoutError) as exc:
-                ultima_excecao = exc
                 if tentativa < self.max_tentativas:
                     delay = self.backoff_base * (self.backoff_fator ** (tentativa - 1))
                     self.sleep_fn(delay)
@@ -91,5 +93,4 @@ class ClienteResiliente:
                     status_code=None,
                 ) from exc
 
-        # Caso improvável de sair do loop
         raise ApiError("Tentativas esgotadas sem resposta válida.", status_code=None)

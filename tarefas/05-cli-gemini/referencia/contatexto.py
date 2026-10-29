@@ -40,7 +40,7 @@ def main(argv=None):
 
     p_arquivo = Path(args.arquivo)
     if not p_arquivo.is_file():
-        sys.stderr.write(f"Erro: Arquivo '{args.arquivo}' não encontrado.\n")
+        sys.stderr.write(f"Erro: Arquivo '{args.arquivo}' não encontrado ou não é um arquivo regular.\n")
         sys.exit(1)
 
     try:

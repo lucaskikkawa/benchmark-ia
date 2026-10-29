@@ -23,7 +23,7 @@ Só a biblioteca padrão.
 
 `LojaAPI(seed)` guarda a seed. `obter_pedido(pedido_id)` devolve o dict de `payload_pedido(seed, pedido_id)` ou levanta:
 
-- `LojaErroCliente` — erro definitivo (o id começa com `missing-`, ou o id não é uma string não vazia). **Não tente de novo.**
+- `LojaErroCliente` — erro definitivo (o id começa com `missing-`, ou o id não é uma string não vazia, inclusive `""`). **Não tente de novo** e não durma backoff.
 - `LojaIndisponivel` — falha transitória.
 
 A lentidão é `LojaAPI.ATRASO_S` segundos (também exposto como `loja_api.ATRASO_S`). A contagem de tentativas começa em 1.
@@ -36,6 +36,8 @@ A lentidão é `LojaAPI.ATRASO_S` segundos (também exposto como `loja_api.ATRAS
 | `slow-` | as primeiras `(seed % 2) + 1` tentativas dormem `ATRASO_S` e só então devolveriam o pedido |
 | `timeout-` | toda tentativa dorme `ATRASO_S` e só então devolveria o pedido |
 | outro | devolve o pedido na hora |
+
+O prefixo é o começo do id, nesta ordem. `missing-down-x` é `LojaErroCliente`. `flaky-missing-x` segue a regra de `flaky-`, não a de `missing-`. O cliente não precisa reimplementar a tabela: chame `obter_pedido` e reaja à exceção.
 
 `api.tentativas(pedido_id)` diz quantas vezes aquele id foi chamado. A seed entra no total do pedido; não invente o corpo, use o que a API devolver.
 
@@ -50,11 +52,13 @@ Para cada id, **na ordem da lista**:
 5. Depois de uma falha retentável que ainda terá outra tentativa, durma `backoff_s * 2 ** (i - 1)` segundos, onde `i` é o número da tentativa que acabou de falhar (1 na primeira). Não durma depois da última tentativa nem depois de sucesso. `backoff_s == 0` não dorme.
 6. No sucesso, guarde o dict devolvido.
 
-Se um id falha de vez, não chame os ids seguintes. Lista vazia devolve `[]` sem chamar a API.
+Se um id falha de vez (`LojaErroCliente`, `LojaIndisponivel` na última tentativa ou `TempoEsgotado`), não chame os ids seguintes. Lista vazia devolve `[]` sem chamar a API.
+
+`slow-` com seed ímpar dorme nas duas primeiras tentativas (`(seed % 2) + 1 == 2`). Com `timeout_s` menor que `ATRASO_S`, essas duas contam como timeout e a terceira devolve o pedido, se `max_tentativas` alcançar.
 
 Validação, antes de qualquer chamada:
 
-- `ids` tem de ser `list` (`str` → `TypeError`, para não iterar caractere por caractere).
+- `ids` tem de ser exatamente `list` (`str` e `tuple` → `TypeError`). Não há cache: o mesmo id repetido na lista é baixado de novo e soma em `tentativas`.
 - `max_tentativas` é `int` ≥ 1 (`bool` → `TypeError`; menor que 1 → `ValueError`).
 - `backoff_s` é `int` ou `float` ≥ 0 (`bool` → `TypeError`; negativo → `ValueError`).
 - `timeout_s` é `int` ou `float` > 0 (`bool` → `TypeError`; não positivo → `ValueError`).

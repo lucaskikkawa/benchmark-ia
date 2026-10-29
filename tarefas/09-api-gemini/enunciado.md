@@ -24,7 +24,9 @@ Sua tarefa é implementar a classe `ClienteResiliente` e a exceção `ApiError` 
   ) -> None:
       ...
   ```
-  - Se `max_tentativas < 1`, deve levantar `ValueError`.
+  - **Validação de Parâmetros**:
+    - Se `max_tentativas` não for um número inteiro (`type(max_tentativas) is int`) ou for `< 1`, deve levantar `ValueError`.
+    - Se `backoff_base <= 0`, `backoff_fator <= 0` ou `timeout <= 0` (ou se forem de tipo não numérico / bool), deve levantar `ValueError`.
   - O parâmetro `sleep_fn` permite injetar uma função customizada de espera (como um mock de testes) para evitar pausas reais durante a suíte.
 
 - Métodos:
@@ -41,7 +43,7 @@ Sua tarefa é implementar a classe `ClienteResiliente` e a exceção `ApiError` 
           `delay = backoff_base * (backoff_fator ** (tentativa - 1))`
         - Invoca `self.sleep_fn(delay)`.
         - Tenta novamente.
-      - Se as tentativas se esgotarem (`tentativa == max_tentativas`), deve levantar `ApiError`.
+      - Se as tentativas se esgotarem (`tentativa == max_tentativas`), deve levantar `ApiError`. Se o esgotamento ocorreu devido a status HTTP retentável, o `ApiError` levantado deve ter `status_code` preenchido com o respectivo código HTTP retornado; se decorreu de erro de rede ou timeout, `status_code` deve ser `None`.
     - **Erros Não Retentáveis (Definitivos)**:
-      - Códigos de status `4xx` (exceto `429`, por exemplo `400`, `401`, `403`, `404`).
+      - Qualquer resposta HTTP fora da faixa 2xx que não pertença ao conjunto de erros retentáveis (por exemplo `400`, `401`, `403`, `404`, ou códigos `3xx`).
       - Não deve tentar novamente; deve levantar imediatamente `ApiError` contendo o `status_code` correspondente.

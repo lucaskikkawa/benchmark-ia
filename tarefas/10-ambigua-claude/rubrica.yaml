@@ -1,37 +1,26 @@
-total_max: 10
 itens:
-  - id: legibilidade
-    max: 2
-    descricao: "Clareza do código de normalização e extração."
-    niveis:
-      0: "Regex gigante sem explicação ou cascata longa de ifs sobre comprimentos sem nomes."
-      1: "Compreensível, mas regras (código do país, DDD, tamanho do número) misturadas em um único bloco."
-      2: "Etapas nomeadas (limpar, remover código do país, validar DDD/número, formatar); regexes curtas ou comentadas."
-  - id: erros_bordas
-    max: 2
-    descricao: "Tratamento de casos não especificados."
-    niveis:
-      0: "Aceita lixo como telefone (ex.: qualquer sequência de 10+ dígitos) ou quebra com exceção inesperada em entradas estranhas."
-      1: "Trata os casos principais, mas decisões sobre bordas (55 como DDD vs país, +1, ramal, sem DDD) são inconsistentes com o SUPOSICOES.md."
-      2: "Bordas tratadas de forma consistente com o SUPOSICOES.md; extração ignora trechos numéricos inválidos sem quebrar."
-  - id: idiomatico
-    max: 2
-    descricao: "Python idiomático."
-    niveis:
-      0: "Manipulação caractere a caractere manual quando re/str resolveriam; except genérico silencioso."
-      1: "Usa re, mas recompila padrões a cada chamada ou deduplica com list + 'in' de forma verbosa."
-      2: "Padrões compilados no módulo, f-strings, deduplicação preservando ordem (dict/set auxiliar), type hints."
-  - id: manutenibilidade
-    max: 2
-    descricao: "Reuso e facilidade de mudar regras."
-    niveis:
-      0: "extrair_telefones reimplementa a validação de normalizar_telefone."
-      1: "Reusa a normalização, mas regras (55, tamanhos, separadores) aparecem como literais espalhados."
-      2: "extrair_telefones delega a normalizar_telefone; regras em constantes/funções pequenas fáceis de ajustar."
-  - id: documentacao_instrucoes
-    max: 2
-    descricao: "Qualidade do SUPOSICOES.md (exigência central da tarefa)."
-    niveis:
-      0: "SUPOSICOES.md ausente, vazio ou genérico (sem decisões concretas)."
-      1: "Registra algumas decisões, mas sem o motivo, ou omite dúvidas óbvias (código 55 vs DDD 55, celular de 8 dígitos, outros países, ramal, prefixo 0)."
-      2: "Lista as dúvidas relevantes com decisão e motivo de cada uma, coerentes com o código; docstrings nas funções."
+- id: legibilidade
+  criterio: Clareza do código de normalização e extração.
+  0: Regex gigante sem explicação ou cascata longa de ifs sobre comprimentos sem nomes.
+  1: Compreensível, mas regras (código do país, DDD, tamanho do número) misturadas em um único bloco.
+  2: Etapas nomeadas (limpar, remover código do país, validar DDD/número, formatar); regexes curtas ou comentadas.
+- id: erros_bordas
+  criterio: Tratamento de casos não especificados.
+  0: 'Aceita lixo como telefone (ex.: qualquer sequência de 10+ dígitos) ou quebra com exceção inesperada em entradas estranhas.'
+  1: Trata os casos principais, mas decisões sobre bordas (55 como DDD vs país, +1, ramal, sem DDD) são inconsistentes com o SUPOSICOES.md.
+  2: Bordas tratadas de forma consistente com o SUPOSICOES.md; extração ignora trechos numéricos inválidos sem quebrar.
+- id: idiomatico
+  criterio: Python idiomático.
+  0: Manipulação caractere a caractere manual quando re/str resolveriam; except genérico silencioso.
+  1: Usa re, mas recompila padrões a cada chamada ou deduplica com list + 'in' de forma verbosa.
+  2: Padrões compilados no módulo, f-strings, deduplicação preservando ordem (dict/set auxiliar), type hints.
+- id: manutenibilidade
+  criterio: Reuso e facilidade de mudar regras.
+  0: extrair_telefones reimplementa a validação de normalizar_telefone.
+  1: Reusa a normalização, mas regras (55, tamanhos, separadores) aparecem como literais espalhados.
+  2: extrair_telefones delega a normalizar_telefone; regras em constantes/funções pequenas fáceis de ajustar.
+- id: documentacao_instrucoes
+  criterio: Qualidade do SUPOSICOES.md (exigência central da tarefa).
+  0: SUPOSICOES.md ausente, vazio ou genérico (sem decisões concretas).
+  1: Registra algumas decisões, mas sem o motivo, ou omite dúvidas óbvias (código 55 vs DDD 55, celular de 8 dígitos, outros países, ramal, prefixo 0).
+  2: Lista as dúvidas relevantes com decisão e motivo de cada uma, coerentes com o código; docstrings nas funções.

@@ -1,0 +1,24 @@
+Revisei as 10 tarefas `*-codex`. Só a 04 e a 05 precisaram de ajustes, ambos pequenos. Depois das mudanças, `python3 scripts/validar.py -codex` passa: todas as referências passam 100%, e o `inicial/` falha em 02 (12 falhas) e em 03 (10 falhas), como deve. Todas continuam com mais de 8 testes. Não mexi em `rubrica.yaml`, e nenhuma `referencia/` precisou mudar.
+
+## Mudanças por tarefa
+
+- **01-funcao**: sem mudanças. Todo teste tem base no enunciado, e os testes aleatórios usam seed fixa. Uma implementação alternativa minha também passou (25/25).
+- **02-bug**: sem mudanças. O teste de desempenho roda em subprocesso com limite de 15s, bem folgado para uma solução O(n), e a referência termina em 0,04s.
+- **03-refatoracao**: sem mudanças. A troca do `subtotal` em tempo de execução, a ordem das chamadas e a precisão inteira estão todas explícitas no enunciado.
+- **04-dados**: um teste passa `None` em `minimo_centavos`, mas o enunciado só citava bool, float e str. Uma solução razoável poderia lançar `TypeError` nesse caso. Mudei o enunciado para "qualquer outro tipo, como bool, float, str ou None, gera `ValueError`". O teste não mudou.
+- **05-cli**:
+  - Um teste chama `main()` sem argumentos e espera que leia `sys.argv`, o que o enunciado não dizia. Agora diz que, com `argv=None`, usa-se `sys.argv[1:]`.
+  - Subi os timeouts dos subprocessos de 5s e 10s para 20s. Eles servem só para evitar travamento, e 5s podia estourar com a máquina carregada.
+- **06-multiarquivo**: sem mudanças. A recusa de bool, de float e de SKU só com espaços Unicode está prevista no enunciado.
+- **07-performance**: sem mudanças. O tempo é medido com `perf_counter` em subprocesso, com limite de 5s, cerca de 10 vezes a margem necessária. A memória é medida com `tracemalloc` em outro subprocesso, com limite externo de 30s. Uma versão alternativa com `Counter` também passou (17/17).
+- **08-testes**: sem mudanças. Conferi os 14 mutantes e nenhum equivale ao original: para cada um existe uma entrada válida que muda o resultado ou o efeito. A suíte de referência mata todos.
+- **09-api**: sem mudanças. Os casos que um modelo poderia estranhar, como `KeyboardInterrupt`/`SystemExit` propagando e exceções transitórias vindas do `dormir` não gerando nova tentativa, estão explícitos no enunciado.
+- **10-ambigua**: sem mudanças. Os testes não impõem ordem entre empates nem comportamento para entradas inválidas. Só verificam o núcleo explícito (filtro, ordem decrescente, cópia rasa por ocorrência) e se `SUPOSICOES.md` existe.
+
+Em todos os `meta.yaml` defini `revisor: claude` e `revisao: "..."` com o resumo acima. As revisões anteriores de 05 e 07 já tinham uma `revisao` preenchida, e ela foi substituída pela desta rodada.
+
+## Observações
+- O `git status` mostra arquivos `*-gemini` modificados. Não fui eu; devem ser de outra sessão rodando ao mesmo tempo. Não toquei neles.
+- O validador reescreve `notas/validacao.json`, que agora só tem os resultados das `-codex`.
+- Não fiz commit.
+EXIT 0 SECS 194

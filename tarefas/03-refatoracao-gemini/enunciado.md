@@ -14,6 +14,8 @@ O arquivo `processador.py` deve definir e exportar:
   - `preco: float`
   - `quantidade: int = 1`
   - `peso_kg: float = 0.5`
+- Validações:
+  - `preco >= 0.0`, `quantidade >= 1`, `peso_kg >= 0.0`; caso contrário, levanta `ValueError`.
 - Propriedades ou métodos:
   - `subtotal`: retorna `round(preco * quantidade, 2)`
   - `peso_total`: retorna `round(peso_kg * quantidade, 3)`
@@ -21,6 +23,7 @@ O arquivo `processador.py` deve definir e exportar:
 ### 2. `CalculadoraFrete`
 - Método:
   - `calcular(tipo: str, peso_kg: float, valor_total: float) -> float` (método de classe ou estático):
+    - Se `valor_total < 0` ou `peso_kg < 0`, levanta `ValueError`.
     - Se `valor_total >= 200.0`, o frete é grátis: retorna `0.0`.
     - Caso contrário, calcula conforme o tipo de frete (case-insensitive):
       - `"padrao"`: `round(10.0 + peso_kg * 1.5, 2)`
@@ -31,6 +34,7 @@ O arquivo `processador.py` deve definir e exportar:
 ### 3. `CalculadoraDesconto`
 - Método:
   - `calcular(categoria_cliente: str, valor_total: float) -> float` (método de classe ou estático):
+    - Se `valor_total < 0`, levanta `ValueError`.
     - Conforme a categoria do cliente (case-insensitive):
       - `"bronze"`: `0.0`
       - `"prata"`: `round(0.05 * valor_total, 2)` se `valor_total >= 100.0`, senão `0.0`
@@ -46,11 +50,11 @@ O arquivo `processador.py` deve definir e exportar:
   - `itens: list[ItemPedido]` (padrão lista vazia)
   - `tipo_frete: str = "padrao"`
 - Métodos:
-  - `calcular_total_itens() -> float`: soma dos subtotais dos itens (arredondado em 2 casas).
-  - `calcular_peso_total() -> float`: soma dos pesos totais dos itens.
+  - `calcular_total_itens() -> float`: soma dos subtotais dos itens (`sum(item.subtotal for item in self.itens)`), arredondado em 2 casas.
+  - `calcular_peso_total() -> float`: soma dos pesos totais dos itens (`sum(item.peso_total for item in self.itens)`), arredondado em 3 casas.
   - `calcular_desconto() -> float`: delega para `CalculadoraDesconto`.
   - `calcular_frete() -> float`: delega para `CalculadoraFrete`.
-  - `calcular_total_final() -> float`: `total_itens - desconto + frete` (arredondado em 2 casas).
+  - `calcular_total_final() -> float`: `round(total_itens - desconto + frete, 2)`.
   - `para_dict() -> dict`:
     ```python
     {
@@ -65,3 +69,5 @@ O arquivo `processador.py` deve definir e exportar:
 
 ### 5. `processar_pedidos(pedidos: list[dict]) -> list[dict]`
 - Recebe a lista de pedidos no formato de dicionário bruto, instancia as entidades modeladas e retorna a lista de dicionários resultantes de cada `pedido.para_dict()`.
+- Preserva a ordem dos pedidos recebidos. Cada dicionário usa os mesmos nomes de atributos de `Pedido` e `ItemPedido`; campos opcionais ausentes assumem os padrões dessas classes.
+- Pedidos com lista `itens` ausente ou vazia devem ser processados normalmente (com subtotal 0.0, desconto 0.0 e frete calculado para peso 0.0).

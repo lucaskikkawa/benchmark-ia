@@ -19,11 +19,11 @@ O dict tem **pelo menos** estas chaves (pode ter outras):
 }
 ```
 
-- `tamanho` é `len(texto)`, em caracteres Unicode, **sem** `strip` e sem contar largura de tela. `"ação"` tem tamanho 4. `"🙂"` tem tamanho 1. Quebra de linha conta.
-- `urgente` é `True` exatamente quando a substring `"URGENTE"` aparece em `texto` (maiúsculas, sem exigir palavra inteira). `"urgente"`, `"Urgente"` e `"URGEN" ` são `False`. `"XURGENTEY"` e `" URGENTE"` são `True`.
+- `tamanho` é `len(texto)`, em code points, **sem** `strip`, sem normalizar (NFC, NFD, NFKC) e sem contar bytes UTF-8. `"ação"` tem tamanho 4. `"🙂"` tem tamanho 1. `"a\u0301"` tem tamanho 2. `"\ud800"` tem tamanho 1 e não pode levantar erro. Quebra de linha, `\u00a0` e `\u200b` contam.
+- `urgente` é `True` exatamente quando a substring `"URGENTE"` aparece em `texto` (maiúsculas, sem exigir palavra inteira, sem casefold e sem normalizar antes). `"urgente"`, `"Urgente"` e `"URGEN"` são `False`. `"XURGENTEY"` e `" URGENTE"` são `True`. Um lookalike cirílico (`"URGENT\u0415"`, com `Е`) é `False`. `"URGENTE"` no fim de um texto de 100_000 caracteres continua `True`, e `tamanho` é 100_000 mais o que vier junto.
 - `texto == ""` (string vazia, e só ela) devolve `categoria == "vazia"`, `urgente is False` e `tamanho == 0`.
-- Qualquer outro texto, inclusive só espaços, tem `categoria` string não vazia e **diferente** de `"vazia"`.
-- Se `texto` não for `str` (`None`, `bytes`, `int`), levante `TypeError`.
+- Qualquer outro texto, inclusive só espaços, `"vazia"`, `"\u00a0"` ou `"\n"`, tem `categoria` string não vazia e **diferente** de `"vazia"`.
+- Se `texto` não for `str` (`None`, `bytes`, `bytearray`, `int`), levante `TypeError`. Não codifique o texto para decidir isso.
 
 Os testes automáticos cobrem só este núcleo.
 

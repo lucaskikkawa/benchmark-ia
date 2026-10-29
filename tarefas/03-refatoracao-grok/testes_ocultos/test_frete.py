@@ -129,3 +129,47 @@ def test_estrutura_faixa_de_peso_rejeita_igual_cotar():
     for peso in (True, False, 10.0, "300", None):
         with pytest.raises(TypeError):
             faixa_de_peso(peso)
+
+
+def test_expresso_inteiro_em_total_impar():
+    assert cotar(2001, 1, False)["valor_centavos"] == 2505
+    assert cotar(2001, 1, True)["valor_centavos"] == 3757
+    assert cotar(2001, 3000, True)["valor_centavos"] == ((2500 + 5 * 3000) * 3) // 2
+    assert isinstance(cotar(2001, 1, True)["valor_centavos"], int)
+
+
+def test_faixas_lidas_em_cada_chamada():
+    from frete import TabelaFrete, faixa_de_peso
+
+    original = TabelaFrete.FAIXAS
+    substituta = (
+        ("leve", 1, 100, 10, 1),
+        ("pesado", 101, 30000, 20, 0),
+    )
+    tabela = TabelaFrete()
+    try:
+        TabelaFrete.FAIXAS = substituta
+        assert faixa_de_peso(50) == "leve"
+        assert faixa_de_peso(100) == "leve"
+        assert faixa_de_peso(101) == "pesado"
+        assert cotar(50, 4, False) == {
+            "faixa": "leve",
+            "valor_centavos": 14,
+            "expresso": False,
+        }
+        assert cotar(50, 4, True)["valor_centavos"] == (14 * 3) // 2
+        assert tabela.cotar(150, 0, False) == {
+            "faixa": "pesado",
+            "valor_centavos": 20,
+            "expresso": False,
+        }
+        with pytest.raises(ValueError):
+            faixa_de_peso(0)
+        with pytest.raises(ValueError):
+            cotar(50, 3001, False)
+        with pytest.raises(TypeError):
+            cotar(True, 0, False)
+    finally:
+        TabelaFrete.FAIXAS = original
+    assert tuple(TabelaFrete.FAIXAS) == FAIXAS
+    assert cotar(300, 100, False)["faixa"] == "carta"

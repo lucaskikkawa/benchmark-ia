@@ -23,4 +23,11 @@ O retorno segue `{'itens': soma_das_quantidades, 'total_centavos': soma_dos_subt
 exatamente, inclusive as que somam zero. Não altere a entrada. Entrada vazia
 produz `{'itens': 0, 'total_centavos': 0, 'por_categoria': {}}`.
 
+O iterável pode ser de passagem única. Faça as chamadas a `subtotal` na ordem
+dos pedidos e use o valor devolvido pelo helper em ambas as agregações, mesmo
+quando ele for substituído nos testes. Não agrupe linhas antes da delegação.
+Inteiros têm precisão arbitrária, inclusive muito além de 64 bits; o cálculo
+não pode perder centavos por conversão para float. Categorias não devem sofrer
+strip, casefold ou normalização Unicode. Chamadas não compartilham acumuladores.
+
 Ambiente: Python 3.11, somente biblioteca padrão na solução; sem rede.
