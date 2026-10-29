@@ -1,0 +1,8 @@
+tipo: 07-performance
+autor: codex
+revisor: claude
+revisao: "testes: lê só a última linha do stdout do processo auxiliar (prints da solução não quebram a medição)"
+timeout_min: 3
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - "pares.py"

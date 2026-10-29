@@ -1,0 +1,8 @@
+tipo: 03-refatoracao
+autor: claude
+revisor: grok
+revisao: "testes: formatar_relatorio aceita ordem já ordenada; coberto uso de calcular_subtotal e qtd zero"
+timeout_min: 3
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - relatorio.py

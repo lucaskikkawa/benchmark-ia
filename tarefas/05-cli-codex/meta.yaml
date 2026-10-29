@@ -1,0 +1,8 @@
+tipo: 05-cli
+autor: codex
+revisor: claude
+revisao: "testes: subprocess com PYTHONIOENCODING=utf-8 para não depender do locale do avaliador"
+timeout_min: 5
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - "cli.py"

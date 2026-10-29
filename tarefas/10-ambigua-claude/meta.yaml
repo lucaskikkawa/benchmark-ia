@@ -1,0 +1,9 @@
+tipo: 10-ambigua
+autor: claude
+revisor: grok
+revisao: "testes: núcleo explícito ganhou celular sem 9 e número sem DDD; suposições continuam fora"
+timeout_min: 3
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - telefones.py
+  - SUPOSICOES.md

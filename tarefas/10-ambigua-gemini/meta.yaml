@@ -1,0 +1,9 @@
+tipo: 10-ambigua
+autor: gemini
+revisor: codex
+timeout_min: 3
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - solucao.py
+  - SUPOSICOES.md
+revisao: "Removidos mínimo arbitrário de documentação e strip da categoria; ampliados casos apenas do núcleo explícito."

@@ -1,0 +1,29 @@
+legibilidade:
+  max: 2
+  0: "Código desorganizado, mantendo estilo confuso ou nomes crípticos do código original."
+  1: "Código refatorado com boa legibilidade geral, mas métodos longos ou regras misturadas."
+  2: "Código extremamente claro e expressivo, com classes concisas, métodos objetivos e fluxo evidente."
+
+erros_bordas:
+  max: 2
+  0: "Falha em frete grátis (>= 200), em regras de fronteira de desconto (ex: 50 e 100) ou em tipo de frete desconhecido."
+  1: "Trata faixas de desconto, mas falha em tipo de frete inválido (ValueError) ou em arredondamento de centavos."
+  2: "Trata com exatidão todas as faixas de desconto, frete grátis, exceção para frete inválido e lista vazia."
+
+idiomatico:
+  max: 2
+  0: "Ignora dataclasses/classes e mantém estruturas procedurais antigas ou loops antiquados."
+  1: "Utiliza classes, mas sem explorar dataclasses, classmethod ou generator expressions de forma limpa."
+  2: "Usa dataclasses com type hints modernos, @property quando apropriado, e construções pythônicas elegantes."
+
+manutenibilidade:
+  max: 2
+  0: "Não separa responsabilidades; regras de frete e desconto continuam fortemente acopladas."
+  1: "Cria classes exigidas, mas com responsabilidades duplicadas ou lógica espalhada fora das classes responsáveis."
+  2: "Excelente encapsulamento e coesão: CalculadoraFrete e CalculadoraDesconto totalmente isoladas e facilmente extensíveis."
+
+documentacao_instrucoes:
+  max: 2
+  0: "Não segue os nomes ou assinaturas das classes e métodos exigidos no enunciado."
+  1: "Implementa todas as classes, mas sem docstrings e com type hints parciais."
+  2: "Segue rigorosamente todas as assinaturas solicitadas, inclui docstrings claras e tipagem completa."

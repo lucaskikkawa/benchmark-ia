@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Clareza da contagem de pares."
+    niveis:
+      0: "Laços aninhados com índices trocados ou a fórmula do par consigo mesmo misturada ao caso geral sem nome."
+      1: "A estratégia é reconhecível, mas o caso x + x == alvo está num ramo difícil de distinguir do produto cruzado."
+      2: "Frequências (ou dois ponteiros) com o caso do valor repetido isolado e nomes que indicam contagem, não lista de pares."
+  - id: erros_bordas
+    max: 2
+    descricao: "Zeros, negativos, duplicatas e tipos."
+    niveis:
+      0: "Erra pares de valores iguais, conta o mesmo par duas vezes ou aceita bool/float."
+      1: "Acerta os exemplos principais, mas falha em lista vazia, um único zero, alvo negativo ou mutação da lista."
+      2: "Contagem combinatória correta com duplicatas, negativos e zero; TypeError para bool e não-int; lista de entrada intacta."
+  - id: idiomatico
+    max: 2
+    descricao: "Complexidade e ferramentas da stdlib."
+    niveis:
+      0: "Dois for aninhados, ou monta uma lista com todos os pares."
+      1: "Evita o quadrático óbvio, mas ordena a lista original ou usa dict manual onde Counter bastaria, com código mais longo que o necessário."
+      2: "collections.Counter ou equivalente linear, sem ordenar a lista do chamador e sem import fora da stdlib."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Separação entre validação e contagem."
+    niveis:
+      0: "Validação de tipo espalhada dentro do laço de pares, difícil de reutilizar."
+      1: "Uma função só faz as duas coisas, porém a validação está no topo e a contagem em seguida."
+      2: "Validação e contagem em funções separadas; a fórmula C(n, 2) aparece uma única vez."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Arquivo, assinatura e complexidade declarada."
+    niveis:
+      0: "Arquivo ou função com outro nome, ou assinatura diferente."
+      1: "solucao.py e pares_com_soma corretos, sem docstring."
+      2: "Docstring com tipos, o significado de i < j e a observação de que duplicatas contam como combinações."

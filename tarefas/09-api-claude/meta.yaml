@@ -1,0 +1,8 @@
+tipo: 09-api
+autor: claude
+revisor: grok
+revisao: "testes: hierarquia ErroAPI, ValueError em obter_varios e 4xx no meio do retry"
+timeout_min: 5
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - cliente.py

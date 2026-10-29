@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Clareza do parser de duração."
+    niveis:
+      0: "Lógica confusa (vários laços/índices manuais aninhados, nomes de 1 letra) ou difícil de acompanhar."
+      1: "Compreensível, mas com trechos repetidos por unidade (if/elif por d/h/m/s) ou números mágicos (3600, 86400) espalhados."
+      2: "Fluxo curto e linear; tabela única de unidades->segundos; nomes descritivos; validação e cálculo separados."
+  - id: erros_bordas
+    max: 2
+    descricao: "Tratamento das entradas inválidas da especificação."
+    niveis:
+      0: "Aceita silenciosamente entradas inválidas (ex.: '90', '30m1h', '1h2h') ou levanta exceções erradas (IndexError, AttributeError)."
+      1: "Cobre a maioria dos casos, mas falha em algum (vazio/só espaços, ordem, repetição, '1 h', TypeError para não-str)."
+      2: "TypeError para não-str e ValueError para todos os casos listados, com mensagem que inclui a entrada recebida."
+  - id: idiomatico
+    max: 2
+    descricao: "Uso idiomático de Python/stdlib."
+    niveis:
+      0: "Parsing caractere a caractere com estado manual frágil; uso de eval ou except genérico silencioso."
+      1: "Funciona, mas com construções pouco idiomáticas (range(len()), concatenação de strings em laço, try/except para controle de fluxo amplo)."
+      2: "Uso adequado de re (fullmatch/grupos nomeados) ou de parsing simples equivalente, dict de unidades, sum/genexpr, type hints."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Facilidade para estender (ex.: adicionar semanas 'w')."
+    niveis:
+      0: "Adicionar uma unidade exige mexer em vários pontos dispersos."
+      1: "Adicionar uma unidade exige alterar 2-3 lugares (regex e if/elif, por exemplo)."
+      2: "Unidades e sua ordem definidas em um único lugar (constante); regex compilada uma vez no módulo."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Atendimento às instruções e documentação."
+    niveis:
+      0: "Arquivo/nome/assinatura diferentes do pedido (não é solucao.py/parse_duracao) ou usa dependências fora da stdlib."
+      1: "Arquivo e assinatura corretos, mas sem docstring ou sem type hints."
+      2: "solucao.py com parse_duracao(texto: str) -> int, docstring descrevendo formato e exceções levantadas."

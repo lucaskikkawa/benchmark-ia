@@ -1,0 +1,8 @@
+tipo: 09-api
+autor: codex
+revisor: claude
+revisao: "sem mudanças"
+timeout_min: 5
+comando_teste: "python -m pytest -q testes_ocultos"
+arquivos_solucao:
+  - "cliente.py"

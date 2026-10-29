@@ -1,0 +1,30 @@
+legibilidade:
+  max: 2
+  descricao:
+    0: "Nomes opacos impedem identificar ordenação e fusão."
+    1: "Ordenação ou fusão tem nomes claros, mas a outra etapa não."
+    2: "Nomes distinguem entrada ordenada, intervalo corrente e resultado."
+erros_bordas:
+  max: 2
+  descricao:
+    0: "Não trata vazio nem intervalos invertidos."
+    1: "Trata apenas um desses casos ou altera listas recebidas."
+    2: "Trata vazio, invertidos, duplicatas e geradores sem modificar listas."
+idiomatico:
+  max: 2
+  descricao:
+    0: "Implementa ordenação manual desnecessária ou usa dependência externa."
+    1: "Usa sorted/sort, mas com cópias ou controle de índices desnecessários."
+    2: "Usa ordenação nativa e uma varredura simples com tuplas de saída."
+manutenibilidade:
+  max: 2
+  descricao:
+    0: "Repete a lógica de fusão em caminhos incompatíveis."
+    1: "A fusão está centralizada, mas mistura mutação da entrada."
+    2: "A função mantém uma regra de fusão única e estado local."
+documentacao_instrucoes:
+  max: 2
+  descricao:
+    0: "Arquivo ou assinatura exigida ausente."
+    1: "Assinatura correta, sem explicar a regra de extremidades."
+    2: "Arquivo e assinatura corretos e docstring explica união de intervalos fechados."

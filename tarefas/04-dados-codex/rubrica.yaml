@@ -1,0 +1,30 @@
+legibilidade:
+  max: 2
+  descricao:
+    0: "Nomes não distinguem preço, receita e quantidade."
+    1: "Campos são claros, mas agregação ou filtragem é opaca."
+    2: "Etapas de leitura, validação, agregação e escrita têm nomes claros."
+erros_bordas:
+  max: 2
+  descricao:
+    0: "Não valida linhas pagas nem colunas."
+    1: "Valida parcialmente ou sobrescreve saída antes de terminar."
+    2: "Valida colunas, mínimo e linhas pagas, ignora canceladas e preserva saída em erro."
+idiomatico:
+  max: 2
+  descricao:
+    0: "Faz split manual de CSV ou serializa JSON manualmente."
+    1: "Usa csv e json, mas deixa arquivos sem gerenciamento de contexto."
+    2: "Usa csv.DictReader, json e leitura/escrita UTF-8 com arquivos fechados."
+manutenibilidade:
+  max: 2
+  descricao:
+    0: "Mistura filtragem por mínimo com agregação e duplica regras."
+    1: "Agrega corretamente, mas repete tratamento de campos."
+    2: "Mantém uma agregação por produto e aplica o mínimo somente ao final."
+documentacao_instrucoes:
+  max: 2
+  descricao:
+    0: "Arquivo ou assinatura ausente."
+    1: "Interface correta, sem descrever saída e erros."
+    2: "Documenta agregação paga, saída JSON e validação antes da escrita."

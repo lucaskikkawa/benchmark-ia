@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Leitura de frete.py depois da refatoração."
+    niveis:
+      0: "A tabela continua duplicada em if/elif e a classe só embrulha a função antiga."
+      1: "TabelaFrete existe, mas cotar e faixa_de_peso repetem a busca da faixa ou misturam validação com preço."
+      2: "Uma busca na tabela serve função, método e faixa_de_peso; o cálculo do expresso aparece uma vez."
+  - id: erros_bordas
+    max: 2
+    descricao: "Limites de peso, distância, bool e expresso."
+    niveis:
+      0: "Muda o valor de alguma faixa, aceita bool como peso ou trata 300/301 e 3000/3001 fora do enunciado."
+      1: "Os valores batem no miolo, mas uma borda falha (peso 1, 30000, distância 0, expresso com divisão inteira ou TypeError)."
+      2: "Todas as fronteiras de FAIXAS, distância 0 e 3000, expresso com (valor * 3) // 2 e as exceções pedidas."
+  - id: idiomatico
+    max: 2
+    descricao: "Dados da tabela e tipagem."
+    niveis:
+      0: "Strings mágicas espalhadas, comparação type(x) == int que foi só parcialmente trocada, ou float no valor."
+      1: "Usa a classe, mas FAIXAS é lista mutável sem necessidade ou a função cotar copia o método em vez de delegar."
+      2: "FAIXAS imutável de tuplas, delegação de cotar para a tabela e isinstance que exclui bool."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Incluir uma faixa nova mexe num só lugar."
+    niveis:
+      0: "Nome, limites e preços aparecem em dois ou mais pontos do módulo."
+      1: "Os números estão em FAIXAS, mas a escolha da faixa ainda tem um if por nome."
+      2: "Percorrer FAIXAS basta para achar a faixa; não há segundo mapa de preços."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "API pedida no enunciado."
+    niveis:
+      0: "Falta TabelaFrete, faixa_de_peso ou a função cotar."
+      1: "Os três nomes existem, mas FAIXAS não está na classe, o construtor exige argumento ou não há docstring."
+      2: "Classe com FAIXAS, método cotar, função faixa_de_peso e função cotar, com docstring curta do contrato."

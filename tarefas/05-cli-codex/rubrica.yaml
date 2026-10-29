@@ -1,0 +1,30 @@
+legibilidade:
+  max: 2
+  descricao:
+    0: "Parsing, contagem e formato não são identificáveis."
+    1: "Nomes são claros em apenas parte da CLI."
+    2: "Nomes e blocos distinguem argumentos, contagem, ordenação e emissão."
+erros_bordas:
+  max: 2
+  descricao:
+    0: "Falhas exibem traceback ou retornam sucesso."
+    1: "Trata argumentos, mas não erros de leitura/decodificação."
+    2: "Erros previstos têm código 2, stderr útil, stdout vazio e nenhum traceback."
+idiomatico:
+  max: 2
+  descricao:
+    0: "Não usa argparse ou conta tokens com lógica manual repetida."
+    1: "Usa argparse e dict, mas repete validação/ordenação."
+    2: "Usa argparse, contagem nativa e chave de ordenação explícita."
+manutenibilidade:
+  max: 2
+  descricao:
+    0: "Executa a CLI ao importar ou mistura encerramento com helpers."
+    1: "Tem guarda de script, mas main não pode receber argv."
+    2: "main aceita argv, retorna 0 e a guarda concentra SystemExit."
+documentacao_instrucoes:
+  max: 2
+  descricao:
+    0: "Flags ou formato público ausentes."
+    1: "Flags presentes, mas ajuda/docstring não explica a contagem."
+    2: "Ajuda e docstring descrevem tokens e formatos; todas as flags exigidas existem."

@@ -1,0 +1,37 @@
+total_max: 10
+itens:
+  - id: legibilidade
+    max: 2
+    descricao: "Clareza do laço de tentativas."
+    niveis:
+      0: "Retry implementado com recursão, flags múltiplas ou blocos duplicados por tipo de falha; difícil seguir."
+      1: "Laço compreensível, mas com lógica de espera e classificação de resposta misturadas em um bloco longo."
+      2: "Laço único e claro; cálculo da espera e classificação (sucesso/fatal/retentável) em pontos bem definidos ou funções auxiliares."
+  - id: erros_bordas
+    max: 2
+    descricao: "Semântica de retry/backoff/timeout."
+    niveis:
+      0: "Retenta 404/4xx, dorme após a última tentativa, engole exceções desconhecidas ou não valida parâmetros."
+      1: "Regras principais corretas, mas erra alguma borda (Retry-After inválido/ausente, limite backoff_max, bool como id, encadeamento da causa)."
+      2: "Todas as regras: classificação correta, esperas exatas, sem dormir após a última, validação de parâmetros e ids, raise ... from erro."
+  - id: idiomatico
+    max: 2
+    descricao: "Python idiomático."
+    niveis:
+      0: "except Exception genérico para decidir retry, comparação de tipo por nome de classe, time.sleep chamado diretamente."
+      1: "Exceções específicas, mas com construções verbosas (while com contador manual, if/elif longos de status)."
+      2: "for com range de tentativas, try/except/else, conjunto/tupla de retentáveis, dormir injetado, type hints."
+  - id: manutenibilidade
+    max: 2
+    descricao: "Configurabilidade e extensibilidade."
+    niveis:
+      0: "Valores mágicos (status, 2 ** n, 8.0) espalhados; impossível trocar a política sem reescrever."
+      1: "Parâmetros configuráveis, mas status retentáveis ou fórmula de espera repetidos em mais de um lugar."
+      2: "Status/exceções retentáveis em constantes, espera em um método único, obter_varios reaproveita obter_usuario."
+  - id: documentacao_instrucoes
+    max: 2
+    descricao: "Atendimento às instruções."
+    niveis:
+      0: "Altera fake_api.py, usa rede real/bibliotecas externas ou API pública diferente da pedida."
+      1: "API correta, mas sem docstrings explicando política de retry e exceções levantadas."
+      2: "API exata, FalhaPermanente com .tentativas, docstrings descrevendo política de retry e exceções."

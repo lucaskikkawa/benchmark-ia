@@ -1,0 +1,30 @@
+legibilidade:
+  max: 2
+  descricao:
+    0: "Testes sem nomes de cenário ou asserts compreensíveis."
+    1: "Nomes claros, mas mistura cenários sem identificação."
+    2: "Nomes descrevem cálculo, frete, validação e mutação; asserts têm valores claros."
+erros_bordas:
+  max: 2
+  descricao:
+    0: "Não testa exceções nem entradas vazias/zero."
+    1: "Testa parte das validações e apenas um caso vazio/zero."
+    2: "Cobre limites de desconto, negativos, vazio, quantidade zero e preço zero."
+idiomatico:
+  max: 2
+  descricao:
+    0: "Inspeciona implementação ou substitui a função em teste."
+    1: "Usa asserts públicos, mas captura exceções genéricas."
+    2: "Usa asserts comportamentais, pytest.raises(ValueError) e parametrização quando útil."
+manutenibilidade:
+  max: 2
+  descricao:
+    0: "Testes dependem da ordem ou alteram estado compartilhado."
+    1: "Testes independentes, mas com duplicação excessiva de cenários idênticos."
+    2: "Testes pequenos e independentes com dados locais e cenários distintos."
+documentacao_instrucoes:
+  max: 2
+  descricao:
+    0: "Não entrega tests/test_*.py ou edita carrinho.py."
+    1: "Entrega suíte válida sem indicar intenção dos casos menos óbvios."
+    2: "Entrega só a suíte pedida; nomes/docstrings esclarecem truncamento, frete e não mutação."
