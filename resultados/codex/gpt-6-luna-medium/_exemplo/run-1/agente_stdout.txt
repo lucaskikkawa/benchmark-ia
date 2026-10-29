@@ -1,0 +1,1 @@
+Criei [soma.py](/tmp/bench-i9y88nf5/soma.py) com `soma_pares(nums)`, que soma os números pares e retorna `0` para uma lista vazia.

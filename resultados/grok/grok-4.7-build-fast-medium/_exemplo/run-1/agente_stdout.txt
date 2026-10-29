@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui.Criei `soma.py` com a função `soma_pares(nums: list[int]) -> int`, que soma os números pares da lista. Uma lista vazia retorna `0`.
