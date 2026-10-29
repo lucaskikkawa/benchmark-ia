@@ -1,0 +1,10 @@
+notas/
+*.log
+.env
+*.env
+*credential*
+*secret*
+*.pem
+*.key
+hosts.yml
+__pycache__/
