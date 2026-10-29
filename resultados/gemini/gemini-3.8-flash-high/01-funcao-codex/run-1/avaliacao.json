@@ -1,0 +1,13 @@
+{
+ "juiz_empresa": "claude",
+ "juiz_modelo": "claude-haiku-5-5",
+ "itens": {
+  "legibilidade": 1,
+  "erros_bordas": 2,
+  "idiomatico": 2,
+  "manutenibilidade": 2,
+  "documentacao_instrucoes": 2
+ },
+ "rubrica_10": 9.0,
+ "nota_final_10": 9.7
+}

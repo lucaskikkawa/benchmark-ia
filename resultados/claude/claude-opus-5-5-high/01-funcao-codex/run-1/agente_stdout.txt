@@ -1,0 +1,12 @@
+Criei o `solucao.py` com a função `unir_intervalos`, e todos os testes rápidos que rodei passaram.
+
+A função lê a entrada uma única vez, então aceita geradores, e lança `ValueError` se algum par tiver início maior que o fim. Os pares são copiados para uma lista própria antes de ordenar, então a lista recebida não é modificada. Depois de ordenar, ela funde um intervalo com o anterior quando ele começa antes ou exatamente no fim do anterior. Assim, intervalos que se sobrepõem ou se tocam viram um só, e `(1, 2)` e `(3, 4)` continuam separados.
+
+Os testes cobriram:
+- o exemplo do enunciado, que retorna `[(1, 8), (10, 10)]`;
+- `(1, 2)` com `(3, 4)`, que continuam separados;
+- entrada vazia, que retorna `[]`;
+- um gerador com duplicatas;
+- que a lista de entrada não foi alterada;
+- intervalos com números negativos;
+- o `ValueError` para um par com início maior que o fim.

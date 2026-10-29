@@ -121,7 +121,7 @@ def main():
         import yaml
         with (task / "meta.yaml").open(encoding="utf-8") as f:
             meta = yaml.safe_load(f) or {}
-    timeout_s = min(300, max(1, int(meta.get("timeout_s", 300))))
+    timeout_s = min(300, max(1, int(meta.get("timeout_s") or 60 * float(meta.get("timeout_min", 5)))))
 
     base = ROOT / "resultados" / args.empresa / f"{args.modelo}-{args.esforco}" / args.tarefa
     if args.run is None:

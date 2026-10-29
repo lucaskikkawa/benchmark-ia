@@ -1,0 +1,7 @@
+Criei `solucao.py` neste diretório com `unir_intervalos`, e os testes rápidos passaram.
+
+A implementação ordena os pares, funde cada intervalo que começa em um valor menor ou igual ao fim do último intervalo já fundido, e mantém os separados por uma unidade. Ela valida `inicio > fim` com `ValueError`, consome a entrada uma única vez (aceita geradores) e não altera a lista recebida. Usa apenas a biblioteca padrão.
+
+Verifiquei com `python3 -I`: o exemplo do enunciado retorna `[(1, 8), (10, 10)]`, `(1, 2)` e `(3, 4)` continuam separados, duplicatas e entrada vazia estão corretas, um gerador funciona, a lista original fica inalterada e um par inválido lança `ValueError`.
+
+Não criei documentos no Claude Docs nem fiz commit, porque nenhum dos dois foi pedido.

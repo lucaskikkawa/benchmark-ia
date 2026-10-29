@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-1w4szn6v/solucao.py) com `parse_duracao`, conforme o enunciado.
+
+Testes passaram para exemplos, entradas inválidas, tipos incorretos e números muito grandes.
