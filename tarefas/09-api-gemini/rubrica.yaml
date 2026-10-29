@@ -1,29 +1,26 @@
-legibilidade:
-  max: 2
-  0: "Código confuso, aninhando múltiplos try/except em repetição e sem controle claro de tentativas."
-  1: "Código compreensível, mas com cálculos de backoff ou separação de erros pouco intuitivos."
-  2: "Código límpido, com loop de tentativas explícito, cálculo claro de backoff e fluxo fácil de acompanhar."
-
-erros_bordas:
-  max: 2
-  0: "Não diferencia erros transitórios de erros 4xx (faz retry indevido em 400/404 ou não tenta novamente em erros de rede)."
-  1: "Trata retries de rede, mas falha em 429/503 ou não valida max_tentativas < 1."
-  2: "Diferencia perfeitamente erros transitórios (rede, timeout, 429, 5xx) de erros definitivos (4xx sem retry), com esgotamento correto de tentativas."
-
-idiomatico:
-  max: 2
-  0: "Usa time.sleep engessado impedindo injeção de dependência ou captura inadequada de exceções com except Exception indiscriminado."
-  1: "Usa tratamento de exceção adequado, mas com duplicação de lógica entre get, post e executar."
-  2: "Usa injeção limpa de sleep_fn, conjuntos para status retentáveis e exceção customizada ApiError bem modelada com chaining (raise ... from)."
-
-manutenibilidade:
-  max: 2
-  0: "Lógica monolítica e acoplada onde a adição de novos códigos de status exige reestruturação completa."
-  1: "Código funcional, porém com parâmetros mágicos e pouca flexibilidade de configuração."
-  2: "Alta modularidade e configurabilidade (backoff_base, backoff_fator, max_tentativas, timeout e sleep_fn)."
-
-documentacao_instrucoes:
-  max: 2
-  0: "Não atende às assinaturas solicitadas de ApiError e ClienteResiliente."
-  1: "Atende às assinaturas, porém sem docstrings e tipagem parcial."
-  2: "Atendimento estrito a todas as assinaturas, tipagem completa e docstrings esclarecedoras."
+itens:
+- id: legibilidade
+  criterio: legibilidade
+  0: Código confuso, aninhando múltiplos try/except em repetição e sem controle claro de tentativas.
+  1: Código compreensível, mas com cálculos de backoff ou separação de erros pouco intuitivos.
+  2: Código límpido, com loop de tentativas explícito, cálculo claro de backoff e fluxo fácil de acompanhar.
+- id: erros_bordas
+  criterio: erros bordas
+  0: Não diferencia erros transitórios de erros 4xx (faz retry indevido em 400/404 ou não tenta novamente em erros de rede).
+  1: Trata retries de rede, mas falha em 429/503 ou não valida max_tentativas < 1.
+  2: Diferencia perfeitamente erros transitórios (rede, timeout, 429, 5xx) de erros definitivos (4xx sem retry), com esgotamento correto de tentativas.
+- id: idiomatico
+  criterio: idiomatico
+  0: Usa time.sleep engessado impedindo injeção de dependência ou captura inadequada de exceções com except Exception indiscriminado.
+  1: Usa tratamento de exceção adequado, mas com duplicação de lógica entre get, post e executar.
+  2: Usa injeção limpa de sleep_fn, conjuntos para status retentáveis e exceção customizada ApiError bem modelada com chaining (raise ... from).
+- id: manutenibilidade
+  criterio: manutenibilidade
+  0: Lógica monolítica e acoplada onde a adição de novos códigos de status exige reestruturação completa.
+  1: Código funcional, porém com parâmetros mágicos e pouca flexibilidade de configuração.
+  2: Alta modularidade e configurabilidade (backoff_base, backoff_fator, max_tentativas, timeout e sleep_fn).
+- id: documentacao_instrucoes
+  criterio: documentacao instrucoes
+  0: Não atende às assinaturas solicitadas de ApiError e ClienteResiliente.
+  1: Atende às assinaturas, porém sem docstrings e tipagem parcial.
+  2: Atendimento estrito a todas as assinaturas, tipagem completa e docstrings esclarecedoras.

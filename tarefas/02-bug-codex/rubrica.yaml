@@ -1,30 +1,26 @@
-legibilidade:
-  max: 2
-  descricao:
-    0: "A correção introduz nomes sem relação com janelas."
-    1: "O limite está corrigido, mas os índices não são claros."
-    2: "Soma corrente, índice e tamanho possuem nomes consistentes."
-erros_bordas:
-  max: 2
-  descricao:
-    0: "Ainda omite a última janela e não valida tamanho."
-    1: "Corrige a janela, mas perde validação ou vazio."
-    2: "Preserva tamanho inválido, vazio, janela total e ausência de mutação."
-idiomatico:
-  max: 2
-  descricao:
-    0: "Recalcula todas as somas com cortes em O(n vezes tamanho)."
-    1: "Mantém soma incremental com controle redundante."
-    2: "Mantém soma incremental e range que inclui o último elemento."
-manutenibilidade:
-  max: 2
-  descricao:
-    0: "Duplica o algoritmo para tamanhos diferentes."
-    1: "Há um algoritmo único com ramos desnecessários."
-    2: "Mantém uma varredura e guardas simples para tamanhos inválidos ou grandes."
-documentacao_instrucoes:
-  max: 2
-  descricao:
-    0: "Renomeia arquivo ou função pública."
-    1: "Preserva a interface sem descrever o resultado."
-    2: "Preserva a interface e documenta as somas de janelas contíguas."
+itens:
+- id: legibilidade
+  criterio: legibilidade
+  0: A correção introduz nomes sem relação com janelas.
+  1: O limite está corrigido, mas os índices não são claros.
+  2: Soma corrente, índice e tamanho possuem nomes consistentes.
+- id: erros_bordas
+  criterio: erros bordas
+  0: Ainda omite a última janela e não valida tamanho.
+  1: Corrige a janela, mas perde validação ou vazio.
+  2: Preserva tamanho inválido, vazio, janela total e ausência de mutação.
+- id: idiomatico
+  criterio: idiomatico
+  0: Recalcula todas as somas com cortes em O(n vezes tamanho).
+  1: Mantém soma incremental com controle redundante.
+  2: Mantém soma incremental e range que inclui o último elemento.
+- id: manutenibilidade
+  criterio: manutenibilidade
+  0: Duplica o algoritmo para tamanhos diferentes.
+  1: Há um algoritmo único com ramos desnecessários.
+  2: Mantém uma varredura e guardas simples para tamanhos inválidos ou grandes.
+- id: documentacao_instrucoes
+  criterio: documentacao instrucoes
+  0: Renomeia arquivo ou função pública.
+  1: Preserva a interface sem descrever o resultado.
+  2: Preserva a interface e documenta as somas de janelas contíguas.

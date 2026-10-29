@@ -1,29 +1,26 @@
-legibilidade:
-  max: 2
-  0: "Código com nomes confusos, sem estrutura lógica clara e difícil de auditar."
-  1: "Código legível, mas com métodos excessivamente longos ou com manipulações de dicionário confusas."
-  2: "Código limpo, autoexplicativo, com separação clara de responsabilidades entre os métodos da classe."
-
-erros_bordas:
-  max: 2
-  0: "Não valida preços/quantidades negativas/zero, ou falha ao remover itens inexistentes/zerados."
-  1: "Trata validações básicas de preço e quantidade, mas falha em limites do cupom (0-100%) ou em casos de remoção parcial/total."
-  2: "Trata com rigor todas as validações de entrada (preço, quantidade, limites de cupom, remoção com quantidade >= total) e erros esperados (ValueError e KeyError)."
-
-idiomatico:
-  max: 2
-  0: "Mantém padrão mutável default em __init__ (itens={}) ou usa loops imperativos desnecessários."
-  1: "Corrige o mutable default, mas usa construções verbosas para somas ou ordenações manuais."
-  2: "Resolve o mutable default de forma pythônica (itens: dict | None = None), usa sum com generator expressions e sorted idiomáticos."
-
-manutenibilidade:
-  max: 2
-  0: "Estrutura frágil onde alterações na representação interna de itens quebram múltiplos métodos."
-  1: "Estrutura funcional, porém sem proteção ou com duplicação na lógica de cálculo e formatação."
-  2: "Alta coesão, métodos reutilizam calcular_subtotal e calcular_desconto sem duplicação de lógica."
-
-documentacao_instrucoes:
-  max: 2
-  0: "Sem docstrings ou anotações de tipo nos métodos corrigidos."
-  1: "Possui docstrings básicas ou anotações de tipo parciais."
-  2: "Possui anotações de tipo completas em todos os métodos e docstrings esclarecedoras documentando parâmetros e exceções levantadas."
+itens:
+- id: legibilidade
+  criterio: legibilidade
+  0: Código com nomes confusos, sem estrutura lógica clara e difícil de auditar.
+  1: Código legível, mas com métodos excessivamente longos ou com manipulações de dicionário confusas.
+  2: Código limpo, autoexplicativo, com separação clara de responsabilidades entre os métodos da classe.
+- id: erros_bordas
+  criterio: erros bordas
+  0: Não valida preços/quantidades negativas/zero, ou falha ao remover itens inexistentes/zerados.
+  1: Trata validações básicas de preço e quantidade, mas falha em limites do cupom (0-100%) ou em casos de remoção parcial/total.
+  2: Trata com rigor todas as validações de entrada (preço, quantidade, limites de cupom, remoção com quantidade >= total) e erros esperados (ValueError e KeyError).
+- id: idiomatico
+  criterio: idiomatico
+  0: Mantém padrão mutável default em __init__ (itens={}) ou usa loops imperativos desnecessários.
+  1: Corrige o mutable default, mas usa construções verbosas para somas ou ordenações manuais.
+  2: 'Resolve o mutable default de forma pythônica (itens: dict | None = None), usa sum com generator expressions e sorted idiomáticos.'
+- id: manutenibilidade
+  criterio: manutenibilidade
+  0: Estrutura frágil onde alterações na representação interna de itens quebram múltiplos métodos.
+  1: Estrutura funcional, porém sem proteção ou com duplicação na lógica de cálculo e formatação.
+  2: Alta coesão, métodos reutilizam calcular_subtotal e calcular_desconto sem duplicação de lógica.
+- id: documentacao_instrucoes
+  criterio: documentacao instrucoes
+  0: Sem docstrings ou anotações de tipo nos métodos corrigidos.
+  1: Possui docstrings básicas ou anotações de tipo parciais.
+  2: Possui anotações de tipo completas em todos os métodos e docstrings esclarecedoras documentando parâmetros e exceções levantadas.

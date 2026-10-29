@@ -1,37 +1,26 @@
-total_max: 10
 itens:
-  - id: legibilidade
-    max: 2
-    descricao: "Clareza da correção."
-    niveis:
-      0: "Correção introduz lógica confusa (flags extras, índices manuais, casos especiais empilhados)."
-      1: "Correção funciona, mas deixa código redundante ou condicionais desnecessárias (ex.: if especial para lista vazia além do laço)."
-      2: "Laço único e linear sobre a entrada ordenada; condições de união e extensão óbvias ao ler."
-  - id: erros_bordas
-    max: 2
-    descricao: "Cobertura dos bugs e bordas da docstring."
-    niveis:
-      0: "Corrige no máximo um dos problemas (vazio, ordenação, contato, intervalo contido)."
-      1: "Corrige a maioria, mas falha em algum (ex.: contato com <, intervalo contido encolhe, mutação da entrada)."
-      2: "Corrige todos: vazio, ordenação sem mutar a entrada (sorted), contato com <=, extensão via max, mantém ValueError."
-  - id: idiomatico
-    max: 2
-    descricao: "Python idiomático."
-    niveis:
-      0: "Usa list.sort() na entrada (mutando-a), range(len()) com acesso por índice ou cópias manuais elaboradas."
-      1: "Correto, mas com construções verbosas (copy.deepcopy desnecessário, while com índice)."
-      2: "sorted(), desempacotamento de tuplas, max(), lista de resultado construída de forma direta."
-  - id: manutenibilidade
-    max: 2
-    descricao: "Escopo e preservação da API."
-    niveis:
-      0: "Altera assinaturas/nomes, reescreve total_coberto sem necessidade ou duplica a lógica de mesclagem."
-      1: "API preservada, mas com mudanças não relacionadas ao bug (reformatação ampla, renomeações)."
-      2: "Mudança mínima e focada; total_coberto continua reaproveitando mesclar_intervalos."
-  - id: documentacao_instrucoes
-    max: 2
-    descricao: "Atendimento às instruções."
-    niveis:
-      0: "Não edita intervalos.py (cria outro módulo) ou altera a especificação/docstring para justificar o comportamento."
-      1: "Edita o arquivo correto, mas remove/desatualiza docstrings ou não explica correções não óbvias."
-      2: "Edita intervalos.py, mantém as docstrings e comenta brevemente a correção não óbvia (ex.: uso de max)."
+- id: legibilidade
+  criterio: Clareza da correção.
+  0: Correção introduz lógica confusa (flags extras, índices manuais, casos especiais empilhados).
+  1: 'Correção funciona, mas deixa código redundante ou condicionais desnecessárias (ex.: if especial para lista vazia além do laço).'
+  2: Laço único e linear sobre a entrada ordenada; condições de união e extensão óbvias ao ler.
+- id: erros_bordas
+  criterio: Cobertura dos bugs e bordas da docstring.
+  0: Corrige no máximo um dos problemas (vazio, ordenação, contato, intervalo contido).
+  1: 'Corrige a maioria, mas falha em algum (ex.: contato com <, intervalo contido encolhe, mutação da entrada).'
+  2: 'Corrige todos: vazio, ordenação sem mutar a entrada (sorted), contato com <=, extensão via max, mantém ValueError.'
+- id: idiomatico
+  criterio: Python idiomático.
+  0: Usa list.sort() na entrada (mutando-a), range(len()) com acesso por índice ou cópias manuais elaboradas.
+  1: Correto, mas com construções verbosas (copy.deepcopy desnecessário, while com índice).
+  2: sorted(), desempacotamento de tuplas, max(), lista de resultado construída de forma direta.
+- id: manutenibilidade
+  criterio: Escopo e preservação da API.
+  0: Altera assinaturas/nomes, reescreve total_coberto sem necessidade ou duplica a lógica de mesclagem.
+  1: API preservada, mas com mudanças não relacionadas ao bug (reformatação ampla, renomeações).
+  2: Mudança mínima e focada; total_coberto continua reaproveitando mesclar_intervalos.
+- id: documentacao_instrucoes
+  criterio: Atendimento às instruções.
+  0: Não edita intervalos.py (cria outro módulo) ou altera a especificação/docstring para justificar o comportamento.
+  1: Edita o arquivo correto, mas remove/desatualiza docstrings ou não explica correções não óbvias.
+  2: 'Edita intervalos.py, mantém as docstrings e comenta brevemente a correção não óbvia (ex.: uso de max).'

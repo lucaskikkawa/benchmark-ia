@@ -1,37 +1,26 @@
-total_max: 10
 itens:
-  - id: legibilidade
-    max: 2
-    descricao: "Leitura da heurística de categoria em solucao.py."
-    niveis:
-      0: "Cadeia de ifs com fatias mágicas e a regra de URGENTE repetida em vários pontos."
-      1: "A função é curta, mas as listas de palavras estão inline, sem nome de categoria ao lado."
-      2: "Mapa ou tabela categoria → sinais, busca de URGENTE isolada e tamanho calculado uma vez."
-  - id: erros_bordas
-    max: 2
-    descricao: "Núcleo fechado: vazio, substring URGENTE, len e tipo."
-    niveis:
-      0: "Trata 'urgente' minúsculo como urgente, faz strip antes de len ou devolve 'vazia' para texto não vazio."
-      1: "O núcleo passa na maior parte, mas erra uma borda: emoji, quebra de linha, 'XURGENTEY', bytes ou string só de espaços."
-      2: "TypeError para não-str; tamanho == len(texto); só '' é 'vazia'; URGENTE é substring sensível a maiúsculas."
-  - id: idiomatico
-    max: 2
-    descricao: "Python simples, sem serviço externo."
-    niveis:
-      0: "Chama API, lê arquivo de configuração obrigatório ou usa eval no texto."
-      1: "Funciona com laços corretos, mas casefold/in está reimplementado caractere a caractere sem necessidade."
-      2: "Operador in, casefold ou lower só na parte ambígua, e anotação de tipo na função pública. Só stdlib."
-  - id: manutenibilidade
-    max: 2
-    descricao: "Incluir uma categoria nova."
-    niveis:
-      0: "Cada palavra-chave é um if com retorno próprio, e a prioridade entre categorias não está explícita."
-      1: "As palavras estão numa coleção, mas a ordem de desempate depende da ordem dos ifs sem estar nomeada."
-      2: "Uma estrutura ordenada define a prioridade; acrescentar uma categoria é um item novo, sem mexer em URGENTE nem em tamanho."
-  - id: documentacao_instrucoes
-    max: 2
-    descricao: "SUPOSICOES.md cobre os pontos abertos."
-    niveis:
-      0: "Não há SUPOSICOES.md, ou o arquivo está vazio / não fala das decisões de classificação."
-      1: "O arquivo existe e cita categorias, mas omite desempate, caixa/acentos ou o que fazer com texto sem palavras."
-      2: "SUPOSICOES.md lista as categorias escolhidas, a regra de empate, o tratamento de caixa/acentos e o caso de texto sem palavras, coerente com solucao.py."
+- id: legibilidade
+  criterio: Leitura da heurística de categoria em solucao.py.
+  0: Cadeia de ifs com fatias mágicas e a regra de URGENTE repetida em vários pontos.
+  1: A função é curta, mas as listas de palavras estão inline, sem nome de categoria ao lado.
+  2: Mapa ou tabela categoria → sinais, busca de URGENTE isolada e tamanho calculado uma vez.
+- id: erros_bordas
+  criterio: 'Núcleo fechado: vazio, substring URGENTE, len e tipo.'
+  0: Trata 'urgente' minúsculo como urgente, faz strip antes de len ou devolve 'vazia' para texto não vazio.
+  1: 'O núcleo passa na maior parte, mas erra uma borda: emoji, quebra de linha, ''XURGENTEY'', bytes ou string só de espaços.'
+  2: TypeError para não-str; tamanho == len(texto); só '' é 'vazia'; URGENTE é substring sensível a maiúsculas.
+- id: idiomatico
+  criterio: Python simples, sem serviço externo.
+  0: Chama API, lê arquivo de configuração obrigatório ou usa eval no texto.
+  1: Funciona com laços corretos, mas casefold/in está reimplementado caractere a caractere sem necessidade.
+  2: Operador in, casefold ou lower só na parte ambígua, e anotação de tipo na função pública. Só stdlib.
+- id: manutenibilidade
+  criterio: Incluir uma categoria nova.
+  0: Cada palavra-chave é um if com retorno próprio, e a prioridade entre categorias não está explícita.
+  1: As palavras estão numa coleção, mas a ordem de desempate depende da ordem dos ifs sem estar nomeada.
+  2: Uma estrutura ordenada define a prioridade; acrescentar uma categoria é um item novo, sem mexer em URGENTE nem em tamanho.
+- id: documentacao_instrucoes
+  criterio: SUPOSICOES.md cobre os pontos abertos.
+  0: Não há SUPOSICOES.md, ou o arquivo está vazio / não fala das decisões de classificação.
+  1: O arquivo existe e cita categorias, mas omite desempate, caixa/acentos ou o que fazer com texto sem palavras.
+  2: SUPOSICOES.md lista as categorias escolhidas, a regra de empate, o tratamento de caixa/acentos e o caso de texto sem palavras, coerente com solucao.py.

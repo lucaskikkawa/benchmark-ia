@@ -1,29 +1,26 @@
-legibilidade:
-  max: 2
-  0: "Código desordenado, nomes confusos e dependências circulares entre módulos."
-  1: "Código legível, mas com mistura de lógicas entre models, handlers e bus ou imports desorganizados."
-  2: "Código extremamente limpo, com interfaces expressivas, separação nítida em módulos coesos e sem acoplamentos indevidos."
-
-erros_bordas:
-  max: 2
-  0: "Falha na ordenação por prioridade, quebra ao despachar fila vazia ou não trata exceções em handlers."
-  1: "Trata ordenação de prioridade, mas não preserva FIFO em empates ou não repassa erro corretamente para a DLQ."
-  2: "Trata com precisão todos os casos de borda: desempate FIFO por timestamp, fila vazia, falha em handlers com DLQ e desinscrições inexistentes."
-
-idiomatico:
-  max: 2
-  0: "Não utiliza dataclasses, IntEnum nem ABC/abstractmethod onde solicitado, usando dicionários brutos ou classes vazias."
-  1: "Usa dataclasses e enum, mas sem imports relativos adequados dentro do pacote."
-  2: "Excelente uso de dataclasses, IntEnum, ABC, type hints modernos e imports relativos rigorosamente idiomáticos no pacote."
-
-manutenibilidade:
-  max: 2
-  0: "Estrutura monolítica disfarçada ou módulos altamente acoplados que impedem o uso isolado de models ou handlers."
-  1: "Estrutura multi-arquivo funcional, porém com __all__ incompleto ou lógica de despacho espalhada."
-  2: "Alta modularidade, baixo acoplamento e contrato de API público transparente e bem documentado em __init__.py."
-
-documentacao_instrucoes:
-  max: 2
-  0: "Não cria os 4 arquivos com a estrutura e nomes de módulos requisitados no enunciado."
-  1: "Cria a estrutura de arquivos solicitada, mas com docstrings ausentes e tipagem parcial."
-  2: "Atende estritamente à estrutura de 4 arquivos especificada, inclui docstrings claras e tipagem completa."
+itens:
+- id: legibilidade
+  criterio: legibilidade
+  0: Código desordenado, nomes confusos e dependências circulares entre módulos.
+  1: Código legível, mas com mistura de lógicas entre models, handlers e bus ou imports desorganizados.
+  2: Código extremamente limpo, com interfaces expressivas, separação nítida em módulos coesos e sem acoplamentos indevidos.
+- id: erros_bordas
+  criterio: erros bordas
+  0: Falha na ordenação por prioridade, quebra ao despachar fila vazia ou não trata exceções em handlers.
+  1: Trata ordenação de prioridade, mas não preserva FIFO em empates ou não repassa erro corretamente para a DLQ.
+  2: 'Trata com precisão todos os casos de borda: desempate FIFO por timestamp, fila vazia, falha em handlers com DLQ e desinscrições inexistentes.'
+- id: idiomatico
+  criterio: idiomatico
+  0: Não utiliza dataclasses, IntEnum nem ABC/abstractmethod onde solicitado, usando dicionários brutos ou classes vazias.
+  1: Usa dataclasses e enum, mas sem imports relativos adequados dentro do pacote.
+  2: Excelente uso de dataclasses, IntEnum, ABC, type hints modernos e imports relativos rigorosamente idiomáticos no pacote.
+- id: manutenibilidade
+  criterio: manutenibilidade
+  0: Estrutura monolítica disfarçada ou módulos altamente acoplados que impedem o uso isolado de models ou handlers.
+  1: Estrutura multi-arquivo funcional, porém com __all__ incompleto ou lógica de despacho espalhada.
+  2: Alta modularidade, baixo acoplamento e contrato de API público transparente e bem documentado em __init__.py.
+- id: documentacao_instrucoes
+  criterio: documentacao instrucoes
+  0: Não cria os 4 arquivos com a estrutura e nomes de módulos requisitados no enunciado.
+  1: Cria a estrutura de arquivos solicitada, mas com docstrings ausentes e tipagem parcial.
+  2: Atende estritamente à estrutura de 4 arquivos especificada, inclui docstrings claras e tipagem completa.
