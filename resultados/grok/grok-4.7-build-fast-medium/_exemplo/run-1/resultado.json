@@ -1,0 +1,27 @@
+{
+  "empresa": "grok",
+  "modelo": "grok-4.7-build-fast",
+  "esforco": "medium",
+  "tarefa": "_exemplo",
+  "run": 1,
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 7.077,
+  "testes_total": 4,
+  "testes_passados": 4,
+  "pct_passados": 100.0,
+  "inicio_iso": "2026-10-29T15:03:27.151966-03:00",
+  "cmd": [
+    "grok",
+    "-p",
+    "Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.",
+    "-m",
+    "grok-4.7-build-fast",
+    "--effort",
+    "medium",
+    "--permission-mode",
+    "bypassPermissions",
+    "--cwd",
+    "/tmp/bench-iwm54w9u"
+  ]
+}

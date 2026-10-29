@@ -8,3 +8,4 @@ notas/
 *.key
 hosts.yml
 __pycache__/
+.bench-py/
