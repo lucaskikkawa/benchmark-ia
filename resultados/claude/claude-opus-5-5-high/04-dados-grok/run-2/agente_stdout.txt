@@ -1,1 +1,26 @@
-You've hit your session limit · resets 10:50pm (America/Sao_Paulo)
+Criei `solucao.py` com `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão. Também criei `test_solucao.py`, com 7 testes. Todos passam; eles cobrem o exemplo do enunciado e os casos de erro listados. Os testes geram os próprios arquivos num diretório temporário, então não ficou nenhuma amostra no diretório.
+
+**CSV**
+- O arquivo é lido em UTF-8 sem `utf-8-sig`, então um BOM no início faz o cabeçalho não bater e dá `ValueError`.
+- A primeira linha é comparada com o cabeçalho exato, antes de qualquer `strip`.
+- São ignoradas as linhas em branco e aquelas em que todos os campos ficam vazios depois do `strip`. Nas demais linhas, um número de colunas diferente de 5 dá `ValueError`.
+- `id` e `equipe` vazios dão erro, e `id` repetido (comparado já com `strip`) também. As equipes são agrupadas pelo nome com `strip`.
+- As datas precisam ter exatamente 16 caracteres no formato `YYYY-MM-DDTHH:MM`, só com dígitos ASCII. Uma data que não existe, como `2024-02-30`, dá `ValueError`.
+- A duração em minutos é a diferença exata entre as duas datas e pode cruzar dias, meses e anos. `fechado_em` anterior a `aberto_em` dá `ValueError`.
+- A prioridade precisa ser exatamente `baixa`, `media` ou `alta` depois do `strip`.
+- Erros internos do `csv` viram `ValueError`. Arquivo ausente continua levantando o `FileNotFoundError` do próprio `open`.
+
+**SLA**
+- O JSON precisa ter só a chave `limites_minutos`, com exatamente as três prioridades.
+- Cada limite precisa ser `int` maior ou igual a 1; `bool` e `float` são rejeitados.
+- JSON vazio ou inválido dá `ValueError`.
+
+**Saída**
+- Um chamado estoura só quando a duração passa do limite; igual ao limite não estoura.
+- As equipes saem ordenadas com `sorted` padrão.
+- O tempo médio é a soma das durações dividida (divisão inteira) pelo número de chamados.
+- `pior_id` é o de maior duração; em empate, fica o menor `id` em ordem de texto (`a10` antes de `a2`).
+- O arquivo é gravado exatamente como `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`, e a função devolve o mesmo conteúdo.
+- Os dois arquivos de entrada são validados antes de gravar qualquer coisa, então uma entrada inválida não deixa saída parcial.
+
+**Decisão sobre um ponto ambíguo:** se a primeira linha do arquivo estiver em branco, tratei isso como "sem cabeçalho" e a função levanta `ValueError`. Ela não pula linhas em branco para procurar o cabeçalho mais abaixo.

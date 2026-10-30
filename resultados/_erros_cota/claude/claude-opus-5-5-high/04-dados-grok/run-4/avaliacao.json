@@ -1,0 +1,33 @@
+{
+ "autora": "grok",
+ "resolvedora": "claude",
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 0.0
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 0.0
+  }
+ },
+ "obs": [
+  "gemini tentativa 1 falhou: timeout"
+ ],
+ "rubrica_10": 0.0,
+ "nota_final_10": 0.0
+}

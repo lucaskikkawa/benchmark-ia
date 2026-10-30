@@ -16,16 +16,16 @@
   "gemini": {
    "modelo": "gemini-3.8-flash",
    "itens": {
-    "legibilidade": 1.0,
+    "legibilidade": 2.0,
     "erros_bordas": 2.0,
     "idiomatico": 2.0,
     "manutenibilidade": 1.0,
     "documentacao_instrucoes": 1.0
    },
-   "rubrica_10": 7.0
+   "rubrica_10": 8.0
   }
  },
  "obs": [],
- "rubrica_10": 8.5,
- "nota_final_10": 9.55
+ "rubrica_10": 9.0,
+ "nota_final_10": 9.7
 }

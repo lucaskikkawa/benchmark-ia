@@ -1,27 +1,2 @@
-
-==================================== ERRORS ====================================
-____________ ERROR collecting testes_ocultos/test_endurecimento.py _____________
-ImportError while importing test module '/tmp/bench-vqwmsne0/testes_ocultos/test_endurecimento.py'.
-Hint: make sure your test modules/packages have valid Python names.
-Traceback:
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-testes_ocultos/test_endurecimento.py:3: in <module>
-    from organizador import organizar_tarefas
-E   ModuleNotFoundError: No module named 'organizador'
-_____________ ERROR collecting testes_ocultos/test_organizador.py ______________
-ImportError while importing test module '/tmp/bench-vqwmsne0/testes_ocultos/test_organizador.py'.
-Hint: make sure your test modules/packages have valid Python names.
-Traceback:
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-testes_ocultos/test_organizador.py:3: in <module>
-    from organizador import organizar_tarefas
-E   ModuleNotFoundError: No module named 'organizador'
-=========================== short test summary info ============================
-ERROR testes_ocultos/test_endurecimento.py
-ERROR testes_ocultos/test_organizador.py
-!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!
-2 errors in 0.07s
+..............                                                           [100%]
+14 passed in 0.16s

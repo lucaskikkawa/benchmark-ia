@@ -1,1 +1,13 @@
-You've hit your session limit · resets 10:50pm (America/Sao_Paulo)
+Criei o `cliente.py` com a `TempoEsgotado` e a `baixar_pedidos`, usando só a biblioteca padrão. Não alterei o `loja_api.py`. Testei os casos do enunciado e todos passaram.
+
+- **Timeout:** cada chamada a `obter_pedido` roda numa thread separada, e o cliente espera no máximo `timeout_s`. Se o prazo estoura, o cliente segue em frente sem ficar preso os 1,2 s de `ATRASO_S`. A chamada abandonada termina sozinha em segundo plano e não impede o programa de fechar. Se a API levanta exceção dentro da thread, essa mesma exceção chega a quem chamou `baixar_pedidos`.
+- **Erros e novas tentativas:** `LojaErroCliente` é repassado na hora, sem nova tentativa nem espera. `LojaIndisponivel` e timeout disparam nova tentativa, até `max_tentativas`. Se a última tentativa der `LojaIndisponivel`, essa exceção sobe; se der timeout, sobe `TempoEsgotado`.
+- **Espera entre tentativas:** depois da tentativa `i` que falhou, o cliente dorme `backoff_s * 2 ** (i - 1)`. Não dorme depois da última tentativa, depois de sucesso, nem quando `backoff_s` é 0.
+- **Ordem e parada:** os ids são baixados na ordem da lista. Se um falha de vez, os seguintes não são chamados. Lista vazia devolve `[]` sem chamar a API. Id repetido é baixado de novo.
+- **Validação:** tudo é conferido antes de qualquer chamada, com `TypeError` ou `ValueError` conforme o enunciado, e `bool` rejeitado nos três parâmetros numéricos.
+
+Duas escolhas minhas que o enunciado não pedia:
+- `TempoEsgotado` herda de `TimeoutError`, então um `except TimeoutError` também a captura.
+- Se `timeout_s` for infinito, o cliente espera sem limite, em vez de quebrar com erro.
+
+**Testes:** os casos que rodei foram `flaky-` e `slow-` com seed ímpar (a terceira tentativa devolve o pedido), `timeout-` interrompido em menos de 0,5 s, os valores exatos de espera para `down-`, a parada nos ids seguintes depois de uma falha, ids inválidos, toda a validação e id repetido. O script de teste ficou numa pasta temporária fora deste diretório e eu o apaguei depois, então não há arquivo de teste aqui.

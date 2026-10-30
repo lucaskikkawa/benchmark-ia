@@ -1,1 +1,19 @@
-You've hit your session limit · resets 10:50pm (America/Sao_Paulo)
+Criei os dois arquivos que o enunciado pede, e um teste rápido de verificação passou.
+
+- **`solucao.py`**: a função `classificar_cliente` calcula `round(soma(compras) * 0.1 + anos_ativo * 5, 2)` e devolve um dicionário novo com `id`, `nome`, `score` e `categoria`, sem alterar a entrada.
+- **`SUPOSICOES.md`**: documenta as decisões para os pontos em aberto, com justificativas.
+
+**Decisões principais:**
+
+| Ponto em aberto | Decisão |
+|---|---|
+| Categorias | `Bronze` (abaixo de 100, inclusive negativos), `Prata` (100 a 499,99), `Ouro` (500 a 999,99), `Diamante` (1000 ou mais). Cada faixa inclui seu limite inferior, e `Bronze` é o mínimo, então a categoria nunca fica vazia. |
+| Compras negativas | São tratadas como estornos e abatem a soma, como manda a regra literal. O score pode ficar negativo e não é cortado em zero. |
+| `anos_ativo` negativo | Conta como 0, sem gerar erro. |
+| Campos extras | São ignorados e não aparecem na saída. |
+| Entrada mal formada | Gera erro: campo obrigatório ausente, tipo errado, `bool`, `NaN` ou infinito em `compras`. |
+
+**Teste realizado:**
+- Com um `id` e um `nome` contendo emoji e caracteres chineses e com uma compra negativa, o score bateu com a fórmula e o dicionário de entrada ficou inalterado.
+- Com 1 milhão de compras, a função levou cerca de 0,5 s.
+- Com `anos_ativo = -4` e nenhuma compra, o resultado foi score 0,0 na categoria `Bronze`.

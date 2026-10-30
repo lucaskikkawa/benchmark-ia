@@ -1,16 +1,2 @@
-
-==================================== ERRORS ====================================
-______________ ERROR collecting testes_ocultos/test_consolidar.py ______________
-ImportError while importing test module '/tmp/bench-jlt0ktwp/testes_ocultos/test_consolidar.py'.
-Hint: make sure your test modules/packages have valid Python names.
-Traceback:
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-testes_ocultos/test_consolidar.py:5: in <module>
-    from solucao import consolidar
-E   ModuleNotFoundError: No module named 'solucao'
-=========================== short test summary info ============================
-ERROR testes_ocultos/test_consolidar.py
-!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
-1 error in 0.07s
+......................                                                   [100%]
+22 passed in 0.08s

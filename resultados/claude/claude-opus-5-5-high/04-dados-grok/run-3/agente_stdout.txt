@@ -1,1 +1,23 @@
-You've hit your session limit · resets 10:50pm (America/Sao_Paulo)
+Criei `solucao.py` com a função `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão. Testei com arquivos temporários num subdiretório que é apagado ao final, então o diretório ficou só com `enunciado.md`, `.gitkeep` e `solucao.py`.
+
+**Casos testados que funcionaram:**
+- O exemplo do enunciado deu média 45, 1 estourado e `pior_id` `a1`.
+- No empate de duração entre `a10` e `a2`, o `pior_id` é `a10`.
+- Um CSV só com cabeçalho e linhas em branco ou `,,,,` dá `{"equipes": []}`.
+- Linhas terminadas em `\r\n` são aceitas.
+- Durações que cruzam dia, mês e ano (incluindo o 29 de fevereiro de 2024) são calculadas corretamente.
+- A ordenação segue o code point: `A` vem antes de `São, Paulo`, que vem antes de `alfa`.
+- O arquivo gravado é exatamente `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`, e a função devolve o mesmo conteúdo.
+
+**Casos de erro testados, todos dando `ValueError`:**
+- BOM no início, arquivo vazio, coluna a mais.
+- Ids `a` e `" a "` duplicados.
+- `Alta` com maiúscula, data inexistente (29/02/2023), data fora do formato (`2024-3-01T00:00`), fechamento antes da abertura.
+- Aspas não fechadas no CSV.
+- No SLA: limite `true` ou `1.0`, e JSON vazio.
+
+JSON inválido e bytes que não são UTF-8 levantam `JSONDecodeError` e `UnicodeDecodeError`, que são subclasses de `ValueError`. Também rejeito chaves duplicadas no JSON do SLA, mesmo o enunciado não pedindo isso explicitamente.
+
+**Escolhas onde o enunciado deixa margem:**
+- **Primeira linha:** tem de ser o cabeçalho. Uma linha em branco antes dele dá `ValueError`.
+- **Linhas vazias:** uma linha cujos campos ficam todos vazios depois do `strip` é ignorada mesmo com número de colunas diferente de 5 (por exemplo `,,,` ou só espaços).
