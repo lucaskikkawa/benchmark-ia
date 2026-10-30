@@ -1,0 +1,3 @@
+Implementei o pacote `eventhub` nos quatro arquivos solicitados.
+
+Verifiquei com Python 3: prioridades, FIFO, inscrições sem duplicação, histórico, tratamento de falhas com e sem DLQ e publicação durante o despacho. Todas as verificações passaram.

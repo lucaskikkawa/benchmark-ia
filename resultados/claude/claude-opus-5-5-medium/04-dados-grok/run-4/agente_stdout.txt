@@ -1,0 +1,13 @@
+Criei `solucao.py` com a função `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão. Rodei um teste avulso num diretório temporário e todos os casos deram o resultado esperado. Não deixei nenhum arquivo de amostra aqui.
+
+Casos que testei:
+- **Exemplo do enunciado:** `n1` sai com média 45, 1 estourado e pior id `a1`.
+- **Empate de duração:** entre `a10` e `a2`, o pior id é `a10`.
+- **Variações aceitas:** fim de linha `\r\n`, linhas em branco ou só com `,,,,`, espaços em volta da equipe e da prioridade (`" n1 "`, `" alta "`), campo entre aspas com vírgula (`"São, Paulo"`) e duração que atravessa a virada do ano.
+- **Erros que geram `ValueError`:** BOM no início, arquivo vazio, data inexistente (`2024-02-30`), data fora do formato (`2024-3-01`), prioridade `Alta`, id duplicado depois do strip (`a` e `" a "`), e SLA vazio, com `true` ou com `1.0`.
+- **CSV só com cabeçalho:** devolve `{"equipes": []}`.
+
+Três decisões em pontos que o enunciado deixa em aberto:
+- **Linha com todos os campos vazios:** é ignorada mesmo que tenha outra quantidade de colunas (por exemplo `,,` ou uma linha só com espaços). Uma linha com conteúdo e quantidade de colunas errada continua sendo `ValueError`.
+- **Formato das datas:** além de ter 16 caracteres, a data precisa seguir exatamente o padrão `YYYY-MM-DDTHH:MM` com dígitos ASCII. Isso evita que a leitura padrão de datas do Python aceite formas como `2024-3-01`.
+- **Arquivo de saída:** só é gravado quando as duas entradas são válidas; se alguma der erro, o arquivo não é criado.

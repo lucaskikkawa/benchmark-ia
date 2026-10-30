@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="17" time="0.073" timestamp="2026-10-29T19:11:46.925893-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_biblioteca" name="test_livro_normaliza_titulo_e_rejeita_isbn" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_catalogo_busca_lista_e_duplicata" time="0.000"><failure message="TypeError: adicionar exige uma instância de Livro">def test_catalogo_busca_lista_e_duplicata():
+        catalogo = _catalogo()
+        assert catalogo.buscar(ISBN_A).titulo == "Dom Casmurro"
+        assert [livro.isbn for livro in catalogo.listar()] == [ISBN_A, ISBN_B]
+        with pytest.raises(ErroBiblioteca):
+            catalogo.adicionar(Livro(ISBN_A, "Outro", 1))
+        with pytest.raises(ErroBiblioteca):
+            catalogo.buscar("9780000000099")
+        with pytest.raises(ErroBiblioteca):
+&gt;           catalogo.adicionar({"isbn": ISBN_A})
+
+testes_ocultos/test_biblioteca.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;biblioteca.catalogo.Catalogo object at 0x7f3874105c40&gt;
+livro = {'isbn': '9780000000001'}
+
+    def adicionar(self, livro: Livro) -&gt; None:
+        if not isinstance(livro, Livro):
+&gt;           raise TypeError("adicionar exige uma instância de Livro")
+E           TypeError: adicionar exige uma instância de Livro
+
+biblioteca/catalogo.py:10: TypeError</failure></testcase><testcase classname="testes_ocultos.test_biblioteca" name="test_emprestar_reduz_disponiveis_e_bloqueia_repeticao" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_dois_titulos_do_mesmo_usuario" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_atraso_no_prazo_e_depois" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_bissexto_e_data_anterior" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_devolucao_libera_e_segunda_devolucao_falha" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_ativos_ordenados_e_sem_devolvidos" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_datas_e_usuarios_invalidos" time="0.000"><failure message="TypeError: o serviço exige um Catalogo">def test_datas_e_usuarios_invalidos():
+        servico = ServicoEmprestimos(_catalogo())
+        with pytest.raises(ErroBiblioteca):
+            servico.emprestar(ISBN_A, "   ", "2024-01-01")
+        with pytest.raises(ErroBiblioteca):
+            servico.emprestar(ISBN_A, "Ana", "2023-02-29")
+        with pytest.raises(ErroBiblioteca):
+            servico.emprestar(ISBN_A, "Ana", "2024-1-01")
+        with pytest.raises(ErroBiblioteca):
+            servico.emprestar("9780000000099", "Ana", "2024-01-01")
+        with pytest.raises(ErroBiblioteca):
+            servico.disponiveis("9780000000099")
+        with pytest.raises(ErroBiblioteca):
+&gt;           ServicoEmprestimos(object())
+
+testes_ocultos/test_biblioteca.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;biblioteca.emprestimos.ServicoEmprestimos object at 0x7f3874104f80&gt;
+catalogo = &lt;object object at 0x7f3874df5820&gt;
+
+    def __init__(self, catalogo: Catalogo) -&gt; None:
+        if not isinstance(catalogo, Catalogo):
+&gt;           raise TypeError("o serviço exige um Catalogo")
+E           TypeError: o serviço exige um Catalogo
+
+biblioteca/emprestimos.py:32: TypeError</failure></testcase><testcase classname="testes_ocultos.test_biblioteca" name="test_api_publica_e_imports_relativos" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_isbn_sem_digito_verificador_e_frozen" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_listar_devolve_lista_nova" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_mesmo_usuario_nao_pega_dois_exemplares" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_servicos_nao_compartilham_estoque" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_falha_nao_altera_estado" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_prazo_atravessa_mes_e_ano" time="0.000" /><testcase classname="testes_ocultos.test_biblioteca" name="test_ativos_ordem_de_code_point" time="0.000" /></testsuite></testsuites>

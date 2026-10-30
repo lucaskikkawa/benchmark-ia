@@ -1,0 +1,1 @@
+Criei [tests/test_descontos.py](/tmp/bench-zkd5hzbq/tests/test_descontos.py) com cobertura das regras de desconto, validações de entrada e limites de datas. Não alterei `descontos.py`.

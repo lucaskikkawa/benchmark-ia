@@ -1,0 +1,25 @@
+Corrigi o `carrinho.py`, e ele agora segue o enunciado. Não havia testes no diretório, então rodei um script rápido com os casos principais e todos deram o resultado esperado.
+
+**O que foi corrigido:**
+1. **Estado compartilhado entre carrinhos:** o padrão do `__init__` agora é `None`, e não mais um `{}` reaproveitado por todas as instâncias. Quando `itens` é passado, o carrinho guarda uma cópia própria, incluindo os dicionários de cada item. Assim, alterar o dicionário original depois não muda o carrinho.
+2. **Validações em `adicionar_item`:**
+   - `nome` que não é string dá `TypeError`; vazio ou só com espaços dá `ValueError`.
+   - `preco` precisa ser número, e `bool` é recusado. Valor `<= 0` dá `ValueError`.
+   - `quantidade` precisa ser `int` de verdade (`1.0` e `True` dão `TypeError`). Valor `<= 0` dá `ValueError`.
+3. **`remover_item`:**
+   - Item que não está no carrinho dá `KeyError`.
+   - A quantidade passa pela mesma validação de tipo e de valor.
+   - Se a quantidade for igual ou maior que a do carrinho, o item sai por completo. Se for menor, só diminui.
+4. **`aplicar_cupom`:** o código passa pela mesma validação do `nome`. O desconto precisa ser número entre 0 e 100, limites incluídos. Um cupom novo substitui o anterior.
+5. **Valores arredondados:** subtotal, desconto e total são arredondados para 2 casas, e o total nunca fica abaixo de `0.0`.
+6. **Cálculo do desconto:** antes multiplicava direto pela porcentagem; agora usa `subtotal * (porcentagem / 100)`.
+7. **`listar_itens`:** devolve dicionários novos, ordenados com `sorted` padrão do Python, sem locale. Alterar a lista devolvida não muda o carrinho.
+
+**Comportamentos que convém saber:**
+- **Ordem com maiúsculas e acentos:** a ordem padrão do Python põe maiúsculas antes de minúsculas e letras acentuadas depois de todas as outras. No teste saiu `['Zebra', 'banana', 'x', 'Água']`. É isso que o enunciado pede, mas não é ordem alfabética.
+- **O que acrescentei além do enunciado:**
+  - Um `preco` infinito ou `NaN` agora dá `ValueError`.
+  - Um `NaN` no desconto também dá `ValueError`.
+  - Passar para o `__init__` algo que não seja dicionário nem `None` dá `TypeError`.
+
+  O enunciado não fala desses casos.

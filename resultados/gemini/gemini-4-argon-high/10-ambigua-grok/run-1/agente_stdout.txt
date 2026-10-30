@@ -1,0 +1,4 @@
+Foram criados os arquivos solicitados no diretório de trabalho:
+
+- [solucao.py](file:///tmp/bench-1docgppg/solucao.py): implementa a função pura [`classificar_mensagem`](file:///tmp/bench-1docgppg/solucao.py#L115-L157) utilizando apenas a biblioteca padrão do Python, validando o tipo de entrada (`str`), calculando `tamanho` em *code points* (`len(texto)`), identificando `urgente` pela presença exata da substring `"URGENTE"` e atribuindo `categoria` conforme as regras especificadas.
+- [SUPOSICOES.md](file:///tmp/bench-1docgppg/SUPOSICOES.md): documenta em UTF-8 o conjunto de categorias (`"vazia"`, `"sem_conteudo"`, `"reclamacao"`, `"pedido"`, `"duvida"`, `"elogio"`, `"outro"`), as palavras-chave e ordem de precedência, a normalização de caixa e acentos restrita à classificação da categoria e o formato do dicionário retornado.

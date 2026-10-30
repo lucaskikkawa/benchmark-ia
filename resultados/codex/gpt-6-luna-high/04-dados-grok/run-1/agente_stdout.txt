@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-tkbwxb42/solucao.py) com `consolidar`, incluindo validação do CSV e do SLA, consolidação por equipe e gravação do JSON no formato especificado.

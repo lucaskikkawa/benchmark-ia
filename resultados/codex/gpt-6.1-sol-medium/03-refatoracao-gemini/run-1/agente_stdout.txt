@@ -1,0 +1,3 @@
+Refatorei [processador.py](/tmp/bench-4ipk67e1/processador.py) com as quatro classes exigidas, validações, tipos e arredondamento por item, preservando a interface e o retorno de `processar_pedidos`.
+
+Verificações com Python 3 passaram, incluindo pedidos vazios, descontos, frete grátis e entradas inválidas.

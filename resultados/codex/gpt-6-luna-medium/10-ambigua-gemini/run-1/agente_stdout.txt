@@ -1,0 +1,1 @@
+Implementei `classificar_cliente` em [solucao.py](/tmp/bench-owciqs4y/solucao.py) e registrei as decisões sobre categorias, estornos, anos negativos, campos adicionais e imutabilidade em [SUPOSICOES.md](/tmp/bench-owciqs4y/SUPOSICOES.md).

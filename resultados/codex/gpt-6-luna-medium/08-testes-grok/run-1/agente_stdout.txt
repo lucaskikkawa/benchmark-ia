@@ -1,0 +1,1 @@
+Criei [tests/test_descontos.py](/tmp/bench-pct4jezx/tests/test_descontos.py) com casos para as regras de desconto, limites de datas, validação de tipos e erros esperados. Não alterei `descontos.py` e não executei a suíte.

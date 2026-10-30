@@ -1,0 +1,10 @@
+Criei o pacote `biblioteca/` com os quatro arquivos pedidos, usando só a biblioteca padrão e imports relativos. Os testes de comportamento que rodei passam, incluindo os exemplos do enunciado e os casos de borda (virada de mês/ano, 29 de fevereiro, limites 0001 e 9999, ordenação com acentos e isolamento entre serviços).
+
+Escolhas que não estavam explícitas no enunciado:
+
+- **Tipos errados de objeto** (`adicionar` sem um `Livro`, `ServicoEmprestimos` sem um `Catalogo`) levantam `TypeError`. Os erros de regra e de valor (ISBN, título, exemplares, usuário, dia, empréstimo) são sempre `ErroBiblioteca`.
+- **Valores não-string** em `isbn`, `usuario` e `dia` também levantam `ErroBiblioteca`, já que o enunciado diz que "qualquer outra coisa" nesses campos é erro.
+- **Cálculo do atraso** em `devolver` é `max(0, (devolucao - emprestimo).days - 14)`. É equivalente a comparar com a data prevista, mas evita estourar `date` quando o empréstimo cai perto de 9999-12-31.
+- **Ordenação de `ativos`** usa `date` como chave, então a ordem é cronológica e depois code point de ISBN e de usuário.
+
+Não criei nenhum arquivo de teste dentro do diretório, para manter exatamente os quatro arquivos. Os testes rodaram por `python3 -c` e depois removi os `__pycache__` gerados. Não há repositório git aqui, então não fiz commit.

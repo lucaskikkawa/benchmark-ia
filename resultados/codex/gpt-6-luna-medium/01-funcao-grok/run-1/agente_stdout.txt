@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-sqtkp3ox/solucao.py) com `horas_livres`, incluindo validação estrita dos horários e dos intervalos, recorte à janela, união de ocupações encostadas ou sobrepostas e geração dos trechos livres.

@@ -1,0 +1,334 @@
+EEEEEEEEEEEEEEE                                                          [100%]
+==================================== ERRORS ====================================
+____________ ERROR at setup of test_suite_passou_no_modulo_correto _____________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+___________ ERROR at setup of test_mata_mutante[mutante_01_produto] ____________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+________ ERROR at setup of test_mata_mutante[mutante_02_sinal_desconto] ________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+________ ERROR at setup of test_mata_mutante[mutante_03_arredondamento] ________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+_________ ERROR at setup of test_mata_mutante[mutante_04_frete_vazio] __________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+__________ ERROR at setup of test_mata_mutante[mutante_05_sem_frete] ___________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+_______ ERROR at setup of test_mata_mutante[mutante_06_limite_desconto] ________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+_____ ERROR at setup of test_mata_mutante[mutante_07_quantidade_negativa] ______
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+________ ERROR at setup of test_mata_mutante[mutante_08_preco_negativo] ________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+______ ERROR at setup of test_mata_mutante[mutante_09_zero_como_unidade] _______
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+_______ ERROR at setup of test_mata_mutante[mutante_10_mutacao_entrada] ________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+________ ERROR at setup of test_mata_mutante[mutante_11_float_centavos] ________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+_______ ERROR at setup of test_mata_mutante[mutante_12_trunca_por_linha] _______
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+_________ ERROR at setup of test_mata_mutante[mutante_13_para_em_zero] _________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+________ ERROR at setup of test_mata_mutante[mutante_14_muta_apos_erro] ________
+
+    @pytest.fixture(scope='session')
+    def suite_valida():
+>       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+>       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError
+=========================== short test summary info ============================
+ERROR testes_ocultos/test_mutacao.py::test_suite_passou_no_modulo_correto - A...
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_01_produto]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_02_sinal_desconto]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_03_arredondamento]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_04_frete_vazio]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_05_sem_frete]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_06_limite_desconto]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_07_quantidade_negativa]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_08_preco_negativo]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_09_zero_como_unidade]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_10_mutacao_entrada]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_11_float_centavos]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_12_trunca_por_linha]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_13_para_em_zero]
+ERROR testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_14_muta_apos_erro]
+15 errors in 0.04s

@@ -1,0 +1,3 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede um agregador de CSV em JSON. Vou implementar `solucao.py` e conferir o resultado com o arquivo de exemplo.`solucao.py` define `resumir_vendas`, que lê o CSV de vendas, grava o resumo em JSON e devolve o mesmo `dict`.
+
+No `vendas_exemplo.csv` o resultado é Norte 7 unidades e 8.4, Sul 12 unidades e 55.0, total geral 63.4 e 2 linhas inválidas. Linhas vazias são ignoradas. Linhas inválidas não entram na soma, mesmo com outro status. Só vendas com status `concluida` (sem acento, sem diferenciar maiúsculas) entram na agregação. Se faltar alguma coluna obrigatória ou o arquivo de entrada, a função lança `ValueError` ou `FileNotFoundError` e não cria nem altera o arquivo de saída.

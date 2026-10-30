@@ -1,0 +1,11 @@
+Foram criados os arquivos solicitados no diretório de trabalho:
+
+1. [`solucao.py`](file:///tmp/bench-u4eynvzp/solucao.py):
+   - Implementa a função pura [`classificar_mensagem(texto: str) -> dict`](file:///tmp/bench-u4eynvzp/solucao.py#L48-L113) usando apenas a biblioteca padrão.
+   - Valida tipo (`TypeError` se não for `str`).
+   - Calcula `tamanho` como contagem exata de code points (`len(texto)`), suportando quebras de linha, caracteres de espaço sem quebra e surrogates isolados (ex.: `\ud800`).
+   - Define `urgente` como `True` estritamente quando `"URGENTE"` estiver contido no texto.
+   - Atribui `categoria == "vazia"` apenas para a string vazia `""`. Qualquer outro texto recebe categoria não vazia e diferente de `"vazia"`.
+
+2. [`SUPOSICOES.md`](file:///tmp/bench-u4eynvzp/SUPOSICOES.md):
+   - Registra em UTF-8 todas as definições para os pontos abertos (categorias adicionais, gatilhos, prioridades de desempate, insensibilidade a caixa/acentos para categorias, tratamento de textos sem palavras e decisão sobre campos adicionais).

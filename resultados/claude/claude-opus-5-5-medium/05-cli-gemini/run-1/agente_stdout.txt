@@ -1,0 +1,13 @@
+I criei o `contatexto.py` neste diretório. Testei à mão os casos principais e todos deram a saída e o código de saída esperados; não existe uma suíte de testes automatizados.
+
+O que foi verificado:
+- **Sem flags de métrica:** mostra linhas, palavras e caracteres.
+- **`-p --top 2 --json`:** mostra só as métricas pedidas, em JSON com `indent=2` e acentos preservados.
+- **Top palavras:** junta maiúsculas e minúsculas, remove a pontuação das pontas e desempata por ordem alfabética.
+- **`-o`:** cria as pastas pai que faltam, grava o resultado no arquivo e imprime `Salvo em CAMINHO`.
+- **Código 1, com mensagem começando por `Erro` na stderr:** arquivo inexistente, caminho que é um diretório e arquivo que não é UTF-8 válido.
+- **Código 2:** `--top 0` e `ARQUIVO` ausente. Os dois são tratados pelo próprio `argparse`.
+
+Decidi duas coisas que o enunciado não define:
+- **Fim de linha:** o arquivo é lido sem converter os finais de linha. Assim, `\r\n` conta como dois caracteres. A contagem de linhas não muda, porque `splitlines()` trata os dois formatos.
+- **Falha ao gravar a saída:** se não for possível gravar o arquivo do `-o`, a ferramenta mostra `Erro ao gravar arquivo: ...` e sai com código 1. Esse caso não foi testado.

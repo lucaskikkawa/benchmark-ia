@@ -1,0 +1,19 @@
+Criei o `cliente.py` com `TempoEsgotado` e `baixar_pedidos`, usando só a biblioteca padrão. Não mexi no `loja_api.py`. Rodei um script rápido de casos e todos deram o resultado esperado. Não existe uma suíte de testes formal no diretório.
+
+**Como funciona**
+- **Timeout:** cada chamada a `obter_pedido` roda numa thread em segundo plano (daemon). O cliente espera no máximo `timeout_s`. Se a chamada não terminar a tempo, ele desiste de esperar e conta a tentativa como timeout, sem ficar preso os 1,2 s do atraso da API.
+- **Retentativas:**
+  - `LojaErroCliente` sobe na hora, sem nova tentativa e sem backoff.
+  - `LojaIndisponivel` e timeout contam como falha retentável, até `max_tentativas` chamadas. Se a última for `LojaIndisponivel`, essa exceção sobe. Se a última for timeout, sobe `TempoEsgotado`.
+  - Entre uma tentativa e outra, o cliente dorme `backoff_s * 2 ** (i - 1)`. Ele não dorme depois da última tentativa nem depois de sucesso, e não dorme quando `backoff_s` é 0.
+- **Ordem e parada:** os ids são baixados na ordem da lista. Se um falha de vez, os seguintes não são chamados. Lista vazia devolve `[]` sem chamar a API.
+- **Validação:** os parâmetros são conferidos antes de qualquer chamada. `bool` dá `TypeError`, valor fora da faixa dá `ValueError`, e `ids` precisa ser exatamente `list`.
+
+**O que verifiquei**
+- `flaky-` e `slow-` com seed ímpar: cada um precisou de 3 tentativas e devolveu o pedido.
+- `timeout-` com 2 tentativas: levantou `TempoEsgotado` em cerca de 0,2 s, e o id seguinte não foi chamado.
+- `down-` com `backoff_s=0.05`: fez 3 tentativas e esperou 0,05 + 0,1 = 0,15 s no total antes de levantar `LojaIndisponivel`.
+- `missing-down-x` e `""`: levantaram `LojaErroCliente` sem nova tentativa.
+- As validações de tipo e de valor deram os erros certos.
+
+Quando uma chamada passa do prazo, a thread dela continua rodando em segundo plano até a API terminar. Por isso, uma chamada abandonada ainda pode terminar depois e não bloqueia o resultado. Como as threads são daemon, elas não impedem o programa de encerrar.

@@ -1,0 +1,9 @@
+Criei `solucao.py` com a função `resumir_intervalos`, e ela passa em todos os exemplos do enunciado.
+
+Além dos exemplos, testei:
+- **Tipos inválidos:** `[True]`, `[1.0]`, uma tupla e `None` levantam `TypeError`, inclusive `bool`, como a especificação pede.
+- **Lista original:** a função não altera a lista recebida (`[3, 1, 2]` continua igual depois da chamada).
+- **Volume:** uma lista com um milhão de números foi resumida corretamente.
+- **Inteiros enormes:** a partir do Python 3.11, `str()` recusa inteiros com mais de 4300 dígitos. Nesse caso a função desliga esse limite só durante a conversão e depois o restaura. Testei com um número de 5000 dígitos e funcionou.
+
+A função remove duplicados com `set`, ordena e percorre os valores uma única vez, juntando os números consecutivos em intervalos.

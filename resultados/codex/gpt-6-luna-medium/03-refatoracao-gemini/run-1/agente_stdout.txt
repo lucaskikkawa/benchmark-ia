@@ -1,0 +1,1 @@
+Refatorei [processador.py](/tmp/bench-9fr069aw/processador.py) com as classes `ItemPedido`, `CalculadoraFrete`, `CalculadoraDesconto` e `Pedido`. A função `processar_pedidos` mantém o formato de retorno e processa pedidos sem itens; subtotais e pesos são arredondados por item antes da soma.

@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.A docstring pede validação completa, intervalos fechados que se tocam e união sem encolher o fim. Vou corrigir `intervalos.py` nesses pontos.`mesclar_intervalos` e `total_coberto` agora seguem as docstrings de `intervalos.py`.
+
+- Uma lista vazia devolve `[]` e `total_coberto` devolve `0`.
+- A entrada é validada por inteiro antes da união: `inicio` e `fim` precisam ser `int` (`bool` gera `TypeError`) e `inicio <= fim` (senão `ValueError`). A coleção original não é alterada.
+- Intervalos que se sobrepõem ou se tocam (`fim == inicio` do seguinte) viram um só, e o fim da união só cresce. O resultado sai ordenado por `inicio`.

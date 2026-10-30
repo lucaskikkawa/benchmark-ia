@@ -1,0 +1,3 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O módulo fica como está. Vou criar uma suíte pytest só com o comportamento público: limites, truncamento, frete e preservação da lista.A suíte `tests/test_carrinho.py` está pronta e o `carrinho.py` não foi alterado. São 36 testes, todos passando.
+
+Eles cobrem o total com desconto truncado uma vez sobre o bruto, o frete só quando a soma das quantidades é positiva, carrinho vazio e quantidade zero, inteiros acima de 2^53, a lista intacta também em `ValueError` e a validação das linhas depois de uma quantidade zero.

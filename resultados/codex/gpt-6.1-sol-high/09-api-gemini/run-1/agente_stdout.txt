@@ -1,0 +1,3 @@
+Implementado em [cliente_resiliente.py](/tmp/bench-os9vw130/cliente_resiliente.py): `ApiError`, validação de parâmetros, GET/POST, retentativas e backoff exponencial.
+
+As 68 verificações passaram, cobrindo sucesso, falhas transitórias, erros definitivos e esgotamento das tentativas.

@@ -1,0 +1,114 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-40pl31oh
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189b8-893a-78f1-9891-b0f6ee0d07db
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:12:16.665562Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do projeto neste diretório para implementar a solução pedida.
+exec
+/bin/bash -lc "cat enunciado.md && rg --files -g '"'!node_modules'"' -g '"'!dist'"' | head -150" in /tmp/bench-40pl31oh
+ succeeded in 0ms:
+# Tarefa: classificar uma mensagem curta
+
+Crie dois arquivos no diretório de trabalho:
+
+- `solucao.py` com `classificar_mensagem(texto: str) -> dict`
+- `SUPOSICOES.md` em UTF-8, com as decisões que você tomar nos pontos abertos
+
+Só a biblioteca padrão. A função é pura: o mesmo texto sempre devolve o mesmo dict, sem ler arquivo, relógio ou rede.
+
+## O que está fechado
+
+O dict tem **pelo menos** estas chaves (pode ter outras):
+
+```python
+{
+    "categoria": str,
+    "urgente": bool,
+    "tamanho": int,
+}
+```
+
+- `tamanho` é `len(texto)`, em code points, **sem** `strip`, sem normalizar (NFC, NFD, NFKC) e sem contar bytes UTF-8. `"ação"` tem tamanho 4. `"🙂"` tem tamanho 1. `"a\u0301"` tem tamanho 2. `"\ud800"` tem tamanho 1 e não pode levantar erro. Quebra de linha, `\u00a0` e `\u200b` contam.
+- `urgente` é `True` exatamente quando a substring `"URGENTE"` aparece em `texto` (maiúsculas, sem exigir palavra inteira, sem casefold e sem normalizar antes). `"urgente"`, `"Urgente"` e `"URGEN"` são `False`. `"XURGENTEY"` e `" URGENTE"` são `True`. Um lookalike cirílico (`"URGENT\u0415"`, com `Е`) é `False`. `"URGENTE"` no fim de um texto de 100_000 caracteres continua `True`, e `tamanho` é 100_000 mais o que vier junto.
+- `texto == ""` (string vazia, e só ela) devolve `categoria == "vazia"`, `urgente is False` e `tamanho == 0`.
+- Qualquer outro texto, inclusive só espaços, `"vazia"`, `"\u00a0"` ou `"\n"`, tem `categoria` string não vazia e **diferente** de `"vazia"`.
+- Se `texto` não for `str` (`None`, `bytes`, `bytearray`, `int`), levante `TypeError`. Não codifique o texto para decidir isso.
+
+Os testes automáticos cobrem só este núcleo.
+
+## O que fica em aberto
+
+Você escolhe e **registra em `SUPOSICOES.md`** (pelo menos duas linhas não vazias; o texto todo, sem contar espaços das pontas, com 80 caracteres ou mais):
+
+- Quais categorias existem além de `"vazia"` (por exemplo reclamação, dúvida, elogio, pedido, outro — a lista não é obrigatória).
+- Quais palavras ou sinais disparam cada categoria, e o que acontece quando o texto casa com mais de uma.
+- Se a classificação ignora maiúsculas e acentos. Isso **não** muda a regra de `"URGENTE"`, que continua sensível a maiúsculas.
+- Como classificar texto que não é vazio mas não tem palavra (espaços, pontuação). Lembre que ele não pode usar a categoria `"vazia"`.
+- Se o dict leva campos extras (idioma, confiança, etc.).
+
+Não há resposta única. O arquivo existe para outro avaliador entender o que você assumiu. Os testes não comparam o texto das suposições com um gabarito.
+enunciado.md
+
+exec
+/bin/bash -lc "cat > solucao.py <<'PY'
+def classificar_mensagem(texto: str) -> dict:
+    \"\"\"Classifica uma mensagem curta com regras determinísticas e locais.\"\"\"
+    if not isinstance(texto, str):
+        raise TypeError(\"texto deve ser str\")
+
+    tamanho = len(texto)
+    urgente = \"URGENTE\" in texto
+
+    if texto == \"\":
+        categoria = \"vazia\"
+    else:
+        # A classificação ignora diferenças entre maiúsculas e minúsculas,
+        # mas mantém acentos e não altera a regra literal de urgência.
+        normalizado = texto.lower()
+        regras = (
+            (\"reclamacao\", (\"problema\", \"reclama\", \"defeito\", \"ruim\", \"insatisfeit\")),
+            (\"duvida\", (\"?\", \"como\", \"qual\", \"quando\", \"onde\", \"por que\", \"dúvida\")),
+            (\"elogio\", (\"obrigad\", \"ótimo\", \"otimo\", \"excelente\", \"parabéns\", \"gostei\")),
+            (\"pedido\", (\"preciso\", \"por favor\", \"solicito\", \"quero\", \"poderia\", \"envie\")),
+        )
+        categoria = \"outro\"
+        for nome, termos in regras:
+            if any(termo in normalizado for termo in termos):
+                categoria = nome
+                break
+
+    return {\"categoria\": categoria, \"urgente\": urgente, \"tamanho\": tamanho}
+PY
+cat > SUPOSICOES.md <<'MD'
+# Suposições da classificação
+
+A categoria "'`vazia` é reservada exclusivamente à string vazia. Mensagens não vazias
+são verificadas, nesta ordem de prioridade, como reclamação, dúvida, elogio e pedido;
+se não houver correspondência, recebem a categoria `outro`.
+
+A busca de termos da categoria ignora maiúsculas e minúsculas usando `lower()`, mas
+preserva acentos; não há normalização Unicode. Os termos são procurados como
+substrings, e o sinal `?` também caracteriza uma dúvida. Espaços, pontuação sem `?`
+e outros conteúdos sem correspondência ficam em `outro`.
+
+O campo `urgente` é independente da categoria e só é verdadeiro para a substring
+literal `URGENTE`, respeitando maiúsculas. O dicionário contém apenas categoria,
+urgente e tamanho; tamanho usa diretamente `len()` da string original.
+MD
+' in /tmp/bench-40pl31oh
+ succeeded in 0ms:
+codex
+Criei [solucao.py](/tmp/bench-40pl31oh/solucao.py) e [SUPOSICOES.md](/tmp/bench-40pl31oh/SUPOSICOES.md). A função valida o tipo, calcula o tamanho com `len()` e detecta `URGENTE` pela substring literal. As regras de categoria e as decisões assumidas estão registradas no documento.
+tokens used
+7,217

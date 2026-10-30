@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui.As docstrings pedem validação completa antes do merge, união quando os intervalos se tocam e resultado sem alterar a entrada. Vou corrigir `intervalos.py`.`intervalos.py` agora segue as docstrings das duas funções.
+
+- Uma lista vazia devolve `[]` em `mesclar_intervalos` e `0` em `total_coberto`.
+- A entrada é copiada e validada por completo antes da união: `inicio` e `fim` precisam ser `int` (`bool` gera `TypeError`) e `inicio <= fim` (senão, `ValueError`).
+- Intervalos que se sobrepõem ou se tocam viram um só, o fim usa o maior valor, e o resultado sai ordenado por início, sem alterar a lista original.
+- `total_coberto` soma `fim - inicio` sobre essa união.

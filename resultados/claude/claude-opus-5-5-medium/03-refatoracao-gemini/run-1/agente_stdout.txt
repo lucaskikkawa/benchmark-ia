@@ -1,0 +1,14 @@
+Reescrevi o `processador.py` com as classes pedidas. `processar_pedidos` continua com a mesma assinatura e devolve dicionários no mesmo formato. Rodei uma checagem manual em alguns pedidos de exemplo e os resultados bateram com as regras; não há suíte de testes no diretório.
+
+O arquivo agora tem:
+- **`ItemPedido`**: dataclass que lança `ValueError` se preço ou peso forem negativos (ou NaN), ou se a quantidade não for um inteiro ≥ 1. Tem `subtotal` e `peso_total` como propriedades, já arredondadas por item.
+- **`CalculadoraFrete.calcular`**: frete grátis a partir de 200,00. Abaixo disso, usa uma tabela por tipo (padrão, expresso, econômico), sem diferenciar maiúsculas. Tipo desconhecido lança `ValueError("Tipo de frete desconhecido: ...")`.
+- **`CalculadoraDesconto.calcular`**: regras de bronze, prata, ouro e vip, sem diferenciar maiúsculas. Qualquer outra categoria dá 0,0.
+- **`Pedido`**: dataclass com os métodos de cálculo e `para_dict()`. Desconto e frete são calculados pelas duas calculadoras acima.
+- **`processar_pedidos`**: monta os objetos a partir dos dicionários, mantendo a ordem dos pedidos. Campos ausentes recebem os valores padrão, e `itens` ausente ou vazio é aceito.
+
+O arredondamento mudou em relação ao código antigo, conforme o enunciado pede: cada item é arredondado antes da soma. Por isso, em alguns casos o subtotal ou o frete podem diferir em um centavo do que o legado calculava.
+
+Duas decisões que tomei:
+- **Subtotal de pedido vazio**: no primeiro teste ele saía como `0` (inteiro) em vez de `0.0`. Corrigi para sempre devolver float.
+- **Mensagem de frete desconhecido**: mostra o tipo como foi informado (por exemplo, `Aereo`). O código antigo mostrava em minúsculas.

@@ -1,0 +1,1 @@
+Vou ler o enunciado e os arquivos deste diretório para resolver a tarefa aqui.Vou implementar `solucao.py` conforme as regras do enunciado e validar com o CSV de exemplo e casos de borda.

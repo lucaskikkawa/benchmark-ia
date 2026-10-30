@@ -1,0 +1,350 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFF                                              [100%]
+=================================== FAILURES ===================================
+__________________________ test_exemplo_do_enunciado ___________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee5580>
+
+    def test_exemplo_do_enunciado(arquivo):
+        r = rodar("-i", "-n", "2", arquivo("A casa, a CASA; a casa!\n"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '-i', '-n', '2',...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:45: AssertionError
+________________ test_padrao_diferencia_maiusculas_e_desempata _________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee5d00>
+
+    def test_padrao_diferencia_maiusculas_e_desempata(arquivo):
+        r = rodar(arquivo("b a B a c b"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:51: AssertionError
+______________________________ test_top_padrao_10 ______________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee60c0>
+
+    def test_top_padrao_10(arquivo):
+        palavras = [f"p{chr(97 + i)}" for i in range(15)]  # pa..po, uma vez cada
+        r = rodar(arquivo(" ".join(palavras)))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:58: AssertionError
+______________________________ test_flags_longas _______________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee6340>
+
+    def test_flags_longas(arquivo):
+        r = rodar("--top", "1", "--min-len", "4", "--ignore-case", arquivo("Sol sol SOL lua Lua mares Mares"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '--top', '1', '-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:64: AssertionError
+______________________ test_definicao_de_palavra_unicode _______________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee6660>
+
+    def test_definicao_de_palavra_unicode(arquivo):
+        r = rodar("-n", "20", arquivo("ação_ação x1y café-com-leite 42 ÁGUA"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '-n', '20', '/tm...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:70: AssertionError
+______________________________ test_formato_json _______________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee6ac0>
+
+    def test_formato_json(arquivo):
+        r = rodar("--formato", "json", "-n", "2", arquivo("z z y x"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '--formato', 'js...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:78: AssertionError
+______________________________ test_sem_palavras _______________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee6b60>
+
+    def test_sem_palavras(arquivo):
+        caminho = arquivo("123 ... 456\n")
+        r = rodar(caminho)
+>       assert r.returncode == 0 and r.stdout == ""
+E       assert (2 == 0)
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:85: AssertionError
+__________________________________ test_stdin __________________________________
+
+    def test_stdin():
+        r = rodar("-", "-i", entrada="Olá olá mundo\n")
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '-', '-i'], retu...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:92: AssertionError
+___________________________ test_arquivo_inexistente ___________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-355/test_arquivo_inexistente0')
+
+    def test_arquivo_inexistente(tmp_path):
+        r = rodar(tmp_path / "nao_existe.txt")
+>       assert r.returncode == 1
+E       assert 2 == 1
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:98: AssertionError
+________________________________ test_diretorio ________________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-355/test_diretorio0')
+
+    def test_diretorio(tmp_path):
+        r = rodar(tmp_path)
+>       assert r.returncode == 1
+E       assert 2 == 1
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:106: AssertionError
+______________________________ test_utf8_invalido ______________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-355/test_utf8_invalido0')
+
+    def test_utf8_invalido(tmp_path):
+        caminho = tmp_path / "latin1.txt"
+        caminho.write_bytes("ação".encode("latin-1"))
+        r = rodar(caminho)
+>       assert r.returncode == 1
+E       assert 2 == 1
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:116: AssertionError
+__________________________ test_argumentos_invalidos ___________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee77e0>
+
+    def test_argumentos_invalidos(arquivo):
+        caminho = str(arquivo("a b c"))
+        casos = [
+            [],
+            ["-n", "0", "ARQ"],
+            ["-n", "-3", "ARQ"],
+            ["-n", "abc", "ARQ"],
+            ["-m", "0", "ARQ"],
+            ["--formato", "xml", "ARQ"],
+            ["--opcao-que-nao-existe", "ARQ"],
+            ["-x"],
+        ]
+        for args in casos:
+            r = rodar(*[caminho if a == "ARQ" else a for a in args])
+            assert r.returncode == 2, args
+            assert r.stdout == "", args
+>           assert "usage" in r.stderr.lower() or "uso" in r.stderr.lower(), args
+E           AssertionError: []
+E           assert ('usage' in "/workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [errno 2] no such file or directory\n" or 'uso' in "/workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [errno 2] no such file or directory\n")
+E            +  where "/workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [errno 2] no such file or directory\n" = <built-in method lower of str object at 0x7f487ef05790>()
+E            +    where <built-in method lower of str object at 0x7f487ef05790> = "/workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n".lower
+E            +      where "/workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n" = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py'], returncode=2, s...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").stderr
+E            +  and   "/workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [errno 2] no such file or directory\n" = <built-in method lower of str object at 0x7f487ef05790>()
+E            +    where <built-in method lower of str object at 0x7f487ef05790> = "/workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n".lower
+E            +      where "/workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n" = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py'], returncode=2, s...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").stderr
+
+testes_ocultos/test_freq.py:138: AssertionError
+__________________________________ test_help ___________________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee7a60>
+
+    def test_help(arquivo):
+        r = rodar("--help")
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '--help'], retur...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:143: AssertionError
+______________________ test_excluir_exato_sem_ignore_case ______________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee6ac0>
+
+    def test_excluir_exato_sem_ignore_case(arquivo):
+        r = rodar("-x", "a", "--excluir", "casa", arquivo("A casa, a CASA; a casa! o o"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '-x', 'a', '--ex...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:152: AssertionError
+_________________________ test_excluir_com_ignore_case _________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee5620>
+
+    def test_excluir_com_ignore_case(arquivo):
+        r = rodar("-i", "-x", "CASA", "-x", "o", arquivo("A casa, a CASA; a casa! o O ó"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '-i', '-x', 'CAS...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:158: AssertionError
+__________________ test_excluir_combinado_com_min_len_e_json ___________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee7e20>
+
+    def test_excluir_combinado_com_min_len_e_json(arquivo):
+        r = rodar("--formato", "json", "-m", "3", "-x", "sol", "-i", arquivo("Sol sol lua LUA lua mar de"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '--formato', 'js...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:164: AssertionError
+__________________ test_ignore_case_usa_lower_e_nao_casefold ___________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487ec780e0>
+
+    def test_ignore_case_usa_lower_e_nao_casefold(arquivo):
+        r = rodar("-i", arquivo("Straße STRASSE strasse ǅemal ǆemal"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '-i', '/tmp/pyte...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:170: AssertionError
+_________________ test_ignore_case_aplicado_depois_da_extracao _________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487ec78180>
+
+    def test_ignore_case_aplicado_depois_da_extracao(arquivo):
+        # "İ".lower() == "i\u0307" (o ponto combinante não é letra): a palavra é extraída antes.
+        r = rodar("-i", arquivo("İSTANBUL istanbul"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '-i', '/tmp/pyte...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:177: AssertionError
+________________________ test_sem_normalizacao_unicode _________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487ec78680>
+
+    def test_sem_normalizacao_unicode(arquivo):
+        # "e" + acento combinante (NFD): o acento não é letra e separa palavras.
+        r = rodar(arquivo("cafe\u0301 café cafe"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:184: AssertionError
+____________________ test_digitos_unicode_separam_palavras _____________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487ec78900>
+
+    def test_digitos_unicode_separam_palavras(arquivo):
+        r = rodar(arquivo("ab\u0663cd ab\uff15ab x\u0967y"))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:190: AssertionError
+___________________________ test_stdin_utf8_invalido ___________________________
+
+    def test_stdin_utf8_invalido():
+        codigo, saida, erro = rodar_bytes("-", entrada="ação ok".encode("latin-1"))
+>       assert codigo == 1
+E       assert 2 == 1
+
+testes_ocultos/test_freq.py:196: AssertionError
+________________ test_stdin_utf8_invalido_independe_do_terminal ________________
+
+    def test_stdin_utf8_invalido_independe_do_terminal():
+        # Mesmo com o terminal em latin-1 (que decodifica qualquer byte), a entrada é UTF-8 estrito.
+        codigo, saida, erro = rodar_bytes("-", entrada=b"ok \xff\xfe ok", codificacao_terminal="latin-1")
+>       assert codigo == 1
+E       assert 2 == 1
+
+testes_ocultos/test_freq.py:205: AssertionError
+___________ test_stdin_decodificado_como_utf8_independe_do_terminal ____________
+
+    def test_stdin_decodificado_como_utf8_independe_do_terminal():
+        codigo, saida, _ = rodar_bytes(
+            "-x", "aé", "-", entrada="aé aé b\n".encode("utf-8"), codificacao_terminal="latin-1"
+        )
+>       assert codigo == 0
+E       assert 2 == 0
+
+testes_ocultos/test_freq.py:214: AssertionError
+________________________ test_stdin_bytes_utf8_validos _________________________
+
+    def test_stdin_bytes_utf8_validos():
+        codigo, saida, _ = rodar_bytes("-i", "-", entrada="Ação ação AÇÃO\n".encode("utf-8"))
+>       assert codigo == 0
+E       assert 2 == 0
+
+testes_ocultos/test_freq.py:220: AssertionError
+_________________ test_utf8_invalido_no_meio_de_arquivo_grande _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-355/test_utf8_invalido_no_meio_de_0')
+
+    def test_utf8_invalido_no_meio_de_arquivo_grande(tmp_path):
+        caminho = tmp_path / "grande.txt"
+        caminho.write_bytes(("palavra " * 200_000).encode("utf-8") + b"\xff" + b" fim")
+        r = rodar(caminho)
+>       assert r.returncode == 1
+E       assert 2 == 1
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '/tmp/pytest-of-...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:228: AssertionError
+_____________________________ test_arquivo_grande ______________________________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487eee7ba0>
+
+    def test_arquivo_grande(arquivo):
+        partes = []
+        for i in range(300_000):
+            partes.append(("alfa", "Beta", "gama", "beta", "delta")[i % 5] + ("," if i % 3 else "\n"))
+        r = rodar("-i", "-n", "3", arquivo("".join(partes)))
+>       assert r.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-otnskhmm/freq.py', '-i', '-n', '3',...nchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-otnskhmm/freq.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_freq.py:238: AssertionError
+____________ test_top_maior_que_numero_de_palavras_e_arquivo_vazio _____________
+
+arquivo = <function arquivo.<locals>.criar at 0x7f487ec78720>
+
+    def test_top_maior_que_numero_de_palavras_e_arquivo_vazio(arquivo):
+        r = rodar("-n", "1000", arquivo("b a"))
+>       assert linhas(r.stdout) == ["a\t1", "b\t1"]
+E       AssertionError: assert [] == ['a\t1', 'b\t1']
+E         
+E         Right contains 2 more items, first extra item: 'a\t1'
+E         Use -v to get more diff
+
+testes_ocultos/test_freq.py:244: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_freq.py::test_exemplo_do_enunciado - assert 2 == 0
+FAILED testes_ocultos/test_freq.py::test_padrao_diferencia_maiusculas_e_desempata
+FAILED testes_ocultos/test_freq.py::test_top_padrao_10 - assert 2 == 0
+FAILED testes_ocultos/test_freq.py::test_flags_longas - assert 2 == 0
+FAILED testes_ocultos/test_freq.py::test_definicao_de_palavra_unicode - asser...
+FAILED testes_ocultos/test_freq.py::test_formato_json - assert 2 == 0
+FAILED testes_ocultos/test_freq.py::test_sem_palavras - assert (2 == 0)
+FAILED testes_ocultos/test_freq.py::test_stdin - assert 2 == 0
+FAILED testes_ocultos/test_freq.py::test_arquivo_inexistente - assert 2 == 1
+FAILED testes_ocultos/test_freq.py::test_diretorio - assert 2 == 1
+FAILED testes_ocultos/test_freq.py::test_utf8_invalido - assert 2 == 1
+FAILED testes_ocultos/test_freq.py::test_argumentos_invalidos - AssertionErro...
+FAILED testes_ocultos/test_freq.py::test_help - assert 2 == 0
+FAILED testes_ocultos/test_freq.py::test_excluir_exato_sem_ignore_case - asse...
+FAILED testes_ocultos/test_freq.py::test_excluir_com_ignore_case - assert 2 == 0
+FAILED testes_ocultos/test_freq.py::test_excluir_combinado_com_min_len_e_json
+FAILED testes_ocultos/test_freq.py::test_ignore_case_usa_lower_e_nao_casefold
+FAILED testes_ocultos/test_freq.py::test_ignore_case_aplicado_depois_da_extracao
+FAILED testes_ocultos/test_freq.py::test_sem_normalizacao_unicode - assert 2 ...
+FAILED testes_ocultos/test_freq.py::test_digitos_unicode_separam_palavras - a...
+FAILED testes_ocultos/test_freq.py::test_stdin_utf8_invalido - assert 2 == 1
+FAILED testes_ocultos/test_freq.py::test_stdin_utf8_invalido_independe_do_terminal
+FAILED testes_ocultos/test_freq.py::test_stdin_decodificado_como_utf8_independe_do_terminal
+FAILED testes_ocultos/test_freq.py::test_stdin_bytes_utf8_validos - assert 2 ...
+FAILED testes_ocultos/test_freq.py::test_utf8_invalido_no_meio_de_arquivo_grande
+FAILED testes_ocultos/test_freq.py::test_arquivo_grande - assert 2 == 0
+FAILED testes_ocultos/test_freq.py::test_top_maior_que_numero_de_palavras_e_arquivo_vazio
+27 failed in 0.42s

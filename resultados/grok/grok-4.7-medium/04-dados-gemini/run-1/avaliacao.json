@@ -1,0 +1,33 @@
+{
+ "autora": "gemini",
+ "resolvedora": "grok",
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 0.0
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 0.0
+  }
+ },
+ "obs": [
+  "claude tentativa 1 falhou: JSON inválido"
+ ],
+ "rubrica_10": 0.0,
+ "nota_final_10": 0.0
+}

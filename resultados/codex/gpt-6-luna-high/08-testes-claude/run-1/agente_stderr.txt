@@ -1,0 +1,587 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-ck85md6y
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189c1-16ea-7aa0-a8df-be38c591e99e
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:21:36.839630Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para entender o que precisa ser implementado. Depois faço a alteração diretamente aqui.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' &&" in /tmp/bench-ck85md6y
+ exited 2 in 0ms:
+/bin/bash: -c: line 2: syntax error: unexpected end of file
+
+exec
+/bin/bash -lc "pwd; rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"'; rg --files -g '"'!node_modules'"' -g '"'!vendor'"' | head -80" in /tmp/bench-ck85md6y
+ succeeded in 0ms:
+/tmp/bench-ck85md6y
+enunciado.md
+senhas.py
+enunciado.md
+
+exec
+/bin/bash -lc "cat enunciado.md && printf '\\n--- senhas.py ---\\n' && cat senhas.py" in /tmp/bench-ck85md6y
+ succeeded in 0ms:
+# Tarefa: escrever testes para `senhas.py`
+
+O diretório de trabalho contém `senhas.py`, um módulo **correto** com três funções públicas e uma
+constante, cujo comportamento está especificado nas docstrings:
+
+```python
+ESPECIAIS: frozenset[str]
+def validar_senha(senha: str, tamanho_minimo: int = 8) -> list[str]: ...
+def pontuar_senha(senha: str) -> int: ...
+def classificar(senha: str) -> str: ...
+```
+
+**Não altere `senhas.py`.** Sua tarefa é escrever uma suíte pytest em `tests/test_senhas.py`
+(pode criar outros `tests/test_*.py` e um `tests/conftest.py` se quiser) que verifique a
+especificação das docstrings da forma mais completa possível, incluindo casos de borda.
+
+Como será avaliado:
+
+- A suíte será executada com `python -m pytest -q tests` a partir do diretório de trabalho; importe
+  o módulo com `from senhas import ...`. Use só pytest e a biblioteca padrão; não use rede nem arquivos externos.
+- Ela **precisa passar** contra o `senhas.py` fornecido.
+- Depois, será executada contra várias versões de `senhas.py` com pequenos bugs plantados; quanto
+  mais versões com bug a sua suíte detectar (fazendo algum teste falhar), maior a nota.
+- Os testes devem ser determinísticos e rápidos (a suíte inteira em poucos segundos).
+
+--- senhas.py ---
+"""Validação e pontuação de senhas."""
+
+ESPECIAIS = frozenset("!@#$%&*?-_")
+
+
+def validar_senha(senha: str, tamanho_minimo: int = 8) -> list[str]:
+    """Retorna a lista de problemas da senha (lista vazia = senha válida).
+
+    Os códigos aparecem sempre nesta ordem, cada um no máximo uma vez:
+
+    - "curta": len(senha) < tamanho_minimo
+    - "sem_maiuscula": nenhum caractere com str.isupper()
+    - "sem_minuscula": nenhum caractere com str.islower()
+    - "sem_digito": nenhum caractere de "0" a "9"
+    - "sem_especial": nenhum caractere de ESPECIAIS
+    - "espaco": algum caractere com str.isspace() (espaço, tab, quebra de linha...)
+
+    Raises:
+        TypeError: se senha não for str.
+        ValueError: se tamanho_minimo < 1.
+    """
+    if not isinstance(senha, str):
+        raise TypeError("senha deve ser str")
+    if tamanho_minimo < 1:
+        raise ValueError("tamanho_minimo deve ser >= 1")
+
+    problemas = []
+    if len(senha) < tamanho_minimo:
+        problemas.append("curta")
+    if not any(c.isupper() for c in senha):
+        problemas.append("sem_maiuscula")
+    if not any(c.islower() for c in senha):
+        problemas.append("sem_minuscula")
+    if not any(c in "0123456789" for c in senha):
+        problemas.append("sem_digito")
+    if not any(c in ESPECIAIS for c in senha):
+        problemas.append("sem_especial")
+    if any(c.isspace() for c in senha):
+        problemas.append("espaco")
+    return problemas
+
+
+def pontuar_senha(senha: str) -> int:
+    """Pontuação de 0 a 100.
+
+    - +2 por caractere, contando no máximo 20 caracteres (até 40 pontos);
+    - +15 para cada categoria presente: maiúscula, minúscula, dígito, especial
+      (mesmas definições de validar_senha);
+    - -10 para cada trinca de caracteres iguais consecutivos, em janela
+      deslizante ("aaa" conta 1 trinca, "aaaa" conta 2, "aaaaa" conta 3);
+    - o resultado é limitado ao intervalo [0, 100].
+    """
+    pontos = min(len(senha), 20) * 2
+    categorias = [
+        any(c.isupper() for c in senha),
+        any(c.islower() for c in senha),
+        any(c in "0123456789" for c in senha),
+        any(c in ESPECIAIS for c in senha),
+    ]
+    pontos += 15 * sum(categorias)
+    trincas = sum(1 for i in range(len(senha) - 2) if senha[i] == senha[i + 1] == senha[i + 2])
+    pontos -= 10 * trincas
+    return max(0, min(100, pontos))
+
+
+def classificar(senha: str) -> str:
+    """Classifica a senha.
+
+    - "invalida" se validar_senha(senha) contiver "espaco";
+    - senão, pela pontuação: < 50 -> "fraca"; < 80 -> "media"; caso contrário "forte".
+    """
+    if "espaco" in validar_senha(senha):
+        return "invalida"
+    pontos = pontuar_senha(senha)
+    if pontos < 50:
+        return "fraca"
+    if pontos < 80:
+        return "media"
+    return "forte"
+
+apply patch
+patch: completed
+/tmp/bench-ck85md6y/tests/test_senhas.py
+diff --git a/tests/test_senhas.py b/tests/test_senhas.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..aa76da3df2746d04d9ff5dbbece00f8030124a1d
+--- /dev/null
++++ b/tests/test_senhas.py
+@@ -0,0 +1,159 @@
++import pytest
++
++from senhas import ESPECIAIS, classificar, pontuar_senha, validar_senha
++
++
++def test_especiais_contem_exatamente_os_caracteres_documentados():
++    assert ESPECIAIS == frozenset("!@#$%&*?-_")
++    assert isinstance(ESPECIAIS, frozenset)
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("Abcdef1!", []),
++        ("Abcdef1", ["curta"]),
++        ("", ["curta", "sem_maiuscula", "sem_minuscula", "sem_digito", "sem_especial"]),
++        ("abcdefgh", ["sem_maiuscula", "sem_digito", "sem_especial"]),
++        ("ABCDEFGH", ["sem_minuscula", "sem_digito", "sem_especial"]),
++        ("12345678", ["sem_maiuscula", "sem_minuscula", "sem_especial"]),
++        ("!!!!!!!!", ["sem_maiuscula", "sem_minuscula", "sem_digito"]),
++        ("Abcdef1! ", ["espaco"]),
++        ("Abcdef1!\t", ["espaco"]),
++        ("Abcdef1!\n", ["espaco"]),
++        ("Abcdef1!\u00a0", ["espaco"]),
++    ],
++)
++def test_validar_senha_retorna_problemas_na_ordem_especificada(senha, esperado):
++    resultado = validar_senha(senha)
++    assert resultado == esperado
++    assert len(resultado) == len(set(resultado))
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        # isupper/islower são Unicode, mas dígitos e especiais são ASCII/exatos.
++        ("Äbcdefg1!", []),
++        ("äBCDEFG1!", []),
++        ("Abcdefg١!", ["sem_digito"]),
++        ("Abcdefg1.", ["sem_especial"]),
++    ],
++)
++def test_validar_senha_usa_as_categorias_documentadas(senha, esperado):
++    assert validar_senha(senha) == esperado
++
++
++@pytest.mark.parametrize(
++    ("senha", "minimo", "esperado"),
++    [
++        ("Abcdef1!", 8, []),
++        ("Abcdef1!", 9, ["curta"]),
++        ("Abcdef1!", 1, []),
++        ("Abcdef1!", 20, ["curta"]),
++        ("Abcdef1!", 8, []),
++        ("", 1, ["curta", "sem_maiuscula", "sem_minuscula", "sem_digito", "sem_especial"]),
++    ],
++)
++def test_tamanho_minimo_configuravel(senha, minimo, esperado):
++    assert validar_senha(senha, tamanho_minimo=minimo) == esperado
++
++
++@pytest.mark.parametrize("senha", [None, 1, 1.5, b"Abcdef1!", ["Abcdef1!"]])
++def test_validar_senha_rejeita_senha_que_nao_e_str(senha):
++    with pytest.raises(TypeError):
++        validar_senha(senha)
++
++
++@pytest.mark.parametrize("minimo", [0, -1, -100])
++def test_validar_senha_rejeita_tamanho_minimo_menor_que_um(minimo):
++    with pytest.raises(ValueError):
++        validar_senha("Abcdef1!", minimo)
++
++
++def test_validar_senha_verifica_tipo_da_senha_antes_do_tamanho():
++    with pytest.raises(TypeError):
++        validar_senha(None, 0)
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("", 0),
++        ("a", 17),  # 2 pontos pelo caractere e 15 pela categoria minúscula.
++        ("A", 17),
++        ("1", 17),
++        ("!", 17),
++        ("ab", 19),
++        ("Ab1!", 68),
++        ("Ab1.", 53),  # pontuação especial só para ESPECIAIS.
++        ("Ab١!", 53),  # algarismo Unicode não conta como dígito ASCII.
++        ("Ää1!", 68),  # maiúscula/minúscula usam os métodos Unicode.
++    ],
++)
++def test_pontuacao_por_comprimento_e_categorias(senha, esperado):
++    assert pontuar_senha(senha) == esperado
++
++
++@pytest.mark.parametrize("n, desconto", [(2, 0), (3, 10), (4, 20), (5, 30), (6, 40)])
++def test_trincas_iguais_sao_contadas_em_janelas_deslizantes(n, desconto):
++    # A base inclui 15 pela categoria minúscula.
++    assert pontuar_senha("a" * n) == max(0, 2 * n + 15 - desconto)
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("aaab", 0),  # uma trinca consecutiva
++        ("aabaa", 25),  # duas ocorrências não sobrepostas? nenhuma trinca
++        ("abcccde", 19),  # uma trinca dentro de uma senha com categoria minúscula
++        ("aaaAAA", 2),  # trincas são sensíveis a maiúsculas/minúsculas
++    ],
++)
++def test_trincas_sao_consecutivas_e_exatas(senha, esperado):
++    assert pontuar_senha(senha) == esperado
++
++
++def test_pontuacao_limita_comprimento_a_vinte_caracteres():
++    assert pontuar_senha("a" * 20) == 0  # limite antes da penalidade de trincas
++    assert pontuar_senha("a" * 21) == 0
++    assert pontuar_senha("abcdefghijklmnopqrst") == 70
++    assert pontuar_senha("abcdefghijklmnopqrstu") == 70
++
++
++def test_pontuacao_tem_teto_de_cem_e_piso_de_zero():
++    # Sem trincas, comprimento 20 e quatro categorias dariam 100.
++    assert pontuar_senha("Abcdefghijklmno1!pqr") == 100
++    assert pontuar_senha("a" * 100) == 0
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("abcdefghijklmnopq", 49),
++        ("Abcdefghij", 50),
++        ("Abcdefghijklmn1pq", 79),
++        ("Abcdef1!xy", 80),
++    ],
++)
++def test_classificar_respeita_limites_exatos_de_pontuacao(senha, esperado):
++    assert pontuar_senha(senha) == esperado
++    faixa = "fraca" if esperado < 50 else "media" if esperado < 80 else "forte"
++    assert classificar(senha) == faixa
++
++
++@pytest.mark.parametrize("senha", ["Abcdef1! ", "Abcdef1!\t", "Abcdef1!\n"])
++def test_classificar_prioriza_espaco_independentemente_da_pontuacao(senha):
++    assert classificar(senha) == "invalida"
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("", "fraca"),
++        ("Abcdef1!", "media"),
++    ],
++)
++def test_classificar_nao_trata_outros_problemas_de_validacao_como_invalida(senha, esperado):
++    assert classificar(senha) == esperado
++
+
+codex
+A suíte cobre validação, ordenação dos erros, Unicode, pontuação e os limites de classificação. Vou executá-la agora para corrigir qualquer caso esperado que não corresponda ao módulo fornecido.
+exec
+/bin/bash -lc 'python -m pytest -q tests' in /tmp/bench-ck85md6y
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc 'python3 -m pytest -q tests' in /tmp/bench-ck85md6y
+ exited 1 in 274ms:
+..F...........................................F..FF..........            [100%]
+=================================== FAILURES ===================================
+_ test_validar_senha_retorna_problemas_na_ordem_especificada[Abcdef1-esperado1] _
+
+senha = 'Abcdef1', esperado = ['curta']
+
+    @pytest.mark.parametrize(
+        ("senha", "esperado"),
+        [
+            ("Abcdef1!", []),
+            ("Abcdef1", ["curta"]),
+            ("", ["curta", "sem_maiuscula", "sem_minuscula", "sem_digito", "sem_especial"]),
+            ("abcdefgh", ["sem_maiuscula", "sem_digito", "sem_especial"]),
+            ("ABCDEFGH", ["sem_minuscula", "sem_digito", "sem_especial"]),
+            ("12345678", ["sem_maiuscula", "sem_minuscula", "sem_especial"]),
+            ("!!!!!!!!", ["sem_maiuscula", "sem_minuscula", "sem_digito"]),
+            ("Abcdef1! ", ["espaco"]),
+            ("Abcdef1!\t", ["espaco"]),
+            ("Abcdef1!\n", ["espaco"]),
+            ("Abcdef1!\u00a0", ["espaco"]),
+        ],
+    )
+    def test_validar_senha_retorna_problemas_na_ordem_especificada(senha, esperado):
+        resultado = validar_senha(senha)
+>       assert resultado == esperado
+E       AssertionError: assert ['curta', 'sem_especial'] == ['curta']
+E         
+E         Left contains one more item: 'sem_especial'
+E         Use -v to get more diff
+
+tests/test_senhas.py:29: AssertionError
+________________ test_trincas_sao_consecutivas_e_exatas[aaab-0] ________________
+
+senha = 'aaab', esperado = 0
+
+    @pytest.mark.parametrize(
+        ("senha", "esperado"),
+        [
+            ("aaab", 0),  # uma trinca consecutiva
+            ("aabaa", 25),  # duas ocorrências não sobrepostas? nenhuma trinca
+            ("abcccde", 19),  # uma trinca dentro de uma senha com categoria minúscula
+            ("aaaAAA", 2),  # trincas são sensíveis a maiúsculas/minúsculas
+        ],
+    )
+    def test_trincas_sao_consecutivas_e_exatas(senha, esperado):
+>       assert pontuar_senha(senha) == esperado
+E       AssertionError: assert 13 == 0
+E        +  where 13 = pontuar_senha('aaab')
+
+tests/test_senhas.py:114: AssertionError
+_______________ test_trincas_sao_consecutivas_e_exatas[aaaAAA-2] _______________
+
+senha = 'aaaAAA', esperado = 2
+
+    @pytest.mark.parametrize(
+        ("senha", "esperado"),
+        [
+            ("aaab", 0),  # uma trinca consecutiva
+            ("aabaa", 25),  # duas ocorrências não sobrepostas? nenhuma trinca
+            ("abcccde", 19),  # uma trinca dentro de uma senha com categoria minúscula
+            ("aaaAAA", 2),  # trincas são sensíveis a maiúsculas/minúsculas
+        ],
+    )
+    def test_trincas_sao_consecutivas_e_exatas(senha, esperado):
+>       assert pontuar_senha(senha) == esperado
+E       AssertionError: assert 22 == 2
+E        +  where 22 = pontuar_senha('aaaAAA')
+
+tests/test_senhas.py:114: AssertionError
+_____________ test_pontuacao_limita_comprimento_a_vinte_caracteres _____________
+
+    def test_pontuacao_limita_comprimento_a_vinte_caracteres():
+        assert pontuar_senha("a" * 20) == 0  # limite antes da penalidade de trincas
+        assert pontuar_senha("a" * 21) == 0
+>       assert pontuar_senha("abcdefghijklmnopqrst") == 70
+E       AssertionError: assert 55 == 70
+E        +  where 55 = pontuar_senha('abcdefghijklmnopqrst')
+
+tests/test_senhas.py:120: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_senhas.py::test_validar_senha_retorna_problemas_na_ordem_especificada[Abcdef1-esperado1]
+FAILED tests/test_senhas.py::test_trincas_sao_consecutivas_e_exatas[aaab-0]
+FAILED tests/test_senhas.py::test_trincas_sao_consecutivas_e_exatas[aaaAAA-2]
+FAILED tests/test_senhas.py::test_pontuacao_limita_comprimento_a_vinte_caracteres
+4 failed, 57 passed in 0.10s
+
+apply patch
+patch: completed
+/tmp/bench-ck85md6y/tests/test_senhas.py
+diff --git a/tests/test_senhas.py b/tests/test_senhas.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..c0efbc233687138e1bacd1cadf10d04bc9449afc
+--- /dev/null
++++ b/tests/test_senhas.py
+@@ -0,0 +1,159 @@
++import pytest
++
++from senhas import ESPECIAIS, classificar, pontuar_senha, validar_senha
++
++
++def test_especiais_contem_exatamente_os_caracteres_documentados():
++    assert ESPECIAIS == frozenset("!@#$%&*?-_")
++    assert isinstance(ESPECIAIS, frozenset)
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("Abcdef1!", []),
++        ("Abcdef1", ["curta", "sem_especial"]),
++        ("", ["curta", "sem_maiuscula", "sem_minuscula", "sem_digito", "sem_especial"]),
++        ("abcdefgh", ["sem_maiuscula", "sem_digito", "sem_especial"]),
++        ("ABCDEFGH", ["sem_minuscula", "sem_digito", "sem_especial"]),
++        ("12345678", ["sem_maiuscula", "sem_minuscula", "sem_especial"]),
++        ("!!!!!!!!", ["sem_maiuscula", "sem_minuscula", "sem_digito"]),
++        ("Abcdef1! ", ["espaco"]),
++        ("Abcdef1!\t", ["espaco"]),
++        ("Abcdef1!\n", ["espaco"]),
++        ("Abcdef1!\u00a0", ["espaco"]),
++    ],
++)
++def test_validar_senha_retorna_problemas_na_ordem_especificada(senha, esperado):
++    resultado = validar_senha(senha)
++    assert resultado == esperado
++    assert len(resultado) == len(set(resultado))
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        # isupper/islower são Unicode, mas dígitos e especiais são ASCII/exatos.
++        ("Äbcdefg1!", []),
++        ("äBCDEFG1!", []),
++        ("Abcdefg١!", ["sem_digito"]),
++        ("Abcdefg1.", ["sem_especial"]),
++    ],
++)
++def test_validar_senha_usa_as_categorias_documentadas(senha, esperado):
++    assert validar_senha(senha) == esperado
++
++
++@pytest.mark.parametrize(
++    ("senha", "minimo", "esperado"),
++    [
++        ("Abcdef1!", 8, []),
++        ("Abcdef1!", 9, ["curta"]),
++        ("Abcdef1!", 1, []),
++        ("Abcdef1!", 20, ["curta"]),
++        ("Abcdef1!", 8, []),
++        ("", 1, ["curta", "sem_maiuscula", "sem_minuscula", "sem_digito", "sem_especial"]),
++    ],
++)
++def test_tamanho_minimo_configuravel(senha, minimo, esperado):
++    assert validar_senha(senha, tamanho_minimo=minimo) == esperado
++
++
++@pytest.mark.parametrize("senha", [None, 1, 1.5, b"Abcdef1!", ["Abcdef1!"]])
++def test_validar_senha_rejeita_senha_que_nao_e_str(senha):
++    with pytest.raises(TypeError):
++        validar_senha(senha)
++
++
++@pytest.mark.parametrize("minimo", [0, -1, -100])
++def test_validar_senha_rejeita_tamanho_minimo_menor_que_um(minimo):
++    with pytest.raises(ValueError):
++        validar_senha("Abcdef1!", minimo)
++
++
++def test_validar_senha_verifica_tipo_da_senha_antes_do_tamanho():
++    with pytest.raises(TypeError):
++        validar_senha(None, 0)
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("", 0),
++        ("a", 17),  # 2 pontos pelo caractere e 15 pela categoria minúscula.
++        ("A", 17),
++        ("1", 17),
++        ("!", 17),
++        ("ab", 19),
++        ("Ab1!", 68),
++        ("Ab1.", 53),  # pontuação especial só para ESPECIAIS.
++        ("Ab١!", 53),  # algarismo Unicode não conta como dígito ASCII.
++        ("Ää1!", 68),  # maiúscula/minúscula usam os métodos Unicode.
++    ],
++)
++def test_pontuacao_por_comprimento_e_categorias(senha, esperado):
++    assert pontuar_senha(senha) == esperado
++
++
++@pytest.mark.parametrize("n, desconto", [(2, 0), (3, 10), (4, 20), (5, 30), (6, 40)])
++def test_trincas_iguais_sao_contadas_em_janelas_deslizantes(n, desconto):
++    # A base inclui 15 pela categoria minúscula.
++    assert pontuar_senha("a" * n) == max(0, 2 * n + 15 - desconto)
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("aaab", 13),  # uma trinca consecutiva
++        ("aabaa", 25),  # duas ocorrências não sobrepostas? nenhuma trinca
++        ("abcccde", 19),  # uma trinca dentro de uma senha com categoria minúscula
++        ("aaaAAA", 22),  # trincas são sensíveis a maiúsculas/minúsculas
++    ],
++)
++def test_trincas_sao_consecutivas_e_exatas(senha, esperado):
++    assert pontuar_senha(senha) == esperado
++
++
++def test_pontuacao_limita_comprimento_a_vinte_caracteres():
++    assert pontuar_senha("a" * 20) == 0  # limite antes da penalidade de trincas
++    assert pontuar_senha("a" * 21) == 0
++    assert pontuar_senha("abcdefghijklmnopqrst") == 55
++    assert pontuar_senha("abcdefghijklmnopqrstu") == 55
++
++
++def test_pontuacao_tem_teto_de_cem_e_piso_de_zero():
++    # Sem trincas, comprimento 20 e quatro categorias dariam 100.
++    assert pontuar_senha("Abcdefghijklmno1!pqr") == 100
++    assert pontuar_senha("a" * 100) == 0
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("abcdefghijklmnopq", 49),
++        ("Abcdefghij", 50),
++        ("Abcdefghijklmn1pq", 79),
++        ("Abcdef1!xy", 80),
++    ],
++)
++def test_classificar_respeita_limites_exatos_de_pontuacao(senha, esperado):
++    assert pontuar_senha(senha) == esperado
++    faixa = "fraca" if esperado < 50 else "media" if esperado < 80 else "forte"
++    assert classificar(senha) == faixa
++
++
++@pytest.mark.parametrize("senha", ["Abcdef1! ", "Abcdef1!\t", "Abcdef1!\n"])
++def test_classificar_prioriza_espaco_independentemente_da_pontuacao(senha):
++    assert classificar(senha) == "invalida"
++
++
++@pytest.mark.parametrize(
++    ("senha", "esperado"),
++    [
++        ("", "fraca"),
++        ("Abcdef1!", "media"),
++    ],
++)
++def test_classificar_nao_trata_outros_problemas_de_validacao_como_invalida(senha, esperado):
++    assert classificar(senha) == esperado
++
+
+exec
+/bin/bash -lc 'python3 -m pytest -q tests' in /tmp/bench-ck85md6y
+ succeeded in 113ms:
+.............................................................            [100%]
+61 passed in 0.04s
+
+codex
+A suíte passou com `python3 -m pytest -q tests` (61 testes). O comando `python` não está instalado neste ambiente, então usei `python3`.
+codex
+Criei [tests/test_senhas.py](/tmp/bench-ck85md6y/tests/test_senhas.py) com 61 testes para validação, pontuação e classificação, incluindo casos de borda. Não alterei `senhas.py`.
+
+Verificação: `python3 -m pytest -q tests` — **61 passaram**.
+tokens used
+22,501

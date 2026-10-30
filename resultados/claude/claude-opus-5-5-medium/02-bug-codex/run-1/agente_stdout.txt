@@ -1,0 +1,9 @@
+Corrigi o bug em `janelas.py`: o laço parava cedo demais e sempre deixava de fora a última janela. Troquei `range(tamanho, len(valores) - 1)` por `range(tamanho, len(valores))`.
+
+Rodei verificações rápidas e todas passaram:
+- O exemplo `[1, 2, 3, 4]` com tamanho 2 devolve `[3, 5, 7]`.
+- Os casos de borda funcionam: tamanho igual ao da lista, lista de um elemento, tamanho maior que a lista (devolve `[]`) e tamanho zero ou negativo (lança `ValueError`).
+- Inteiros acima de 64 bits dão somas exatas.
+- Com 200.000 valores e janela de 100.000, saem 100.001 resultados, e o primeiro e o último batem com a soma direta.
+
+O restante já atendia ao enunciado e ficou como estava: a varredura é O(n) mesmo com janelas grandes, a lista recebida não é alterada e cada chamada cria uma lista nova.

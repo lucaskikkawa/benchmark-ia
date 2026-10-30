@@ -1,0 +1,10 @@
+Criei o `solucao.py` com `pares_com_soma`, que conta os pares numa única passagem. Para cada elemento `x`, soma quantas vezes `alvo - x` já apareceu antes e depois registra `x` num `Counter`. Assim a contagem é sempre de pares de índices `i < j`. Quando `2 * x == alvo`, o resultado dá naturalmente `freq * (freq - 1) // 2`, sem caso especial. A lista `nums` não é alterada e nenhum par é guardado em memória.
+
+O enunciado pede validação de tipos, então a função lança `TypeError` se `nums` não for `list`, ou se `alvo` ou algum elemento não for `int` (`bool` é rejeitado).
+
+Rodei todos os exemplos do enunciado e todos deram o resultado esperado. Também testei:
+- **Tipos inválidos:** tupla, `bool`, `float` e `None` geram `TypeError`.
+- **Lista intacta:** `nums` continua igual depois da chamada.
+- **Desempenho:** com 200.000 valores iguais, a resposta foi 19.999.900.000 em cerca de 0,03 s, bem abaixo do limite de 3 s.
+
+Não criei nenhum outro arquivo.

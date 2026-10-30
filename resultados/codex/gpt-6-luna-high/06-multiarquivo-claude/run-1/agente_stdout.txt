@@ -1,0 +1,1 @@
+Implementei o pacote `biblioteca/` com os quatro arquivos pedidos: modelos e exceções, acervo, serviço de empréstimos e API pública. Não executei testes.

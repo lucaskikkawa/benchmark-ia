@@ -1,0 +1,11 @@
+A tarefa foi resolvida com a atualização do arquivo [`boletim.py`](file:///tmp/bench-xc1axc3a/boletim.py).
+
+### Ajustes realizados de acordo com o contrato:
+- **Preservação da entrada:** A lista `provas` original não é mais modificada.
+- **Validação de tipos e valores:**
+  - `TypeError` para `provas` não sendo `list`, tipos booleanos (`bool`), ou itens que não sejam `int`, `float` ou `None`.
+  - `ValueError` quando `len(provas)` for menor que 1 ou maior que 4, quando nenhuma nota válida sobrar após ignorar `None`, ou caso alguma nota não seja finita ou esteja fora de `[0, 10]`.
+- **Tratamento de ausências:** Itens `None` são ignorados no cômputo em vez de serem tratados como zero.
+- **Regra de descarte:** O menor valor só é descartado se houver exatamente 4 notas válidas. Em caso de empate, apenas a primeira ocorrência é removida.
+- **Cálculo da média:** Notas convertidas via `Decimal(str(nota))`, somadas e divididas pelo total restante `n`, e arredondadas uma única vez com `(soma / n).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`.
+- **Conceito e apro

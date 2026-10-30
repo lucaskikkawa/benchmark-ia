@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-nscqy_r4/solucao.py) com contagem por frequências em O(n), validação de tipos e sem alterar a lista.
+
+Testes passaram, incluindo exemplos, entradas inválidas e casos com 200.000 elementos. Nenhum outro arquivo foi criado.

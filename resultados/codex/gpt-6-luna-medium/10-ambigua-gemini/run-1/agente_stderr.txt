@@ -1,0 +1,141 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-owciqs4y
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189b8-5472-7581-abba-8fc84013497f
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:12:02.848289Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para entender a tarefa; depois faço a alteração diretamente aqui.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-owciqs4y
+ succeeded in 0ms:
+/tmp/bench-owciqs4y
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md && rg --files' in /tmp/bench-owciqs4y
+ succeeded in 0ms:
+# 10 - Classificação de Clientes e Score de Fidelidade (Especificação com Pontos Abertos)
+
+Implemente a função `classificar_cliente` no arquivo `solucao.py` na raiz do seu diretório de trabalho.
+
+## Assinatura
+
+```python
+def classificar_cliente(dados: dict) -> dict:
+    ...
+```
+
+## Núcleo Explícito Obrigatório
+
+O dicionário `dados` de entrada possui as seguintes informações sobre o cliente:
+- `id` (str): identificador único do cliente.
+- `nome` (str): nome do cliente.
+- `compras` (list[float | int]): histórico de valores de compras realizadas.
+- `anos_ativo` (int): número de anos em que o cliente é usuário ativo.
+
+### Regras Inequívocas de Cálculo do Score:
+1. O score base de compras corresponde a **10% da soma dos valores das compras** (`soma_compras * 0.1`).
+2. O score de fidelidade concede **5 pontos por cada ano ativo** (`anos_ativo * 5`).
+3. O score final é a soma do score base de compras com o score de fidelidade, devendo ser arredondado para 2 casas decimais (`round(..., 2)`).
+4. O dicionário de retorno deve conter obrigatoriamente as chaves:
+   - `"id"`: mesmo id de entrada (preservado).
+   - `"nome"`: mesmo nome de entrada (preservado).
+   - `"score"`: número (float ou int) correspondente ao score final calculado.
+   - `"categoria"`: uma string não vazia representando o segmento/nível do cliente.
+5. **Imutabilidade**: A função não deve modificar o dicionário `dados` fornecido na entrada nem a lista `compras` nele contida.
+6. A função deve suportar grande volume de compras e entradas com caracteres Unicode em `id` e `nome`.
+
+## Pontos Abertos e Arquivo `SUPOSICOES.md` (OBRIGATÓRIO)
+
+Alguns aspectos do comportamento não foram fechados na especificação, tais como:
+- Quais nomes de categorias atribuir e quais faixas/critérios de pontuação utilizar para categorizar o cliente.
+- Como lidar com valores negativos na lista de compras (ex.: estornos/devoluções vs. ignorar).
+- Como interpretar ou ajustar anos ativos negativos caso ocorram.
+- Como tratar campos adicionais presentes na entrada.
+
+Você **DEVE** criar um arquivo chamado `SUPOSICOES.md` na raiz do diretório de trabalho documentando detalhadamente suas decisões de design, critérios de categorização adotados e premissas assumidas.
+
+> **Importante:** A suíte de testes automatizados valida exclusivamente o **núcleo explícito inequívoco** e a presença do arquivo `SUPOSICOES.md`. A qualidade e profundidade da sua documentação de suposições serão avaliadas pela rubrica qualitativa.
+enunciado.md
+
+codex
+A especificação deixa livres as regras para casos-limite. Vou documentar escolhas simples e consistentes: considerar estornos como valores negativos no total, limitar anos ativos negativos a zero e ignorar campos adicionais.
+exec
+/bin/bash -lc "cat > solucao.py <<'PY'
+def classificar_cliente(dados: dict) -> dict:
+    \"\"\"Calcula o score de compras e fidelidade e atribui uma categoria.
+
+    A entrada é somente lida; nenhum dos seus campos é alterado.
+    \"\"\"
+    compras = dados[\"compras\"]
+    soma_compras = sum(compras)
+    anos_ativo = max(0, dados[\"anos_ativo\"])
+
+    score = round(soma_compras * 0.1 + anos_ativo * 5, 2)
+
+    # Faixas crescentes e não sobrepostas; scores negativos permanecem na
+    # categoria inicial, pois podem resultar de estornos superiores às compras.
+    if score < 100:
+        categoria = \"Bronze\"
+    elif score < 500:
+        categoria = \"Prata\"
+    elif score < 1000:
+        categoria = \"Ouro\"
+    else:
+        categoria = \"Platina\"
+
+    return {
+        \"id\": dados[\"id\"],
+        \"nome\": dados[\"nome\"],
+        \"score\": score,
+        \"categoria\": categoria,
+    }
+PY
+cat > SUPOSICOES.md <<'MD'
+# Suposições de design
+
+A especificação determina a fórmula do score e os campos obrigatórios do retorno, mas deixa algumas decisões de produto em aberto. Este documento registra as convenções adotadas pela implementação.
+
+## Cálculo
+
+- O score de compras é 10% da soma algébrica de todos os valores em "'`compras`. Assim, valores negativos são tratados como estornos ou devoluções e reduzem o total, em vez de serem descartados ou convertidos em valor absoluto.
+- O score de fidelidade é cinco pontos por ano ativo. Como tempo ativo negativo não faz sentido como duração, `anos_ativo` abaixo de zero é tratado como zero antes do cálculo.
+- O score final é a soma das duas parcelas e é arredondado com `round(..., 2)`, conforme a regra explícita. Não há arredondamentos intermediários.
+- A implementação espera que os campos obrigatórios existam e que os valores de compras e anos ativos sejam numéricos e compatíveis com a operação. Validação e coerção de tipos não foram especificadas, então erros de entrada inválida são deixados para o comportamento normal do Python.
+
+## Categorias
+
+As categorias são determinadas pelo score final já arredondado, usando limites inclusivos no início de cada faixa:
+
+| Score | Categoria |
+|---|---|
+| menor que 100 | Bronze |
+| de 100 (inclusive) a menos de 500 | Prata |
+| de 500 (inclusive) a menos de 1000 | Ouro |
+| 1000 ou mais | Platina |
+
+As faixas são simples, crescentes e não sobrepostas. Scores negativos ficam em Bronze, o nível inicial, inclusive quando o efeito líquido de estornos for negativo. Os nomes são rótulos de segmento e não alteram o score.
+
+## Campos e imutabilidade
+
+- O retorno inclui somente `id`, `nome`, `score` e `categoria`, os quatro campos definidos como obrigatórios. Campos adicionais de entrada são ignorados, sem serem copiados ou transformados.
+- `id` e `nome` são repassados sem normalização, preservando inclusive caracteres Unicode.
+- A lista de compras é percorrida por `sum` e não é modificada; o dicionário de entrada também é apenas consultado. Portanto, a chamada não altera a entrada.
+- `sum` percorre a lista em tempo linear e não cria uma cópia dela, o que mantém o processamento adequado para históricos extensos.
+MD
+' in /tmp/bench-owciqs4y
+ succeeded in 0ms:
+codex
+Implementei `classificar_cliente` em [solucao.py](/tmp/bench-owciqs4y/solucao.py) e registrei as decisões sobre categorias, estornos, anos negativos, campos adicionais e imutabilidade em [SUPOSICOES.md](/tmp/bench-owciqs4y/SUPOSICOES.md).
+tokens used
+5,389

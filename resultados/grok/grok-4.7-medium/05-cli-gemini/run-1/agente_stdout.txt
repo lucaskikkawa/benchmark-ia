@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede uma CLI em `contatexto.py`. Vou implementar as métricas, os formatos de saída e os códigos de saída.O enunciado pede uma CLI em `contatexto.py`. Vou implementar a contagem, o top de palavras e os formatos de saída.A ferramenta `contatexto.py` está pronta e analisa um arquivo de texto UTF-8 pela linha de comando.
+
+- Sem `-l`, `-p`, `-c` ou `--top`, ela mostra linhas, palavras e caracteres. Com alguma dessas flags, mostra só o que foi pedido.
+- `--top N` lista as palavras mais frequentes, já em minúsculas e sem pontuação nas pontas, com empate em ordem alfabética.
+- `--json` gera JSON indentado, e `-o` grava o resultado no arquivo (criando pastas se precisar) e imprime `Salvo em CAMINHO`.
+- Arquivo inexistente, diretório ou erro de leitura encerra com código 1 e mensagem na stderr começando com `Erro`. Argumento inválido encerra com código 2.

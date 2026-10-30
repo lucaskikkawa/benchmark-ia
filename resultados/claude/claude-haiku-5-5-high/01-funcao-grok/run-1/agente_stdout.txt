@@ -1,0 +1,8 @@
+Criei `solucao.py` no diretório com `horas_livres`, usando só a biblioteca padrão. Nenhum outro arquivo foi criado.
+
+Os seis exemplos do enunciado passam, junto com casos extras (duração zero, intervalo que cobre a janela inteira, encostados dentro da janela, lista interna em vez de tupla) e os casos de `ValueError` e `TypeError` listados no enunciado. A entrada não é alterada. Os testes rodaram com Python 3.13 (o sandbox tem essa versão); o código não usa nada além do 3.11. Os testes foram feitos com `python3 -B` e um script via stdin, então nada além de `solucao.py` ficou no diretório.
+
+Decisões de implementação:
+- **Ordem de validação:** primeiro o tipo de `ocupados`, depois `inicio` e `fim` (formato e ordem), e por último cada item de `ocupados`. Assim um item inválido é sempre erro, mesmo que caia fora da janela ou tenha duração zero.
+- **Formato dos horários:** a checagem percorre os caracteres contra `"0123456789"`, e não usa `in` sobre a substring. Com substring, `"12"` seria aceito pela verificação, por ser subcadeia de `"0123456789"`.
+- **União depois do recorte:** os ocupados são recortados para a janela, ordenados e unidos quando se sobrepõem ou se encostam. As folgas são os trechos entre eles.

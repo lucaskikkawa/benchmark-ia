@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-6xvnxs50/solucao.py) com `resumir_vendas`, incluindo validação das linhas, agregação por região e gravação do JSON UTF-8 com diretórios pais criados automaticamente.

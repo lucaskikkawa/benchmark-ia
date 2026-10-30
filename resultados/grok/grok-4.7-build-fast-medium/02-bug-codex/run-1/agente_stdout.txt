@@ -1,0 +1,11 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O laço para uma posição antes do fim e deixa a última janela de fora. Vou corrigir o intervalo para incluir todos os deslizamentos.A função `somas_janelas` em `janelas.py` agora devolve a soma de cada janela contígua.
+
+O laço parava em `len(valores) - 1` e deixava de fora a última janela. O intervalo passou a ir até `len(valores)`, no mesmo cálculo deslizante O(n).
+
+Comportamentos que continuam iguais:
+
+- `somas_janelas([1, 2, 3, 4], 2)` devolve `[3, 5, 7]`.
+- Um tamanho maior que a lista devolve `[]`.
+- Um tamanho zero ou negativo lança `ValueError`.
+- A lista recebida não é alterada.
+- As somas permanecem inteiros exatos, e cada chamada devolve uma lista nova.

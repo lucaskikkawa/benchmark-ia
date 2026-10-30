@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com arquivos daqui.O cálculo de cada linha vai para `subtotal`, e `resumo_pedidos` passa a agregar só o valor que essa função devolve.`pedidos.py` agora calcula cada linha em `subtotal` e `resumo_pedidos` só agrega o valor devolvido.
+
+- `subtotal(quantidade, preco_centavos, desconto_percentual=0)` faz `quantidade * preco_centavos * (100 - desconto_percentual) // 100` em inteiros, com truncamento por linha.
+- `resumo_pedidos` chama `subtotal` uma vez por pedido, na ordem da entrada, inclusive quando a quantidade é zero, e usa esse retorno no total e em `por_categoria`.
+- Categorias permanecem exatamente como vieram, linhas com subtotal zero continuam no mapa, a entrada não é alterada e cada chamada usa acumuladores locais.

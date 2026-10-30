@@ -1,0 +1,8 @@
+O arquivo [`relatorio.py`](file:///tmp/bench-gsby3ac4/relatorio.py) foi refatorado preservando o comportamento exato da implementação original:
+
+- **Constantes de configuração**: [`LIMITE_FAIXA_ALTA`](file:///tmp/bench-gsby3ac4/relatorio.py#L1), [`TAXAS_DESCONTO`](file:///tmp/bench-gsby3ac4/relatorio.py#L2-L5) e [`TAXAS_PADRAO`](file:///tmp/bench-gsby3ac4/relatorio.py#L6).
+- **Funções públicas extraídas**:
+  - [`calcular_subtotal`](file:///tmp/bench-gsby3ac4/relatorio.py#L9-L16): valida `qtd < 0` (`ValueError`) e acumula `preco * qtd`.
+  - [`calcular_desconto`](file:///tmp/bench-gsby3ac4/relatorio.py#L19-L23): consulta as constantes do módulo no momento da chamada e calcula o valor do desconto.
+  - [`formatar_relatorio`](file:///tmp/bench-gsby3ac4/relatorio.py#L26-L35): ordena os clientes, formata os valores e acumula o total geral na mesma ordem de ponto flutuante.
+  - [`gerar_relatorio`](file:///tmp/bench-gsby3ac4/relatorio.py#L38-L50): orquestra o cálculo utilizando as funções públicas do módulo.

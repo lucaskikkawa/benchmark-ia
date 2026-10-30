@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="13" skipped="0" tests="13" time="0.173" timestamp="2026-10-30T01:27:00.908609-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_runner" name="test_suite_passa_no_modulo_original" time="0.001"><failure message="AssertionError: Diretório 'tests/' não encontrado no diretório raiz da solução.&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-xsi5m53c/tests').is_dir">def test_suite_passa_no_modulo_original():
+        tests_dir = ROOT_DIR / "tests"
+&gt;       assert tests_dir.is_dir(), "Diretório 'tests/' não encontrado no diretório raiz da solução."
+E       AssertionError: Diretório 'tests/' não encontrado no diretório raiz da solução.
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-xsi5m53c/tests').is_dir
+
+testes_ocultos/test_runner.py:36: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_01" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_01():
+&gt;       executar_mutante("mutante_01")
+
+testes_ocultos/test_runner.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmplksbvoul/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f8779356700&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_02" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_02():
+&gt;       executar_mutante("mutante_02")
+
+testes_ocultos/test_runner.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpg61o37jq/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f8779357f60&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_03" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_03():
+&gt;       executar_mutante("mutante_03")
+
+testes_ocultos/test_runner.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpou35vpxv/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f87793ac540&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_04" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_04():
+&gt;       executar_mutante("mutante_04")
+
+testes_ocultos/test_runner.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpfj09cel7/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f87793ac860&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_05" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_05():
+&gt;       executar_mutante("mutante_05")
+
+testes_ocultos/test_runner.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpodmd0_ht/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f87793aca40&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_06" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_06():
+&gt;       executar_mutante("mutante_06")
+
+testes_ocultos/test_runner.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpwhddwgqx/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f8779357920&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_07" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_07():
+&gt;       executar_mutante("mutante_07")
+
+testes_ocultos/test_runner.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmp7jyxetfw/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f8779357f60&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_08" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_08():
+&gt;       executar_mutante("mutante_08")
+
+testes_ocultos/test_runner.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpdor5bd6j/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f87793acea0&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_09" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_09():
+&gt;       executar_mutante("mutante_09")
+
+testes_ocultos/test_runner.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmp4wq136uc/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f87793ac4a0&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_10" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_10():
+&gt;       executar_mutante("mutante_10")
+
+testes_ocultos/test_runner.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpuy97a7wx/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f87793ad260&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_11" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_11():
+&gt;       executar_mutante("mutante_11")
+
+testes_ocultos/test_runner.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpjs8120ab/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f87793ac400&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_12" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'">def test_mata_mutante_12():
+&gt;       executar_mutante("mutante_12")
+
+testes_ocultos/test_runner.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_runner.py:48: in executar_mutante
+    res = executar_suite_isolada(mutante_file)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_runner.py:27: in executar_suite_isolada
+    shutil.copytree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/tmp/bench-xsi5m53c/tests')
+dst = PosixPath('/tmp/tmpa3kw023m/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f87793ad4e0&gt;
+copy_function = &lt;function copy2 at 0x7f8779b59b20&gt;
+ignore_dangling_symlinks = False, dirs_exist_ok = False
+
+    def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
+                 ignore_dangling_symlinks=False, dirs_exist_ok=False):
+        """Recursively copy a directory tree and return the destination directory.
+    
+        If exception(s) occur, an Error is raised with a list of reasons.
+    
+        If the optional symlinks flag is true, symbolic links in the
+        source tree result in symbolic links in the destination tree; if
+        it is false, the contents of the files pointed to by symbolic
+        links are copied. If the file pointed to by the symlink doesn't
+        exist, an exception will be added in the list of errors raised in
+        an Error exception at the end of the copy process.
+    
+        You can set the optional ignore_dangling_symlinks flag to true if you
+        want to silence this exception. Notice that this has no effect on
+        platforms that don't support os.symlink.
+    
+        The optional ignore argument is a callable. If given, it
+        is called with the `src` parameter, which is the directory
+        being visited by copytree(), and `names` which is the list of
+        `src` contents, as returned by os.listdir():
+    
+            callable(src, names) -&gt; ignored_names
+    
+        Since copytree() is called recursively, the callable will be
+        called once for each directory that is copied. It returns a
+        list of names relative to the `src` directory that should
+        not be copied.
+    
+        The optional copy_function argument is a callable that will be used
+        to copy each file. It will be called with the source path and the
+        destination path as arguments. By default, copy2() is used, but any
+        function that supports the same signature (like copy()) can be used.
+    
+        If dirs_exist_ok is false (the default) and `dst` already exists, a
+        `FileExistsError` is raised. If `dirs_exist_ok` is true, the copying
+        operation will continue if it encounters existing directories, and files
+        within the `dst` tree will be overwritten by corresponding files from the
+        `src` tree.
+        """
+        sys.audit("shutil.copytree", src, dst)
+&gt;       with os.scandir(src) as itr:
+             ^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-xsi5m53c/tests'
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase></testsuite></testsuites>

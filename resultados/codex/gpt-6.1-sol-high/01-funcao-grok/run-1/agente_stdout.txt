@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-zej6hd9l/solucao.py) com a função `horas_livres`, conforme o enunciado.
+
+Verificação concluída: exemplos, validações de erros e 1.000 casos aleatórios passaram. Nenhum outro arquivo foi criado.

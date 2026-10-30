@@ -1,0 +1,13 @@
+Criei o pacote `eventhub` com os 4 arquivos que o enunciado pede. Rodei um teste rápido à mão e tudo se comportou como esperado. Não escrevi testes automatizados.
+
+O teste confirmou:
+- A ordem de despacho segue prioridade e, na mesma prioridade, a ordem de chegada.
+- Inscrever o mesmo handler duas vezes não gera duplicata.
+- Um evento publicado por um handler durante o despacho entra na fila e é atendido depois, respeitando a prioridade.
+- Com `dlq`, as exceções vão para a fila de falhas e os demais handlers continuam rodando.
+- Sem `dlq`, a exceção chega ao chamador.
+
+Algumas escolhas que o enunciado não especificava:
+- **Fila:** usei um heap ordenado por prioridade, depois `timestamp`, depois um contador de publicação. O contador garante a ordem de chegada quando dois eventos têm o mesmo `timestamp`.
+- **`id` do evento:** é gerado automaticamente com `uuid4`.
+- **Handlers durante o despacho:** o despacho percorre uma cópia da lista de handlers. Assim, inscrever ou remover um handler dentro de outro não quebra a iteração em andamento.

@@ -1,0 +1,9 @@
+Criei `solucao.py` neste diretório com `horas_livres` e só a biblioteca padrão. Não criei outros arquivos.
+
+Rodei os seis exemplos do enunciado e todos deram a saída esperada. Também testei os casos de erro (horário sem zero à esquerda, dígitos de largura cheia, `ocupados` como tupla, item com `ini > fim` mesmo fora da janela, `inicio` igual a `fim`) e cada um levantou o tipo de exceção pedido. Não rodei uma suíte de testes além disso.
+
+Decisões de implementação:
+- Todos os horários são validados antes de qualquer recorte ou descarte, então um item inválido causa erro mesmo que caia fora da janela.
+- `ini == fim` válidos são ignorados depois da validação.
+- O recorte à janela acontece antes da união, então intervalos que só se encostam dentro da janela também se fundem.
+- A saída usa `"24:00"` para 1440 minutos.

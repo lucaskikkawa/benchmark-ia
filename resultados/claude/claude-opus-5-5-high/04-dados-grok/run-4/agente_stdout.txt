@@ -1,0 +1,12 @@
+Criei o `solucao.py` com a função `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão. Rodei um conjunto de verificações em um diretório temporário fora do repositório e todas passaram. Depois apaguei os arquivos de teste, então no diretório ficaram só `enunciado.md`, `.gitkeep` e `solucao.py`.
+
+**Como funciona:**
+- **SLA:** é lido e validado primeiro. Precisa ter exatamente a chave `limites_minutos` com as três prioridades, e cada limite tem de ser `int` ≥ 1 (`bool` e `float` são recusados).
+- **CSV:** é aberto em UTF-8 puro (não `utf-8-sig`), então um BOM no início faz o cabeçalho não bater e gera `ValueError`. O cabeçalho é comparado antes do `strip`. Linhas em branco ou com todos os campos vazios são ignoradas. Os demais campos passam por `strip` e são validados: colunas, `id` e `equipe` não vazios, `id` único, prioridade exata e datas.
+- **Datas:** o formato exato `YYYY-MM-DDTHH:MM` é conferido por expressão regular antes do `strptime`, porque o `strptime` sozinho aceitaria, por exemplo, `2024-1-01`. Fechamento antes da abertura é `ValueError`. A duração é calculada em minutos inteiros.
+- **Erros:** falhas do módulo `csv` viram `ValueError`, assim como bytes que não são UTF-8 válido. Arquivo ausente gera o `FileNotFoundError` do próprio `open`.
+- **Saída:** o arquivo só é gravado se tudo for válido. O conteúdo é exatamente `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`, e a função devolve o mesmo dict. As equipes saem ordenadas com `sorted` padrão. O `pior_id` é o de maior duração; no empate, vence o menor `id` em ordem de texto.
+
+**O que testei:** o exemplo do enunciado e o empate `a10`/`a2`. Também testei campos com vírgula entre aspas, `strip` em equipe e prioridade, duração cruzando ano e o dia 29 de fevereiro, CSV só com cabeçalho e todos os casos de erro do CSV e do SLA.
+
+**Uma decisão minha:** o cabeçalho tem de estar na primeira linha do arquivo. Uma linha em branco antes dele resulta em `ValueError`. O enunciado não diz como tratar esse caso.

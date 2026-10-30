@@ -1,0 +1,3 @@
+Criei [solucao.py](solucao.py) com a função `resumir_vendas`, conforme o enunciado.
+
+Validei o exemplo, as regras de agregação, os casos inválidos e a preservação da saída em caso de erro. Todas as verificações passaram.

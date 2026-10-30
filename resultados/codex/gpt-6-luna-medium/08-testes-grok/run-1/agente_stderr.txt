@@ -1,0 +1,238 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-pct4jezx
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189b7-8190-7af2-939d-4f35673a6d43
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:11:09.025330Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para entender a tarefa e implementar a solução aqui.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-pct4jezx
+ succeeded in 0ms:
+/tmp/bench-pct4jezx
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md && rg --files' in /tmp/bench-pct4jezx
+ succeeded in 0ms:
+# Tarefa: escrever testes do módulo de cupons
+
+O arquivo `descontos.py` já está no diretório de trabalho e está correto. **Não altere `descontos.py`.** Escreva a suíte em `tests/test_descontos.py` (pode haver outros `tests/test_*.py`). Os testes importam a função do módulo:
+
+```python
+from descontos import aplicar_desconto
+```
+
+A avaliação roda a sua suíte duas formas:
+
+1. Contra este `descontos.py`. Tudo precisa passar.
+2. Contra cópias com um bug cada. Para cada cópia, a suíte precisa **falhar**. Uma suíte que passa num módulo errado não serve. Uma suíte que falha no módulo correto também não.
+
+Use `pytest` e apenas a biblioteca padrão. Não dependa de rede nem de arquivos fora de `tests/` e `descontos.py`.
+
+## Contrato de `aplicar_desconto(preco_centavos, cupom, hoje) -> dict`
+
+```python
+{
+    "preco_final": int,
+    "desconto": int,          # preco_centavos - preco_final
+    "cupom_aplicado": str | None,
+}
+```
+
+O dict tem exatamente essas três chaves.
+
+- `preco_centavos` é `int` ≥ 0. `bool` e `float` → `TypeError`. Negativo → `ValueError`.
+- `cupom` é `None` ou `str`. Outro tipo → `TypeError`. Não há `strip`: `" OFF10"` e `"off10"` não são o código `"OFF10"`.
+- `hoje` é `str` `YYYY-MM-DD` de um dia real no calendário gregoriano de `datetime.date` (anos 1 a 9999). `2000-02-29` e `0001-12-25` existem; `1900-02-29` e `2100-02-29` não. 29 de fevereiro só em ano bissexto, com a regra do século. Senão `ValueError`. Outro tipo → `TypeError`.
+- `None` ou `""` não dão desconto: `cupom_aplicado` é `None` e o preço não muda. `" "` e `"\t"` não são vazio: são texto desconhecido e levantam `ValueError`.
+- `"OFF10"`: preço final `(preco * 90) // 100` (não é `preco - preco // 10`). A regra foi aplicada mesmo se o piso zerar o desconto (preço 1 → final 0, desconto 1, cupom `"OFF10"`).
+- `"OFF5"`: `(preco * 95) // 100`. Exemplo: 200 → 190; 101 → 95.
+- `"FIXO500"`: tira 500 centavos, com piso 0. Preço 100 → final 0 e desconto 100, nunca negativo. Preço 0 continua 0 e o cupom conta como aplicado. `desconto` é sempre `preco_centavos - preco_final`, também no piso.
+- `"BEMVINDO"`: 20% com a conta `(preco * 80) // 100` (não é `preco - (preco * 20) // 100`) somente se `hoje` está entre `2024-01-01` e `2024-12-31`, **inclusive**. Fora da janela o preço não muda e `cupom_aplicado` é `None` (não é erro).
+- `"NATAL"`: 15% com a conta `(preco * 85) // 100` (não é `preco - (preco * 15) // 100`) somente em 24 ou 25 de dezembro, em qualquer ano de 1 a 9999. Preço 1 em 25/12 → final 0. Nos outros dias, igual ao BEMVINDO fora da janela.
+- Qualquer outro texto → `ValueError`.
+
+Exemplos que a suíte deve ser capaz de segurar sozinha: percentuais com piso, piso do valor fixo, os dois extremos de BEMVINDO, 24 e 25 de dezembro, cupom vazio, cupom desconhecido, preço negativo e data inválida.
+enunciado.md
+descontos.py
+
+2026-10-29T22:11:12.278953Z ERROR codex_models_manager::manager: failed to refresh available models: request timed out
+exec
+/bin/bash -lc 'cat descontos.py' in /tmp/bench-pct4jezx
+ succeeded in 0ms:
+"""Regras de cupom sobre um preço em centavos."""
+
+from datetime import date
+
+
+def aplicar_desconto(preco_centavos, cupom, hoje):
+    """Aplica um cupom e devolve preco_final, desconto e cupom_aplicado.
+
+    preco_centavos é int >= 0 (bool não vale). cupom é None, "" ou um código.
+    hoje é str no formato YYYY-MM-DD. Cupom desconhecido ou data inválida
+    levantam ValueError. Fora da janela, BEMVINDO e NATAL não alteram o preço
+    e cupom_aplicado fica None.
+    """
+    if isinstance(preco_centavos, bool) or not isinstance(preco_centavos, int):
+        raise TypeError("preco_centavos deve ser int")
+    if preco_centavos < 0:
+        raise ValueError("preco negativo")
+    if cupom is not None and not isinstance(cupom, str):
+        raise TypeError("cupom deve ser str ou None")
+    if not isinstance(hoje, str):
+        raise TypeError("hoje deve ser str")
+    if len(hoje) != 10 or hoje[4] != "-" or hoje[7] != "-":
+        raise ValueError("data invalida")
+    try:
+        dia = date.fromisoformat(hoje)
+    except ValueError as exc:
+        raise ValueError("data invalida") from exc
+
+    final, aplicado = _aplicar(preco_centavos, cupom, dia)
+    return {
+        "preco_final": final,
+        "desconto": preco_centavos - final,
+        "cupom_aplicado": aplicado,
+    }
+
+
+def _aplicar(preco, cupom, dia):
+    if cupom is None or cupom == "":
+        return preco, None
+    if cupom == "OFF10":
+        return (preco * 90) // 100, cupom
+    if cupom == "OFF5":
+        return (preco * 95) // 100, cupom
+    if cupom == "FIXO500":
+        return max(0, preco - 500), cupom
+    if cupom == "BEMVINDO":
+        inicio = date(2024, 1, 1)
+        fim = date(2024, 12, 31)
+        if inicio <= dia <= fim:
+            return (preco * 80) // 100, cupom
+        return preco, None
+    if cupom == "NATAL":
+        if (dia.month, dia.day) in {(12, 24), (12, 25)}:
+            return (preco * 85) // 100, cupom
+        return preco, None
+    raise ValueError("cupom desconhecido")
+
+apply patch
+patch: completed
+/tmp/bench-pct4jezx/tests/test_descontos.py
+diff --git a/tests/test_descontos.py b/tests/test_descontos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..81ccf865b975a514a155d23b3feab911668bfb28
+--- /dev/null
++++ b/tests/test_descontos.py
+@@ -0,0 +1,95 @@
++import pytest
++
++from descontos import aplicar_desconto
++
++
++def resultado(preco, final, aplicado):
++    return {
++        "preco_final": final,
++        "desconto": preco - final,
++        "cupom_aplicado": aplicado,
++    }
++
++
++@pytest.mark.parametrize(
++    ("preco", "cupom", "hoje", "final", "aplicado"),
++    [
++        # Percentuais usam o piso sobre o preço multiplicado, inclusive
++        # quando o desconto resultante é menor que um centavo.
++        (101, "OFF10", "2024-06-15", 90, "OFF10"),
++        (1, "OFF10", "2024-06-15", 0, "OFF10"),
++        (200, "OFF5", "2024-06-15", 190, "OFF5"),
++        (101, "OFF5", "2024-06-15", 95, "OFF5"),
++        (1, "OFF5", "2024-06-15", 0, "OFF5"),
++        (101, "BEMVINDO", "2024-06-15", 80, "BEMVINDO"),
++        (1, "BEMVINDO", "2024-06-15", 0, "BEMVINDO"),
++        (101, "NATAL", "2024-12-24", 85, "NATAL"),
++        (1, "NATAL", "2024-12-25", 0, "NATAL"),
++        # FIXO500 tem piso zero, mas continua aplicado mesmo com preço zero.
++        (100, "FIXO500", "2024-06-15", 0, "FIXO500"),
++        (500, "FIXO500", "2024-06-15", 0, "FIXO500"),
++        (700, "FIXO500", "2024-06-15", 200, "FIXO500"),
++        (0, "FIXO500", "2024-06-15", 0, "FIXO500"),
++        # Datas limites inclusivas para BEMVINDO.
++        (1000, "BEMVINDO", "2024-01-01", 800, "BEMVINDO"),
++        (1000, "BEMVINDO", "2024-12-31", 800, "BEMVINDO"),
++        (1000, "BEMVINDO", "2023-12-31", 1000, None),
++        (1000, "BEMVINDO", "2025-01-01", 1000, None),
++        # NATAL vale em ambos os dias, em qualquer ano, e fora deles não aplica.
++        (100, "NATAL", "0001-12-24", 85, "NATAL"),
++        (100, "NATAL", "9999-12-25", 85, "NATAL"),
++        (1000, "NATAL", "2024-12-23", 1000, None),
++        (1000, "NATAL", "2024-12-26", 1000, None),
++        (123, None, "2024-06-15", 123, None),
++        (123, "", "2024-06-15", 123, None),
++    ],
++)
++def test_regras_de_desconto(preco, cupom, hoje, final, aplicado):
++    assert aplicar_desconto(preco, cupom, hoje) == resultado(preco, final, aplicado)
++
++
++@pytest.mark.parametrize("preco", [True, False, 1.0, 1.5])
++def test_preco_deve_ser_int_sem_bool(preco):
++    with pytest.raises(TypeError):
++        aplicar_desconto(preco, None, "2024-01-01")
++
++
++def test_preco_negativo_e_invalido():
++    with pytest.raises(ValueError):
++        aplicar_desconto(-1, None, "2024-01-01")
++
++
++@pytest.mark.parametrize("cupom", [0, 1, False, [], {}])
++def test_cupom_deve_ser_str_ou_none(cupom):
++    with pytest.raises(TypeError):
++        aplicar_desconto(100, cupom, "2024-01-01")
++
++
++@pytest.mark.parametrize("cupom", ["OFF10 ", " OFF10", "off10", " ", "\t", "DESCONHECIDO"])
++def test_cupom_desconhecido_nao_e_normalizado(cupom):
++    with pytest.raises(ValueError):
++        aplicar_desconto(100, cupom, "2024-01-01")
++
++
++@pytest.mark.parametrize("hoje", [None, 20240101, True, b"2024-01-01"])
++def test_hoje_deve_ser_str(hoje):
++    with pytest.raises(TypeError):
++        aplicar_desconto(100, None, hoje)
++
++
++@pytest.mark.parametrize(
++    "hoje",
++    [
++        "2024-1-01", "2024-01-1", "24-01-01", "2024/01/01", "20240101",
++        "2024-01-01 ", " 2024-01-01", "2024-00-10", "2024-13-01",
++        "2024-04-31", "1900-02-29", "2100-02-29", "0000-01-01",
++    ],
++)
++def test_data_invalida(hoje):
++    with pytest.raises(ValueError):
++        aplicar_desconto(100, None, hoje)
++
++
++@pytest.mark.parametrize("hoje", ["2000-02-29", "0001-12-25", "9999-12-31"])
++def test_datas_reais_incluindo_bissexto_e_extremos(hoje):
++    assert aplicar_desconto(17, None, hoje) == resultado(17, 17, None)
+
+codex
+Criei [tests/test_descontos.py](/tmp/bench-pct4jezx/tests/test_descontos.py) com casos para as regras de desconto, limites de datas, validação de tipos e erros esperados. Não alterei `descontos.py` e não executei a suíte.
+tokens used
+11,723

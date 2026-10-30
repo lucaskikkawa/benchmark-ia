@@ -1,0 +1,6 @@
+Os bugs em [intervalos.py](file:///tmp/bench-xca34dg8/intervalos.py) foram corrigidos nas funções [`mesclar_intervalos`](file:///tmp/bench-xca34dg8/intervalos.py#L4-L43) e [`total_coberto`](file:///tmp/bench-xca34dg8/intervalos.py#L46-L52):
+
+- **Iteráveis arbitrários e imutabilidade da entrada**: a entrada agora é coletada em uma nova lista de tuplas durante a validação única, aceitando qualquer iterável (listas, tuplas, geradores etc.) sem modificar a coleção original.
+- **Entrada vazia**: retorna `[]` em [`mesclar_intervalos`](file:///tmp/bench-xca34dg8/intervalos.py#L32-L33) (e `0` em [`total_coberto`](file:///tmp/bench-xca34dg8/intervalos.py#L46-L52)) em vez de levantar `IndexError`.
+- **Validação de tipos**: valida que `inicio` e `fim` são `int` e rejeita `bool` (subclasse de `int` em Python), levantando `TypeError`.
+- **Intervalos que se tocam ou estão contidos**: usa `inicio <= ultimo[1]` para unir intervalos adjacentes e `ultimo[1] = max(ultimo[1], fim)` para preservar o limite superior quando um intervalo está contido em outro.

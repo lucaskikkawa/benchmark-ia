@@ -1,0 +1,3 @@
+Criei [cliente.py](/tmp/bench-g6ufxjqt/cliente.py) com `TempoEsgotado` e `baixar_pedidos`, incluindo validação dos argumentos, tentativas com backoff exponencial e timeout por chamada. A API roda numa thread daemon para que o cliente possa abandonar a espera quando o prazo expira.
+
+Não alterei `loja_api.py`.

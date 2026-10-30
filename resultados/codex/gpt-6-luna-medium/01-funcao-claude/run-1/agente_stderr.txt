@@ -1,33 +1,22 @@
 Reading additional input from stdin...
 OpenAI Codex v0.163.0
 --------
-workdir: /tmp/bench-ykymv3ut
+workdir: /tmp/bench-va6k7wmp
 model: gpt-6-luna
 provider: openai
 approval: never
 sandbox: danger-full-access
 reasoning effort: medium
 reasoning summaries: none
-session id: 01a1890e-3bc8-7523-84cd-555eaefd28e9
+session id: 01a189b3-f3f3-7bd1-a0aa-e328b51fd2f3
 --------
 user
 Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
-2026-10-29T19:06:15.623420Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+2026-10-29T22:07:16.556381Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
 codex
-Vou ler o enunciado e os arquivos do diretório para identificar o que precisa ser implementado; depois faço as alterações aqui e reviso o resultado.
+Vou ler o enunciado e os arquivos existentes neste diretório, depois implemento a solução aqui.
 exec
-/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' && ls -la" in /tmp/bench-ykymv3ut
- succeeded in 0ms:
-/tmp/bench-ykymv3ut
-enunciado.md
-total 8
-drwx------ 2 box box 4096 Oct 29 16:06 .
-drwxr-xr-x 3 box box   60 Oct 29 16:06 ..
--rw-r--r-- 1 box box    0 Oct 29 16:06 .gitkeep
--rw-r--r-- 1 box box 1597 Oct 29 16:06 enunciado.md
-
-exec
-/bin/bash -lc 'cat enunciado.md' in /tmp/bench-ykymv3ut
+/bin/bash -lc "cat enunciado.md && rg --files -g '"'!node_modules'"' -g '"'!dist'"' | head -200" in /tmp/bench-va6k7wmp
  succeeded in 0ms:
 # Tarefa: converter texto de duração em segundos
 
@@ -42,22 +31,30 @@ A função recebe uma duração escrita por humanos e retorna o total em **segun
 
 ## Formato aceito
 
-- A duração é formada por 1 a 4 componentes `<inteiro><unidade>`, onde o inteiro é composto
-  só por dígitos `0-9` (zeros à esquerda são permitidos) e a unidade é uma de:
-  - `d` = dias (86400 s), `h` = horas (3600 s), `m` = minutos (60 s), `s` = segundos (1 s).
-- Unidades aceitas em maiúsculas ou minúsculas (`1H30M` == `1h30m`).
-- Os componentes devem aparecer na ordem `d`, `h`, `m`, `s`, cada unidade **no máximo uma vez**
+- A duração é formada por 1 a 5 componentes `<inteiro><unidade>`, onde o inteiro é composto
+  só por dígitos ASCII `0-9` (zeros à esquerda são permitidos) e a unidade é uma de:
+  - `w` = semanas (604800 s), `d` = dias (86400 s), `h` = horas (3600 s), `m` = minutos (60 s),
+    `s` = segundos (1 s).
+- Unidades aceitas em maiúsculas ou minúsculas (`1H30M` == `1h30m`); nenhum outro caractere é unidade.
+- Os componentes devem aparecer na ordem `w`, `d`, `h`, `m`, `s`, cada unidade **no máximo uma vez**
   (componentes podem ser omitidos: `1d5s` é válido).
-- Componentes podem estar colados (`1h30m`) ou separados por espaços em branco (`1h 30m`).
+- Componentes podem estar colados (`1h30m`) ou separados por espaços em branco (`1h 30m`, `1h\t30m`).
   Espaços em branco no início/fim são ignorados. **Não** pode haver espaço entre o número e sua unidade (`1 h` é inválido).
-- Não há limite por componente: `90m` == 5400.
+- Não há limite por componente: `90m` == 5400. O inteiro pode ter **qualquer quantidade de dígitos**
+  (inclusive milhares de dígitos) e o resultado deve ser exato.
 
 ## Erros
 
-- `TypeError` se `texto` não for `str`.
+- `TypeError` se `texto` não for `str` (subclasses de `str` são aceitas).
 - `ValueError` para qualquer entrada fora do formato: string vazia/só espaços, número sem unidade
   (`"90"`), unidade desconhecida (`"5x"`), números negativos ou decimais (`"-5s"`, `"1.5h"`),
   ordem errada (`"30m1h"`), unidade repetida (`"1h2h"`) ou texto extra.
+
+## Desempenho
+
+O tempo deve crescer linearmente com o tamanho da entrada: textos de até ~1 MB compostos basicamente
+por espaços em branco (válidos ou inválidos, ex.: `"1d" + " " * 500_000 + "x"`) devem ser processados
+em bem menos de 1 segundo.
 
 ## Exemplos
 
@@ -66,86 +63,213 @@ A função recebe uma duração escrita por humanos e retorna o total em **segun
 | `"45s"` | `45` |
 | `"1h30m"` | `5400` |
 | `"2d 3h 4m 5s"` | `183845` |
+| `"1w 1s"` | `604801` |
 | `"  0s  "` | `0` |
 | `"1D1S"` | `86401` |
 
 Use apenas a biblioteca padrão (Python 3.11).
+enunciado.md
 
-codex
-O formato pode ser validado com uma expressão regular estrita e, em seguida, pela ordem das unidades. Vou criar `solucao.py` com essas duas verificações e os tipos de erro pedidos.
 exec
 /bin/bash -lc "cat > solucao.py <<'PY'
-import re
+\"\"\"Parser for human-readable durations, returning an exact number of seconds.\"\"\"
 
 
-_COMPONENTES = re.compile(r\"\\s*[0-9]+[dDhHmMsS](?:\\s*[0-9]+[dDhHmMsS]){0,3}\\s*\")
-_UNIDADES = {\"d\": 86_400, \"h\": 3_600, \"m\": 60, \"s\": 1}
-_ORDEM = {\"d\": 0, \"h\": 1, \"m\": 2, \"s\": 3}
-
-
-def parse_duracao(texto: str) -> int:
-    \"\"\"Converte uma duração textual para o total de segundos.\"\"\"
-    if not isinstance(texto, str):
-        raise TypeError(\"texto deve ser uma string\")
-
-    if not _COMPONENTES.fullmatch(texto):
-        raise ValueError(\"formato de duração inválido\")
-
-    total = 0
-    ultima_ordem = -1
-    for numero, unidade in re.findall(r\"([0-9]+)([dDhHmMsS])\", texto):
-        unidade = unidade.lower()
-        ordem = _ORDEM[unidade]
-        if ordem <= ultima_ordem:
-            raise ValueError(\"unidades devem aparecer uma única vez e na ordem d, h, m, s\")
-        ultima_ordem = ordem
-        total += int(numero) * _UNIDADES[unidade]
-
-    return total
-PY
-python -m py_compile solucao.py" in /tmp/bench-ykymv3ut
- exited 127 in 0ms:
-/bin/bash: line 30: python: command not found
-
-exec
-/bin/bash -lc "command -v python3; sed -n '1,200p' solucao.py; ls -la" in /tmp/bench-ykymv3ut
- succeeded in 0ms:
-/usr/bin/python3
-import re
-
-
-_COMPONENTES = re.compile(r"\s*[0-9]+[dDhHmMsS](?:\s*[0-9]+[dDhHmMsS]){0,3}\s*")
-_UNIDADES = {"d": 86_400, "h": 3_600, "m": 60, "s": 1}
-_ORDEM = {"d": 0, "h": 1, "m": 2, "s": 3}
+_UNIDADES = {
+    \"w\": (0, 604800),
+    \"d\": (1, 86400),
+    \"h\": (2, 3600),
+    \"m\": (3, 60),
+    \"s\": (4, 1),
+}
 
 
 def parse_duracao(texto: str) -> int:
-    """Converte uma duração textual para o total de segundos."""
+    \"\"\"Parse 1–5 ordered duration components and return their total in seconds.
+
+    Components use ASCII digits followed by one of "'``w``, ``d``, ``h``, ``m``
+    or ``s`` (case-insensitive). Whitespace is allowed around/between
+    components, but never inside one.
+    """
     if not isinstance(texto, str):
         raise TypeError("texto deve ser uma string")
 
-    if not _COMPONENTES.fullmatch(texto):
-        raise ValueError("formato de duração inválido")
+    tamanho = len(texto)
+    pos = 0
+
+    # Skip leading whitespace without allocating a trimmed copy (which also
+    # keeps large whitespace-heavy inputs cheap).
+    while pos < tamanho and texto[pos].isspace():
+        pos += 1
+
+    if pos == tamanho:
+        raise ValueError("duração vazia")
 
     total = 0
-    ultima_ordem = -1
-    for numero, unidade in re.findall(r"([0-9]+)([dDhHmMsS])", texto):
-        unidade = unidade.lower()
-        ordem = _ORDEM[unidade]
-        if ordem <= ultima_ordem:
-            raise ValueError("unidades devem aparecer uma única vez e na ordem d, h, m, s")
-        ultima_ordem = ordem
-        total += int(numero) * _UNIDADES[unidade]
+    ultima_unidade = -1
+    componentes = 0
+
+    while pos < tamanho:
+        inicio_numero = pos
+        valor = 0
+        while pos < tamanho:
+            caractere = texto[pos]
+            if not ("0" <= caractere <= "9"):
+                break
+            valor = valor * 10 + (ord(caractere) - ord("0"))
+            pos += 1
+
+        if pos == inicio_numero:
+            raise ValueError("esperado um número ASCII")
+        if pos == tamanho:
+            raise ValueError("número sem unidade")
+
+        unidade = texto[pos].lower()
+        dados = _UNIDADES.get(unidade)
+        if dados is None:
+            raise ValueError("unidade inválida")
+        ordem, fator = dados
+        if ordem <= ultima_unidade:
+            raise ValueError("unidades fora de ordem ou repetidas")
+
+        total += valor * fator
+        ultima_unidade = ordem
+        componentes += 1
+        if componentes > 5:
+            raise ValueError("componentes demais")
+        pos += 1
+
+        # Whitespace separates complete components. Any non-whitespace next
+        # character starts the next number and is validated by the next pass.
+        while pos < tamanho and texto[pos].isspace():
+            pos += 1
 
     return total
-total 12
-drwx------ 2 box box 4096 Oct 29 16:06 .
-drwxr-xr-x 3 box box   60 Oct 29 16:06 ..
--rw-r--r-- 1 box box    0 Oct 29 16:06 .gitkeep
--rw-r--r-- 1 box box 1597 Oct 29 16:06 enunciado.md
--rw-r--r-- 1 box box  885 Oct 29 16:06 solucao.py
+PY
+python - <<'"'PY'
+from solucao import parse_duracao
+for s, expected in [('45s',45), ('1h30m',5400), ('2d 3h 4m 5s',183845), ('1w 1s',604801), ('  0s  ',0), ('1D1S',86401), ('90m',5400)]:
+    assert parse_duracao(s) == expected
+for s in ['', '   ', '90', '5x', '-5s', '1.5h', '30m1h', '1h2h', '1 h', '1sfoo', '1s2s']:
+    try: parse_duracao(s)
+    except ValueError: pass
+    else: raise AssertionError(s)
+assert parse_duracao('9' * 5000 + 's') == int('9' * 5000)
+print('ok')
+PY" in /tmp/bench-va6k7wmp
+ exited 127 in 0ms:
+/bin/bash: line 76: python: command not found
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+from solucao import parse_duracao
+for s, expected in [('45s',45), ('1h30m',5400), ('2d 3h 4m 5s',183845), ('1w 1s',604801), ('  0s  ',0), ('1D1S',86401), ('90m',5400)]:
+    assert parse_duracao(s) == expected
+for s in ['', '   ', '90', '5x', '-5s', '1.5h', '30m1h', '1h2h', '1 h', '1sfoo', '1s2s']:
+    try: parse_duracao(s)
+    except ValueError: pass
+    else: raise AssertionError(s)
+assert parse_duracao('9' * 5000 + 's') == int('9' * 5000)
+print('ok')
+PY" in /tmp/bench-va6k7wmp
+ exited 1 in 0ms:
+Traceback (most recent call last):
+  File "<stdin>", line 8, in <module>
+ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 5000 digits; use sys.set_int_max_str_digits() to increase the limit
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+from solucao import parse_duracao
+assert parse_duracao('9' * 5000 + 's').bit_length() > 16000
+assert parse_duracao('1d' + ' ' * 500_000 + 'x') if False else True
+try:
+    parse_duracao('1d' + ' ' * 500_000 + 'x')
+except ValueError:
+    pass
+else:
+    raise AssertionError
+print('ok')
+PY
+sed -n '1,200p' solucao.py" in /tmp/bench-va6k7wmp
+ succeeded in 0ms:
+ok
+"""Parser for human-readable durations, returning an exact number of seconds."""
+
+
+_UNIDADES = {
+    "w": (0, 604800),
+    "d": (1, 86400),
+    "h": (2, 3600),
+    "m": (3, 60),
+    "s": (4, 1),
+}
+
+
+def parse_duracao(texto: str) -> int:
+    """Parse 1–5 ordered duration components and return their total in seconds.
+
+    Components use ASCII digits followed by one of ``w``, ``d``, ``h``, ``m``
+    or ``s`` (case-insensitive). Whitespace is allowed around/between
+    components, but never inside one.
+    """
+    if not isinstance(texto, str):
+        raise TypeError("texto deve ser uma string")
+
+    tamanho = len(texto)
+    pos = 0
+
+    # Skip leading whitespace without allocating a trimmed copy (which also
+    # keeps large whitespace-heavy inputs cheap).
+    while pos < tamanho and texto[pos].isspace():
+        pos += 1
+
+    if pos == tamanho:
+        raise ValueError("duração vazia")
+
+    total = 0
+    ultima_unidade = -1
+    componentes = 0
+
+    while pos < tamanho:
+        inicio_numero = pos
+        valor = 0
+        while pos < tamanho:
+            caractere = texto[pos]
+            if not ("0" <= caractere <= "9"):
+                break
+            valor = valor * 10 + (ord(caractere) - ord("0"))
+            pos += 1
+
+        if pos == inicio_numero:
+            raise ValueError("esperado um número ASCII")
+        if pos == tamanho:
+            raise ValueError("número sem unidade")
+
+        unidade = texto[pos].lower()
+        dados = _UNIDADES.get(unidade)
+        if dados is None:
+            raise ValueError("unidade inválida")
+        ordem, fator = dados
+        if ordem <= ultima_unidade:
+            raise ValueError("unidades fora de ordem ou repetidas")
+
+        total += valor * fator
+        ultima_unidade = ordem
+        componentes += 1
+        if componentes > 5:
+            raise ValueError("componentes demais")
+        pos += 1
+
+        # Whitespace separates complete components. Any non-whitespace next
+        # character starts the next number and is validated by the next pass.
+        while pos < tamanho and texto[pos].isspace():
+            pos += 1
+
+    return total
 
 codex
-Criei [solucao.py](/tmp/bench-ykymv3ut/solucao.py) com `parse_duracao`, que valida o formato, a ordem e a unicidade das unidades, e retorna o total em segundos.
+Criei [solucao.py](/tmp/bench-va6k7wmp/solucao.py) com `parse_duracao`. Ela valida o formato e calcula o total exato em segundos, inclusive para números com milhares de dígitos.
+
+Verifiquei os exemplos, entradas inválidas, um número de 5.000 dígitos e uma entrada inválida com 500.000 espaços.
 tokens used
-8,668
+10,288

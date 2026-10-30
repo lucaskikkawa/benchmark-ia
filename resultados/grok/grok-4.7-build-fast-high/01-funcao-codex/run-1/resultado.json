@@ -6,11 +6,11 @@
   "run": 1,
   "status": "ok",
   "exit_code": 0,
-  "duracao_agente_s": 40.048,
-  "testes_total": 12,
-  "testes_passados": 12,
+  "duracao_agente_s": 133.912,
+  "testes_total": 25,
+  "testes_passados": 25,
   "pct_passados": 100.0,
-  "inicio_iso": "2026-10-29T16:06:37.103898-03:00",
+  "inicio_iso": "2026-10-29T19:50:00.662078-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-mah0gpjk",
-    "/tmp/bench-mah0gpjk",
+    "/tmp/bench-2jv7hk_g",
+    "/tmp/bench-2jv7hk_g",
     "--chdir",
-    "/tmp/bench-mah0gpjk",
+    "/tmp/bench-2jv7hk_g",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,6 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-mah0gpjk"
+    "/tmp/bench-2jv7hk_g"
   ]
 }

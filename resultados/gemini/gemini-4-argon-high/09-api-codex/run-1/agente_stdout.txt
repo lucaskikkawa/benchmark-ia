@@ -1,0 +1,5 @@
+A função [`buscar_com_retry`](file:///tmp/bench-mn7z4yo2/cliente.py#L8-L32) foi implementada em [cliente.py](file:///tmp/bench-mn7z4yo2/cliente.py), preservando [fake_api.py](file:///tmp/bench-mn7z4yo2/fake_api.py) intacto:
+
+- Valida `tentativas >= 1` (inteiro), `timeout > 0` (real finito) e `backoff >= 0` (real finito) antes de qualquer chamada à API ou a `dormir`, lançando `ValueError` quando fora das faixas.
+- Repete apenas em [`ErroTemporario`](file:///tmp/bench-mn7z4yo2/fake_api.py#L6-L7) e `TimeoutError` (incluindo subclasses), aguardando `backoff * 2**indice` via `dormir` entre tentativas sem dormir após sucesso ou na última tentativa.
+- Propaga imediatamente [`ErroPermanente`](file:///tmp/bench-mn7z4yo2/fake_api.py#L10-L11), demais exceções da API e qualquer exceção lançada por `dormir`.

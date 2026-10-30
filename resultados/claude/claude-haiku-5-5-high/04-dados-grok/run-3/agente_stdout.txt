@@ -1,0 +1,10 @@
+Criei `solucao.py` neste diretório com `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão. Não deixei nenhum CSV, JSON de exemplo ou arquivo de teste no diretório.
+
+Testei com arquivos temporários criados aqui dentro e apagados depois. Passaram: o exemplo do enunciado, o empate `a10` antes de `a2`, a ordenação por code point, CRLF, campos entre aspas, linhas em branco, strip, duração que cruza o ano, duração 0, estouro igual ao limite, piso da média, saída só com cabeçalho e acentos. Também passaram todos os casos de erro de CSV e SLA do enunciado e os dois `FileNotFoundError`. A única falha no primeiro teste foi um erro no meu script, que consertei e rodei de novo.
+
+Escolhas que tomei onde o enunciado não diz explicitamente:
+- Linha de dados com número de colunas diferente de 5 (e não vazia) → `ValueError`.
+- Prioridade inválida (ex.: `Alta`) → `ValueError`.
+- Erros de `csv` e de decodificação UTF-8 são convertidos em `ValueError`.
+- O CSV é lido antes do SLA, então se os dois estiverem ausentes, vale o erro do CSV.
+- O arquivo de saída é escrito com `newline=""`, para que o conteúdo seja exatamente `json.dumps(...) + "\n"` em qualquer sistema.

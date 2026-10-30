@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com arquivos locais.O enunciado pede um parser de duração. Vou ver o diretório e implementar `solucao.py`.

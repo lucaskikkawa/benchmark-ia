@@ -1,0 +1,16 @@
+Refatorei o `processador.py` e mantive a assinatura e o formato de retorno de `processar_pedidos`. Rodei um script rápido com quatro pedidos de exemplo e com os casos de erro. As validações levantaram `ValueError` como o enunciado pede. Os valores calculados parecem corretos, mas não os comparei lado a lado com o código antigo, e não há testes automatizados na pasta.
+
+O arquivo agora define as cinco estruturas pedidas:
+
+- **`ItemPedido`**: rejeita preço ou peso negativos, quantidade menor que 1 e valores não numéricos. `subtotal` e `peso_total` são arredondados item a item.
+- **`CalculadoraFrete.calcular`**: o frete é grátis a partir de 200,00. Abaixo disso, usa uma tabela por tipo de frete, sem diferenciar maiúsculas de minúsculas. Tipo desconhecido gera `Tipo de frete desconhecido: {tipo}`.
+- **`CalculadoraDesconto.calcular`**: aplica as regras de bronze, prata, ouro e vip. Qualquer outra categoria recebe desconto 0,0.
+- **`Pedido`**: soma os subtotais e pesos já arredondados de cada item, repassa os cálculos de desconto e frete às calculadoras e monta o resultado em `para_dict()`.
+- **`processar_pedidos`**: converte os dicionários recebidos nessas classes e mantém a ordem dos pedidos. Sem a lista `itens`, ou com ela vazia, o pedido sai com subtotal 0,0, desconto 0,0 e o frete para peso 0.
+
+Decisões que tomei onde o enunciado deixa margem:
+
+- **Diferença em relação ao código antigo**: agora o arredondamento é feito em cada item antes de somar, como o enunciado manda. Em alguns casos de arredondamento o resultado difere do antigo, que arredondava só a soma final. No exemplo com preço 10,005 × 3, o subtotal deu 30,02.
+- **Mensagem de erro do frete**: ela mostra o tipo exatamente como foi passado ("Foo"). O código antigo mostrava em minúsculas.
+- **Campos com `None`**: campos opcionais com valor `None` também recebem o padrão da classe, igual aos campos ausentes.
+- **Frete grátis antes do tipo**: com valor a partir de 200,00, o frete é 0,0 mesmo que o tipo seja desconhecido, porque essa regra é checada primeiro. O código antigo fazia igual.

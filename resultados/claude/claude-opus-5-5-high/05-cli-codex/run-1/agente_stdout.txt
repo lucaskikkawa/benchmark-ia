@@ -1,0 +1,16 @@
+Criei o `cli.py` e ele atende ao enunciado. Testei com um arquivo pequeno, cobrindo caminhos de sucesso e de erro; não testei a escala de 100.000 tokens.
+
+**O que faz:**
+- Recebe `ARQUIVO` e as flags `--minimo N` (padrão 1), `--top N`, `--ignorar-caixa` e `--json`, além de `-h/--help`. Lê o arquivo como UTF-8 e separa as palavras com `str.split()`.
+- Ordena por contagem decrescente e depois pela palavra. Aplica `--minimo` antes de cortar com `--top`, nos dois formatos.
+- Na saída padrão, escreve uma linha `PALAVRA\tCONTAGEM` por resultado. No JSON, escreve uma única linha com `ensure_ascii=False`, para os acentos saírem sem escape. Sem resultados, a saída padrão fica vazia e o JSON é `[]` com quebra de linha.
+
+**Erros:** arquivo ausente, diretório, UTF-8 inválido, falta do arquivo, flag desconhecida e `--minimo`/`--top` com valor não inteiro ou ≤ 0 terminam com código 2. Nesses casos o stdout fica vazio, sai uma mensagem no stderr e não há traceback. O `-h` termina com código 0.
+
+**`main(argv=None)`:** se o argparse tenta encerrar o programa (ajuda ou argumento inválido), o `main` intercepta e devolve o código em vez de sair. Assim dá para chamá-lo várias vezes, e cada chamada cria seu próprio parser e contador. Importar `cli` não executa nada.
+
+**Casos testados:** espaço não separável e form feed separam palavras. Espaço de largura zero e pontuação ficam dentro da palavra. Formas de caixa diferentes só se juntam com `--ignorar-caixa`.
+
+Escolhas que tomei por conta própria:
+- O `int()` do Python aceita formas como `" 3"`, `+3` e `1_0`, então `--minimo` e `--top` também aceitam.
+- Quando roda como script, a saída é forçada para UTF-8, para os acentos não falharem num terminal com outra codificação.

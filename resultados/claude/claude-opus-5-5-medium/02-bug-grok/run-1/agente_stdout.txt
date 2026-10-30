@@ -1,0 +1,15 @@
+Corrigi `boletim.py` para seguir o contrato do enunciado. Rodei todos os exemplos do enunciado e eles dão o resultado esperado. Também confirmei que a lista recebida não é alterada.
+
+O que mudou em relação à versão anterior:
+
+- **Lista recebida:** não é mais alterada. Antes era invertida com `reverse()` e o descarte também mexia nela.
+- **Entrada inválida:** lista vazia ou com mais de 4 provas agora gera `ValueError`, em vez de devolver média 0. Também dá `ValueError` quando só há ausências.
+- **Ausências:** `None` é ignorado, em vez de contar como zero.
+- **Notas de fronteira:** 10 passa a ser uma nota válida. NaN e infinito agora geram `ValueError`.
+- **Descarte:** só acontece quando há exatamente 4 notas válidas, e remove apenas a primeira ocorrência da menor.
+- **Arredondamento:** a soma é feita com `Decimal(str(nota))`, dividida por `n` e arredondada uma única vez com `ROUND_HALF_UP`. Antes o valor era truncado.
+- **Conceitos:** os limites agora são inclusivos (`>= 9`, `>= 7`, `>= 5`) e calculados sobre a média já arredondada.
+
+Testei também alguns erros que não estão nos exemplos: NaN, nota 11, um inteiro enorme, string no lugar da lista e string dentro da lista. Todos geram o erro certo.
+
+Um ponto que o enunciado não define: se uma mesma lista tiver erro de tipo e erro de valor, vence o primeiro erro encontrado, na ordem dos itens. O tamanho da lista é verificado antes das notas.

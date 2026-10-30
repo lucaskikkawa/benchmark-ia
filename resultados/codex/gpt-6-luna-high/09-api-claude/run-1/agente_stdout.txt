@@ -1,0 +1,3 @@
+Implementei o cliente em [cliente.py](/tmp/bench-g970z0t5/cliente.py), com validação de IDs, retries, backoff, `Retry-After`, orçamento de espera e tratamento de erros HTTP. `obter_varios` valida todos os IDs antes de fazer requisições e ignora duplicatas.
+
+Não executei testes.

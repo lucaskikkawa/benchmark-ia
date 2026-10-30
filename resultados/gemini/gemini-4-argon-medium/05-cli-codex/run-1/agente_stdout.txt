@@ -1,0 +1,4 @@
+O arquivo [cli.py](file:///tmp/bench-eiguvpho/cli.py) foi implementado conforme especificado em [enunciado.md](file:///tmp/bench-eiguvpho/enunciado.md):
+
+- [`build_parser`](file:///tmp/bench-eiguvpho/cli.py#L24-L59) e [`_positive_int`](file:///tmp/bench-eiguvpho/cli.py#L8-L21): configuram o `argparse.ArgumentParser` aceitando `ARQUIVO`, `--minimo N`, `--top N`, `--ignorar-caixa`, `--json` e `-h`/`--help`, validando inteiros positivos e rejeitando flags desconhecidas com código `2`.
+- [`main`](file:///tmp/bench-eiguvpho/cli.py#L62-L106): lê o arquivo em UTF-8 estrito, separa tokens via `str.split()`, aplica `str.casefold()` quando `--ignorar-caixa` está ativo, filtra por `--minimo`, ordena por `(-contagem, palavra)`, limita por `--top` e formata a saída em texto tabulado ou JSON (`ensure_ascii=False`) em linha única.

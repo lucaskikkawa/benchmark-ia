@@ -1,0 +1,11 @@
+A tarefa foi concluída com sucesso com a criação dos dois arquivos no diretório:
+
+1. [`solucao.py`](file:///tmp/bench-jcjzy1g7/solucao.py):
+   - Implementa a função pura [`classificar_mensagem(texto: str) -> dict`](file:///tmp/bench-jcjzy1g7/solucao.py#L42-L105) utilizando apenas a biblioteca padrão.
+   - Valida o tipo de entrada levantando `TypeError` caso `texto` não seja instância de `str`.
+   - Calcula `tamanho` como `len(texto)` (em code points, sem normalização nem `strip`, suportando caracteres especiais e surrogates como `\ud800`).
+   - Avalia `urgente` estritamente pela presença da substring `"URGENTE"` (case-sensitive).
+   - Devolve `categoria == "vazia"` exclusivamente quando `texto == ""`. Para qualquer outro texto, devolve uma categoria válida diferente de `"vazia"`.
+
+2. [`SUPOSICOES.md`](file:///tmp/bench-jcjzy1g7/SUPOSICOES.md):
+   - Documenta em UTF-8 todas as definições adotadas para os pontos abertos (categorias adicionais, termos disparadores, desempate por prioridade, tratamento insensível a maiúsculas/acentos para categorias, tratamento de textos sem palavras e especificação dos campos do dicionário).

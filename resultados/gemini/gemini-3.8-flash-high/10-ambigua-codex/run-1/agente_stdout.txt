@@ -1,0 +1,4 @@
+A tarefa foi concluída com sucesso. Os seguintes arquivos foram criados no diretório de trabalho:
+
+- [organizador.py](file:///tmp/bench-q7lbvspn/organizador.py): Implementa a função [`organizar_tarefas`](file:///tmp/bench-q7lbvspn/organizador.py#L4-L34), responsável por filtrar tarefas com `concluida == False`, ordená-las de forma decrescente por `prioridade` e gerar cópias rasas independentes de cada entrada válida sem mutar os dados originais.
+- [SUPOSICOES.md](file:///tmp/bench-q7lbvspn/SUPOSICOES.md): Documenta as políticas adotadas para desempate de prioridades (preservação da ordem de inserção original via estabilidade do Timsort) e para tratamento de entradas fora do domínio (campos ausentes, tipos incorretos ou valores fora da faixa são descartados silenciosamente).

@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-7_szg5vp/solucao.py) com `resumir_vendas`: ela valida e agrega as linhas, retorna o resumo e grava o JSON em UTF-8, aceitando CSV com BOM e criando os diretórios de saída necessários. A saída só é substituída depois que a leitura e o processamento terminam.

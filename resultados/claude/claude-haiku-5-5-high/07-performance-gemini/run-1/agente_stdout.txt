@@ -1,0 +1,11 @@
+Implementei `maior_subarray_soma` em `/tmp/bench-77dz6lc8/otimizador.py`. Os quatro exemplos do enunciado passam, e a função também bate com uma força bruta em 3.000 casos aleatórios.
+
+**Como funciona:** percorre a lista uma vez acumulando somas de prefixo e guarda, para cada soma, o menor índice em que ela apareceu. Para cada posição `j`, procura a soma `prefixo[j] - alvo` e calcula o comprimento `j - k`. Isso é O(N) em tempo e espaço.
+
+**Validação de tipos:**
+- `numeros` precisa ser uma instância de `list`, senão levanta `TypeError`.
+- `alvo` e cada elemento de `numeros` são checados com `type(x) is int`, o que rejeita `bool`, `float` e tuplas.
+
+**Desempenho:** com 350.000 elementos aleatórios, a chamada levou cerca de 0,15 s, bem abaixo do limite de 5 s.
+
+Não criei arquivo de testes; a verificação foi feita por um script executado inline e não ficou salvo no diretório.

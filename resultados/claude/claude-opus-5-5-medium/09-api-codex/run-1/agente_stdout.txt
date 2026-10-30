@@ -1,0 +1,17 @@
+I criei o `cliente.py` com `buscar_com_retry` e não mexi no `fake_api.py`. Testei com alguns scripts rápidos usando o `FakeAPI` e uma API falsa simples, e tudo deu o resultado esperado. Não há arquivo de testes salvo na pasta.
+
+Como funciona:
+- **Validação primeiro:** os três parâmetros numéricos são conferidos antes de qualquer chamada à API ou espera, mesmo que a primeira tentativa fosse dar certo. `tentativas` menor que 1, `timeout` menor ou igual a 0, `backoff` negativo, NaN ou infinito geram `ValueError`.
+- **Retry só para falhas transitórias:** apenas `ErroTemporario`, `TimeoutError` e suas subclasses levam a nova tentativa. Na última falha, a exceção original é propagada. `ErroPermanente` e qualquer outra exceção propagam na hora.
+- **Espera entre tentativas:** após a falha da tentativa `i`, chama `dormir(backoff * 2**i)`, inclusive quando o valor é 0. Não dorme depois de sucesso nem depois da última falha.
+- **Erro em `dormir`:** a chamada a `dormir` fica fora do bloco que trata as exceções. Por isso, um erro lançado por ela propaga sem ser tomado como falha da API, mesmo que seja `TimeoutError` ou `ErroTemporario`.
+- **Chamadas à API:** toda tentativa recebe a mesma chave e o mesmo timeout, e o objeto retornado volta sem alteração. Nada é guardado entre uma chamada e outra.
+
+O que verifiquei:
+- Chaves `'a'`, `''` e `'ç'` retornaram os dados certos, inclusive o dict vazio, com esperas de `[0.1, 0.2]` quando houve duas falhas.
+- Chave ausente propagou `ErroPermanente`.
+- Com 40 tentativas sempre falhando, a API foi chamada 40 vezes, houve 39 esperas e a exceção final foi a da última tentativa.
+- Um `ErroTemporario` lançado por `dormir` propagou depois de uma única chamada à API.
+- Os cinco casos inválidos testados geraram `ValueError`.
+
+Uma decisão minha: `tentativas=True` é recusado com `ValueError`, embora em Python `True` conte como o inteiro 1. O enunciado deixa outros tipos fora do escopo, então isso não deve afetar a avaliação.

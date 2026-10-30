@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede o pacote `eventhub` em quatro arquivos. Vou ver o diretório e implementar a especificação.O pacote `eventhub` está implementado nos quatro arquivos pedidos.
+
+- `eventhub/models.py` define `Priority` (`LOW`, `NORMAL`, `HIGH`) e o dataclass `Event`.
+- `eventhub/handlers.py` define `EventHandler` e `DeadLetterQueue`.
+- `eventhub/bus.py` define `EventBus`: inscrição sem duplicata, publicação com histórico, despacho por prioridade (`HIGH` > `NORMAL` > `LOW`) e, na mesma prioridade, por `timestamp` e ordem de chegada. Falha de handler vai para a DLQ quando ela existe; sem DLQ, a exceção sobe. Eventos publicados durante o tratamento entram na fila dos despachos seguintes.
+- `eventhub/__init__.py` exporta `Event`, `Priority`, `EventHandler`, `DeadLetterQueue` e `EventBus`.

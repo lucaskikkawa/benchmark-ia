@@ -1,0 +1,4 @@
+Vou ler o enunciado e ver o que já existe neste diretório para resolver a tarefa aqui.Vou criar o pacote `biblioteca` com os quatro módulos e a API pública descrita no enunciado.A busca por autor está na ordem certa. Vou rodar o restante dos casos para confirmar empréstimos, multas e renovações.O pacote `biblioteca/` está pronto, com a API pública e as regras de acervo e empréstimo do enunciado.
+
+- `Livro` rejeita tipo inválido e texto vazio. A busca por autor usa `casefold()` e ordena por título e ISBN.
+- `ServicoEmprestimos` empresta, devolve (com multa a 2 casas), renova e lista atrasos sobre o mesmo `Acervo`, na ordem de verificação pedida.

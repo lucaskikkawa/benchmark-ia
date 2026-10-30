@@ -1,0 +1,13 @@
+Refatorei `processador.py` na raiz do diretório, com as classes e regras do enunciado. Não é um repositório git, então não fiz commit.
+
+**O que foi feito**
+- `ItemPedido` (dataclass com validações e propriedades `subtotal` e `peso_total`), `CalculadoraFrete` e `CalculadoraDesconto` (métodos estáticos `calcular`), `Pedido` (dataclass com os métodos de cálculo e `para_dict`) e `processar_pedidos`, que mantém a assinatura e a ordem dos pedidos.
+- O peso total agora é arredondado por item (3 casas) antes de somar, conforme o enunciado. No código legado o peso era somado sem arredondamento.
+
+**Verificação**
+Rodei o módulo com `python3 -I` em casos variados: VIP com frete expresso, ouro sem itens, prata abaixo do mínimo, frete grátis com tipo desconhecido, e cada validação de `ValueError`. Todos os resultados e erros bateram com o esperado. Depois corrigi um detalhe: pedido sem itens retornava `subtotal` como `0` inteiro, e agora sai como `0.0`.
+
+**Escolhas que tomei**
+- `ItemPedido.nome` é obrigatório na classe, mas o código legado nunca lia `nome`. Na conversão de dicionário usei `it.get("nome", "")` para não quebrar entradas antigas sem esse campo.
+- Valores de `categoria_cliente` e `tipo_frete` são convertidos para texto antes de comparar, para manter a comparação sem diferença de maiúsculas.
+- Quantidade `0` ou preço/peso negativo agora levantam `ValueError`, como o enunciado pede. No legado, quantidade `0` era aceita silenciosamente.

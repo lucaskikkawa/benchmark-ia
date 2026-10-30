@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="23" time="0.065" timestamp="2026-10-30T01:11:23.266244-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_duracao" name="test_componentes_validos" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_unidade_semana" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_retorna_int" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_zero" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_espacos_nas_bordas_e_entre_componentes" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_maiusculas" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_sem_limite_por_componente_e_zeros_a_esquerda" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_milhares_de_digitos_resultado_exato" time="0.001"><failure message="ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 10000 digits; use sys.set_int_max_str_digits() to increase the limit">def test_milhares_de_digitos_resultado_exato():
+&gt;       assert parse_duracao("9" * 10_000 + "s") == 10**10_000 - 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_duracao.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+texto = '999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999...999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999s'
+
+    def parse_duracao(texto: str) -&gt; int:
+        """Converte uma duração humana no total em segundos.
+    
+        Aceita de 1 a 5 componentes ``&lt;inteiro&gt;&lt;unidade&gt;`` (``w``, ``d``, ``h``,
+        ``m``, ``s``), colados ou separados por espaços em branco, nessa ordem.
+        """
+        if not isinstance(texto, str):
+            raise TypeError("texto deve ser str")
+    
+        # str.split descarta espaços em branco Unicode nas pontas e entre
+        # componentes em tempo linear, sem copiar os trechos só de espaço.
+        partes = str.split(texto)
+        if not partes:
+            raise ValueError("formato de duração inválido")
+    
+        total = 0
+        ultima_ordem = -1
+    
+        for parte in partes:
+            i = 0
+            n = len(parte)
+            while i &lt; n:
+                if not ("0" &lt;= parte[i] &lt;= "9"):
+                    raise ValueError("formato de duração inválido")
+                j = i + 1
+                while j &lt; n and "0" &lt;= parte[j] &lt;= "9":
+                    j += 1
+                if j &gt;= n:
+                    raise ValueError("formato de duração inválido")
+                info = _UNIDADES.get(parte[j].lower())
+                if info is None:
+                    raise ValueError("formato de duração inválido")
+                ordem, fator = info
+                if ordem &lt;= ultima_ordem:
+                    raise ValueError("formato de duração inválido")
+                ultima_ordem = ordem
+&gt;               total += int(parte[i:j]) * fator
+                         ^^^^^^^^^^^^^^^
+E               ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 10000 digits; use sys.set_int_max_str_digits() to increase the limit
+
+solucao.py:49: ValueError</failure></testcase><testcase classname="testes_ocultos.test_duracao" name="test_milhares_de_zeros_a_esquerda" time="0.000"><failure message="ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 6001 digits; use sys.set_int_max_str_digits() to increase the limit">def test_milhares_de_zeros_a_esquerda():
+&gt;       assert parse_duracao("0" * 6_000 + "7s") == 7
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_duracao.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+texto = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000...000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007s'
+
+    def parse_duracao(texto: str) -&gt; int:
+        """Converte uma duração humana no total em segundos.
+    
+        Aceita de 1 a 5 componentes ``&lt;inteiro&gt;&lt;unidade&gt;`` (``w``, ``d``, ``h``,
+        ``m``, ``s``), colados ou separados por espaços em branco, nessa ordem.
+        """
+        if not isinstance(texto, str):
+            raise TypeError("texto deve ser str")
+    
+        # str.split descarta espaços em branco Unicode nas pontas e entre
+        # componentes em tempo linear, sem copiar os trechos só de espaço.
+        partes = str.split(texto)
+        if not partes:
+            raise ValueError("formato de duração inválido")
+    
+        total = 0
+        ultima_ordem = -1
+    
+        for parte in partes:
+            i = 0
+            n = len(parte)
+            while i &lt; n:
+                if not ("0" &lt;= parte[i] &lt;= "9"):
+                    raise ValueError("formato de duração inválido")
+                j = i + 1
+                while j &lt; n and "0" &lt;= parte[j] &lt;= "9":
+                    j += 1
+                if j &gt;= n:
+                    raise ValueError("formato de duração inválido")
+                info = _UNIDADES.get(parte[j].lower())
+                if info is None:
+                    raise ValueError("formato de duração inválido")
+                ordem, fator = info
+                if ordem &lt;= ultima_ordem:
+                    raise ValueError("formato de duração inválido")
+                ultima_ordem = ordem
+&gt;               total += int(parte[i:j]) * fator
+                         ^^^^^^^^^^^^^^^
+E               ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 6001 digits; use sys.set_int_max_str_digits() to increase the limit
+
+solucao.py:49: ValueError</failure></testcase><testcase classname="testes_ocultos.test_duracao" name="test_vazio_e_invalido" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_formato_invalido" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_digitos_nao_ascii_sao_invalidos" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_unidades_unicode_parecidas_sao_invalidas[s_longo]" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_unidades_unicode_parecidas_sao_invalidas[kelvin]" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_unidades_unicode_parecidas_sao_invalidas[h_largura_total]" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_numeros_negativos_ou_decimais" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_ordem_errada" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_unidade_repetida" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_espaco_entre_numero_e_unidade" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_tipo_invalido" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_bool_e_tipo_invalido" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_subclasse_de_str_e_aceita" time="0.000" /><testcase classname="testes_ocultos.test_duracao" name="test_desempenho_linear_em_entradas_grandes" time="0.025" /></testsuite></testsuites>

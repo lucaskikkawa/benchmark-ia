@@ -1,0 +1,20 @@
+O pacote `eventhub` está implementado em `/tmp/bench-qy0oud92/eventhub/` com os quatro arquivos pedidos (`__init__.py`, `models.py`, `handlers.py`, `bus.py`). Um script de verificação com os cenários do enunciado passou (`OK`).
+
+O que foi verificado na execução:
+- **Prioridade e FIFO:** HIGH antes de NORMAL e LOW, e a ordem de publicação dentro de cada prioridade.
+- **Evento sem handler:** é consumido e `dispatch_next` retorna `True`.
+- **Inscrições:** não duplica inscrições idênticas, e `unsubscribe` remove o handler.
+- **Falhas com DLQ:** a exceção vai para a DLQ e os demais handlers continuam sendo executados.
+- **Falhas sem DLQ:** a exceção é propagada.
+- **Publicação dentro de handler:** o novo evento entra na fila e respeita a prioridade.
+- **Histórico:** `get_history` devolve cópia, e o filtro por tópico preserva a ordem.
+
+Escolhas de implementação que você pode querer ajustar:
+- **Fila:** usa um heap com chave `(-prioridade, timestamp, seq)`. O `seq` é um contador que desempata eventos com o mesmo `timestamp`, garantindo FIFO.
+- **ID:** `publish` gera o `id` com `uuid4`, pois o enunciado não especifica a origem.
+- **Falhas em vários handlers:** cada handler que falha gera uma entrada própria na DLQ, então um evento com dois handlers falhando aparece duas vezes.
+- **Sem DLQ:** a exceção é propagada imediatamente e os handlers restantes do mesmo evento não são executados.
+- **`retry_count`:** não é alterado pelo barramento, já que o enunciado não define retentativas.
+- **Versão do Python:** a anotação `EventHandler | Callable[...]` em `bus.py` exige Python 3.10 ou superior. Testei com Python 3.13.5.
+
+Não criei arquivos de teste no diretório. Removi os `__pycache__` gerados pela execução.

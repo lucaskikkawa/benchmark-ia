@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O enunciado pede um cliente com retry e backoff sobre o servidor simulado. Vou implementar `cliente_resiliente.py` e validar o comportamento.A classe `ClienteResiliente` e a exceção `ApiError` estão em `cliente_resiliente.py`.
+
+- `ApiError` guarda a mensagem e um `status_code` opcional (`None` por padrão).
+- O construtor rejeita `max_tentativas` que não seja inteiro `>= 1`, e rejeita `backoff_base`, `backoff_fator` ou `timeout` que não sejam números positivos (incluindo `bool`).
+- `get` e `post` delegam para `executar`. Respostas 2xx devolvem `data`. Erros 429, 5xx, de rede ou de timeout usam backoff `backoff_base * (backoff_fator ** (tentativa - 1))` até `max_tentativas`. No esgotamento, o `ApiError` leva o status HTTP ou `None`. Códigos como 3xx e 4xx (exceto 429) falham na hora, sem nova tentativa. A espera passa por `sleep_fn`.

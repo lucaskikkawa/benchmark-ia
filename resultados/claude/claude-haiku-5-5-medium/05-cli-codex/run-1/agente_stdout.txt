@@ -1,0 +1,12 @@
+Criei `cli.py` neste diretório, seguindo o enunciado. Testei manualmente com entradas válidas e de erro; não criei um arquivo de testes automatizados.
+
+O que o script faz:
+- **Contagem:** lê o arquivo como UTF-8 e conta tokens de `str.split()`. Com `--ignorar-caixa`, aplica `casefold()` em cada token depois de separar, para não depender de como o casefold trata espaços.
+- **Filtros e ordenação:** `--minimo` filtra antes de ordenar; ordena por contagem decrescente e depois pela palavra; `--top N` corta o resultado depois disso.
+- **Saída:** formato padrão com `PALAVRA\tCONTAGEM\n`. Com `--json`, uma linha com `ensure_ascii=False`, então `[]` quando não há resultados.
+- **Erros:** arquivo ausente ou ilegível, UTF-8 inválido, flag desconhecida, `--minimo`/`--top` não inteiro positivo: retorna 2, stdout vazio e mensagem no stderr, sem traceback.
+- **`main(argv=None)`:** o `argparse` é configurado para não encerrar o processo com `sys.exit`. `--help` retorna 0 e imprime a ajuda no stdout. O bloco `if __name__ == "__main__"` é o único ponto que chama `sys.exit`, então importar `cli` não produz saída.
+
+Testes feitos com `python3 -I`: contagem com acentos e separadores Unicode, `--json` com `--top`, `--minimo 0`, arquivo com bytes inválidos, arquivo inexistente, flag desconhecida, `--help`, resultado vazio em ambos os formatos e chamada de `main` por importação.
+
+Uma ressalva: o script escreve em `sys.stdout` sem forçar UTF-8. Em terminais que não aceitam UTF-8 (raro no Linux), a saída com acentos pode falhar.

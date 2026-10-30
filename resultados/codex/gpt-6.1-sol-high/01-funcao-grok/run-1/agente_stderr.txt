@@ -1,0 +1,325 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-zej6hd9l
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189e0-8947-7af1-bcef-8beff6b4bdc1
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:55:58.096213Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório, implementar a solução e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' -g '"'!package-lock.json'"' -g '"'!yarn.lock'"' -g '"'!pnpm-lock.yaml'"'" in /tmp/bench-zej6hd9l
+ succeeded in 0ms:
+/tmp/bench-zej6hd9l
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-zej6hd9l
+ succeeded in 0ms:
+# Tarefa: horários livres em uma janela
+
+Crie o arquivo `solucao.py` no diretório de trabalho com a função abaixo. Use apenas a biblioteca padrão do Python 3.11. Não crie outros arquivos.
+
+```python
+def horas_livres(
+    ocupados: list[tuple[str, str]],
+    inicio: str,
+    fim: str,
+) -> list[tuple[str, str]]:
+    """Intervalos livres dentro da janela [inicio, fim)."""
+```
+
+## Horários
+
+- Todo horário é uma string `HH:MM` com exatamente 5 caracteres, horas e minutos com dois dígitos ASCII (`0123456789`). O separador é o caractere `:` (U+003A).
+- Minutos vão de `00` a `59`.
+- Horas vão de `00` a `23`. O único valor extra aceito é `24:00` (fim do dia, equivalente a 1440 minutos). Na saída, 1440 minutos é `"24:00"`, nunca `"00:00"`.
+- Qualquer outro texto é `ValueError`. Isso inclui `9:00`, `24:30`, `23:60`, `09-00`, `""`, `09:00:00`, `09:00 `, dígitos de largura cheia (`０９:００`), dois-pontos de largura cheia (`09：00`) e qualquer caractere que `str.isdigit` aceitaria mas não está em `0123456789`.
+- Se um horário não for `str`, levante `TypeError`.
+
+A janela e cada intervalo são semiabertos: o instante inicial entra e o final não entra. Na prática basta tratar os limites em minutos inteiros e devolver os trechos livres no mesmo formato.
+
+## Janela
+
+- `inicio` e `fim` formam a janela em que se busca disponibilidade.
+- Exija `inicio` estritamente anterior a `fim`. Caso contrário, `ValueError`.
+- `24:00` pode ser `fim`. Como início da janela ele nunca deixa a janela válida, então também é `ValueError`.
+
+## Ocupados
+
+- `ocupados` é exatamente uma `list`. `tuple`, `str`, gerador ou outro tipo: `TypeError`. Não itere uma string achando que cada caractere é um horário.
+- Cada item é um `tuple` ou `list` de exatamente duas strings `(ini, fim)`. Forma errada: `TypeError`.
+- Valide os dois horários e a ordem **antes** de ignorar ou recortar. Formato inválido ou `ini > fim` é erro mesmo que o intervalo caia fora da janela ou tenha duração zero (`("24:99", "24:99")` é `ValueError`, não é ignorado).
+- `ini == fim` com horários válidos (duração zero): ignore esse item.
+- Intervalos podem vir fora de ordem, sobrepostos, encostados, contidos uns nos outros, duplicados ou parcialmente fora da janela.
+- Recorte cada ocupado para a janela. O que ficar inteiramente fora some.
+- Una ocupados que se sobrepõem ou que se encostam (o fim de um é o início do outro), **depois do recorte**. Dois intervalos que só passam a se encostar dentro da janela também se unem. A união é transitiva.
+- Não altere a lista recebida nem as listas internas que representam pares.
+
+## Retorno
+
+Lista de pares `(ini, fim)` em `HH:MM`, ordenada, sem sobreposição e sem duração zero, cobrindo exatamente o que sobrou da janela. `1440` minutos vira `"24:00"`. Se não houver folga, devolva `[]`.
+
+## Exemplos
+
+```python
+horas_livres([], "09:00", "12:00")
+# [("09:00", "12:00")]
+
+horas_livres([("10:00", "11:00")], "09:00", "12:00")
+# [("09:00", "10:00"), ("11:00", "12:00")]
+
+horas_livres([("09:00", "10:00"), ("10:00", "11:00")], "09:00", "12:00")
+# [("11:00", "12:00")]
+
+horas_livres([("08:00", "09:30"), ("13:00", "15:00")], "09:00", "12:00")
+# [("09:30", "12:00")]
+
+horas_livres([("23:30", "24:00")], "23:00", "24:00")
+# [("23:00", "23:30")]
+
+horas_livres([("08:00", "11:00"), ("11:00", "13:00")], "10:00", "14:00")
+# [("13:00", "14:00")]  recorte encosta 11:00 com 11:00 e funde
+```
+
+apply patch
+patch: completed
+/tmp/bench-zej6hd9l/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d7ad0231eefaca9b255501dd45121714f1d95517
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,66 @@
++"""Cálculo de intervalos livres em uma janela de um único dia."""
++
++
++def _minutos(horario: str) -> int:
++    if not isinstance(horario, str):
++        raise TypeError("O horário deve ser uma string.")
++    if (
++        len(horario) != 5
++        or horario[2] != ":"
++        or any(c not in "0123456789" for c in horario[:2] + horario[3:])
++    ):
++        raise ValueError("Horário inválido: use HH:MM com dígitos ASCII.")
++
++    horas = int(horario[:2])
++    minutos = int(horario[3:])
++    if horas > 24 or minutos > 59 or (horas == 24 and minutos != 0):
++        raise ValueError("Horário fora dos limites do dia.")
++    return horas * 60 + minutos
++
++
++def _horario(minutos: int) -> str:
++    horas, resto = divmod(minutos, 60)
++    return f"{horas:02d}:{resto:02d}"
++
++
++def horas_livres(
++    ocupados: list[tuple[str, str]],
++    inicio: str,
++    fim: str,
++) -> list[tuple[str, str]]:
++    """Intervalos livres dentro da janela [inicio, fim)."""
++    if type(ocupados) is not list:
++        raise TypeError("ocupados deve ser exatamente uma list.")
++
++    inicio_janela = _minutos(inicio)
++    fim_janela = _minutos(fim)
++    if inicio_janela >= fim_janela:
++        raise ValueError("O início da janela deve ser anterior ao fim.")
++
++    recortados = []
++    for par in ocupados:
++        if not isinstance(par, (tuple, list)) or len(par) != 2:
++            raise TypeError("Cada intervalo deve ser um par em tuple ou list.")
++        inicio_ocupado = _minutos(par[0])
++        fim_ocupado = _minutos(par[1])
++        if inicio_ocupado > fim_ocupado:
++            raise ValueError("O início de um ocupado não pode ser posterior ao fim.")
++        if inicio_ocupado == fim_ocupado:
++            continue
++
++        inicio_recorte = max(inicio_janela, inicio_ocupado)
++        fim_recorte = min(fim_janela, fim_ocupado)
++        if inicio_recorte < fim_recorte:
++            recortados.append((inicio_recorte, fim_recorte))
++
++    recortados.sort()
++    livres = []
++    cursor = inicio_janela
++    # O cursor acumula a união dos ocupados sobrepostos ou encostados.
++    for inicio_ocupado, fim_ocupado in recortados:
++        if cursor < inicio_ocupado:
++            livres.append((_horario(cursor), _horario(inicio_ocupado)))
++        cursor = max(cursor, fim_ocupado)
++    if cursor < fim_janela:
++        livres.append((_horario(cursor), _horario(fim_janela)))
++    return livres
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+import copy
+import random
+from pathlib import Path
+
+namespace = {}
+exec(compile(Path('solucao.py').read_text(), 'solucao.py', 'exec'), namespace)
+f = namespace['horas_livres']
+examples = [
+    ([], '09:00', '12:00', [('09:00', '12:00')]),
+    ([('10:00', '11:00')], '09:00', '12:00', [('09:00', '10:00'), ('11:00', '12:00')]),
+    ([('09:00', '10:00'), ('10:00', '11:00')], '09:00', '12:00', [('11:00', '12:00')]),
+    ([('08:00', '09:30'), ('13:00', '15:00')], '09:00', '12:00', [('09:30', '12:00')]),
+    ([('23:30', '24:00')], '23:00', '24:00', [('23:00', '23:30')]),
+    ([('08:00', '11:00'), ('11:00', '13:00')], '10:00', '14:00', [('13:00', '14:00')]),
+    ([], '00:00', '24:00', [('00:00', '24:00')]),
+    ([('00:00', '24:00')], '00:00', '24:00', []),
+    ([('24:00', '24:00')], '00:00', '24:00', [('00:00', '24:00')]),
+]
+for busy, start, end, expected in examples:
+    assert f(busy, start, end) == expected
+
+def raises(kind, *args):
+    try:
+        f(*args)
+    except kind:
+        return
+    raise AssertionError((kind, args))
+
+for invalid in ['9:00', '24:30', '23:60', '09-00', '', '09:00:00', '09:00 ', '０９:００', '09：00', '²9:00', '25:00', '-1:00']:
+    raises(ValueError, [], invalid, '24:00')
+    raises(ValueError, [(invalid, invalid)], '09:00', '12:00')
+for invalid in [None, 900, b'09:00', [], True]:
+    raises(TypeError, [], invalid, '24:00')
+    raises(TypeError, [(invalid, '12:00')], '09:00', '12:00')
+for invalid in [(), '', iter([]), None, {}]:
+    raises(TypeError, invalid, '09:00', '12:00')
+class ListSubclass(list):
+    pass
+raises(TypeError, ListSubclass(), '09:00', '12:00')
+for invalid in ['09:00', (), ['09:00'], ['09:00', '10:00', '11:00'], {'a': 1}, None]:
+    raises(TypeError, [invalid], '09:00', '12:00')
+for start, end in [('12:00', '09:00'), ('09:00', '09:00'), ('24:00', '24:00')]:
+    raises(ValueError, [], start, end)
+raises(ValueError, [('08:00', '07:00')], '09:00', '12:00')
+raises(ValueError, [('00:00', '24:00'), ('24:99', '24:99')], '09:00', '12:00')
+
+def fmt(n):
+    return f'{n // 60:02d}:{n % 60:02d}'
+def minutes(s):
+    return int(s[:2]) * 60 + int(s[3:])
+rng = random.Random(1729)
+for _ in range(1000):
+    start, end = sorted(rng.sample(range(1441), 2))
+    busy = [list(map(fmt, sorted([rng.randrange(1441), rng.randrange(1441)]))) for _ in range(rng.randrange(25))]
+    original = copy.deepcopy(busy)
+    result = f(busy, fmt(start), fmt(end))
+    assert busy == original
+    expected = set(range(start, end))
+    for a, b in busy:
+        expected.difference_update(range(minutes(a), minutes(b)))
+    actual = set()
+    previous_end = -1
+    for a, b in result:
+        a, b = minutes(a), minutes(b)
+        assert start <= a < b <= end and previous_end < a
+        previous_end = b
+        actual.update(range(a, b))
+    assert actual == expected
+print('Verificação concluída: exemplos, validações e 1.000 casos aleatórios passaram.')
+PY" in /tmp/bench-zej6hd9l
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+import copy
+import random
+from pathlib import Path
+
+namespace = {}
+exec(compile(Path('solucao.py').read_text(), 'solucao.py', 'exec'), namespace)
+f = namespace['horas_livres']
+examples = [
+    ([], '09:00', '12:00', [('09:00', '12:00')]),
+    ([('10:00', '11:00')], '09:00', '12:00', [('09:00', '10:00'), ('11:00', '12:00')]),
+    ([('09:00', '10:00'), ('10:00', '11:00')], '09:00', '12:00', [('11:00', '12:00')]),
+    ([('08:00', '09:30'), ('13:00', '15:00')], '09:00', '12:00', [('09:30', '12:00')]),
+    ([('23:30', '24:00')], '23:00', '24:00', [('23:00', '23:30')]),
+    ([('08:00', '11:00'), ('11:00', '13:00')], '10:00', '14:00', [('13:00', '14:00')]),
+    ([], '00:00', '24:00', [('00:00', '24:00')]),
+    ([('00:00', '24:00')], '00:00', '24:00', []),
+    ([('24:00', '24:00')], '00:00', '24:00', [('00:00', '24:00')]),
+]
+for busy, start, end, expected in examples:
+    assert f(busy, start, end) == expected
+
+def raises(kind, *args):
+    try:
+        f(*args)
+    except kind:
+        return
+    raise AssertionError((kind, args))
+
+for invalid in ['9:00', '24:30', '23:60', '09-00', '', '09:00:00', '09:00 ', '０９:００', '09：00', '²9:00', '25:00', '-1:00']:
+    raises(ValueError, [], invalid, '24:00')
+    raises(ValueError, [(invalid, invalid)], '09:00', '12:00')
+for invalid in [None, 900, b'09:00', [], True]:
+    raises(TypeError, [], invalid, '24:00')
+    raises(TypeError, [(invalid, '12:00')], '09:00', '12:00')
+for invalid in [(), '', iter([]), None, {}]:
+    raises(TypeError, invalid, '09:00', '12:00')
+class ListSubclass(list):
+    pass
+raises(TypeError, ListSubclass(), '09:00', '12:00')
+for invalid in ['09:00', (), ['09:00'], ['09:00', '10:00', '11:00'], {'a': 1}, None]:
+    raises(TypeError, [invalid], '09:00', '12:00')
+for start, end in [('12:00', '09:00'), ('09:00', '09:00'), ('24:00', '24:00')]:
+    raises(ValueError, [], start, end)
+raises(ValueError, [('08:00', '07:00')], '09:00', '12:00')
+raises(ValueError, [('00:00', '24:00'), ('24:99', '24:99')], '09:00', '12:00')
+
+def fmt(n):
+    return f'{n // 60:02d}:{n % 60:02d}'
+def minutes(s):
+    return int(s[:2]) * 60 + int(s[3:])
+rng = random.Random(1729)
+for _ in range(1000):
+    start, end = sorted(rng.sample(range(1441), 2))
+    busy = [list(map(fmt, sorted([rng.randrange(1441), rng.randrange(1441)]))) for _ in range(rng.randrange(25))]
+    original = copy.deepcopy(busy)
+    result = f(busy, fmt(start), fmt(end))
+    assert busy == original
+    expected = set(range(start, end))
+    for a, b in busy:
+        expected.difference_update(range(minutes(a), minutes(b)))
+    actual = set()
+    previous_end = -1
+    for a, b in result:
+        a, b = minutes(a), minutes(b)
+        assert start <= a < b <= end and previous_end < a
+        previous_end = b
+        actual.update(range(a, b))
+    assert actual == expected
+print('Verificação concluída: exemplos, validações e 1.000 casos aleatórios passaram.')
+PY" in /tmp/bench-zej6hd9l
+ succeeded in 97ms:
+Verificação concluída: exemplos, validações e 1.000 casos aleatórios passaram.
+
+codex
+Criei [solucao.py](/tmp/bench-zej6hd9l/solucao.py) com a função `horas_livres`, conforme o enunciado.
+
+Verificação concluída: exemplos, validações de erros e 1.000 casos aleatórios passaram. Nenhum outro arquivo foi criado.
+tokens used
+14,052

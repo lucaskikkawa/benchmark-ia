@@ -1,0 +1,7 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui.O enunciado pede um CLI de frequência de palavras. Vou ver o diretório e implementar `freq.py`.A saída precisa ser UTF-8 mesmo com locale restrito. Vou gravar stdout e stderr como bytes UTF-8.Criei o script `freq.py`. Ele conta palavras de um arquivo UTF-8 e lista as mais frequentes.
+
+- Uma palavra é uma sequência de letras Unicode (`[^\W\d_]+`), extraída do texto original.
+- Com `-i`, cada palavra extraída passa por `str.lower()` antes do filtro e da contagem.
+- A ordenação é por contagem decrescente e, em empate, por ordem crescente da palavra.
+- A saída `texto` usa o formato `palavra<TAB>contagem`. A saída `json` é uma lista de objetos.
+- Argumentos inválidos terminam com o código 2 via `argparse`. Falha de leitura ou UTF-8 inválido termina com o código 1 e uma linha `erro: ` em stderr.

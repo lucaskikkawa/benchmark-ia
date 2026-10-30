@@ -1,0 +1,164 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-nscqy_r4
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189f3-fd27-7e33-9dee-47fd55cc8f23
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:17:12.864893Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório, implementar a solução e verificar o resultado.
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-nscqy_r4
+ succeeded in 0ms:
+/tmp/bench-nscqy_r4
+enunciado.md
+
+exec
+/bin/bash -lc "cat enunciado.md && rg --files -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-nscqy_r4
+ succeeded in 0ms:
+# Tarefa: contar pares que somam um alvo
+
+Crie `solucao.py` no diretório de trabalho com a função abaixo. Só a biblioteca padrão. Não crie outros arquivos.
+
+```python
+def pares_com_soma(nums: list[int], alvo: int) -> int:
+    """Quantidade de pares i < j com nums[i] + nums[j] == alvo."""
+```
+
+## Regras
+
+- Conte pares de **índices** `i < j`, não pares de valores únicos. `[1, 1, 1]` e alvo `2` valem `3`.
+- Quando `2 * x == alvo`, a resposta daquele valor é `C(freq, 2) = freq * (freq - 1) // 2`.
+- Números negativos e zero são válidos.
+- Lista vazia ou com um elemento devolve `0`.
+- Não altere `nums`.
+- `nums` tem de ser `list`. Cada elemento e `alvo` têm de ser `int`. `bool` não conta como `int` (`TypeError`). Outro tipo → `TypeError`.
+- A resposta cabe num `int` do Python (não use inteiro de largura fixa). Valores como `10**18` e negativos grandes são válidos. Não materialize a lista de pares: com dezenas de milhares de valores iguais a resposta passa de 10^9.
+- Há teste com `n = 200_000`. Um laço duplo não termina no limite de 3 segundos. Uma passagem com contagem de frequências (ou dois ponteiros depois de ordenar **uma cópia**) passa. A medição roda em subprocesso.
+
+## Exemplos
+
+```python
+pares_com_soma([], 0)            # 0
+pares_com_soma([5], 10)          # 0
+pares_com_soma([1, 2, 3], 4)     # 1  (1+3)
+pares_com_soma([1, 3, 1, 3], 4)  # 4
+pares_com_soma([2, 2, 2], 4)     # 3
+pares_com_soma([0, 0, 0, 0], 0)  # 6
+pares_com_soma([-2, 0, 2, -2], 0)  # 2
+pares_com_soma([5, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2], 7)  # 35
+pares_com_soma([10**18, -(10**18), 10**18], 0)  # 2
+```
+enunciado.md
+
+apply patch
+patch: completed
+/tmp/bench-nscqy_r4/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..b6f16db1c014d30f85691ccc459d5d1267705847
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,15 @@
++def pares_com_soma(nums: list[int], alvo: int) -> int:
++    """Conte pares de índices i < j cuja soma é alvo, sem alterar nums."""
++    if not isinstance(nums, list):
++        raise TypeError("nums deve ser uma lista")
++    if not isinstance(alvo, int) or isinstance(alvo, bool):
++        raise TypeError("alvo deve ser um int, exceto bool")
++
++    frequencias: dict[int, int] = {}
++    total = 0
++    for numero in nums:
++        if not isinstance(numero, int) or isinstance(numero, bool):
++            raise TypeError("cada elemento de nums deve ser um int, exceto bool")
++        total += frequencias.get(alvo - numero, 0)
++        frequencias[numero] = frequencias.get(numero, 0) + 1
++    return total
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+from solucao import pares_com_soma
+from itertools import product
+from time import perf_counter
+
+exemplos = [([], 0, 0), ([5], 10, 0), ([1, 2, 3], 4, 1), ([1, 3, 1, 3], 4, 4), ([2, 2, 2], 4, 3), ([0, 0, 0, 0], 0, 6), ([-2, 0, 2, -2], 0, 2), ([5] * 5 + [2] * 7, 7, 35), ([10**18, -10**18, 10**18], 0, 2)]
+for nums, alvo, esperado in exemplos:
+    original = nums.copy()
+    assert pares_com_soma(nums, alvo) == esperado
+    assert nums == original
+
+for n in range(6):
+    for valores in product(range(-2, 3), repeat=n):
+        nums = list(valores)
+        for alvo in range(-4, 5):
+            esperado = sum(nums[i] + nums[j] == alvo for i in range(n) for j in range(i + 1, n))
+            assert pares_com_soma(nums, alvo) == esperado
+
+invalidos = [((), 0), (None, 0), ('123', 0), ([1], True), ([], 0.0), ([], None), ([True], 2), ([False], 0), ([1.0], 2), (['1'], 2), ([None], 0), ([1, 2, False], 3)]
+for nums, alvo in invalidos:
+    try:
+        pares_com_soma(nums, alvo)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError((nums, alvo))
+
+inicio = perf_counter()
+assert pares_com_soma([0] * 200_000, 0) == 19_999_900_000
+assert pares_com_soma(list(range(200_000)), 199_999) == 100_000
+print(f'Testes passaram; dois casos de 200.000 elementos em {perf_counter() - inicio:.3f}s.')
+PY" in /tmp/bench-nscqy_r4
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from solucao import pares_com_soma
+from itertools import product
+from time import perf_counter
+
+exemplos = [([], 0, 0), ([5], 10, 0), ([1, 2, 3], 4, 1), ([1, 3, 1, 3], 4, 4), ([2, 2, 2], 4, 3), ([0, 0, 0, 0], 0, 6), ([-2, 0, 2, -2], 0, 2), ([5] * 5 + [2] * 7, 7, 35), ([10**18, -10**18, 10**18], 0, 2)]
+for nums, alvo, esperado in exemplos:
+    original = nums.copy()
+    assert pares_com_soma(nums, alvo) == esperado
+    assert nums == original
+
+for n in range(6):
+    for valores in product(range(-2, 3), repeat=n):
+        nums = list(valores)
+        for alvo in range(-4, 5):
+            esperado = sum(nums[i] + nums[j] == alvo for i in range(n) for j in range(i + 1, n))
+            assert pares_com_soma(nums, alvo) == esperado
+
+invalidos = [((), 0), (None, 0), ('123', 0), ([1], True), ([], 0.0), ([], None), ([True], 2), ([False], 0), ([1.0], 2), (['1'], 2), ([None], 0), ([1, 2, False], 3)]
+for nums, alvo in invalidos:
+    try:
+        pares_com_soma(nums, alvo)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError((nums, alvo))
+
+inicio = perf_counter()
+assert pares_com_soma([0] * 200_000, 0) == 19_999_900_000
+assert pares_com_soma(list(range(200_000)), 199_999) == 100_000
+print(f'Testes passaram; dois casos de 200.000 elementos em {perf_counter() - inicio:.3f}s.')
+PY" in /tmp/bench-nscqy_r4
+ succeeded in 0ms:
+Testes passaram; dois casos de 200.000 elementos em 0.056s.
+
+codex
+Criei [solucao.py](/tmp/bench-nscqy_r4/solucao.py) com contagem por frequências em O(n), validação de tipos e sem alterar a lista.
+
+Testes passaram, incluindo exemplos, entradas inválidas e casos com 200.000 elementos. Nenhum outro arquivo foi criado.
+tokens used
+9,149

@@ -1,0 +1,11 @@
+Criei `otimizador.py` com a função `maior_subarray_soma`, que resolve o problema em tempo e espaço O(N).
+
+**Como funciona:** a função vai somando os números da esquerda para a direita (soma acumulada) e guarda num dicionário o **primeiro** índice em que cada soma aparece. Ele começa com `{0: -1}` para contar subarrays que começam no índice 0. Em cada posição `i`, se a soma `soma - alvo` já apareceu no índice `j`, então o trecho `numeros[j+1..i]` soma exatamente `alvo`. O resultado é o maior `i - j` encontrado. Guardar só a primeira ocorrência de cada soma garante o maior comprimento possível.
+
+**Validação de tipos:** a função levanta `TypeError` se `numeros` não for `list`, se algum elemento não for exatamente `int` ou se `alvo` não for exatamente `int`. Valores `bool` são rejeitados nos dois casos.
+
+**Testes:**
+- Os 4 exemplos do enunciado retornam o resultado esperado.
+- Em 3.000 listas aleatórias pequenas, o resultado bateu com uma solução de força bruta.
+- Todos os casos de tipo inválido levantaram `TypeError`.
+- Com 350.000 elementos, a chamada levou cerca de 0,11 s, bem abaixo do limite de 5 s.

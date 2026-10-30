@@ -1,0 +1,3 @@
+Vou ler o enunciado e o conteúdo deste diretório para resolver a tarefa aqui mesmo.A especificação pede agrupar inteiros únicos e ordenados em intervalos, com validação estrita de tipos. Vou implementar isso em `solucao.py` e testar os exemplos.A função `resumir_intervalos` está em `solucao.py`.
+
+Ela exige uma lista cujos itens sejam exatamente `int` (rejeita `bool` e subclasses), não altera a lista recebida, remove duplicatas, ordena e junta consecutivos no formato `"inicio-fim"`, com os trechos separados por `", "`. Uma lista vazia devolve `""`. Os exemplos do enunciado, inclusive `"-3--1, 1-2"`, foram conferidos.

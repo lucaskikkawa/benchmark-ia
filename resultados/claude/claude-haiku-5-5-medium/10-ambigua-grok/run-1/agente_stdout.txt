@@ -1,0 +1,13 @@
+Criei os dois arquivos no diretório: `solucao.py` e `SUPOSICOES.md`.
+
+**`solucao.py`** implementa `classificar_mensagem(texto: str) -> dict`, só com a biblioteca padrão:
+- `tamanho` é `len(texto)`, sem normalização nem `strip`.
+- `urgente` é `"URGENTE" in texto`, sensível a maiúsculas e sem normalização.
+- `""` devolve `categoria == "vazia"`, `urgente False`, `tamanho 0`.
+- Texto sem nenhum caractere alfanumérico (espaços, `\n`, `\u00a0`, emoji, `\ud800`) devolve `"sem_palavras"`.
+- Qualquer outro tipo que não seja `str` levanta `TypeError`.
+- A categorização ignora caixa e acentos (casefold + NFKD), mas isso não afeta `urgente`.
+
+**`SUPOSICOES.md`** registra as decisões em aberto: as categorias (`reclamacao`, `pedido`, `duvida`, `elogio`, `outro`), as palavras-chave de cada uma, a prioridade quando mais de uma casa (reclamação > pedido > dúvida > elogio), a regra de caixa e acentos e o fato de o dict não ter campos extras.
+
+Testei os casos do enunciado (strings vazias, espaços, `ação`, `🙂`, `a\u0301`, `\ud800`, `URGENTE`/`urgente`/`URGEN`/`XURGENTEY`/` URGENTE`, lookalike cirílico, texto de 100k caracteres e tipos inválidos). Todos se comportam como especificado. Não rodei um conjunto de testes automáticos próprio, só essa verificação manual.

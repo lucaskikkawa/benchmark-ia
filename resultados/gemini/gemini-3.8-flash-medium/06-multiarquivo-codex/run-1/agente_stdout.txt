@@ -1,0 +1,6 @@
+A tarefa descrita em [enunciado.md](file:///tmp/bench-_28pz_wj/enunciado.md) foi resolvida completando os módulos do pacote `estoque/`:
+
+- [`estoque/modelos.py`](file:///tmp/bench-_28pz_wj/estoque/modelos.py): Implementação da dataclass `Movimento` imutável (`frozen=True`) com atributos `sku: str` e `delta: int`.
+- [`estoque/operacoes.py`](file:///tmp/bench-_28pz_wj/estoque/operacoes.py): Implementação da função `calcular_saldos(movimentos, iniciais=None)`, aplicando os movimentos na ordem sobre uma cópia dos saldos iniciais, validando saldos negativos (iniciais e intermediários), mantendo entradas com saldo zero e retornando sempre um novo dicionário.
+- [`estoque/persistencia.py`](file:///tmp/bench-_28pz_wj/estoque/persistencia.py): Implementação da função `carregar_movimentos(caminho)` lendo JSON UTF-8 (compatível com `str` e `Path`), validando o formato, rejeitando valores inválidos (como `bool` para delta ou SKU vazio/em branco), preservando strings originais de SKU e ignorando campos extras.
+- [`estoque/__init__.py`](file:///tmp/bench-_28pz_wj/estoque/__init__.py): Exportação das três APIs (`Movimento`, `calcular_saldos`, `carregar_movimentos`) com imports relativos.

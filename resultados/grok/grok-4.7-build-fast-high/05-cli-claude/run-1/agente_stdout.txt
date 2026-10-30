@@ -1,0 +1,7 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede um CLI de frequência de palavras. Vou criar `freq.py` e validar os casos de contagem, ordenação, formato e erros.`freq.py` está no diretório e roda como `python freq.py [opções] ARQUIVO`.
+
+Ele extrai letras Unicode com a regex `[^\W\d_]+`, aplica `str.lower()` só com `-i`, descarta palavras curtas e as de `-x`, e ordena por contagem decrescente e, em empate, pela palavra em ordem crescente. A saída `texto` é `palavra<TAB>contagem`. A saída `json` é uma lista de objetos. Argumentos inválidos saem com código 2 pelo `argparse`. Falha de leitura ou UTF-8 inválido sai com código 1 e uma linha `erro: ` em stderr.
+
+```bash
+python freq.py -i -n 2 t.txt
+```

@@ -1,0 +1,14 @@
+Criei `solucao.py` com a função `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão. Rodei alguns testes rápidos e todos deram o resultado esperado:
+- **Exemplo do enunciado:** a equipe `n1` ficou com 2 chamados, 1 estourado, média 45 e `pior_id` `a1`.
+- **Formato do CSV:** funcionou com `\r\n`, com a linha `,,,,` e linhas em branco ignoradas, com espaços em volta de equipe e prioridade, e com o campo entre aspas `"São, Paulo"`.
+- **Virada de ano:** um chamado de 2023-12-31T23:00 a 2024-01-01T01:00 deu 120 minutos.
+- **BOM no início:** dá `ValueError`.
+- **CSV só com cabeçalho:** grava `{"equipes": []}`.
+
+Os demais casos de erro descritos no enunciado (SLA inválido, data inexistente, id duplicado, prioridade inválida etc.) estão implementados, mas não foram testados um a um.
+
+Duas decisões que tomei onde o enunciado não era explícito:
+- **Linhas vazias com menos colunas:** uma linha cujos campos ficam todos vazios depois do `strip` é ignorada mesmo que não tenha cinco colunas (por exemplo, `,,`), em vez de dar erro de número de colunas.
+- **Chaves repetidas no JSON de SLA:** são recusadas com `ValueError`, assim como `NaN` e `Infinity`.
+
+Não deixei nenhum arquivo de amostra no diretório; os testes usaram arquivos em `/tmp/t`.

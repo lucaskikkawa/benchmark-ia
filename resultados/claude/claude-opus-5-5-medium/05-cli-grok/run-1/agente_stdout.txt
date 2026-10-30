@@ -1,0 +1,28 @@
+I created `agenda_cli.py`, the complete program, using only the standard library. In a quick manual run every case I tried gave the expected output and exit code. I didn't write a separate test suite.
+
+**What it does:**
+- **Subcommands:** `adicionar`, `listar` and `concluir`, built with `argparse`. A missing subcommand, an unknown argument or an invalid priority exits with code 2.
+- **File checks:** every rule in the spec is enforced:
+  - exact keys;
+  - integers that aren't `bool` or `1.0`;
+  - `proximo_id` greater than every existing `id`;
+  - unique ids;
+  - titles already normalized;
+  - real calendar dates;
+  - `concluida` strictly true or false.
+  
+  I also treat a JSON key that appears twice in the same object as an invalid file.
+- **Saving:** writes go to a temporary file that then replaces the original. If the file is invalid, `adicionar` leaves it byte-for-byte unchanged, and `listar` never rewrites it.
+- **Rule errors:** they write exactly `erro: MENSAGEM\n` to stderr, exit with code 2, leave stdout empty and never show a traceback.
+
+**Cases I checked:**
+- creating a new file;
+- a title with spaces at the ends, a title that's only `\u00a0`, and a title with a tab;
+- the dates `2000-02-29` (accepted) and `1900-02-29` (rejected);
+- `concluir --id 01`, a task that's already done, and an id that doesn't exist;
+- listing in the right order with tab separators, with and without `--somente-abertas`;
+- a file with gaps in the ids (1 and 3 with `proximo_id` 5): the next add gets id 5;
+- a file with `proximo_id: 1.0`, which is rejected and stays unchanged;
+- no subcommand, and an invalid priority (both exit 2).
+
+**One choice I made:** when several things are wrong at once, `adicionar` checks the title and deadline before reading the file. So an empty title on an invalid file reports `erro: titulo vazio`. The spec doesn't say which error should win.

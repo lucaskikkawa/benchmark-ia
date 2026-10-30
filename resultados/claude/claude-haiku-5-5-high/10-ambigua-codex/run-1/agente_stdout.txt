@@ -1,0 +1,12 @@
+Criei `organizador.py` com `organizar_tarefas` e `SUPOSICOES.md` neste diretório. Verifiquei o comportamento com Python 3.11 usando checagens ad hoc, sem deixar arquivos de teste.
+
+**Políticas adotadas (também registradas em `SUPOSICOES.md`):**
+- **Entrada válida:** `dict` com `titulo` str não vazia (espaços em branco contam como vazio), `prioridade` int de 0 a 5 (booleanos são rejeitados) e `concluida` bool.
+- **Entradas inválidas:** descartadas sem erro, incluindo campos ausentes, tipos errados, prioridades fora da faixa e itens que não são dicionários.
+- **Empates:** mantêm a ordem da entrada (ordenação estável).
+- **Cópia:** cada saída é um `dict(...)` novo. Campos extras e objetos aninhados, como a lista em `etiquetas`, mantêm a identidade. Se o mesmo dicionário aparece várias vezes, cada ocorrência gera uma saída independente.
+- **Títulos:** não são normalizados.
+
+**Verificação:** entrada não é alterada, filtro de concluídas, ordenação, cópia rasa, dicionário repetido, entradas inválidas e 30.000 entradas (≈0,01 s) passaram.
+
+Não executei a suíte de testes da entrega, pois ela não está neste diretório.

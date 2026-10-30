@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-o3cyc1_h/solucao.py) com `resumir_vendas`, incluindo validação das linhas, agregação por região e produto e gravação do JSON em UTF-8. A gravação usa um arquivo temporário para preservar o destino se ocorrer um erro durante a escrita.

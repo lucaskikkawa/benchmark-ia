@@ -1,0 +1,3 @@
+Implementei as validações, a cópia isolada dos itens, as regras de cupom e remoção, e os cálculos e a listagem ordenada em [carrinho.py](/tmp/bench-xx8__eyd/carrinho.py).
+
+Não executei testes.

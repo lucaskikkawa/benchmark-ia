@@ -1,0 +1,110 @@
+.......FF..............                                                  [100%]
+=================================== FAILURES ===================================
+___________________ test_milhares_de_digitos_resultado_exato ___________________
+
+    def test_milhares_de_digitos_resultado_exato():
+>       assert parse_duracao("9" * 10_000 + "s") == 10**10_000 - 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_duracao.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+texto = '999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999...999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999s'
+
+    def parse_duracao(texto: str) -> int:
+        """Converte uma duração humana no total em segundos.
+    
+        Aceita de 1 a 5 componentes ``<inteiro><unidade>`` (``w``, ``d``, ``h``,
+        ``m``, ``s``), colados ou separados por espaços em branco, nessa ordem.
+        """
+        if not isinstance(texto, str):
+            raise TypeError("texto deve ser str")
+    
+        # str.split descarta espaços em branco Unicode nas pontas e entre
+        # componentes em tempo linear, sem copiar os trechos só de espaço.
+        partes = str.split(texto)
+        if not partes:
+            raise ValueError("formato de duração inválido")
+    
+        total = 0
+        ultima_ordem = -1
+    
+        for parte in partes:
+            i = 0
+            n = len(parte)
+            while i < n:
+                if not ("0" <= parte[i] <= "9"):
+                    raise ValueError("formato de duração inválido")
+                j = i + 1
+                while j < n and "0" <= parte[j] <= "9":
+                    j += 1
+                if j >= n:
+                    raise ValueError("formato de duração inválido")
+                info = _UNIDADES.get(parte[j].lower())
+                if info is None:
+                    raise ValueError("formato de duração inválido")
+                ordem, fator = info
+                if ordem <= ultima_ordem:
+                    raise ValueError("formato de duração inválido")
+                ultima_ordem = ordem
+>               total += int(parte[i:j]) * fator
+                         ^^^^^^^^^^^^^^^
+E               ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 10000 digits; use sys.set_int_max_str_digits() to increase the limit
+
+solucao.py:49: ValueError
+______________________ test_milhares_de_zeros_a_esquerda _______________________
+
+    def test_milhares_de_zeros_a_esquerda():
+>       assert parse_duracao("0" * 6_000 + "7s") == 7
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_duracao.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+texto = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000...000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007s'
+
+    def parse_duracao(texto: str) -> int:
+        """Converte uma duração humana no total em segundos.
+    
+        Aceita de 1 a 5 componentes ``<inteiro><unidade>`` (``w``, ``d``, ``h``,
+        ``m``, ``s``), colados ou separados por espaços em branco, nessa ordem.
+        """
+        if not isinstance(texto, str):
+            raise TypeError("texto deve ser str")
+    
+        # str.split descarta espaços em branco Unicode nas pontas e entre
+        # componentes em tempo linear, sem copiar os trechos só de espaço.
+        partes = str.split(texto)
+        if not partes:
+            raise ValueError("formato de duração inválido")
+    
+        total = 0
+        ultima_ordem = -1
+    
+        for parte in partes:
+            i = 0
+            n = len(parte)
+            while i < n:
+                if not ("0" <= parte[i] <= "9"):
+                    raise ValueError("formato de duração inválido")
+                j = i + 1
+                while j < n and "0" <= parte[j] <= "9":
+                    j += 1
+                if j >= n:
+                    raise ValueError("formato de duração inválido")
+                info = _UNIDADES.get(parte[j].lower())
+                if info is None:
+                    raise ValueError("formato de duração inválido")
+                ordem, fator = info
+                if ordem <= ultima_ordem:
+                    raise ValueError("formato de duração inválido")
+                ultima_ordem = ordem
+>               total += int(parte[i:j]) * fator
+                         ^^^^^^^^^^^^^^^
+E               ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 6001 digits; use sys.set_int_max_str_digits() to increase the limit
+
+solucao.py:49: ValueError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_duracao.py::test_milhares_de_digitos_resultado_exato
+FAILED testes_ocultos/test_duracao.py::test_milhares_de_zeros_a_esquerda - Va...
+2 failed, 21 passed in 0.06s

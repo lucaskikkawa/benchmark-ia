@@ -1,0 +1,514 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-a6o_ckjw
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189bb-b55d-7683-842b-fe90dbfd3d5c
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:15:44.992074Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para identificar a tarefa e implementar a solução aqui.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' | head -100 && cat enunciado.md" in /tmp/bench-a6o_ckjw
+ succeeded in 0ms:
+/tmp/bench-a6o_ckjw
+enunciado.md
+# Tarefa: pacote `biblioteca` (acervo + empréstimos)
+
+Crie no diretório de trabalho o pacote `biblioteca/` com **exatamente estes 4 arquivos**, usando
+imports relativos entre os módulos (`from .modelos import ...`) e apenas a biblioteca padrão:
+
+```
+biblioteca/
+├── __init__.py      # reexporta a API pública abaixo
+├── modelos.py       # dataclasses Livro, Emprestimo e as exceções
+├── acervo.py        # classe Acervo
+└── emprestimos.py   # classe ServicoEmprestimos
+```
+
+## `modelos.py`
+
+```python
+@dataclass(frozen=True)
+class Livro:
+    isbn: str
+    titulo: str
+    autor: str
+
+@dataclass(frozen=True)
+class Emprestimo:
+    isbn: str
+    usuario: str
+    data_emprestimo: datetime.date
+    data_prevista: datetime.date
+    renovacoes: int = 0
+```
+
+`Livro` valida os campos ao ser criado (`__post_init__`): `isbn`, `titulo` e `autor` devem ser `str`
+(senão `TypeError`) e não podem ser vazios nem só espaços (senão `ValueError`).
+
+Exceções (todas herdam de `BibliotecaErro(Exception)`): `LivroNaoEncontrado`, `LivroIndisponivel`,
+`LimiteEmprestimos`, `EmprestimoNaoEncontrado`, `RenovacaoNegada`.
+
+## `acervo.py` — `class Acervo`
+
+- `adicionar(livro: Livro) -> None` — `TypeError` se não for `Livro`; `ValueError` se já existir livro
+  com o mesmo `isbn`.
+- `obter(isbn: str) -> Livro` — `LivroNaoEncontrado` se não existir.
+- `buscar_por_autor(trecho: str) -> list[Livro]` — livros cujo `autor` contém `trecho`, sem diferenciar
+  maiúsculas/minúsculas (compare com `str.casefold()`; `"STRAUSS"` encontra `"Strauß"`), ordenados por
+  `titulo` e depois `isbn` (comparação simples de `str`, sem locale). Trecho vazio encontra todos.
+- `__len__()` — quantidade de livros; `__contains__(isbn)` — `isbn in acervo`.
+
+## `emprestimos.py` — `class ServicoEmprestimos`
+
+```python
+ServicoEmprestimos(acervo: Acervo, limite_por_usuario: int = 3, prazo_dias: int = 14,
+                   multa_diaria: float = 1.0, max_renovacoes: int = 2)
+```
+
+- `ValueError` no construtor se `limite_por_usuario < 1`, `prazo_dias < 1`, `multa_diaria < 0`
+  ou `max_renovacoes < 0`.
+
+- `emprestar(isbn: str, usuario: str, data: datetime.date) -> Emprestimo`
+  - `LivroNaoEncontrado` se o isbn não está no acervo;
+  - `LivroIndisponivel` se o livro já está emprestado;
+  - `LimiteEmprestimos` se o usuário já tem `limite_por_usuario` empréstimos ativos;
+  - (verificações nesta ordem) `data_prevista = data + prazo_dias`.
+  - O serviço usa o **mesmo** objeto `Acervo` recebido: livros adicionados ao acervo depois da criação
+    do serviço podem ser emprestados.
+- `devolver(isbn: str, data: datetime.date) -> float` — encerra o empréstimo e retorna a multa:
+  `dias_de_atraso * multa_diaria` (atraso = dias após `data_prevista`; devolver até a data prevista → `0.0`),
+  arredondada a 2 casas.
+  - `LivroNaoEncontrado` se o isbn não está no acervo; `EmprestimoNaoEncontrado` se não está emprestado;
+  - `ValueError` se `data` for anterior a `data_emprestimo` (o empréstimo continua ativo).
+- `disponivel(isbn: str) -> bool` — `LivroNaoEncontrado` se o isbn não está no acervo.
+- `emprestimos_de(usuario: str) -> list[Emprestimo]` — ativos do usuário, ordenados por `data_prevista` e depois `isbn`.
+- `renovar(isbn: str, data: datetime.date) -> Emprestimo` — substitui o empréstimo ativo por um novo com
+  `renovacoes + 1` e `data_prevista = max(data_prevista atual, data + prazo_dias)` (os demais campos não
+  mudam) e o retorna. Verificações nesta ordem:
+  - `LivroNaoEncontrado` se o isbn não está no acervo; `EmprestimoNaoEncontrado` se não está emprestado;
+  - `ValueError` se `data` for anterior a `data_emprestimo`;
+  - `RenovacaoNegada` se o empréstimo está atrasado (`data > data_prevista`) ou se já foi renovado
+    `max_renovacoes` vezes. Em qualquer erro o empréstimo continua como estava.
+- `atrasados(data: datetime.date) -> list[Emprestimo]` — empréstimos ativos (de todos os usuários) com
+  `data_prevista < data`, ordenados por `data_prevista` e depois `isbn`.
+- `devolver` usa a `data_prevista` vigente (após renovações).
+
+`biblioteca/__init__.py` deve permitir `from biblioteca import Livro, Emprestimo, Acervo, ServicoEmprestimos,
+BibliotecaErro, LivroNaoEncontrado, LivroIndisponivel, LimiteEmprestimos, EmprestimoNaoEncontrado,
+RenovacaoNegada` e definir `__all__` com exatamente esses 10 nomes.
+
+apply patch
+patch: completed
+/tmp/bench-a6o_ckjw/biblioteca/__init__.py
+/tmp/bench-a6o_ckjw/biblioteca/acervo.py
+/tmp/bench-a6o_ckjw/biblioteca/emprestimos.py
+/tmp/bench-a6o_ckjw/biblioteca/modelos.py
+diff --git a/biblioteca/__init__.py b/biblioteca/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a10ba21b28449baa477c17fbbc7771f4e9d4a4ee
+--- /dev/null
++++ b/biblioteca/__init__.py
+@@ -0,0 +1,27 @@
++"""API pública para gerenciamento de acervo e empréstimos."""
++
++from .acervo import Acervo
++from .emprestimos import ServicoEmprestimos
++from .modelos import (
++    BibliotecaErro,
++    Emprestimo,
++    EmprestimoNaoEncontrado,
++    LimiteEmprestimos,
++    Livro,
++    LivroIndisponivel,
++    LivroNaoEncontrado,
++    RenovacaoNegada,
++)
++
++__all__ = [
++    "Livro",
++    "Emprestimo",
++    "Acervo",
++    "ServicoEmprestimos",
++    "BibliotecaErro",
++    "LivroNaoEncontrado",
++    "LivroIndisponivel",
++    "LimiteEmprestimos",
++    "EmprestimoNaoEncontrado",
++    "RenovacaoNegada",
++]
+diff --git a/biblioteca/acervo.py b/biblioteca/acervo.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4db4ea54d3bc56fb29c286237bd6d7910f50728b
+--- /dev/null
++++ b/biblioteca/acervo.py
+@@ -0,0 +1,32 @@
++"""Armazenamento e consultas do acervo."""
++
++from .modelos import Livro, LivroNaoEncontrado
++
++
++class Acervo:
++    def __init__(self) -> None:
++        self._livros: dict[str, Livro] = {}
++
++    def adicionar(self, livro: Livro) -> None:
++        if not isinstance(livro, Livro):
++            raise TypeError("livro deve ser uma instância de Livro")
++        if livro.isbn in self._livros:
++            raise ValueError(f"Já existe um livro com ISBN {livro.isbn!r}")
++        self._livros[livro.isbn] = livro
++
++    def obter(self, isbn: str) -> Livro:
++        try:
++            return self._livros[isbn]
++        except KeyError:
++            raise LivroNaoEncontrado(f"Livro com ISBN {isbn!r} não encontrado") from None
++
++    def buscar_por_autor(self, trecho: str) -> list[Livro]:
++        termo = trecho.casefold()
++        encontrados = [livro for livro in self._livros.values() if termo in livro.autor.casefold()]
++        return sorted(encontrados, key=lambda livro: (livro.titulo, livro.isbn))
++
++    def __len__(self) -> int:
++        return len(self._livros)
++
++    def __contains__(self, isbn: object) -> bool:
++        return isbn in self._livros
+diff --git a/biblioteca/emprestimos.py b/biblioteca/emprestimos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e7be8091e68f63b33671f8951e5c217d6e5086b
+--- /dev/null
++++ b/biblioteca/emprestimos.py
+@@ -0,0 +1,101 @@
++"""Regras para empréstimo, devolução e renovação de livros."""
++
++from datetime import date, timedelta
++
++from .acervo import Acervo
++from .modelos import (
++    Emprestimo,
++    EmprestimoNaoEncontrado,
++    LimiteEmprestimos,
++    LivroIndisponivel,
++    LivroNaoEncontrado,
++    RenovacaoNegada,
++)
++
++
++class ServicoEmprestimos:
++    def __init__(
++        self,
++        acervo: Acervo,
++        limite_por_usuario: int = 3,
++        prazo_dias: int = 14,
++        multa_diaria: float = 1.0,
++        max_renovacoes: int = 2,
++    ) -> None:
++        if limite_por_usuario < 1:
++            raise ValueError("limite_por_usuario deve ser pelo menos 1")
++        if prazo_dias < 1:
++            raise ValueError("prazo_dias deve ser pelo menos 1")
++        if multa_diaria < 0:
++            raise ValueError("multa_diaria não pode ser negativa")
++        if max_renovacoes < 0:
++            raise ValueError("max_renovacoes não pode ser negativa")
++        self._acervo = acervo
++        self._limite_por_usuario = limite_por_usuario
++        self._prazo_dias = prazo_dias
++        self._multa_diaria = multa_diaria
++        self._max_renovacoes = max_renovacoes
++        self._ativos: dict[str, Emprestimo] = {}
++
++    def emprestar(self, isbn: str, usuario: str, data: date) -> Emprestimo:
++        self._acervo.obter(isbn)
++        if isbn in self._ativos:
++            raise LivroIndisponivel(f"Livro {isbn!r} já está emprestado")
++        if sum(1 for item in self._ativos.values() if item.usuario == usuario) >= self._limite_por_usuario:
++            raise LimiteEmprestimos(f"Usuário {usuario!r} atingiu o limite de empréstimos")
++        emprestimo = Emprestimo(
++            isbn=isbn,
++            usuario=usuario,
++            data_emprestimo=data,
++            data_prevista=data + timedelta(days=self._prazo_dias),
++        )
++        self._ativos[isbn] = emprestimo
++        return emprestimo
++
++    def devolver(self, isbn: str, data: date) -> float:
++        self._acervo.obter(isbn)
++        try:
++            emprestimo = self._ativos[isbn]
++        except KeyError:
++            raise EmprestimoNaoEncontrado(f"Não há empréstimo ativo para {isbn!r}") from None
++        if data < emprestimo.data_emprestimo:
++            raise ValueError("data não pode ser anterior à data do empréstimo")
++        dias_de_atraso = max(0, (data - emprestimo.data_prevista).days)
++        del self._ativos[isbn]
++        return round(dias_de_atraso * self._multa_diaria, 2)
++
++    def disponivel(self, isbn: str) -> bool:
++        self._acervo.obter(isbn)
++        return isbn not in self._ativos
++
++    def emprestimos_de(self, usuario: str) -> list[Emprestimo]:
++        emprestimos = [item for item in self._ativos.values() if item.usuario == usuario]
++        return sorted(emprestimos, key=lambda item: (item.data_prevista, item.isbn))
++
++    def renovar(self, isbn: str, data: date) -> Emprestimo:
++        self._acervo.obter(isbn)
++        try:
++            emprestimo = self._ativos[isbn]
++        except KeyError:
++            raise EmprestimoNaoEncontrado(f"Não há empréstimo ativo para {isbn!r}") from None
++        if data < emprestimo.data_emprestimo:
++            raise ValueError("data não pode ser anterior à data do empréstimo")
++        if data > emprestimo.data_prevista or emprestimo.renovacoes >= self._max_renovacoes:
++            raise RenovacaoNegada(f"Empréstimo de {isbn!r} não pode ser renovado")
++        nova_data_prevista = max(
++            emprestimo.data_prevista,
++            data + timedelta(days=self._prazo_dias),
++        )
++        renovado = Emprestimo(
++            isbn=emprestimo.isbn,
++            usuario=emprestimo.usuario,
++            data_emprestimo=emprestimo.data_emprestimo,
++            data_prevista=nova_data_prevista,
++            renovacoes=emprestimo.renovacoes + 1,
++        )
++        self._ativos[isbn] = renovado
++        return renovado
++
++    def atrasados(self, data: date) -> list[Emprestimo]:
++        atrasados = [item for item in self._ativos.values() if item.data_prevista < data]
++        return sorted(atrasados, key=lambda item: (item.data_prevista, item.isbn))
+diff --git a/biblioteca/modelos.py b/biblioteca/modelos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..65a52e6e7abb4701df667134b9245e7b8dc08519
+--- /dev/null
++++ b/biblioteca/modelos.py
+@@ -0,0 +1,51 @@
++"""Modelos de dados e exceções do pacote biblioteca."""
++
++from dataclasses import dataclass
++from datetime import date
++
++
++@dataclass(frozen=True)
++class Livro:
++    isbn: str
++    titulo: str
++    autor: str
++
++    def __post_init__(self) -> None:
++        for nome, valor in (("isbn", self.isbn), ("titulo", self.titulo), ("autor", self.autor)):
++            if not isinstance(valor, str):
++                raise TypeError(f"{nome} deve ser str")
++            if not valor.strip():
++                raise ValueError(f"{nome} não pode ser vazio")
++
++
++@dataclass(frozen=True)
++class Emprestimo:
++    isbn: str
++    usuario: str
++    data_emprestimo: date
++    data_prevista: date
++    renovacoes: int = 0
++
++
++class BibliotecaErro(Exception):
++    """Classe base para erros de domínio da biblioteca."""
++
++
++class LivroNaoEncontrado(BibliotecaErro):
++    """O ISBN solicitado não pertence ao acervo."""
++
++
++class LivroIndisponivel(BibliotecaErro):
++    """O livro já está emprestado."""
++
++
++class LimiteEmprestimos(BibliotecaErro):
++    """O usuário atingiu o limite de empréstimos ativos."""
++
++
++class EmprestimoNaoEncontrado(BibliotecaErro):
++    """Não há empréstimo ativo para o livro solicitado."""
++
++
++class RenovacaoNegada(BibliotecaErro):
++    """O empréstimo não pode ser renovado."""
+
+exec
+/bin/bash -lc "rg --files biblioteca && sed -n '1,220p' biblioteca/emprestimos.py && sed -n '1,160p' biblioteca/modelos.py" in /tmp/bench-a6o_ckjw
+ succeeded in 0ms:
+biblioteca/acervo.py
+biblioteca/emprestimos.py
+biblioteca/__init__.py
+biblioteca/modelos.py
+"""Regras para empréstimo, devolução e renovação de livros."""
+
+from datetime import date, timedelta
+
+from .acervo import Acervo
+from .modelos import (
+    Emprestimo,
+    EmprestimoNaoEncontrado,
+    LimiteEmprestimos,
+    LivroIndisponivel,
+    LivroNaoEncontrado,
+    RenovacaoNegada,
+)
+
+
+class ServicoEmprestimos:
+    def __init__(
+        self,
+        acervo: Acervo,
+        limite_por_usuario: int = 3,
+        prazo_dias: int = 14,
+        multa_diaria: float = 1.0,
+        max_renovacoes: int = 2,
+    ) -> None:
+        if limite_por_usuario < 1:
+            raise ValueError("limite_por_usuario deve ser pelo menos 1")
+        if prazo_dias < 1:
+            raise ValueError("prazo_dias deve ser pelo menos 1")
+        if multa_diaria < 0:
+            raise ValueError("multa_diaria não pode ser negativa")
+        if max_renovacoes < 0:
+            raise ValueError("max_renovacoes não pode ser negativa")
+        self._acervo = acervo
+        self._limite_por_usuario = limite_por_usuario
+        self._prazo_dias = prazo_dias
+        self._multa_diaria = multa_diaria
+        self._max_renovacoes = max_renovacoes
+        self._ativos: dict[str, Emprestimo] = {}
+
+    def emprestar(self, isbn: str, usuario: str, data: date) -> Emprestimo:
+        self._acervo.obter(isbn)
+        if isbn in self._ativos:
+            raise LivroIndisponivel(f"Livro {isbn!r} já está emprestado")
+        if sum(1 for item in self._ativos.values() if item.usuario == usuario) >= self._limite_por_usuario:
+            raise LimiteEmprestimos(f"Usuário {usuario!r} atingiu o limite de empréstimos")
+        emprestimo = Emprestimo(
+            isbn=isbn,
+            usuario=usuario,
+            data_emprestimo=data,
+            data_prevista=data + timedelta(days=self._prazo_dias),
+        )
+        self._ativos[isbn] = emprestimo
+        return emprestimo
+
+    def devolver(self, isbn: str, data: date) -> float:
+        self._acervo.obter(isbn)
+        try:
+            emprestimo = self._ativos[isbn]
+        except KeyError:
+            raise EmprestimoNaoEncontrado(f"Não há empréstimo ativo para {isbn!r}") from None
+        if data < emprestimo.data_emprestimo:
+            raise ValueError("data não pode ser anterior à data do empréstimo")
+        dias_de_atraso = max(0, (data - emprestimo.data_prevista).days)
+        del self._ativos[isbn]
+        return round(dias_de_atraso * self._multa_diaria, 2)
+
+    def disponivel(self, isbn: str) -> bool:
+        self._acervo.obter(isbn)
+        return isbn not in self._ativos
+
+    def emprestimos_de(self, usuario: str) -> list[Emprestimo]:
+        emprestimos = [item for item in self._ativos.values() if item.usuario == usuario]
+        return sorted(emprestimos, key=lambda item: (item.data_prevista, item.isbn))
+
+    def renovar(self, isbn: str, data: date) -> Emprestimo:
+        self._acervo.obter(isbn)
+        try:
+            emprestimo = self._ativos[isbn]
+        except KeyError:
+            raise EmprestimoNaoEncontrado(f"Não há empréstimo ativo para {isbn!r}") from None
+        if data < emprestimo.data_emprestimo:
+            raise ValueError("data não pode ser anterior à data do empréstimo")
+        if data > emprestimo.data_prevista or emprestimo.renovacoes >= self._max_renovacoes:
+            raise RenovacaoNegada(f"Empréstimo de {isbn!r} não pode ser renovado")
+        nova_data_prevista = max(
+            emprestimo.data_prevista,
+            data + timedelta(days=self._prazo_dias),
+        )
+        renovado = Emprestimo(
+            isbn=emprestimo.isbn,
+            usuario=emprestimo.usuario,
+            data_emprestimo=emprestimo.data_emprestimo,
+            data_prevista=nova_data_prevista,
+            renovacoes=emprestimo.renovacoes + 1,
+        )
+        self._ativos[isbn] = renovado
+        return renovado
+
+    def atrasados(self, data: date) -> list[Emprestimo]:
+        atrasados = [item for item in self._ativos.values() if item.data_prevista < data]
+        return sorted(atrasados, key=lambda item: (item.data_prevista, item.isbn))
+"""Modelos de dados e exceções do pacote biblioteca."""
+
+from dataclasses import dataclass
+from datetime import date
+
+
+@dataclass(frozen=True)
+class Livro:
+    isbn: str
+    titulo: str
+    autor: str
+
+    def __post_init__(self) -> None:
+        for nome, valor in (("isbn", self.isbn), ("titulo", self.titulo), ("autor", self.autor)):
+            if not isinstance(valor, str):
+                raise TypeError(f"{nome} deve ser str")
+            if not valor.strip():
+                raise ValueError(f"{nome} não pode ser vazio")
+
+
+@dataclass(frozen=True)
+class Emprestimo:
+    isbn: str
+    usuario: str
+    data_emprestimo: date
+    data_prevista: date
+    renovacoes: int = 0
+
+
+class BibliotecaErro(Exception):
+    """Classe base para erros de domínio da biblioteca."""
+
+
+class LivroNaoEncontrado(BibliotecaErro):
+    """O ISBN solicitado não pertence ao acervo."""
+
+
+class LivroIndisponivel(BibliotecaErro):
+    """O livro já está emprestado."""
+
+
+class LimiteEmprestimos(BibliotecaErro):
+    """O usuário atingiu o limite de empréstimos ativos."""
+
+
+class EmprestimoNaoEncontrado(BibliotecaErro):
+    """Não há empréstimo ativo para o livro solicitado."""
+
+
+class RenovacaoNegada(BibliotecaErro):
+    """O empréstimo não pode ser renovado."""
+
+codex
+Implementei o pacote `biblioteca/` com os quatro arquivos pedidos: modelos e exceções, acervo, serviço de empréstimos e API pública. Não executei testes.
+tokens used
+14,237

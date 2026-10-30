@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede o maior subarray contíguo com soma igual ao alvo, em tempo linear. Vou implementar isso em `otimizador.py`.A função `maior_subarray_soma` está em `otimizador.py`.
+
+Ela devolve o maior comprimento de um subarray contíguo cuja soma é exatamente `alvo`. Se a lista é vazia ou nenhum trecho soma o alvo, devolve `0`. Valores que não são `list` ou `int` primitivo (incluindo `bool`) geram `TypeError`.
+
+O cálculo usa somas prefixadas e o primeiro índice de cada soma, em tempo e espaço O(N). Nos exemplos do enunciado o resultado confere, e uma lista de 350.000 elementos termina em menos de 0,1 s.

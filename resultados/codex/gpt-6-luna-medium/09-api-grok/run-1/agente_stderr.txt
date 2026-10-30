@@ -1,0 +1,273 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-g6ufxjqt
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189b8-024d-7aa3-9482-4e46d94e60a5
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:11:41.971692Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, depois implemento a solução aqui e confiro o resultado conforme o que a tarefa pedir.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' && ls -la" in /tmp/bench-g6ufxjqt
+ succeeded in 0ms:
+/tmp/bench-g6ufxjqt
+enunciado.md
+total 12
+drwx------ 2 box box 4096 Oct 29 19:11 .
+drwxr-xr-x 3 box box   60 Oct 29 19:11 ..
+-rw-r--r-- 1 box box 3641 Oct 29 19:07 enunciado.md
+-rw-r--r-- 1 box box 2949 Oct 29 16:06 loja_api.py
+
+exec
+/bin/bash -lc 'cat enunciado.md && cat loja_api.py' in /tmp/bench-g6ufxjqt
+ succeeded in 0ms:
+# Tarefa: cliente com retry, backoff e timeout
+
+O arquivo `loja_api.py` já está no diretório de trabalho. É uma API **em processo**, sem socket e sem rede. Não altere `loja_api.py`. Crie `cliente.py` com:
+
+```python
+class TempoEsgotado(Exception):
+    ...
+
+def baixar_pedidos(
+    api,
+    ids: list[str],
+    *,
+    max_tentativas: int = 5,
+    backoff_s: float = 0.0,
+    timeout_s: float = 1.0,
+) -> list[dict]:
+    ...
+```
+
+Só a biblioteca padrão.
+
+## O que a API faz
+
+`LojaAPI(seed)` guarda a seed. `obter_pedido(pedido_id)` devolve o dict de `payload_pedido(seed, pedido_id)` ou levanta:
+
+- `LojaErroCliente` — erro definitivo (o id começa com `missing-`, ou o id não é uma string não vazia, inclusive `""`). **Não tente de novo** e não durma backoff.
+- `LojaIndisponivel` — falha transitória.
+
+A lentidão é `LojaAPI.ATRASO_S` segundos (também exposto como `loja_api.ATRASO_S`). A contagem de tentativas começa em 1.
+
+| prefixo do id | comportamento |
+|---|---|
+| `missing-` | sempre `LojaErroCliente` |
+| `down-` | sempre `LojaIndisponivel` |
+| `flaky-` | as primeiras `(seed % 3) + 1` tentativas são `LojaIndisponivel`; a próxima devolve o pedido |
+| `slow-` | as primeiras `(seed % 2) + 1` tentativas dormem `ATRASO_S` e só então devolveriam o pedido |
+| `timeout-` | toda tentativa dorme `ATRASO_S` e só então devolveria o pedido |
+| outro | devolve o pedido na hora |
+
+O prefixo é o começo do id, nesta ordem. `missing-down-x` é `LojaErroCliente`. `flaky-missing-x` segue a regra de `flaky-`, não a de `missing-`. O cliente não precisa reimplementar a tabela: chame `obter_pedido` e reaja à exceção.
+
+`api.tentativas(pedido_id)` diz quantas vezes aquele id foi chamado. A seed entra no total do pedido; não invente o corpo, use o que a API devolver.
+
+## O que o cliente faz
+
+Para cada id, **na ordem da lista**:
+
+1. Chame `api.obter_pedido(id)` com prazo de `timeout_s` segundos. Se a chamada passar disso, **abandone a espera** (não fique bloqueado os `ATRASO_S` segundos) e trate como timeout.
+2. `LojaErroCliente` propaga na hora, sem nova tentativa e sem backoff.
+3. `LojaIndisponivel` ou timeout contam como falha retentável.
+4. Há no máximo `max_tentativas` chamadas daquele id. Se a última for `LojaIndisponivel`, propague essa exceção. Se a última for timeout, levante `TempoEsgotado`.
+5. Depois de uma falha retentável que ainda terá outra tentativa, durma `backoff_s * 2 ** (i - 1)` segundos, onde `i` é o número da tentativa que acabou de falhar (1 na primeira). Não durma depois da última tentativa nem depois de sucesso. `backoff_s == 0` não dorme.
+6. No sucesso, guarde o dict devolvido.
+
+Se um id falha de vez (`LojaErroCliente`, `LojaIndisponivel` na última tentativa ou `TempoEsgotado`), não chame os ids seguintes. Lista vazia devolve `[]` sem chamar a API.
+
+`slow-` com seed ímpar dorme nas duas primeiras tentativas (`(seed % 2) + 1 == 2`). Com `timeout_s` menor que `ATRASO_S`, essas duas contam como timeout e a terceira devolve o pedido, se `max_tentativas` alcançar.
+
+Validação, antes de qualquer chamada:
+
+- `ids` tem de ser exatamente `list` (`str` e `tuple` → `TypeError`). Não há cache: o mesmo id repetido na lista é baixado de novo e soma em `tentativas`.
+- `max_tentativas` é `int` ≥ 1 (`bool` → `TypeError`; menor que 1 → `ValueError`).
+- `backoff_s` é `int` ou `float` ≥ 0 (`bool` → `TypeError`; negativo → `ValueError`).
+- `timeout_s` é `int` ou `float` > 0 (`bool` → `TypeError`; não positivo → `ValueError`).
+
+O resultado conserva a ordem dos ids. Cada item é o dict da API (`id`, `total_centavos`, `status`).
+"""API local em processo, sem rede.
+
+As falhas dependem só do prefixo do id e da seed. O relógio de lentidão é
+fixo (ATRASO_S), para o cliente conseguir impor timeout.
+"""
+
+import hashlib
+import time
+
+ATRASO_S = 1.2
+
+
+class LojaErro(Exception):
+    """Base dos erros simulados da loja."""
+
+
+class LojaIndisponivel(LojaErro):
+    """Falha transitória (equivalente a HTTP 503). Vale tentar de novo."""
+
+
+class LojaErroCliente(LojaErro):
+    """Pedido impossível (equivalente a HTTP 404). Não vale tentar de novo."""
+
+
+def payload_pedido(seed: int, pedido_id: str) -> dict:
+    """Corpo estável de um pedido pago. Não altera contadores."""
+    digest = hashlib.sha256(f"{seed}:{pedido_id}".encode()).hexdigest()
+    return {
+        "id": pedido_id,
+        "total_centavos": int(digest[:8], 16) % 100_000,
+        "status": "pago",
+    }
+
+
+class LojaAPI:
+    """Cliente falso. Cada chamada a obter_pedido conta uma tentativa.
+
+    Regras, nesta ordem, com n = número da tentativa (1 na primeira):
+
+    - id que começa com ``missing-``: sempre LojaErroCliente.
+    - id que começa com ``down-``: sempre LojaIndisponivel.
+    - id que começa com ``flaky-``: as primeiras ``(seed % 3) + 1`` tentativas
+      levantam LojaIndisponivel; a seguinte devolve o pedido.
+    - id que começa com ``slow-``: as primeiras ``(seed % 2) + 1`` tentativas
+      dormem ATRASO_S segundos e só então devolvem o pedido. As demais
+      devolvem na hora.
+    - id que começa com ``timeout-``: toda tentativa dorme ATRASO_S e só
+      então devolveria o pedido.
+    - qualquer outro id: devolve o pedido na hora.
+
+    ``tentativas(pedido_id)`` informa quantas vezes aquele id foi chamado.
+    """
+
+    ATRASO_S = ATRASO_S
+
+    def __init__(self, seed: int) -> None:
+        self.seed = seed
+        self._contagens: dict[str, int] = {}
+
+    def tentativas(self, pedido_id: str) -> int:
+        return self._contagens.get(pedido_id, 0)
+
+    def obter_pedido(self, pedido_id: str) -> dict:
+        if not isinstance(pedido_id, str) or pedido_id == "":
+            raise LojaErroCliente("id invalido")
+        self._contagens[pedido_id] = self._contagens.get(pedido_id, 0) + 1
+        n = self._contagens[pedido_id]
+        if pedido_id.startswith("missing-"):
+            raise LojaErroCliente(f"404 {pedido_id}")
+        if pedido_id.startswith("down-"):
+            raise LojaIndisponivel("503")
+        if pedido_id.startswith("flaky-"):
+            if n <= (self.seed % 3) + 1:
+                raise LojaIndisponivel("503")
+            return payload_pedido(self.seed, pedido_id)
+        if pedido_id.startswith("slow-"):
+            if n <= (self.seed % 2) + 1:
+                time.sleep(self.ATRASO_S)
+            return payload_pedido(self.seed, pedido_id)
+        if pedido_id.startswith("timeout-"):
+            time.sleep(self.ATRASO_S)
+            return payload_pedido(self.seed, pedido_id)
+        return payload_pedido(self.seed, pedido_id)
+
+codex
+A API simula lentidão com `time.sleep`, então vou executar cada chamada numa thread daemon e aguardar o prazo pela fila. Assim, quando houver timeout, o cliente pode seguir sem ficar preso esperando a chamada terminar.
+exec
+/bin/bash -lc "cat > cliente.py <<'PY'
+\"\"\"Cliente para a API local da loja, com retry, backoff e timeout.\"\"\"
+
+from __future__ import annotations
+
+import queue
+import threading
+import time
+from typing import Any
+
+from loja_api import LojaErroCliente, LojaIndisponivel
+
+
+class TempoEsgotado(Exception):
+    \"\"\"A chamada à API excedeu o prazo configurado.\"\"\"
+
+
+def _chamar_com_timeout(api: Any, pedido_id: str, timeout_s: float) -> dict:
+    \"\"\"Executa a chamada em thread daemon para poder abandonar a espera.\"\"\"
+    resultado: queue.Queue[tuple[bool, Any]] = queue.Queue(maxsize=1)
+
+    def executar() -> None:
+        try:
+            resultado.put((True, api.obter_pedido(pedido_id)))
+        except BaseException as erro:
+            resultado.put((False, erro))
+
+    thread = threading.Thread(target=executar, daemon=True)
+    thread.start()
+    try:
+        sucesso, valor = resultado.get(timeout=timeout_s)
+    except queue.Empty:
+        raise TempoEsgotado(f\"tempo esgotado ao obter {pedido_id"'!r}") from None
+
+    if sucesso:
+        return valor
+    raise valor
+
+
+def baixar_pedidos(
+    api,
+    ids: list[str],
+    *,
+    max_tentativas: int = 5,
+    backoff_s: float = 0.0,
+    timeout_s: float = 1.0,
+) -> list[dict]:
+    """Baixa pedidos em ordem, repetindo falhas transitórias até o limite."""
+    if type(ids) is not list:
+        raise TypeError("ids deve ser exatamente uma lista")
+    if isinstance(max_tentativas, bool) or not isinstance(max_tentativas, int):
+        raise TypeError("max_tentativas deve ser int")
+    if max_tentativas < 1:
+        raise ValueError("max_tentativas deve ser >= 1")
+    if isinstance(backoff_s, bool) or not isinstance(backoff_s, (int, float)):
+        raise TypeError("backoff_s deve ser int ou float")
+    if backoff_s < 0:
+        raise ValueError("backoff_s deve ser >= 0")
+    if isinstance(timeout_s, bool) or not isinstance(timeout_s, (int, float)):
+        raise TypeError("timeout_s deve ser int ou float")
+    if timeout_s <= 0:
+        raise ValueError("timeout_s deve ser > 0")
+
+    pedidos: list[dict] = []
+    for pedido_id in ids:
+        for tentativa in range(1, max_tentativas + 1):
+            try:
+                pedido = _chamar_com_timeout(api, pedido_id, timeout_s)
+            except LojaErroCliente:
+                raise
+            except (LojaIndisponivel, TempoEsgotado):
+                if tentativa == max_tentativas:
+                    raise
+                atraso = backoff_s * 2 ** (tentativa - 1)
+                if atraso:
+                    time.sleep(atraso)
+            else:
+                pedidos.append(pedido)
+                break
+    return pedidos
+PY
+' in /tmp/bench-g6ufxjqt
+ succeeded in 0ms:
+codex
+Criei [cliente.py](/tmp/bench-g6ufxjqt/cliente.py) com `TempoEsgotado` e `baixar_pedidos`, incluindo validação dos argumentos, tentativas com backoff exponencial e timeout por chamada. A API roda numa thread daemon para que o cliente possa abandonar a espera quando o prazo expira.
+
+Não alterei `loja_api.py`.
+tokens used
+16,833

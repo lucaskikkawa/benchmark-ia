@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-9fxx3rfk/solucao.py) com a função `consolidar`, usando apenas a biblioteca padrão.
+
+Verifiquei o exemplo, validações, desempates, ordenação, datas e formato exato do JSON. Todos os testes passaram.

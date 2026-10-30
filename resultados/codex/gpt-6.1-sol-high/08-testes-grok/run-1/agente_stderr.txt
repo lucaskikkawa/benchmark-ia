@@ -1,0 +1,1518 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-xh2cjpc3
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189fb-bfd4-77e3-b79b-8950fae128ea
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:25:41.500676Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, resolver a tarefa e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g 'AGENTS.md' -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!dist'"' -g '"'!build'"'" in /tmp/bench-xh2cjpc3
+ succeeded in 0ms:
+/tmp/bench-xh2cjpc3
+enunciado.md
+
+exec
+/bin/bash -lc "cat enunciado.md && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!dist'"' -g '"'!build'"'" in /tmp/bench-xh2cjpc3
+ succeeded in 0ms:
+# Tarefa: escrever testes do módulo de cupons
+
+O arquivo `descontos.py` já está no diretório de trabalho e está correto. **Não altere `descontos.py`.** Escreva a suíte em `tests/test_descontos.py` (pode haver outros `tests/test_*.py`). Os testes importam a função do módulo:
+
+```python
+from descontos import aplicar_desconto
+```
+
+A avaliação roda a sua suíte duas formas:
+
+1. Contra este `descontos.py`. Tudo precisa passar.
+2. Contra cópias com um bug cada. Para cada cópia, a suíte precisa **falhar**. Uma suíte que passa num módulo errado não serve. Uma suíte que falha no módulo correto também não.
+
+Use `pytest` e apenas a biblioteca padrão. Não dependa de rede nem de arquivos fora de `tests/` e `descontos.py`.
+
+## Contrato de `aplicar_desconto(preco_centavos, cupom, hoje) -> dict`
+
+```python
+{
+    "preco_final": int,
+    "desconto": int,          # preco_centavos - preco_final
+    "cupom_aplicado": str | None,
+}
+```
+
+O dict tem exatamente essas três chaves.
+
+- `preco_centavos` é `int` ≥ 0. `bool` e `float` → `TypeError`. Negativo → `ValueError`.
+- `cupom` é `None` ou `str`. Outro tipo → `TypeError`. Não há `strip`: `" OFF10"` e `"off10"` não são o código `"OFF10"`.
+- `hoje` é `str` `YYYY-MM-DD` de um dia real no calendário gregoriano de `datetime.date` (anos 1 a 9999). `2000-02-29` e `0001-12-25` existem; `1900-02-29` e `2100-02-29` não. 29 de fevereiro só em ano bissexto, com a regra do século. Senão `ValueError`. Outro tipo → `TypeError`.
+- `None` ou `""` não dão desconto: `cupom_aplicado` é `None` e o preço não muda. `" "` e `"\t"` não são vazio: são texto desconhecido e levantam `ValueError`.
+- `"OFF10"`: preço final `(preco * 90) // 100` (não é `preco - preco // 10`). A regra foi aplicada mesmo se o piso zerar o desconto (preço 1 → final 0, desconto 1, cupom `"OFF10"`).
+- `"OFF5"`: `(preco * 95) // 100`. Exemplo: 200 → 190; 101 → 95.
+- `"FIXO500"`: tira 500 centavos, com piso 0. Preço 100 → final 0 e desconto 100, nunca negativo. Preço 0 continua 0 e o cupom conta como aplicado. `desconto` é sempre `preco_centavos - preco_final`, também no piso.
+- `"BEMVINDO"`: 20% com a conta `(preco * 80) // 100` (não é `preco - (preco * 20) // 100`) somente se `hoje` está entre `2024-01-01` e `2024-12-31`, **inclusive**. Fora da janela o preço não muda e `cupom_aplicado` é `None` (não é erro).
+- `"NATAL"`: 15% com a conta `(preco * 85) // 100` (não é `preco - (preco * 15) // 100`) somente em 24 ou 25 de dezembro, em qualquer ano de 1 a 9999. Preço 1 em 25/12 → final 0. Nos outros dias, igual ao BEMVINDO fora da janela.
+- Qualquer outro texto → `ValueError`.
+
+Exemplos que a suíte deve ser capaz de segurar sozinha: percentuais com piso, piso do valor fixo, os dois extremos de BEMVINDO, 24 e 25 de dezembro, cupom vazio, cupom desconhecido, preço negativo e data inválida.
+enunciado.md
+descontos.py
+
+exec
+/bin/bash -lc 'cat descontos.py' in /tmp/bench-xh2cjpc3
+ succeeded in 0ms:
+"""Regras de cupom sobre um preço em centavos."""
+
+from datetime import date
+
+
+def aplicar_desconto(preco_centavos, cupom, hoje):
+    """Aplica um cupom e devolve preco_final, desconto e cupom_aplicado.
+
+    preco_centavos é int >= 0 (bool não vale). cupom é None, "" ou um código.
+    hoje é str no formato YYYY-MM-DD. Cupom desconhecido ou data inválida
+    levantam ValueError. Fora da janela, BEMVINDO e NATAL não alteram o preço
+    e cupom_aplicado fica None.
+    """
+    if isinstance(preco_centavos, bool) or not isinstance(preco_centavos, int):
+        raise TypeError("preco_centavos deve ser int")
+    if preco_centavos < 0:
+        raise ValueError("preco negativo")
+    if cupom is not None and not isinstance(cupom, str):
+        raise TypeError("cupom deve ser str ou None")
+    if not isinstance(hoje, str):
+        raise TypeError("hoje deve ser str")
+    if len(hoje) != 10 or hoje[4] != "-" or hoje[7] != "-":
+        raise ValueError("data invalida")
+    try:
+        dia = date.fromisoformat(hoje)
+    except ValueError as exc:
+        raise ValueError("data invalida") from exc
+
+    final, aplicado = _aplicar(preco_centavos, cupom, dia)
+    return {
+        "preco_final": final,
+        "desconto": preco_centavos - final,
+        "cupom_aplicado": aplicado,
+    }
+
+
+def _aplicar(preco, cupom, dia):
+    if cupom is None or cupom == "":
+        return preco, None
+    if cupom == "OFF10":
+        return (preco * 90) // 100, cupom
+    if cupom == "OFF5":
+        return (preco * 95) // 100, cupom
+    if cupom == "FIXO500":
+        return max(0, preco - 500), cupom
+    if cupom == "BEMVINDO":
+        inicio = date(2024, 1, 1)
+        fim = date(2024, 12, 31)
+        if inicio <= dia <= fim:
+            return (preco * 80) // 100, cupom
+        return preco, None
+    if cupom == "NATAL":
+        if (dia.month, dia.day) in {(12, 24), (12, 25)}:
+            return (preco * 85) // 100, cupom
+        return preco, None
+    raise ValueError("cupom desconhecido")
+
+codex
+O módulo corresponde ao contrato descrito. Vou cobrir os arredondamentos, os limites de validade dos cupons e a validação das entradas, sem alterar `descontos.py`.
+
+apply patch
+patch: completed
+/tmp/bench-xh2cjpc3/tests/test_descontos.py
+diff --git a/tests/test_descontos.py b/tests/test_descontos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5af16e53513d995a323d2aa32d69feb9d4bf81d0
+--- /dev/null
++++ b/tests/test_descontos.py
+@@ -0,0 +1,202 @@
++"""Testes do contrato público de aplicar_desconto."""
++
++from datetime import date
++
++import pytest
++
++from descontos import aplicar_desconto
++
++
++CUPONS = (None, "", "OFF10", "OFF5", "FIXO500", "BEMVINDO", "NATAL")
++PRECOS = tuple(range(202)) + (
++    499, 500, 501, 502, 999, 1000, 1001, 1999, 10001,
++    2**53 - 1, 2**53 + 1, 10**30 + 99,
++)
++
++
++def conferir(preco, cupom, hoje, final, aplicado):
++    resultado = aplicar_desconto(preco, cupom, hoje)
++    assert type(resultado) is dict
++    assert resultado == {
++        "preco_final": final,
++        "desconto": preco - final,
++        "cupom_aplicado": aplicado,
++    }
++    # Igualdade numérica sozinha também aceitaria floats e bools.
++    assert type(resultado["preco_final"]) is int
++    assert type(resultado["desconto"]) is int
++    if aplicado is not None:
++        assert type(resultado["cupom_aplicado"]) is str
++    else:
++        assert resultado["cupom_aplicado"] is None
++
++
++@pytest.mark.parametrize("preco", PRECOS)
++@pytest.mark.parametrize("cupom", (None, ""))
++def test_sem_cupom(preco, cupom):
++    conferir(preco, cupom, "2024-12-25", preco, None)
++
++
++@pytest.mark.parametrize("preco", PRECOS)
++@pytest.mark.parametrize(
++    "cupom,hoje,percentual_restante",
++    (
++        ("OFF10", "2025-06-15", 90),
++        ("OFF5", "2023-06-15", 95),
++        ("BEMVINDO", "2024-06-15", 80),
++        ("NATAL", "2025-12-24", 85),
++        ("NATAL", "2025-12-25", 85),
++    ),
++)
++def test_percentuais_com_piso(preco, cupom, hoje, percentual_restante):
++    final = (preco * percentual_restante) // 100
++    conferir(preco, cupom, hoje, final, cupom)
++
++
++@pytest.mark.parametrize("preco", PRECOS)
++def test_fixo500_inclusive_piso_e_preco_zero(preco):
++    final = 0 if preco <= 500 else preco - 500
++    conferir(preco, "FIXO500", "2024-01-01", final, "FIXO500")
++
++
++@pytest.mark.parametrize("preco", (0, 1, 101, 1000))
++@pytest.mark.parametrize(
++    "hoje,ativo",
++    (
++        ("0001-01-01", False),
++        ("2023-01-01", False),
++        ("2023-12-31", False),
++        ("2024-01-01", True),
++        ("2024-01-02", True),
++        ("2024-02-29", True),
++        ("2024-06-30", True),
++        ("2024-12-30", True),
++        ("2024-12-31", True),
++        ("2025-01-01", False),
++        ("2025-12-31", False),
++        ("9999-12-31", False),
++    ),
++)
++def test_janela_bemvindo(preco, hoje, ativo):
++    conferir(
++        preco, "BEMVINDO", hoje,
++        (preco * 80) // 100 if ativo else preco,
++        "BEMVINDO" if ativo else None,
++    )
++
++
++@pytest.mark.parametrize("ano", (1, 4, 100, 400, 1900, 2000, 2023, 2024, 2100, 9999))
++@pytest.mark.parametrize("mes", range(1, 13))
++@pytest.mark.parametrize("dia", (1, 23, 24, 25, 26, 28))
++@pytest.mark.parametrize("preco", (0, 1, 101))
++def test_natal_somente_24_e_25_de_dezembro_em_qualquer_ano(ano, mes, dia, preco):
++    hoje = f"{ano:04d}-{mes:02d}-{dia:02d}"
++    ativo = mes == 12 and dia in (24, 25)
++    conferir(
++        preco, "NATAL", hoje,
++        (preco * 85) // 100 if ativo else preco,
++        "NATAL" if ativo else None,
++    )
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize(
++    "hoje",
++    (
++        "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
++        "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
++        "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
++        "9999-12-24", "9999-12-25", "9999-12-31",
++    ),
++)
++def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
++    if cupom == "OFF10":
++        final, aplicado = 909, cupom
++    elif cupom == "OFF5":
++        final, aplicado = 959, cupom
++    elif cupom == "FIXO500":
++        final, aplicado = 511, cupom
++    elif cupom == "BEMVINDO" and hoje[:4] == "2024":
++        final, aplicado = 808, cupom
++    elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
++        final, aplicado = 859, cupom
++    else:
++        final, aplicado = 1011, None
++    conferir(1011, cupom, hoje, final, aplicado)
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize(
++    "preco",
++    (True, False, 0.0, 1.0, 1.5, float("inf"), float("nan"),
++     None, "100", b"100", [], {}, (), complex(100, 0)),
++)
++def test_preco_exige_int_e_rejeita_bool(cupom, preco):
++    with pytest.raises(TypeError):
++        aplicar_desconto(preco, cupom, "2024-12-25")
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize("preco", (-1, -500, -10000, -(10**30)))
++def test_preco_negativo(cupom, preco):
++    with pytest.raises(ValueError):
++        aplicar_desconto(preco, cupom, "2024-12-25")
++
++
++@pytest.mark.parametrize("cupom", (False, True, 0, 1, 0.0, [], {}, (), b"OFF10"))
++@pytest.mark.parametrize("preco", (0, 1000))
++def test_tipo_de_cupom(cupom, preco):
++    with pytest.raises(TypeError):
++        aplicar_desconto(preco, cupom, "2024-12-25")
++
++
++@pytest.mark.parametrize(
++    "cupom",
++    (
++        " ", "\t", "\n", "INEXISTENTE", "OFF", "OFF0", "OFF100", "off10",
++        "Off10", "off5", "fixo500", "bemvindo", "natal", " OFF10", "OFF10 ",
++        "OFF5\t", "\nFIXO500", " BEMVINDO ", "NATAL\n", "OFF10\0",
++        "OFF10OFF5", "OFF10,NATAL", "０ＦＦ１０",
++    ),
++)
++@pytest.mark.parametrize("preco", (0, 1000))
++@pytest.mark.parametrize("hoje", ("2024-12-25", "2025-06-01"))
++def test_texto_desconhecido_nao_e_normalizado(cupom, preco, hoje):
++    with pytest.raises(ValueError):
++        aplicar_desconto(preco, cupom, hoje)
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize(
++    "hoje",
++    (None, False, True, 20241225, 2024.0, b"2024-12-25", [], {}, (),
++     date(2024, 12, 25)),
++)
++def test_data_exige_string_mesmo_sem_desconto(cupom, hoje):
++    with pytest.raises(TypeError):
++        aplicar_desconto(1000, cupom, hoje)
++
++
++DATAS_INVALIDAS = (
++    "", " ", "\t", "2024", "2024-01", "20240101", "2024-W01-1",
++    "2024-1-01", "2024-01-1", "24-01-01", "02024-01-01",
++    "2024/01/01", "2024.01.01", "2024_01_01", "2024-01/01",
++    "2024/01-01", "01-01-2024", "2024-01-01 ", " 2024-01-01",
++    "2024-01-01\n", "2024-01-01T00:00:00", "2024-01-01Z",
++    "abcd-ef-gh", "２０２４-０１-０１", "2024-0x-01", "2024-01-xx",
++    "0000-01-01", "10000-01-01", "-001-01-01", "+024-01-01",
++    "2024-00-01", "2024-13-01", "2024-01-00", "2024-01-32",
++    "2024-04-31", "2024-06-31", "2024-09-31", "2024-11-31",
++    "2024-02-30", "2024-02-31", "2023-02-29", "0001-02-29",
++    "0100-02-29", "1500-02-29", "1700-02-29", "1800-02-29",
++    "1900-02-29", "2100-02-29", "2200-02-29", "2300-02-29",
++    "9999-02-29", "9999-12-32",
++)
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize("hoje", DATAS_INVALIDAS)
++@pytest.mark.parametrize("preco", (0, 1000))
++def test_data_invalida_mesmo_com_cupom_vazio_ou_preco_zero(cupom, hoje, preco):
++    with pytest.raises(ValueError):
++        aplicar_desconto(preco, cupom, hoje)
+
+exec
+/bin/bash -lc 'python -m pytest -q' in /tmp/bench-xh2cjpc3
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc 'python3 -m pytest -q' in /tmp/bench-xh2cjpc3
+ exited 1 in 2481ms:
+........................................................................ [  1%]
+........................................................................ [  2%]
+........................................................................ [  4%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [  8%]
+........................................................................ [  9%]
+........................................................................ [ 11%]
+........................................................................ [ 12%]
+........................................................................ [ 14%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 18%]
+........................................................................ [ 19%]
+........................................................................ [ 21%]
+........................................................................ [ 22%]
+........................................................................ [ 24%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 28%]
+........................................................................ [ 29%]
+........................................................................ [ 31%]
+........................................................................ [ 32%]
+........................................................................ [ 34%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 38%]
+........................................................................ [ 39%]
+........................................................................ [ 41%]
+........................................................................ [ 42%]
+........................................................................ [ 44%]
+........................................................................ [ 45%]
+........................................................................ [ 46%]
+........................................................................ [ 48%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 55%]
+........................................................................ [ 56%]
+........................................................................ [ 58%]
+........................................................................ [ 59%]
+........................................................................ [ 61%]
+........................................................................ [ 62%]
+........................................................................ [ 64%]
+........................................................................ [ 65%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 69%]
+........................................................................ [ 71%]
+........................................................................ [ 72%]
+........................................................................ [ 74%]
+........................................................................ [ 75%]
+........................................................................ [ 76%]
+...................................F......F......F......F......F......F. [ 78%]
+.....F......F......F......F......F......F......F......F......F.......... [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 82%]
+........................................................................ [ 83%]
+........................................................................ [ 85%]
+........................................................................ [ 86%]
+........................................................................ [ 88%]
+........................................................................ [ 89%]
+........................................................................ [ 91%]
+........................................................................ [ 92%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 96%]
+........................................................................ [ 98%]
+........................................................................ [ 99%]
+...................                                                      [100%]
+=================================== FAILURES ===================================
+_________ test_datas_validas_do_calendario_gregoriano[0001-01-01-OFF5] _________
+
+cupom = 'OFF5', hoje = '0001-01-01'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '0001-01-01', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[0001-12-25-OFF5] _________
+
+cupom = 'OFF5', hoje = '0001-12-25'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '0001-12-25', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[0004-02-29-OFF5] _________
+
+cupom = 'OFF5', hoje = '0004-02-29'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '0004-02-29', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[0400-02-29-OFF5] _________
+
+cupom = 'OFF5', hoje = '0400-02-29'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '0400-02-29', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[1600-02-29-OFF5] _________
+
+cupom = 'OFF5', hoje = '1600-02-29'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '1600-02-29', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[1900-02-28-OFF5] _________
+
+cupom = 'OFF5', hoje = '1900-02-28'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '1900-02-28', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[1900-03-01-OFF5] _________
+
+cupom = 'OFF5', hoje = '1900-03-01'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '1900-03-01', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[2000-02-29-OFF5] _________
+
+cupom = 'OFF5', hoje = '2000-02-29'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '2000-02-29', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[2024-02-29-OFF5] _________
+
+cupom = 'OFF5', hoje = '2024-02-29'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '2024-02-29', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[2100-02-28-OFF5] _________
+
+cupom = 'OFF5', hoje = '2100-02-28'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '2100-02-28', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[2100-03-01-OFF5] _________
+
+cupom = 'OFF5', hoje = '2100-03-01'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '2100-03-01', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[2400-02-29-OFF5] _________
+
+cupom = 'OFF5', hoje = '2400-02-29'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '2400-02-29', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[9999-12-24-OFF5] _________
+
+cupom = 'OFF5', hoje = '9999-12-24'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '9999-12-24', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[9999-12-25-OFF5] _________
+
+cupom = 'OFF5', hoje = '9999-12-25'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '9999-12-25', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+_________ test_datas_validas_do_calendario_gregoriano[9999-12-31-OFF5] _________
+
+cupom = 'OFF5', hoje = '9999-12-31'
+
+    @pytest.mark.parametrize("cupom", CUPONS)
+    @pytest.mark.parametrize(
+        "hoje",
+        (
+            "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
+            "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
+            "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
+            "9999-12-24", "9999-12-25", "9999-12-31",
+        ),
+    )
+    def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
+        if cupom == "OFF10":
+            final, aplicado = 909, cupom
+        elif cupom == "OFF5":
+            final, aplicado = 959, cupom
+        elif cupom == "FIXO500":
+            final, aplicado = 511, cupom
+        elif cupom == "BEMVINDO" and hoje[:4] == "2024":
+            final, aplicado = 808, cupom
+        elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
+            final, aplicado = 859, cupom
+        else:
+            final, aplicado = 1011, None
+>       conferir(1011, cupom, hoje, final, aplicado)
+
+tests/test_descontos.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+preco = 1011, cupom = 'OFF5', hoje = '9999-12-31', final = 959
+aplicado = 'OFF5'
+
+    def conferir(preco, cupom, hoje, final, aplicado):
+        resultado = aplicar_desconto(preco, cupom, hoje)
+        assert type(resultado) is dict
+>       assert resultado == {
+            "preco_final": final,
+            "desconto": preco - final,
+            "cupom_aplicado": aplicado,
+        }
+E       AssertionError: assert {'preco_final...cado': 'OFF5'} == {'preco_final...cado': 'OFF5'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'preco_final': 960} != {'preco_final': 959}
+E         {'desconto': 51} != {'desconto': 52}
+E         Use -v to get more diff
+
+tests/test_descontos.py:20: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[0001-01-01-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[0001-12-25-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[0004-02-29-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[0400-02-29-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[1600-02-29-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[1900-02-28-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[1900-03-01-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[2000-02-29-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[2024-02-29-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[2100-02-28-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[2100-03-01-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[2400-02-29-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[9999-12-24-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[9999-12-25-OFF5]
+FAILED tests/test_descontos.py::test_datas_validas_do_calendario_gregoriano[9999-12-31-OFF5]
+15 failed, 5044 passed in 2.28s
+
+apply patch
+patch: completed
+/tmp/bench-xh2cjpc3/tests/test_descontos.py
+diff --git a/tests/test_descontos.py b/tests/test_descontos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..004824ebf647b07d5542cc24cb12b3d57b26c820
+--- /dev/null
++++ b/tests/test_descontos.py
+@@ -0,0 +1,202 @@
++"""Testes do contrato público de aplicar_desconto."""
++
++from datetime import date
++
++import pytest
++
++from descontos import aplicar_desconto
++
++
++CUPONS = (None, "", "OFF10", "OFF5", "FIXO500", "BEMVINDO", "NATAL")
++PRECOS = tuple(range(202)) + (
++    499, 500, 501, 502, 999, 1000, 1001, 1999, 10001,
++    2**53 - 1, 2**53 + 1, 10**30 + 99,
++)
++
++
++def conferir(preco, cupom, hoje, final, aplicado):
++    resultado = aplicar_desconto(preco, cupom, hoje)
++    assert type(resultado) is dict
++    assert resultado == {
++        "preco_final": final,
++        "desconto": preco - final,
++        "cupom_aplicado": aplicado,
++    }
++    # Igualdade numérica sozinha também aceitaria floats e bools.
++    assert type(resultado["preco_final"]) is int
++    assert type(resultado["desconto"]) is int
++    if aplicado is not None:
++        assert type(resultado["cupom_aplicado"]) is str
++    else:
++        assert resultado["cupom_aplicado"] is None
++
++
++@pytest.mark.parametrize("preco", PRECOS)
++@pytest.mark.parametrize("cupom", (None, ""))
++def test_sem_cupom(preco, cupom):
++    conferir(preco, cupom, "2024-12-25", preco, None)
++
++
++@pytest.mark.parametrize("preco", PRECOS)
++@pytest.mark.parametrize(
++    "cupom,hoje,percentual_restante",
++    (
++        ("OFF10", "2025-06-15", 90),
++        ("OFF5", "2023-06-15", 95),
++        ("BEMVINDO", "2024-06-15", 80),
++        ("NATAL", "2025-12-24", 85),
++        ("NATAL", "2025-12-25", 85),
++    ),
++)
++def test_percentuais_com_piso(preco, cupom, hoje, percentual_restante):
++    final = (preco * percentual_restante) // 100
++    conferir(preco, cupom, hoje, final, cupom)
++
++
++@pytest.mark.parametrize("preco", PRECOS)
++def test_fixo500_inclusive_piso_e_preco_zero(preco):
++    final = 0 if preco <= 500 else preco - 500
++    conferir(preco, "FIXO500", "2024-01-01", final, "FIXO500")
++
++
++@pytest.mark.parametrize("preco", (0, 1, 101, 1000))
++@pytest.mark.parametrize(
++    "hoje,ativo",
++    (
++        ("0001-01-01", False),
++        ("2023-01-01", False),
++        ("2023-12-31", False),
++        ("2024-01-01", True),
++        ("2024-01-02", True),
++        ("2024-02-29", True),
++        ("2024-06-30", True),
++        ("2024-12-30", True),
++        ("2024-12-31", True),
++        ("2025-01-01", False),
++        ("2025-12-31", False),
++        ("9999-12-31", False),
++    ),
++)
++def test_janela_bemvindo(preco, hoje, ativo):
++    conferir(
++        preco, "BEMVINDO", hoje,
++        (preco * 80) // 100 if ativo else preco,
++        "BEMVINDO" if ativo else None,
++    )
++
++
++@pytest.mark.parametrize("ano", (1, 4, 100, 400, 1900, 2000, 2023, 2024, 2100, 9999))
++@pytest.mark.parametrize("mes", range(1, 13))
++@pytest.mark.parametrize("dia", (1, 23, 24, 25, 26, 28))
++@pytest.mark.parametrize("preco", (0, 1, 101))
++def test_natal_somente_24_e_25_de_dezembro_em_qualquer_ano(ano, mes, dia, preco):
++    hoje = f"{ano:04d}-{mes:02d}-{dia:02d}"
++    ativo = mes == 12 and dia in (24, 25)
++    conferir(
++        preco, "NATAL", hoje,
++        (preco * 85) // 100 if ativo else preco,
++        "NATAL" if ativo else None,
++    )
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize(
++    "hoje",
++    (
++        "0001-01-01", "0001-12-25", "0004-02-29", "0400-02-29",
++        "1600-02-29", "1900-02-28", "1900-03-01", "2000-02-29",
++        "2024-02-29", "2100-02-28", "2100-03-01", "2400-02-29",
++        "9999-12-24", "9999-12-25", "9999-12-31",
++    ),
++)
++def test_datas_validas_do_calendario_gregoriano(cupom, hoje):
++    if cupom == "OFF10":
++        final, aplicado = 909, cupom
++    elif cupom == "OFF5":
++        final, aplicado = 960, cupom
++    elif cupom == "FIXO500":
++        final, aplicado = 511, cupom
++    elif cupom == "BEMVINDO" and hoje[:4] == "2024":
++        final, aplicado = 808, cupom
++    elif cupom == "NATAL" and hoje[5:] in ("12-24", "12-25"):
++        final, aplicado = 859, cupom
++    else:
++        final, aplicado = 1011, None
++    conferir(1011, cupom, hoje, final, aplicado)
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize(
++    "preco",
++    (True, False, 0.0, 1.0, 1.5, float("inf"), float("nan"),
++     None, "100", b"100", [], {}, (), complex(100, 0)),
++)
++def test_preco_exige_int_e_rejeita_bool(cupom, preco):
++    with pytest.raises(TypeError):
++        aplicar_desconto(preco, cupom, "2024-12-25")
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize("preco", (-1, -500, -10000, -(10**30)))
++def test_preco_negativo(cupom, preco):
++    with pytest.raises(ValueError):
++        aplicar_desconto(preco, cupom, "2024-12-25")
++
++
++@pytest.mark.parametrize("cupom", (False, True, 0, 1, 0.0, [], {}, (), b"OFF10"))
++@pytest.mark.parametrize("preco", (0, 1000))
++def test_tipo_de_cupom(cupom, preco):
++    with pytest.raises(TypeError):
++        aplicar_desconto(preco, cupom, "2024-12-25")
++
++
++@pytest.mark.parametrize(
++    "cupom",
++    (
++        " ", "\t", "\n", "INEXISTENTE", "OFF", "OFF0", "OFF100", "off10",
++        "Off10", "off5", "fixo500", "bemvindo", "natal", " OFF10", "OFF10 ",
++        "OFF5\t", "\nFIXO500", " BEMVINDO ", "NATAL\n", "OFF10\0",
++        "OFF10OFF5", "OFF10,NATAL", "０ＦＦ１０",
++    ),
++)
++@pytest.mark.parametrize("preco", (0, 1000))
++@pytest.mark.parametrize("hoje", ("2024-12-25", "2025-06-01"))
++def test_texto_desconhecido_nao_e_normalizado(cupom, preco, hoje):
++    with pytest.raises(ValueError):
++        aplicar_desconto(preco, cupom, hoje)
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize(
++    "hoje",
++    (None, False, True, 20241225, 2024.0, b"2024-12-25", [], {}, (),
++     date(2024, 12, 25)),
++)
++def test_data_exige_string_mesmo_sem_desconto(cupom, hoje):
++    with pytest.raises(TypeError):
++        aplicar_desconto(1000, cupom, hoje)
++
++
++DATAS_INVALIDAS = (
++    "", " ", "\t", "2024", "2024-01", "20240101", "2024-W01-1",
++    "2024-1-01", "2024-01-1", "24-01-01", "02024-01-01",
++    "2024/01/01", "2024.01.01", "2024_01_01", "2024-01/01",
++    "2024/01-01", "01-01-2024", "2024-01-01 ", " 2024-01-01",
++    "2024-01-01\n", "2024-01-01T00:00:00", "2024-01-01Z",
++    "abcd-ef-gh", "２０２４-０１-０１", "2024-0x-01", "2024-01-xx",
++    "0000-01-01", "10000-01-01", "-001-01-01", "+024-01-01",
++    "2024-00-01", "2024-13-01", "2024-01-00", "2024-01-32",
++    "2024-04-31", "2024-06-31", "2024-09-31", "2024-11-31",
++    "2024-02-30", "2024-02-31", "2023-02-29", "0001-02-29",
++    "0100-02-29", "1500-02-29", "1700-02-29", "1800-02-29",
++    "1900-02-29", "2100-02-29", "2200-02-29", "2300-02-29",
++    "9999-02-29", "9999-12-32",
++)
++
++
++@pytest.mark.parametrize("cupom", CUPONS)
++@pytest.mark.parametrize("hoje", DATAS_INVALIDAS)
++@pytest.mark.parametrize("preco", (0, 1000))
++def test_data_invalida_mesmo_com_cupom_vazio_ou_preco_zero(cupom, hoje, preco):
++    with pytest.raises(ValueError):
++        aplicar_desconto(preco, cupom, hoje)
+
+exec
+/bin/bash -lc 'python3 -m pytest -q --tb=short' in /tmp/bench-xh2cjpc3
+ succeeded in 2478ms:
+........................................................................ [  1%]
+........................................................................ [  2%]
+........................................................................ [  4%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [  8%]
+........................................................................ [  9%]
+........................................................................ [ 11%]
+........................................................................ [ 12%]
+........................................................................ [ 14%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 18%]
+........................................................................ [ 19%]
+........................................................................ [ 21%]
+........................................................................ [ 22%]
+........................................................................ [ 24%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 28%]
+........................................................................ [ 29%]
+........................................................................ [ 31%]
+........................................................................ [ 32%]
+........................................................................ [ 34%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 38%]
+........................................................................ [ 39%]
+........................................................................ [ 41%]
+........................................................................ [ 42%]
+........................................................................ [ 44%]
+........................................................................ [ 45%]
+........................................................................ [ 46%]
+........................................................................ [ 48%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 55%]
+........................................................................ [ 56%]
+........................................................................ [ 58%]
+........................................................................ [ 59%]
+........................................................................ [ 61%]
+........................................................................ [ 62%]
+........................................................................ [ 64%]
+........................................................................ [ 65%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 69%]
+........................................................................ [ 71%]
+........................................................................ [ 72%]
+........................................................................ [ 74%]
+........................................................................ [ 75%]
+........................................................................ [ 76%]
+........................................................................ [ 78%]
+........................................................................ [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 82%]
+........................................................................ [ 83%]
+........................................................................ [ 85%]
+........................................................................ [ 86%]
+........................................................................ [ 88%]
+........................................................................ [ 89%]
+........................................................................ [ 91%]
+........................................................................ [ 92%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 96%]
+........................................................................ [ 98%]
+........................................................................ [ 99%]
+...................                                                      [100%]
+5059 passed in 2.15s
+
+codex
+Criei a suíte em [tests/test_descontos.py](/tmp/bench-xh2cjpc3/tests/test_descontos.py), cobrindo cálculos, arredondamentos, limites de datas e entradas inválidas.
+
+Validação: **5.059 testes passaram** com `python3 -m pytest -q`.
+
+`descontos.py` não foi alterado.
+tokens used
+15,009

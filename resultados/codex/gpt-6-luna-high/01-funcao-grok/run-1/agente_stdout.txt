@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-25a90co3/solucao.py) com validação estrita dos horários e dos intervalos, recorte à janela, união de ocupações sobrepostas ou encostadas e cálculo dos períodos livres.

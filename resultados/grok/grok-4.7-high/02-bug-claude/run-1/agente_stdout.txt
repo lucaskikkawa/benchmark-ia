@@ -1,0 +1,8 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.A docstring exige validação completa, intervalos fechados que se tocam e entrada intacta. Vou corrigir `intervalos.py` para seguir essa especificação.`intervalos.py` agora segue as docstrings das duas funções.
+
+- A entrada vazia devolve `[]` e `total_coberto` devolve `0`.
+- Todos os pares são validados antes de unir: `int` obrigatório (`bool` gera `TypeError`) e `inicio > fim` gera `ValueError`.
+- A entrada, inclusive geradores, não é alterada.
+- Intervalos que se sobrepõem ou se tocam viram um só, e o fim da união é o maior fim, não o do intervalo seguinte.
+
+Os exemplos do enunciado passam: `[(5, 7), (1, 3)]` → `[(1, 3), (5, 7)]`, intervalos que se tocam em `3` → `[(1, 6)]`, e `total_coberto([(1, 3), (2, 6), (8, 9)])` → `6`.

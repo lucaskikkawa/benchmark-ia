@@ -1,0 +1,3 @@
+Implementação concluída em [solucao.py](/tmp/bench-x51phgw5/solucao.py), com decisões documentadas em [SUPOSICOES.md](/tmp/bench-x51phgw5/SUPOSICOES.md).
+
+Verificações passaram para fórmula, categorias, arredondamento, valores negativos, Unicode, imutabilidade e histórico de um milhão de compras.

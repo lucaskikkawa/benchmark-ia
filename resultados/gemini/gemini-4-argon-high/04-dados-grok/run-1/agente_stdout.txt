@@ -1,0 +1,1 @@
+O arquivo [solucao.py](file:///tmp/bench-8l1mrwni/solucao.py) foi implementado com a função [`consolidar`](file:///tmp/bench-8l1mrwni/solucao.py#L51-L143) seguindo todas as regras de validação, cálculo de SLA e formatação especificadas em [enunciado.md](file:///tmp/bench-8l1mrwni/enunciado.md).

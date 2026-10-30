@@ -1,0 +1,16 @@
+Implementei a função em `solucao.py` e escrevi as suposições em `SUPOSICOES.md`, ambos na raiz deste diretório. Testei o comportamento com checagens inline e todas passaram. Não existe suíte de testes no diretório, então não criei arquivo de teste.
+
+**O que está em `solucao.py`**
+- O score segue a fórmula do enunciado: `round(sum(compras) * 0.1 + anos_ativo * 5, 2)`.
+- O retorno tem exatamente `id`, `nome`, `score` e `categoria`. `id` e `nome` são repassados sem alteração.
+- A função não modifica `dados` nem a lista `compras`. Testei isso com uma cópia profunda antes e depois da chamada.
+- Testei também Unicode em `id` e `nome`, e uma lista de 2 milhões de compras, que processa instantaneamente.
+
+**Decisões tomadas nos pontos em aberto** (detalhadas em `SUPOSICOES.md`):
+- **Categorias** pelo score já arredondado, com limites inferiores inclusivos: `Platina` ≥ 600, `Ouro` ≥ 300, `Prata` ≥ 100, `Bronze` abaixo disso. Os limites estão numa tupla `CATEGORIAS` no topo do arquivo. São um ponto de partida por julgamento, não derivados de dados reais.
+- **Estornos** (valores negativos) são somados, reduzindo o score base, e não são ignorados. Com isso, o score pode ser negativo, caso em que a categoria é `Bronze`.
+- **Anos negativos** são tratados como 0, para que a função sempre devolva o dicionário completo.
+- **Campos extras** são ignorados e não aparecem no retorno.
+- **Campos ausentes:** `compras` ausente vira lista vazia e `anos_ativo` ausente vira 0. `id` e `nome` continuam obrigatórios e lançam `KeyError` se faltarem.
+
+Não criei nenhum documento no Google Docs ou no Claude Docs, porque você não pediu. Também não fiz commit, porque o diretório não é um repositório git.

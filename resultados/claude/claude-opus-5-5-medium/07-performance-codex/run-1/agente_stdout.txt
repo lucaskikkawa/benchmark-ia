@@ -1,0 +1,16 @@
+Criei o `pares.py` com `contar_pares(valores, alvo)`. A função lê a entrada uma única vez e guarda num dicionário quantas vezes cada valor já apareceu. Para cada `x`, soma ao total a contagem de `alvo - x` vista até então e depois registra o próprio `x`.
+
+Assim:
+- **Pares:** cada par `i < j` é contado uma vez, e um elemento nunca forma par consigo mesmo.
+- **Desempenho:** o tempo esperado é O(n) e a memória é O(k), já que o dicionário só guarda valores distintos.
+- **Entrada:** aceita geradores de uma passagem sem materializá-los e não altera listas recebidas.
+- **Inteiros grandes:** são comparados com exatidão, porque o Python usa inteiros de precisão arbitrária.
+- **Entre chamadas:** nenhum estado é retido.
+
+Rodei uma verificação rápida, e tudo passou:
+- **Exemplos do enunciado:** `[2,2,2]` com alvo 4 dá 3, `[1,3,2,2]` com alvo 4 dá 2, e entrada vazia ou com um só elemento dá 0.
+- **Inteiros acima de 64 bits:** um gerador com `10**30` e `-10**30+1`, alvo 1, dá o resultado certo.
+- **Tempo:** cerca de 0,1 s para 1.000.000 de valores aleatórios e cerca de 0,06 s para 1.000.000 de uns, que gera 499.999.500.000 pares.
+- **Memória:** com `tracemalloc`, um gerador de 1.000.000 de valores com 4 distintos teve pico adicional de cerca de 1 KB, bem abaixo do limite de 4 MiB.
+
+Não havia arquivo de testes neste diretório, então não rodei a suíte oficial nem o subprocesso com limite de 12 segundos.

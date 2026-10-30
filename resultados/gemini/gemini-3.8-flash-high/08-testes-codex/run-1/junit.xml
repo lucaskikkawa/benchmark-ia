@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="15" failures="0" skipped="0" tests="15" time="0.076" timestamp="2026-10-29T20:38:17.016070-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_mutacao" name="test_suite_passou_no_modulo_correto" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_01_produto]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_02_sinal_desconto]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_03_arredondamento]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_04_frete_vazio]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_05_sem_frete]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_06_limite_desconto]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_07_quantidade_negativa]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_08_preco_negativo]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_09_zero_como_unidade]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_10_mutacao_entrada]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_11_float_centavos]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_12_trunca_por_linha]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_13_para_em_zero]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase><testcase classname="testes_ocultos.test_mutacao" name="test_mata_mutante[mutante_14_muta_apos_erro]" time="0.000"><error message="failed on setup with &quot;AssertionError: Crie tests/test_*.py&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir&quot;">@pytest.fixture(scope='session')
+    def suite_valida():
+&gt;       resultado = executar_suite(OCULTOS / 'suporte' / 'carrinho_correto.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutacao.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+modulo = PosixPath('/tmp/bench-9vlfjhg5/testes_ocultos/suporte/carrinho_correto.py')
+
+    def executar_suite(modulo):
+        testes = TRABALHO / 'tests'
+&gt;       assert testes.is_dir(), 'Crie tests/test_*.py'
+E       AssertionError: Crie tests/test_*.py
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-9vlfjhg5/tests').is_dir
+
+testes_ocultos/test_mutacao.py:17: AssertionError</error></testcase></testsuite></testsuites>

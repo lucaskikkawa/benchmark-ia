@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O enunciado pede um agregador de CSV para JSON. Vou confirmar o comportamento do leitor CSV e implementar `solucao.py`.

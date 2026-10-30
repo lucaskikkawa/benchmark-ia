@@ -1,0 +1,53 @@
+...........................F..........F...                               [100%]
+=================================== FAILURES ===================================
+__ test_separadores_repetidos_e_combinados[((11)) 98765-4321-+5511987654321] ___
+
+entrada = '((11)) 98765-4321', esperado = '+5511987654321'
+
+    @pytest.mark.parametrize(
+        "entrada, esperado",
+        [
+            ("( 11 )  98765 - 4321", "+5511987654321"),
+            ("11..98765..4321", "+5511987654321"),
+            ("+55  (21)  3456--7890", "+552134567890"),
+            ("((11)) 98765-4321", "+5511987654321"),
+            ("+55 55 3456-7890", "+555534567890"),
+            ("(99) 5999-0000", "+559959990000"),
+        ],
+    )
+    def test_separadores_repetidos_e_combinados(entrada, esperado):
+>       assert normalizar_telefone(entrada) == esperado
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_telefones.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+texto = '((11)) 98765-4321'
+
+    def normalizar_telefone(texto: str) -> str:
+        """Normalize one Brazilian phone number to E.164."""
+        if not isinstance(texto, str) or not texto or not _CARACTERES_PERMITIDOS.fullmatch(texto):
+            raise ValueError("formato de telefone inválido")
+    
+        # Parênteses, quando usados, devem formar um único par ao redor do DDD.
+        if texto.count("(") != texto.count(")") or texto.count("(") > 1:
+>           raise ValueError("parênteses inválidos")
+E           ValueError: parênteses inválidos
+
+telefones.py:34: ValueError
+_____________ test_extrair_nao_recorta_sequencia_maior_de_digitos ______________
+
+    def test_extrair_nao_recorta_sequencia_maior_de_digitos():
+        assert extrair_telefones("Protocolo 001198765432100 aberto") == []
+        assert extrair_telefones("Pedido 5511987654321999") == []
+>       assert extrair_telefones("ID 11987654321-0") == []
+E       AssertionError: assert ['+5511987654321'] == []
+E         
+E         Left contains one more item: '+5511987654321'
+E         Use -v to get more diff
+
+testes_ocultos/test_telefones.py:140: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_telefones.py::test_separadores_repetidos_e_combinados[((11)) 98765-4321-+5511987654321]
+FAILED testes_ocultos/test_telefones.py::test_extrair_nao_recorta_sequencia_maior_de_digitos
+2 failed, 40 passed in 0.06s

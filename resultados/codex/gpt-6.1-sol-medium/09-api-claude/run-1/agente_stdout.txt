@@ -1,0 +1,5 @@
+Implementado em `cliente.py`, com retry, backoff, timeout, orçamento de espera e consultas em lote conforme o enunciado.
+
+Criado `test_cliente.py`: os 14 testes passaram com `python3 -m unittest -v`, incluindo 2.000 tentativas sem overflow.
+
+`fake_api.py` permaneceu intacto.

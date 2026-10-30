@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O código legado está monolítico. Vou extrair as classes pedidas e manter `processar_pedidos` com o mesmo formato de retorno, arredondando cada item antes de somar.A refatoração de `processador.py` está pronta. A função `processar_pedidos` mantém a mesma interface e o mesmo formato de retorno, agora apoiada nas classes pedidas.
+
+- `ItemPedido` valida preço, quantidade e peso e expõe `subtotal` e `peso_total` já arredondados.
+- `CalculadoraFrete` e `CalculadoraDesconto` concentram as regras de frete grátis, tipo de entrega e categoria do cliente.
+- `Pedido` soma os valores por item, delega desconto e frete e monta o dicionário final em `para_dict`.
+- Pedidos sem itens, ou com campos opcionais ausentes, seguem os padrões das classes.

@@ -1,0 +1,17 @@
+Criei `agenda_cli.py`, que implementa a CLI do enunciado usando só a biblioteca padrão. Rodei um teste manual de ponta a ponta e todos os casos que verifiquei deram o resultado esperado.
+
+**Casos verificados no teste:**
+- **`adicionar`:** o título é normalizado com `strip` (a variante com `\u00a0` cai em `titulo vazio`), títulos com tab são rejeitados e acentos são gravados em UTF-8. O prazo `2000-02-29` é aceito e o `1900-02-29` é rejeitado.
+- **`concluir`:** `--id 01` vale como id 1; concluir de novo dá `ja concluida` e um id que não existe dá `id inexistente`.
+- **`listar`:** a ordem e as colunas separadas por tab estão certas, os dois filtros combinados funcionam e um arquivo que não existe dá `arquivo inexistente`.
+- **Ids com buraco:** com ids 1 e 3 e `proximo_id` 5, a listagem funciona e o próximo `adicionar` grava `ok id=5`.
+- **Arquivos inválidos:** `proximo_id: 1.0` e `proximo_id` igual a um id já usado dão `arquivo invalido`, e o arquivo continua byte a byte igual (conferi pelo md5).
+- **Erros do argparse:** sem subcomando, com argumento desconhecido ou com prioridade inválida, o código de saída é 2.
+
+**Decisões onde o enunciado deixa margem:**
+- **Ordem das checagens no `adicionar`:** valido título e prazo antes de abrir o arquivo. Se um teste esperar `arquivo invalido` junto com um título ruim, a mensagem vai ser a do título.
+- **Validação mais rígida:** chaves JSON duplicadas e `NaN`/`Infinity` tornam o arquivo inválido. Também desliguei a abreviação de opções (`--tit` não vale por `--titulo`), e `--id` só aceita dígitos, com sinal opcional.
+- **Gravação atômica:** o arquivo é escrito num temporário e depois substituído, então um arquivo que já existe nunca fica pela metade.
+- **Formato de saída:** a saída padrão sai sempre em UTF-8. O arquivo é regravado com as chaves na ordem canônica.
+
+Para os testes, usei uma pasta temporária fora deste diretório (`/tmp/agtest`), o que fugiu um pouco da instrução de trabalhar só aqui. Ela já foi apagada; neste diretório só ficou o `agenda_cli.py`.

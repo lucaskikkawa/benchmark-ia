@@ -1,0 +1,31 @@
+{
+ "autora": "codex",
+ "resolvedora": "grok",
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 4.0
+  }
+ },
+ "obs": [],
+ "rubrica_10": 4.5,
+ "nota_final_10": 1.52
+}

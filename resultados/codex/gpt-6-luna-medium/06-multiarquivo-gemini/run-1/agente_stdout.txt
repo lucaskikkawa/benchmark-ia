@@ -1,0 +1,1 @@
+Implementei o pacote `eventhub` nos quatro arquivos especificados: modelos, handlers, fila de prioridade, despacho e exportações na raiz do pacote. Não executei testes.
