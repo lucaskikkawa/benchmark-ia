@@ -1,0 +1,3 @@
+Implementei `processar_vendas` em [analisador_vendas.py](/tmp/bench-4jr4vywq/analisador_vendas.py). A função valida os parâmetros e o arquivo, filtra e agrega as vendas válidas, ordena os resultados e grava o JSON criando os diretórios de saída necessários.
+
+Não executei testes.

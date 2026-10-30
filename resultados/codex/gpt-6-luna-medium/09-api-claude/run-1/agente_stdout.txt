@@ -1,0 +1,3 @@
+Criei [cliente.py](/tmp/bench-7dorfgqt/cliente.py) com validação de IDs, retry e backoff, suporte a `Retry-After`, orçamento de espera e consulta de vários usuários com deduplicação.
+
+Não consegui compilar o arquivo: o ambiente não tem o comando `python`.

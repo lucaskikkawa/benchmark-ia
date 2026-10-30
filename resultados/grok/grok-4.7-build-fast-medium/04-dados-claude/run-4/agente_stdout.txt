@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com arquivos daqui.Vou conferir como o `csv` do Python trata linhas vazias e BOM antes de escrever a solução.O enunciado pede um agregador de CSV que grave o resumo em JSON. Vou implementar `solucao.py` e conferir com o exemplo e os casos de erro.

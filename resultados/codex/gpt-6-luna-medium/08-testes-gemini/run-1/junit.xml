@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="13" time="2.383" timestamp="2026-10-29T19:11:10.273981-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_runner" name="test_suite_passa_no_modulo_original" time="0.193"><failure message="AssertionError: A suíte de testes do candidato falhou ao rodar contra o módulo original correto!&#10;  Stdout:&#10;  ...F.........F............                                               [100%]&#10;  =================================== FAILURES ===================================&#10;  ____________________ test_limite_maximo_padrao_e_inclusivo _____________________&#10;  &#10;      def test_limite_maximo_padrao_e_inclusivo():&#10;          validador = ValidadorSenha()&#10;[+57 more lines; full report in element text]">def test_suite_passa_no_modulo_original():
+        tests_dir = ROOT_DIR / "tests"
+        assert tests_dir.is_dir(), "Diretório 'tests/' não encontrado no diretório raiz da solução."
+        res = executar_suite_isolada(ROOT_DIR / "validador.py")
+&gt;       assert res.returncode == 0, (
+            f"A suíte de testes do candidato falhou ao rodar contra o módulo original correto!\n"
+            f"Stdout:\n{res.stdout}\nStderr:\n{res.stderr}"
+        )
+E       AssertionError: A suíte de testes do candidato falhou ao rodar contra o módulo original correto!
+E         Stdout:
+E         ...F.........F............                                               [100%]
+E         =================================== FAILURES ===================================
+E         ____________________ test_limite_maximo_padrao_e_inclusivo _____________________
+E         
+E             def test_limite_maximo_padrao_e_inclusivo():
+E                 validador = ValidadorSenha()
+E         &gt;       assert_valida(validador, "A" + "b" * 61 + "1!")
+E         
+E         tests/test_validador.py:32: 
+E         _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+E         
+E         validador = &lt;validador.ValidadorSenha object at 0x7fd02dc19b20&gt;
+E         senha = 'Abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb1!'
+E         
+E             def assert_valida(validador, senha):
+E                 valida, erros = validador.validar(senha)
+E         &gt;       assert valida is True
+E         E       assert False is True
+E         
+E         tests/test_validador.py:8: AssertionError
+E         __________________ test_rejeita_cada_regra_violada[Aaa1!xyz] ___________________
+E         
+E         senha = 'Aaa1!xyz'
+E         
+E             @pytest.mark.parametrize(
+E                 "senha",
+E                 [
+E                     "abcdef1!",  # falta maiúscula
+E                     "ABCDEFG1!",  # falta minúscula
+E                     "Abcdefg!!",  # falta dígito
+E                     "Abcdefg1x",  # falta especial permitido
+E                     "Abcdef1 !",  # espaço comum
+E                     "Abcdef1\t!",  # tabulação
+E                     "Abcdef1\n!",  # quebra de linha
+E                     "Abcdef111!",  # repetição no final
+E                     "Aaa1!xyz",  # repetição no início
+E                     "Abc111!x",  # repetição no meio
+E                 ],
+E             )
+E             def test_rejeita_cada_regra_violada(senha):
+E         &gt;       assert_invalida(ValidadorSenha(), senha)
+E         
+E         tests/test_validador.py:60: 
+E         _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+E         
+E         validador = &lt;validador.ValidadorSenha object at 0x7fd02da74080&gt;
+E         senha = 'Aaa1!xyz'
+E         
+E             def assert_invalida(validador, senha):
+E                 valida, erros = validador.validar(senha)
+E         &gt;       assert valida is False
+E         E       assert True is False
+E         
+E         tests/test_validador.py:14: AssertionError
+E         =========================== short test summary info ============================
+E         FAILED tests/test_validador.py::test_limite_maximo_padrao_e_inclusivo - asser...
+E         FAILED tests/test_validador.py::test_rejeita_cada_regra_violada[Aaa1!xyz] - a...
+E         2 failed, 24 passed in 0.03s
+E         
+E         Stderr:
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '-m', 'pytest', '-q', 'tests'], returncode=1, s... tests/test_validador.py::test_rejeita_cada_regra_violada[Aaa1!xyz] - a...\n2 failed, 24 passed in 0.03s\n', stderr='').returncode
+
+testes_ocultos/test_runner.py:38: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_01" time="0.176" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_02" time="0.179" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_03" time="0.220" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_04" time="0.172" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_05" time="0.174" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_06" time="0.193" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_07" time="0.186" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_08" time="0.172" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_09" time="0.183" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_10" time="0.167" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_11" time="0.169" /><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_12" time="0.173" /></testsuite></testsuites>

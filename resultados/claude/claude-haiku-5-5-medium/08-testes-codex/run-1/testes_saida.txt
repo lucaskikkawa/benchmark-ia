@@ -1,0 +1,25 @@
+..............F                                                          [100%]
+=================================== FAILURES ===================================
+_________________ test_mata_mutante[mutante_14_muta_apos_erro] _________________
+
+mutante = PosixPath('/tmp/bench-1v_023vm/testes_ocultos/mutantes/mutante_14_muta_apos_erro.py')
+suite_valida = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '-m', 'pytest', '-q', 'tests', '--tb=short', '-...out='.........................................                                [100%]\n41 passed in 0.03s\n', stderr='')
+
+    @pytest.mark.parametrize('mutante', MUTANTES, ids=lambda p: p.stem)
+    def test_mata_mutante(mutante, suite_valida):
+        resultado = executar_suite(mutante)
+        # Código 1 significa falha de teste; erro de coleta (2) ou ausência (5) não mata.
+>       assert resultado.returncode == 1, (f'{mutante.stem}: esperado teste falhar (código 1), '
+                                          f'obtido {resultado.returncode}.\n'
+                                          + resultado.stdout + resultado.stderr)
+E       AssertionError: mutante_14_muta_apos_erro: esperado teste falhar (código 1), obtido 0.
+E         .........................................                                [100%]
+E         41 passed in 0.03s
+E         
+E       assert 0 == 1
+E        +  where 0 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '-m', 'pytest', '-q', 'tests', '--tb=short', '-...out='.........................................                                [100%]\n41 passed in 0.03s\n', stderr='').returncode
+
+testes_ocultos/test_mutacao.py:52: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_mutacao.py::test_mata_mutante[mutante_14_muta_apos_erro]
+1 failed, 14 passed in 2.87s

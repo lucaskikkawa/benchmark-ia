@@ -1,0 +1,10 @@
+Criei `solucao.py` neste diretório com a função `consolidar(caminho_csv, caminho_sla, caminho_saida)`. Ela usa só a biblioteca padrão e não exige nenhum arquivo de amostra.
+
+Testei com um script temporário, que removi depois. O exemplo do enunciado dá `pior_id` `a1` e média 45. O desempate entre `a10` e `a2` escolhe `a10`. A ordenação das equipes segue o code point. Também passaram os casos de BOM, CRLF, campos com aspas, duplicatas após o strip, datas inexistentes, prioridade com maiúscula, SLA malformado e arquivo ausente (`FileNotFoundError`). O CSV só com cabeçalho produz `{"equipes": []}`.
+
+Algumas decisões onde o enunciado deixava espaço:
+- **Cabeçalho:** precisa ser a primeira linha do arquivo. Linhas em branco antes dele resultam em `ValueError`.
+- **Linhas de dados:** uma linha em que todos os campos estão vazios é ignorada, qualquer que seja o número de colunas. Qualquer outra linha com número de colunas diferente de 5 gera `ValueError`.
+- **Erros do módulo `csv`:** são convertidos em `ValueError`, já que `csv.Error` não herda de `ValueError`.
+- **Gravação:** o arquivo é aberto com `newline=""`, para que a saída seja byte a byte `json.dumps(...) + "\n"` também no Windows.
+- **Ordem de leitura:** o CSV é lido antes do SLA. Quando ambos estão inválidos, a mensagem de erro corresponde ao CSV.

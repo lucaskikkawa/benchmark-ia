@@ -1,21 +1,36 @@
-def unir_intervalos(intervalos) -> list[tuple[int, int]]:
-    """Une intervalos fechados que se sobrepõem ou compartilham extremidade.
+def unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]:
+    """Une intervalos fechados, com recorte opcional em ``limites``.
 
-    Intervalos separados por uma unidade permanecem distintos. A lista recebida
-    não é alterada; geradores são consumidos uma única vez.
+    Intervalos que se sobrepõem ou compartilham uma extremidade são fundidos.
+    Um vão de pelo menos uma unidade permanece separado. ``limites``, quando
+    informado, é o recorte fechado ``(minimo, maximo)`` aplicado antes da união.
     """
-    pares = [(inicio, fim) for inicio, fim in intervalos]
-    for inicio, fim in pares:
-        if inicio > fim:
-            raise ValueError("início maior que o fim")
+    if limites is not None:
+        minimo, maximo = limites
+        if minimo > maximo:
+            raise ValueError("limites invertidos")
 
-    if not pares:
+    preparados: list[tuple[int, int]] = []
+    for inicio, fim in intervalos:
+        if inicio > fim:
+            raise ValueError("intervalo invertido")
+        if limites is not None:
+            if inicio < minimo:
+                inicio = minimo
+            if fim > maximo:
+                fim = maximo
+            if inicio > fim:
+                continue
+        preparados.append((inicio, fim))
+
+    if not preparados:
         return []
 
-    pares.sort()
+    preparados.sort()
+
     uniao: list[tuple[int, int]] = []
-    atual_inicio, atual_fim = pares[0]
-    for inicio, fim in pares[1:]:
+    atual_inicio, atual_fim = preparados[0]
+    for inicio, fim in preparados[1:]:
         if inicio <= atual_fim:
             if fim > atual_fim:
                 atual_fim = fim

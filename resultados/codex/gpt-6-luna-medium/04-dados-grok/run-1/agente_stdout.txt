@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-ampgt2e4/solucao.py) com a função `consolidar`, incluindo validação do CSV e do SLA, consolidação por equipe e gravação do JSON no formato pedido.

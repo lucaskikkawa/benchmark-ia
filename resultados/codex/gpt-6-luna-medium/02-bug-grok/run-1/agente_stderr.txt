@@ -1,0 +1,353 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-nqpamuxb
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189b4-859d-71e1-835e-61dcc9ac9d48
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:07:53.206282Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, identificar o que precisa ser implementado e fazer as alterações aqui.
+exec
+/bin/bash -lc "cat enunciado.md && printf '\\n--- FILES ---\\n' && rg --files -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-nqpamuxb
+ succeeded in 0ms:
+# Tarefa: corrigir o fechamento de boletim
+
+O arquivo `boletim.py` (no diretório de trabalho) expõe `fechar_boletim(provas)`. O comportamento abaixo é o contrato. A implementação atual discorda dele em vários pontos (notas de fronteira, ausências, descarte, arredondamento, conceitos e a própria lista recebida). **Edite apenas `boletim.py`**. Não mude o nome nem a assinatura. Use só a biblioteca padrão.
+
+```python
+def fechar_boletim(provas: list) -> dict:
+    ...
+```
+
+## Entrada
+
+`provas` é uma `list` com 1 a 4 posições. Cada item é:
+
+- `int` ou `float` finito no intervalo fechado `[0, 10]`, ou
+- `None`, que significa ausência e **não entra** na conta (não é zero).
+
+`bool` não é nota (`True`/`False` → `TypeError`). Outro tipo que não seja `int`, `float` ou `None` → `TypeError`. `provas` que não seja `list` → `TypeError`.
+
+`ValueError` quando:
+
+- `len(provas)` é 0 ou maior que 4;
+- depois de ignorar `None` não sobra nenhuma nota;
+- alguma nota não é finita ou está fora de `[0, 10]` (10 e 0 são válidos).
+
+Não altere a lista recebida.
+
+## Cálculo
+
+1. Separe as notas válidas, na ordem original, ignorando `None`.
+2. Só quando houver **exatamente 4** notas válidas, descarte **uma** ocorrência do menor valor (se houver empate, remova só a primeira). Com 1, 2 ou 3 notas válidas não se descarta nada. O campo `descartada` é esse valor convertido com `float`, ou `None` se nada foi descartado.
+3. Converta cada nota restante com `Decimal(str(nota))` (não use `Decimal(nota)` direto num float, nem `round`). Some todas e só então divida por `n`. Arredonde **uma vez**, a média já dividida: `(soma / n).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`. Não arredonde nota a nota antes de somar. O campo `media` é `float` desse resultado. O valor cabe em `[0, 10]` e pode chegar a `10.0` por arredondamento (entrada `9.995`).
+4. Conceito em cima da média já arredondada, limites inclusivos:
+   - `>= 9` → `"A"`
+   - `>= 7` → `"B"`
+   - `>= 5` → `"C"`
+   - caso contrário → `"D"`
+5. `aprovado` é `True` somente quando o conceito não é `"D"`.
+
+## Retorno
+
+Dict com exatamente estas chaves:
+
+```python
+{
+    "media": float,
+    "conceito": str,       # "A", "B", "C" ou "D"
+    "aprovado": bool,
+    "descartada": float | None,
+}
+```
+
+## Exemplos
+
+```python
+fechar_boletim([9])                # media 9.0,  conceito "A", aprovado True,  descartada None
+fechar_boletim([7])                # media 7.0,  conceito "B"
+fechar_boletim([5])                # media 5.0,  conceito "C"
+fechar_boletim([4])                # media 4.0,  conceito "D", aprovado False
+fechar_boletim([1.005])            # media 1.01
+fechar_boletim([4.999])            # media 5.0,  conceito "C"
+fechar_boletim([1.0, 1.01])        # media 1.01, descartada None
+fechar_boletim([1, 2, 3, 4])       # descarta 1.0, media 3.0, conceito "D"
+fechar_boletim([10, 0, 10, 10])    # descarta 0.0, media 10.0, conceito "A"
+fechar_boletim([None, 8, 8])       # media 8.0, descartada None
+fechar_boletim([0.015])            # media 0.02  (HALF_UP; round(0.015, 2) não serve)
+fechar_boletim([8.995])            # media 9.0, conceito "A"
+fechar_boletim([9.995])            # media 10.0, conceito "A"
+fechar_boletim([1.005, 1.004])     # sem descarte; soma 2.009 / 2 = 1.0045 → media 1.0
+fechar_boletim([5, 1, 1, 9])       # descarta só o primeiro 1.0; media 5.0
+fechar_boletim([7, 7, 7, 7])       # descarta 7.0; media 7.0, conceito "B"
+fechar_boletim([])                  # ValueError
+fechar_boletim([None, None])        # ValueError
+fechar_boletim([1, 1, 1, 1, 1])     # ValueError
+fechar_boletim([True])              # TypeError
+```
+
+--- FILES ---
+enunciado.md
+boletim.py
+
+codex
+Agora vou inspecionar `boletim.py` e substituir apenas sua implementação para cumprir as validações e o cálculo Decimal especificados.
+exec
+/bin/bash -lc 'cat boletim.py' in /tmp/bench-nqpamuxb
+ succeeded in 0ms:
+"""Fechamento de boletim. A implementação abaixo não segue o contrato do enunciado."""
+
+
+def fechar_boletim(provas):
+    if type(provas) is not list:
+        raise TypeError("provas deve ser list")
+    provas.reverse()
+    if len(provas) == 0:
+        return {
+            "media": 0.0,
+            "conceito": "D",
+            "aprovado": False,
+            "descartada": None,
+        }
+    nums = []
+    for nota in provas:
+        if nota is None:
+            nums.append(0.0)
+            continue
+        if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+            raise TypeError("nota invalida")
+        if nota < 0 or nota >= 10:
+            raise ValueError("nota invalida")
+        nums.append(float(nota))
+    descartada = None
+    if len(nums) >= 2:
+        menor = min(nums)
+        nums.remove(menor)
+        descartada = menor
+    media = sum(nums) / len(nums)
+    media = int(media * 100) / 100.0
+    if media > 9:
+        conceito = "A"
+    elif media > 7:
+        conceito = "B"
+    elif media > 5:
+        conceito = "C"
+    else:
+        conceito = "D"
+    return {
+        "media": media,
+        "conceito": conceito,
+        "aprovado": conceito != "D",
+        "descartada": descartada,
+    }
+
+apply patch
+patch: completed
+/tmp/bench-nqpamuxb/boletim.py
+diff --git a/boletim.py b/boletim.py
+deleted file mode 100644
+index 7dbf35b0e0bfa8bafa895a75d8463b8325920e55..0000000000000000000000000000000000000000
+--- a/boletim.py
++++ /dev/null
+@@ -1,45 +0,0 @@
+-"""Fechamento de boletim. A implementação abaixo não segue o contrato do enunciado."""
+-
+-
+-def fechar_boletim(provas):
+-    if type(provas) is not list:
+-        raise TypeError("provas deve ser list")
+-    provas.reverse()
+-    if len(provas) == 0:
+-        return {
+-            "media": 0.0,
+-            "conceito": "D",
+-            "aprovado": False,
+-            "descartada": None,
+-        }
+-    nums = []
+-    for nota in provas:
+-        if nota is None:
+-            nums.append(0.0)
+-            continue
+-        if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+-            raise TypeError("nota invalida")
+-        if nota < 0 or nota >= 10:
+-            raise ValueError("nota invalida")
+-        nums.append(float(nota))
+-    descartada = None
+-    if len(nums) >= 2:
+-        menor = min(nums)
+-        nums.remove(menor)
+-        descartada = menor
+-    media = sum(nums) / len(nums)
+-    media = int(media * 100) / 100.0
+-    if media > 9:
+-        conceito = "A"
+-    elif media > 7:
+-        conceito = "B"
+-    elif media > 5:
+-        conceito = "C"
+-    else:
+-        conceito = "D"
+-    return {
+-        "media": media,
+-        "conceito": conceito,
+-        "aprovado": conceito != "D",
+-        "descartada": descartada,
+-    }
+
+2026-10-29T22:08:01.672580Z ERROR codex_core::tools::router: error=apply_patch verification failed: invalid hunk at line 3, '"""Fechamento de boletim."""' is not a valid hunk header. Valid hunk headers: '*** Add File: {path}', '*** Delete File: {path}', '*** Update File: {path}'
+exec
+/bin/bash -lc "cat > boletim.py <<'PY'
+\"\"\"Fechamento de boletim.\"\"\"
+
+from decimal import Decimal, ROUND_HALF_UP
+import math
+
+
+def fechar_boletim(provas: list) -> dict:
+    if not isinstance(provas, list):
+        raise TypeError(\"provas deve ser list\")
+    if not 1 <= len(provas) <= 4:
+        raise ValueError(\"provas deve conter de 1 a 4 itens\")
+
+    notas = []
+    for nota in provas:
+        if nota is None:
+            continue
+        if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+            raise TypeError(\"nota deve ser int, float ou None\")
+        if isinstance(nota, float) and not math.isfinite(nota):
+            raise ValueError(\"nota deve ser finita\")
+        if nota < 0 or nota > 10:
+            raise ValueError(\"nota deve estar entre 0 e 10\")
+        notas.append(nota)
+
+    if not notas:
+        raise ValueError(\"é necessária ao menos uma nota\")
+
+    descartada = None
+    if len(notas) == 4:
+        menor = min(notas)
+        notas.remove(menor)
+        descartada = float(menor)
+
+    decimais = [Decimal(str(nota)) for nota in notas]
+    media_decimal = (sum(decimais) / len(decimais)).quantize(
+        Decimal(\"0.01\"), rounding=ROUND_HALF_UP
+    )
+    media = float(media_decimal)
+
+    if media >= 9:
+        conceito = \"A\"
+    elif media >= 7:
+        conceito = \"B\"
+    elif media >= 5:
+        conceito = \"C\"
+    else:
+        conceito = \"D\"
+
+    return {
+        \"media\": media,
+        \"conceito\": conceito,
+        \"aprovado\": conceito "'!= "D",
+        "descartada": descartada,
+    }
+PY
+python - <<'"'PY'
+from boletim import fechar_boletim
+cases = [([9],9.0,'A'),([1.005],1.01,'D'),([4.999],5.0,'C'),([1.0,1.01],1.01,'D'),([1,2,3,4],3.0,'D'),([10,0,10,10],10.0,'A'),([0.015],0.02,'D'),([8.995],9.0,'A'),([9.995],10.0,'A'),([1.005,1.004],1.0,'D'),([5,1,1,9],5.0,'C'),([7,7,7,7],7.0,'B')]
+for x,m,c in cases:
+    r=fechar_boletim(x)
+    assert (r['media'],r['conceito']) == (m,c), (x,r)
+print('examples ok')
+PY" in /tmp/bench-nqpamuxb
+ exited 127 in 0ms:
+/bin/bash: line 57: python: command not found
+
+codex
+A implementação já está no arquivo. O comando `python` não existe neste ambiente; vou repetir a conferência dos exemplos com `python3`.
+exec
+/bin/bash -lc "python3 - <<'PY'
+from boletim import fechar_boletim
+cases = [([9],9.0,'A'),([1.005],1.01,'D'),([4.999],5.0,'C'),([1.0,1.01],1.01,'D'),([1,2,3,4],3.0,'D'),([10,0,10,10],10.0,'A'),([0.015],0.02,'D'),([8.995],9.0,'A'),([9.995],10.0,'A'),([1.005,1.004],1.0,'D'),([5,1,1,9],5.0,'C'),([7,7,7,7],7.0,'B')]
+for x,m,c in cases:
+    r=fechar_boletim(x)
+    assert (r['media'],r['conceito']) == (m,c), (x,r)
+orig = [None, 8, 8]
+fechar_boletim(orig)
+assert orig == [None, 8, 8]
+print('examples ok')
+PY
+cat boletim.py" in /tmp/bench-nqpamuxb
+ succeeded in 0ms:
+examples ok
+"""Fechamento de boletim."""
+
+from decimal import Decimal, ROUND_HALF_UP
+import math
+
+
+def fechar_boletim(provas: list) -> dict:
+    if not isinstance(provas, list):
+        raise TypeError("provas deve ser list")
+    if not 1 <= len(provas) <= 4:
+        raise ValueError("provas deve conter de 1 a 4 itens")
+
+    notas = []
+    for nota in provas:
+        if nota is None:
+            continue
+        if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+            raise TypeError("nota deve ser int, float ou None")
+        if isinstance(nota, float) and not math.isfinite(nota):
+            raise ValueError("nota deve ser finita")
+        if nota < 0 or nota > 10:
+            raise ValueError("nota deve estar entre 0 e 10")
+        notas.append(nota)
+
+    if not notas:
+        raise ValueError("é necessária ao menos uma nota")
+
+    descartada = None
+    if len(notas) == 4:
+        menor = min(notas)
+        notas.remove(menor)
+        descartada = float(menor)
+
+    decimais = [Decimal(str(nota)) for nota in notas]
+    media_decimal = (sum(decimais) / len(decimais)).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+    media = float(media_decimal)
+
+    if media >= 9:
+        conceito = "A"
+    elif media >= 7:
+        conceito = "B"
+    elif media >= 5:
+        conceito = "C"
+    else:
+        conceito = "D"
+
+    return {
+        "media": media,
+        "conceito": conceito,
+        "aprovado": conceito != "D",
+        "descartada": descartada,
+    }
+
+codex
+Atualizei [boletim.py](/tmp/bench-nqpamuxb/boletim.py) para validar as entradas, ignorar ausências, descartar uma nota mínima somente quando há quatro notas válidas e calcular a média com `Decimal` e `ROUND_HALF_UP`. A lista recebida não é alterada.
+
+Conferi os exemplos do enunciado e confirmei que a lista permanece intacta.
+tokens used
+11,956

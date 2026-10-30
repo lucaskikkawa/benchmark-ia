@@ -1,0 +1,16 @@
+Escrevi a suíte de testes em `tests/`. Contra o `validador.py` original, os 136 testes passam em cerca de 0,1 s, bem abaixo do limite de 10 s. Não tenho acesso aos 12 mutantes do avaliador, então criei 22 mutantes próprios para testar a suíte. Ela derrubou todos os 22, mas isso não garante que vá derrubar os 12 do avaliador.
+
+**Arquivos criados**
+- `tests/conftest.py`: faz o `import validador` funcionar quando o `validador.py` está na pasta acima de `tests/` (que é como o avaliador monta o diretório temporário) ou dentro da própria `tests/`.
+- `tests/test_validador.py`: os testes, divididos por regra.
+
+**O que os testes cobrem**
+- **Comprimento:** os valores padrão 8 e 64, e os limites exatos com uma unidade a menos e a mais, tanto no padrão quanto com valores personalizados (incluindo mínimo igual ao máximo).
+- **Tipos de caractere:** maiúscula, minúscula e dígito, cada um em várias posições e também com letras acentuadas como `É` e `é`.
+- **Caracteres especiais:** cada um dos 14 permitidos é aceito, e pontuação fora do conjunto (`.` `?` `~` etc.) não é contada como especial.
+- **Espaços:** espaço comum, tabulação, quebras de linha e outros espaços Unicode são todos rejeitados.
+- **Repetições:** três caracteres iguais seguidos no início, no meio e no fim; dois iguais seguidos ou iguais não consecutivos passam; maiúscula e minúscula da mesma letra não contam como repetição.
+- **Acúmulo de erros:** verifico quantos erros são retornados (por exemplo, 5 para a string vazia e 8 quando todas as regras são violadas), mas nunca o texto nem a ordem das mensagens, que não fazem parte do contrato.
+- **`calcular_forca`:** os tamanhos 9/10 e 13/14 nas fronteiras entre `fraca`, `media` e `forte`; senhas inválidas, inclusive longas; e limites personalizados.
+
+Os 22 mutantes incluíam erros de off-by-one no comprimento e nas faixas de força, padrões e parâmetros do construtor ignorados, conjunto de especiais com caractere a mais ou a menos, detecção só de `' '` como espaço, só de A–Z como maiúscula, repetição de 2 em vez de 3 ou sem olhar o fim da senha, `elif` no lugar de `if` e `calcular_forca` sem checar a validade. Rodei esses mutantes numa pasta temporária aqui e a apaguei depois, então o diretório tem só o `enunciado.md`, o `validador.py` e a pasta `tests/`.

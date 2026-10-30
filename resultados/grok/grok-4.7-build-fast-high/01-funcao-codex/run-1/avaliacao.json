@@ -1,13 +1,31 @@
 {
- "juiz_empresa": "gemini",
- "juiz_modelo": "gemini-3.8-flash",
- "itens": {
-  "legibilidade": 2,
-  "erros_bordas": 2,
-  "idiomatico": 2,
-  "manutenibilidade": 2,
-  "documentacao_instrucoes": 2
+ "autora": "codex",
+ "resolvedora": "grok",
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0
+  }
  },
- "rubrica_10": 10,
- "nota_final_10": 10.0
+ "obs": [],
+ "rubrica_10": 8.5,
+ "nota_final_10": 9.55
 }

@@ -1,0 +1,28 @@
+........FF.F                                                             [100%]
+=================================== FAILURES ===================================
+________________________ test_estrutura_tabela_e_faixa _________________________
+
+    def test_estrutura_tabela_e_faixa():
+>       from frete import TabelaFrete, faixa_de_peso
+E       ImportError: cannot import name 'TabelaFrete' from 'frete' (/tmp/bench-zjmbd0v5/frete.py)
+
+testes_ocultos/test_frete.py:103: ImportError
+_______________ test_estrutura_faixa_de_peso_rejeita_igual_cotar _______________
+
+    def test_estrutura_faixa_de_peso_rejeita_igual_cotar():
+>       from frete import faixa_de_peso
+E       ImportError: cannot import name 'faixa_de_peso' from 'frete' (/tmp/bench-zjmbd0v5/frete.py)
+
+testes_ocultos/test_frete.py:124: ImportError
+______________________ test_faixas_lidas_em_cada_chamada _______________________
+
+    def test_faixas_lidas_em_cada_chamada():
+>       from frete import TabelaFrete, faixa_de_peso
+E       ImportError: cannot import name 'TabelaFrete' from 'frete' (/tmp/bench-zjmbd0v5/frete.py)
+
+testes_ocultos/test_frete.py:142: ImportError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_frete.py::test_estrutura_tabela_e_faixa - ImportEr...
+FAILED testes_ocultos/test_frete.py::test_estrutura_faixa_de_peso_rejeita_igual_cotar
+FAILED testes_ocultos/test_frete.py::test_faixas_lidas_em_cada_chamada - Impo...
+3 failed, 9 passed in 0.03s

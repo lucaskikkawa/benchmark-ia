@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-5u0qoiki/solucao.py) com contagem em O(n) esperado, usando somas de prefixos e uma janela de frequências para respeitar os limites de comprimento. A função valida os comprimentos e não modifica `nums`.

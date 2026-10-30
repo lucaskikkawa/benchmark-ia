@@ -1,0 +1,13 @@
+Completei os três módulos do pacote `estoque/`. O `__init__.py` já exportava as três APIs e ficou como estava. Nenhum outro módulo foi criado.
+
+- **`modelos.py`**: `Movimento` agora é uma dataclass imutável (`frozen=True`) com os campos `sku` e `delta`. O construtor só guarda os valores, sem validar nada.
+- **`operacoes.py`**: `calcular_saldos` trabalha sobre uma cópia dos saldos iniciais, então `iniciais` nunca é alterado, nem quando dá erro. Lança `ValueError` se um saldo inicial já for negativo ou se algum saldo ficar negativo no meio do caminho, mesmo que um movimento posterior reponha o estoque. Os movimentos são percorridos uma única vez e na ordem, então serve para iteráveis de passagem única. SKUs com saldo zero ou sem movimentos continuam no resultado, e cada chamada devolve um dict novo.
+- **`persistencia.py`**: `carregar_movimentos` lê o JSON em UTF-8 e exige uma lista de objetos. O `sku` precisa ser uma string com algum caractere não branco e é guardado exatamente como veio. O `delta` precisa ser inteiro, e `True`/`False` são recusados. Campos extras são ignorados e a ordem é mantida. JSON malformado gera `JSONDecodeError`, que é um tipo de `ValueError`, como o enunciado permite.
+
+Rodei um teste rápido à mão:
+- Saldo negativo intermediário lança `ValueError` e `iniciais` fica intacto.
+- Funciona com um iterador e com a entrada vazia.
+- Inteiros grandes (10³⁰) e SKU com espaços e acento passam sem alteração.
+- Seis entradas inválidas lançaram `ValueError`: objeto no lugar da lista, item que não é objeto, SKU em branco, delta `true`, delta `1.0` e JSON malformado.
+
+Não testei com 20.000 movimentos nem os casos de campo ausente e SKU que não é string. Não há uma suíte de testes no diretório.

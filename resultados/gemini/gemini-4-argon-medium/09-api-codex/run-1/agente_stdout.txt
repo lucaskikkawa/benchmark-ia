@@ -1,0 +1,4 @@
+O arquivo [cliente.py](file:///tmp/bench-db_fkncv/cliente.py) foi implementado com a função [`buscar_com_retry`](file:///tmp/bench-db_fkncv/cliente.py#L6-L37), preservando [fake_api.py](file:///tmp/bench-db_fkncv/fake_api.py) intacto e atendendo a todas as especificações de [enunciado.md](file:///tmp/bench-db_fkncv/enunciado.md):
+
+- Validação prévia de `tentativas` (inteiro $\ge 1$), `timeout` (real finito $> 0$) e `backoff` (real finito $\ge 0$) lançando `ValueError` antes de qualquer chamada à API ou a `dormir`.
+- Retentativa apenas em `fake_api.ErroTemporario` e `TimeoutError` (incluindo subclasses), aguardando `backoff * 2**indice` entre tentativas e propagando imediatamente exceções permanentes, a última falha ao esgotar tentativas ou exceções lançadas por `dormir`.

@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-picwcja8/solucao.py) com a função solicitada, usando tempo esperado O(n) e espaço O(n).
+
+Validação: 10 mil casos comparados com força bruta, limites inválidos e inteiros grandes. Nos testes com 300 mil elementos, cada chamada levou menos de 0,07 segundo.

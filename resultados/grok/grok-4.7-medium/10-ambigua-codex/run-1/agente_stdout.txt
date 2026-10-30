@@ -1,0 +1,3 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntar nada.O núcleo é filtrar pendentes e ordenar por prioridade, sem alterar a entrada. Vou registrar as políticas de empate e de dados inválidos e implementar isso.`organizar_tarefas` em `organizador.py` devolve só as tarefas pendentes, da maior prioridade para a menor, cada uma numa cópia rasa nova, sem alterar a lista nem os dicionários recebidos.
+
+Empates mantêm a ordem relativa da entrada. Itens inválidos (campos ausentes, tipos errados, prioridade fora de 0–5, título vazio) são omitidos. Essas políticas estão em `SUPOSICOES.md`.

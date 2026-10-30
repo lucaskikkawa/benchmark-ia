@@ -1,0 +1,500 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-1ke8yxb_
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189f1-e3fb-7d73-a6b0-db9802d4c5ee
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:14:55.350297Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, implementar a solução e verificar o resultado.
+exec
+/bin/bash -lc "pwd; rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' -g '"'!package-lock.json'"' -g '"'!yarn.lock'"'" in /tmp/bench-1ke8yxb_
+ succeeded in 0ms:
+/tmp/bench-1ke8yxb_
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-1ke8yxb_
+ succeeded in 0ms:
+# 06 - Barramento de Eventos em Memória (Pacote Multi-arquivo)
+
+Implemente o pacote Python `eventhub` estruturado exatamente nos seguintes 4 arquivos:
+- `eventhub/__init__.py`
+- `eventhub/models.py`
+- `eventhub/handlers.py`
+- `eventhub/bus.py`
+
+## Especificação dos Módulos
+
+### 1. `eventhub/models.py`
+- `Priority(IntEnum)`:
+  - `LOW = 1`
+  - `NORMAL = 2`
+  - `HIGH = 3`
+- `Event` (dataclass):
+  - `id: str`
+  - `topic: str`
+  - `payload: dict`
+  - `priority: Priority = Priority.NORMAL`
+  - `timestamp: float` (default gerado via `time.time`)
+  - `retry_count: int = 0`
+
+### 2. `eventhub/handlers.py`
+- `EventHandler(ABC)`:
+  - Método abstrato `@abstractmethod def handle(self, event: Event) -> None:`
+- `DeadLetterQueue`:
+  - `__init__(self) -> None`: inicializa lista de eventos com falha.
+  - `add(self, event: Event, error: str) -> None`: armazena tupla `(event, str(error))`.
+  - `get_failed_events(self) -> list[tuple[Event, str]]`: retorna cópia da lista de falhas.
+  - `clear(self) -> None`: limpa a lista.
+
+### 3. `eventhub/bus.py`
+- `EventBus`:
+  - `__init__(self, dlq: DeadLetterQueue | None = None) -> None`:
+    - Aceita opcionalmente uma instância de `DeadLetterQueue`.
+  - `subscribe(self, topic: str, handler: EventHandler | Callable[[Event], None]) -> None`:
+    - Registra um handler (instância de `EventHandler` ou callable) para um tópico. Não deve duplicar inscrições idênticas.
+  - `unsubscribe(self, topic: str, handler: EventHandler | Callable[[Event], None]) -> None`:
+    - Remove o handler do tópico especificado, se registrado.
+  - `publish(self, topic: str, payload: dict, priority: Priority = Priority.NORMAL) -> Event`:
+    - Cria uma nova instância de `Event`, armazena na fila de pendências e no histórico, e retorna o `Event`.
+  - `dispatch_next(self) -> bool`:
+    - Retira e despacha o próximo evento pendente. Se nenhum handler estiver registrado para o tópico do evento retirado, o evento é consumido e o método retorna `True`.
+    - Ordem de atendimento: maior prioridade primeiro (`HIGH > NORMAL > LOW`); para mesma prioridade, ordem cronológica (`timestamp` menor / FIFO).
+    - Para o evento retirado, chama todos os handlers registrados no seu tópico. Se o handler for `EventHandler`, chama `handler.handle(event)`; caso contrário, chama `handler(event)`.
+    - Se algum handler lançar exceção:
+      - Caso haja `dlq` configurada no barramento, encaminha o evento e a mensagem de erro para `dlq.add(event, str(e))` sem interromper a execução dos demais handlers nem propagar a exceção.
+      - Caso **não** haja `dlq` configurada (`dlq is None`), a exceção deve ser propagada para o chamador.
+    - Se um handler publicar novos eventos no barramento durante seu processamento, esses novos eventos devem ingressar na fila e ser atendidos nos despachos subsequentes respeitando as prioridades.
+    - Retorna `True` se um evento foi processado, ou `False` se a fila estava vazia.
+  - `dispatch_all(self) -> int`:
+    - Processa todos os eventos pendentes chamando `dispatch_next()` repetidamente e retorna o número total de eventos despachados.
+  - `get_history(self, topic: str | None = None) -> list[Event]`:
+    - Retorna uma nova lista (cópia) contendo os eventos em ordem de publicação. Se `topic` for fornecido, filtra apenas os eventos daquele tópico, preservando essa ordem. Modificações na lista retornada não devem impactar o histórico interno.
+
+### 4. `eventhub/__init__.py`
+Deve exportar os símbolos principais na raiz do pacote via imports relativos:
+`Event`, `Priority`, `EventHandler`, `DeadLetterQueue`, `EventBus`.
+
+apply patch
+patch: completed
+/tmp/bench-1ke8yxb_/eventhub/__init__.py
+/tmp/bench-1ke8yxb_/eventhub/bus.py
+/tmp/bench-1ke8yxb_/eventhub/handlers.py
+/tmp/bench-1ke8yxb_/eventhub/models.py
+diff --git a/eventhub/__init__.py b/eventhub/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5f0c12ff122c2e73933d97d0530c35d1b2e9978b
+--- /dev/null
++++ b/eventhub/__init__.py
+@@ -0,0 +1,7 @@
++"""Barramento de eventos em memória."""
++
++from .bus import EventBus
++from .handlers import DeadLetterQueue, EventHandler
++from .models import Event, Priority
++
++__all__ = ["Event", "Priority", "EventHandler", "DeadLetterQueue", "EventBus"]
+diff --git a/eventhub/bus.py b/eventhub/bus.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..329790a796875ffa48d67ba6c9908b420c6f0523
+--- /dev/null
++++ b/eventhub/bus.py
+@@ -0,0 +1,74 @@
++"""Barramento de eventos em memória com despacho por prioridade."""
++
++import heapq
++from collections.abc import Callable
++from itertools import count
++from uuid import uuid4
++
++from .handlers import DeadLetterQueue, EventHandler
++from .models import Event, Priority
++
++
++class EventBus:
++    def __init__(self, dlq: DeadLetterQueue | None = None) -> None:
++        self._dlq = dlq
++        self._handlers: dict[str, list[EventHandler | Callable[[Event], None]]] = {}
++        self._pending: list[tuple[int, float, int, Event]] = []
++        self._sequence = count()
++        self._history: list[Event] = []
++
++    def subscribe(
++        self, topic: str, handler: EventHandler | Callable[[Event], None]
++    ) -> None:
++        handlers = self._handlers.setdefault(topic, [])
++        if handler not in handlers:
++            handlers.append(handler)
++
++    def unsubscribe(
++        self, topic: str, handler: EventHandler | Callable[[Event], None]
++    ) -> None:
++        handlers = self._handlers.get(topic)
++        if handlers is not None and handler in handlers:
++            handlers.remove(handler)
++            if not handlers:
++                del self._handlers[topic]
++
++    def publish(
++        self, topic: str, payload: dict, priority: Priority = Priority.NORMAL
++    ) -> Event:
++        event = Event(id=str(uuid4()), topic=topic, payload=payload, priority=priority)
++        heapq.heappush(
++            self._pending,
++            (-event.priority, event.timestamp, next(self._sequence), event),
++        )
++        self._history.append(event)
++        return event
++
++    def dispatch_next(self) -> bool:
++        if not self._pending:
++            return False
++
++        _, _, _, event = heapq.heappop(self._pending)
++        # Uma inscrição alterada por um handler vale para os próximos despachos.
++        for handler in tuple(self._handlers.get(event.topic, ())):
++            try:
++                if isinstance(handler, EventHandler):
++                    handler.handle(event)
++                else:
++                    handler(event)
++            except Exception as error:
++                if self._dlq is None:
++                    raise
++                self._dlq.add(event, str(error))
++        return True
++
++    def dispatch_all(self) -> int:
++        dispatched = 0
++        while self.dispatch_next():
++            dispatched += 1
++        return dispatched
++
++    def get_history(self, topic: str | None = None) -> list[Event]:
++        if topic is None:
++            return self._history.copy()
++        return [event for event in self._history if event.topic == topic]
+diff --git a/eventhub/handlers.py b/eventhub/handlers.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4da9bf913a203367cac084f760af1289aacb6659
+--- /dev/null
++++ b/eventhub/handlers.py
+@@ -0,0 +1,25 @@
++"""Interface dos handlers e armazenamento dos eventos com falha."""
++
++from abc import ABC, abstractmethod
++
++from .models import Event
++
++
++class EventHandler(ABC):
++    @abstractmethod
++    def handle(self, event: Event) -> None:
++        """Processa um evento."""
++
++
++class DeadLetterQueue:
++    def __init__(self) -> None:
++        self._failed_events: list[tuple[Event, str]] = []
++
++    def add(self, event: Event, error: str) -> None:
++        self._failed_events.append((event, str(error)))
++
++    def get_failed_events(self) -> list[tuple[Event, str]]:
++        return self._failed_events.copy()
++
++    def clear(self) -> None:
++        self._failed_events.clear()
+diff --git a/eventhub/models.py b/eventhub/models.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..c90ef70d2d4e01a12750d035c3518d057e90c7c9
+--- /dev/null
++++ b/eventhub/models.py
+@@ -0,0 +1,21 @@
++"""Modelos dos eventos e suas prioridades."""
++
++import time
++from dataclasses import dataclass, field
++from enum import IntEnum
++
++
++class Priority(IntEnum):
++    LOW = 1
++    NORMAL = 2
++    HIGH = 3
++
++
++@dataclass
++class Event:
++    id: str
++    topic: str
++    payload: dict
++    priority: Priority = Priority.NORMAL
++    timestamp: float = field(default_factory=time.time)
++    retry_count: int = 0
+
+codex
+Os quatro arquivos estão implementados. Vou verificar a ordem por prioridade e timestamp, a prevenção de inscrições duplicadas, o tratamento de exceções e a publicação de novos eventos durante o despacho.
+exec
+/bin/bash -lc "PYTHONDONTWRITEBYTECODE=1 python - <<'PY'
+import unittest
+from unittest.mock import patch
+from eventhub import Event, Priority, EventHandler, DeadLetterQueue, EventBus
+
+
+class BusTests(unittest.TestCase):
+    def test_models(self):
+        event = Event('id', 'topic', {})
+        self.assertEqual(event.priority, Priority.NORMAL)
+        self.assertIsInstance(event.timestamp, float)
+        self.assertEqual(event.retry_count, 0)
+        self.assertEqual(list(Priority), [1, 2, 3])
+        with self.assertRaises(TypeError):
+            EventHandler()
+
+    def test_priority_timestamp_and_fifo(self):
+        bus = EventBus()
+        received = []
+        bus.subscribe('topic', lambda event: received.append(event.payload['name']))
+        timestamps = iter([5.0, 9.0, 3.0, 3.0, 1.0])
+        def make_event(**kwargs):
+            return Event(**kwargs, timestamp=next(timestamps))
+        with patch('eventhub.bus.Event', side_effect=make_event):
+            bus.publish('topic', {'name': 'low'}, Priority.LOW)
+            bus.publish('topic', {'name': 'high-late'}, Priority.HIGH)
+            bus.publish('topic', {'name': 'high-first'}, Priority.HIGH)
+            bus.publish('topic', {'name': 'high-second'}, Priority.HIGH)
+            bus.publish('topic', {'name': 'normal'}, Priority.NORMAL)
+        self.assertEqual(bus.dispatch_all(), 5)
+        self.assertEqual(received, ['high-first', 'high-second', 'high-late', 'normal', 'low'])
+        self.assertFalse(bus.dispatch_next())
+
+    def test_subscriptions(self):
+        bus = EventBus()
+        received = []
+        class Handler(EventHandler):
+            def handle(self, event):
+                received.append(('class', event))
+        handler = Handler()
+        def callback(event):
+            received.append(('callable', event))
+        for subscriber in (handler, callback):
+            bus.subscribe('topic', subscriber)
+            bus.subscribe('topic', subscriber)
+        first = bus.publish('topic', {})
+        self.assertTrue(bus.dispatch_next())
+        self.assertEqual(received, [('class', first), ('callable', first)])
+        bus.unsubscribe('topic', handler)
+        bus.unsubscribe('topic', handler)
+        bus.unsubscribe('absent', callback)
+        second = bus.publish('topic', {})
+        bus.dispatch_all()
+        self.assertEqual(received[-1], ('callable', second))
+        self.assertEqual(len(received), 3)
+
+    def test_dlq_continues_and_returns_copy(self):
+        dlq = DeadLetterQueue()
+        bus = EventBus(dlq)
+        received = []
+        def fail(event):
+            raise ValueError('failure')
+        bus.subscribe('topic', fail)
+        bus.subscribe('topic', received.append)
+        event = bus.publish('topic', {})
+        self.assertEqual(bus.dispatch_all(), 1)
+        self.assertEqual(received, [event])
+        self.assertEqual(dlq.get_failed_events(), [(event, 'failure')])
+        dlq.get_failed_events().clear()
+        self.assertEqual(len(dlq.get_failed_events()), 1)
+        dlq.add(event, 123)
+        self.assertEqual(dlq.get_failed_events()[-1][1], '123')
+        dlq.clear()
+        self.assertEqual(dlq.get_failed_events(), [])
+
+    def test_exception_propagates_without_dlq(self):
+        bus = EventBus()
+        error = ValueError('failure')
+        def fail(event):
+            raise error
+        bus.subscribe('topic', fail)
+        bus.publish('topic', {})
+        with self.assertRaises(ValueError) as caught:
+            bus.dispatch_next()
+        self.assertIs(caught.exception, error)
+        self.assertFalse(bus.dispatch_next())
+
+    def test_reentrant_publish(self):
+        bus = EventBus()
+        received = []
+        def callback(event):
+            received.append(event.payload['name'])
+            if event.payload['name'] == 'trigger':
+                bus.publish('topic', {'name': 'new-high'}, Priority.HIGH)
+        bus.subscribe('topic', callback)
+        bus.publish('topic', {'name': 'trigger'})
+        bus.publish('topic', {'name': 'old-low'}, Priority.LOW)
+        self.assertEqual(bus.dispatch_all(), 3)
+        self.assertEqual(received, ['trigger', 'new-high', 'old-low'])
+
+    def test_history_and_unhandled_topics(self):
+        bus = EventBus()
+        first = bus.publish('a', {})
+        second = bus.publish('b', {}, Priority.HIGH)
+        third = bus.publish('a', {})
+        self.assertEqual(len({e.id for e in (first, second, third)}), 3)
+        self.assertEqual(bus.get_history(), [first, second, third])
+        bus.get_history().clear()
+        filtered = bus.get_history('a')
+        self.assertEqual(filtered, [first, third])
+        filtered.clear()
+        self.assertEqual(bus.get_history('a'), [first, third])
+        self.assertEqual(bus.get_history('missing'), [])
+        self.assertEqual(bus.dispatch_all(), 3)
+        self.assertEqual(bus.get_history(), [first, second, third])
+
+
+unittest.main(verbosity=2)
+PY" in /tmp/bench-1ke8yxb_
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'
+import unittest
+from unittest.mock import patch
+from eventhub import Event, Priority, EventHandler, DeadLetterQueue, EventBus
+
+class BusTests(unittest.TestCase):
+    def test_models(self):
+        event = Event('id', 'topic', {})
+        self.assertEqual(event.priority, Priority.NORMAL)
+        self.assertIsInstance(event.timestamp, float)
+        self.assertEqual(event.retry_count, 0)
+        self.assertEqual(list(Priority), [1, 2, 3])
+        with self.assertRaises(TypeError):
+            EventHandler()
+
+    def test_priority_timestamp_and_fifo(self):
+        bus, received = EventBus(), []
+        bus.subscribe('topic', lambda e: received.append(e.payload['name']))
+        timestamps = iter([5.0, 9.0, 3.0, 3.0, 1.0])
+        def make_event(**kwargs):
+            return Event(**kwargs, timestamp=next(timestamps))
+        with patch('eventhub.bus.Event', side_effect=make_event):
+            for name, priority in [('low', Priority.LOW), ('high-late', Priority.HIGH), ('high-first', Priority.HIGH), ('high-second', Priority.HIGH), ('normal', Priority.NORMAL)]:
+                bus.publish('topic', {'name': name}, priority)
+        self.assertEqual(bus.dispatch_all(), 5)
+        self.assertEqual(received, ['high-first', 'high-second', 'high-late', 'normal', 'low'])
+        self.assertFalse(bus.dispatch_next())
+
+    def test_subscriptions(self):
+        bus, received = EventBus(), []
+        class Handler(EventHandler):
+            def handle(self, event):
+                received.append(('class', event))
+        handler = Handler()
+        def callback(event):
+            received.append(('callable', event))
+        for subscriber in (handler, callback):
+            bus.subscribe('topic', subscriber)
+            bus.subscribe('topic', subscriber)
+        first = bus.publish('topic', {})
+        self.assertTrue(bus.dispatch_next())
+        self.assertEqual(received, [('class', first), ('callable', first)])
+        bus.unsubscribe('topic', handler)
+        bus.unsubscribe('topic', handler)
+        bus.unsubscribe('absent', callback)
+        second = bus.publish('topic', {})
+        bus.dispatch_all()
+        self.assertEqual(received[-1], ('callable', second))
+        self.assertEqual(len(received), 3)
+
+    def test_dlq(self):
+        dlq, received = DeadLetterQueue(), []
+        bus = EventBus(dlq)
+        def fail(event):
+            raise ValueError('failure')
+        bus.subscribe('topic', fail)
+        bus.subscribe('topic', received.append)
+        event = bus.publish('topic', {})
+        self.assertEqual(bus.dispatch_all(), 1)
+        self.assertEqual(received, [event])
+        self.assertEqual(dlq.get_failed_events(), [(event, 'failure')])
+        dlq.get_failed_events().clear()
+        self.assertEqual(len(dlq.get_failed_events()), 1)
+        dlq.add(event, 123)
+        self.assertEqual(dlq.get_failed_events()[-1][1], '123')
+        dlq.clear()
+        self.assertEqual(dlq.get_failed_events(), [])
+
+    def test_exception_without_dlq(self):
+        bus = EventBus()
+        error = ValueError('failure')
+        def fail(event):
+            raise error
+        bus.subscribe('topic', fail)
+        bus.publish('topic', {})
+        with self.assertRaises(ValueError) as caught:
+            bus.dispatch_next()
+        self.assertIs(caught.exception, error)
+        self.assertFalse(bus.dispatch_next())
+
+    def test_reentrant_publish(self):
+        bus, received = EventBus(), []
+        def callback(event):
+            received.append(event.payload['name'])
+            if event.payload['name'] == 'trigger':
+                bus.publish('topic', {'name': 'new-high'}, Priority.HIGH)
+        bus.subscribe('topic', callback)
+        bus.publish('topic', {'name': 'trigger'})
+        bus.publish('topic', {'name': 'old-low'}, Priority.LOW)
+        self.assertEqual(bus.dispatch_all(), 3)
+        self.assertEqual(received, ['trigger', 'new-high', 'old-low'])
+
+    def test_history_and_unhandled_topics(self):
+        bus = EventBus()
+        first = bus.publish('a', {})
+        second = bus.publish('b', {}, Priority.HIGH)
+        third = bus.publish('a', {})
+        self.assertEqual(len({e.id for e in (first, second, third)}), 3)
+        self.assertEqual(bus.get_history(), [first, second, third])
+        bus.get_history().clear()
+        filtered = bus.get_history('a')
+        self.assertEqual(filtered, [first, third])
+        filtered.clear()
+        self.assertEqual(bus.get_history('a'), [first, third])
+        self.assertEqual(bus.get_history('missing'), [])
+        self.assertEqual(bus.dispatch_all(), 3)
+        self.assertEqual(bus.get_history(), [first, second, third])
+
+unittest.main(verbosity=2)
+PY" in /tmp/bench-1ke8yxb_
+ succeeded in 0ms:
+test_dlq (__main__.BusTests.test_dlq) ... ok
+test_exception_without_dlq (__main__.BusTests.test_exception_without_dlq) ... ok
+test_history_and_unhandled_topics (__main__.BusTests.test_history_and_unhandled_topics) ... ok
+test_models (__main__.BusTests.test_models) ... ok
+test_priority_timestamp_and_fifo (__main__.BusTests.test_priority_timestamp_and_fifo) ... ok
+test_reentrant_publish (__main__.BusTests.test_reentrant_publish) ... ok
+test_subscriptions (__main__.BusTests.test_subscriptions) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.001s
+
+OK
+
+codex
+Pacote `eventhub` implementado nos quatro arquivos exigidos, com prioridades, inscrições, histórico e tratamento de falhas conforme o enunciado.
+
+Validação concluída: 7 testes passaram com `python3`.
+tokens used
+15,175

@@ -1,0 +1,3 @@
+Criei a suíte em `tests/test_validador.py`, cobrindo limites, regras individuais, Unicode, repetições, acumulação de erros e classificação de força.
+
+Verificação: `python3 -m pytest -q` — **159 testes passaram**. O módulo original não foi alterado.

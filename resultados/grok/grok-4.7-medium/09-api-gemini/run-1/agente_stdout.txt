@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa a partir dele.A especificação está clara. Vou implementar `ClienteResiliente` e `ApiError` e validar o retry, o backoff e os erros definitivos.A classe `ClienteResiliente` e a exceção `ApiError` estão em `cliente_resiliente.py`.
+
+- **`ApiError`** guarda a mensagem e um `status_code` opcional (`None` em falha de rede ou timeout).
+- **`executar`** devolve `resposta.data` em status 2xx. Em `SimulatedNetworkError`, `SimulatedTimeoutError`, `429`, `500`, `502`, `503` e `504`, espera `backoff_base * (backoff_fator ** (tentativa - 1))` e tenta de novo até `max_tentativas`. Os demais status (4xx, 3xx, etc.) levantam `ApiError` na hora.
+- **`get`** e **`post`** delegam para `executar`. O construtor rejeita `max_tentativas` inválido e valores de backoff ou timeout que não sejam numéricos e positivos. A espera passa por `sleep_fn`.

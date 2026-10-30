@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede um cliente com retry, backoff e orçamento de espera. Vou implementar `cliente.py` e conferir os casos da especificação.

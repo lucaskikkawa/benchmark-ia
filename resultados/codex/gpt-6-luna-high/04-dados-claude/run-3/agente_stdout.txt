@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-z8ixa3r4/solucao.py:20) com a função `resumir_vendas`: ela valida e agrega o CSV, retorna o resumo e grava o JSON em UTF-8, criando os diretórios necessários. A gravação usa um arquivo temporário e substituição atômica para evitar alterar a saída se ocorrer um erro durante a escrita.

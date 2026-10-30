@@ -1,0 +1,30 @@
+F..............                                                          [100%]
+=================================== FAILURES ===================================
+______________________ test_suite_passa_no_modulo_correto ______________________
+
+    def test_suite_passa_no_modulo_correto():
+        codigo, saida = _executar(MODULO_CORRETO)
+>       assert codigo == 0, saida
+E       AssertionError: 
+E         ==================================== ERRORS ====================================
+E         ___________________ ERROR collecting tests/test_descontos.py ___________________
+E         ImportError while importing test module '/tmp/tmp9x38mhl6/tests/test_descontos.py'.
+E         Hint: make sure your test modules/packages have valid Python names.
+E         Traceback:
+E         /home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+E             return _bootstrap._gcd_import(name[level:], package, level)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         tests/test_descontos.py:3: in <module>
+E             from descuentos import aplicar_desconto
+E         E   ModuleNotFoundError: No module named 'descuentos'
+E         =========================== short test summary info ============================
+E         ERROR tests/test_descontos.py
+E         !!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+E         1 error in 0.07s
+E         
+E       assert 2 == 0
+
+testes_ocultos/test_mutantes.py:77: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_mutantes.py::test_suite_passa_no_modulo_correto - ...
+1 failed, 14 passed in 3.22s

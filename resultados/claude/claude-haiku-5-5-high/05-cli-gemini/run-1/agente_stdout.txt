@@ -1,0 +1,17 @@
+Criei `contatexto.py` neste diretório, seguindo o `enunciado.md`. Testei os cenários principais e todos se comportaram como especificado.
+
+**Verificado:**
+- Padrão sem flags mostra linhas, palavras e caracteres.
+- `--top N` conta palavras em minúsculas, remove pontuação nas pontas e ordena empates alfabeticamente.
+- `--json` produz o objeto com `indent=2` e `ensure_ascii=False`, contendo só as métricas pedidas.
+- `-o` cria as pastas pai, grava o resultado e imprime `Salvo em CAMINHO`.
+- Exit 1 com mensagem `Erro...` para arquivo inexistente, diretório e UTF-8 inválido.
+- Exit 2 para `--top 0`, ARQUIVO ausente e flag desconhecida.
+
+**Interpretações que tomei:**
+- `caracteres` usa `len()` do texto lido em modo texto, então `\r\n` conta como um caractere.
+- O conteúdo gravado com `-o` recebe uma quebra de linha final.
+- Um caminho que existe mas não é arquivo regular (ex.: diretório) recebe a mesma mensagem de erro de operação, exit 1.
+- Erros de gravação com `-o` também saem com exit 1.
+
+Não criei testes automatizados, só a CLI. O diretório não é um repositório git, então não fiz commit.

@@ -1,0 +1,31 @@
+{
+ "autora": "claude",
+ "resolvedora": "codex",
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 6.0
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 6.0
+  }
+ },
+ "obs": [],
+ "rubrica_10": 6.0,
+ "nota_final_10": 2.62
+}

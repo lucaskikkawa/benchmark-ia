@@ -1,0 +1,13 @@
+Implementei `maior_subarray_soma` em `/tmp/bench-qkzkrbzf/otimizador.py`, seguindo o enunciado.
+
+**Abordagem:** somas de prefixo com um dicionário que guarda a primeira ocorrência de cada valor de prefixo. Para cada posição `j`, o subarray `numeros[i:j]` soma `alvo` quando `prefixo[j] - alvo` já apareceu em `i`, então o comprimento é `j - i`. Isso dá O(N) em tempo e espaço.
+
+**Validação:** levanta `TypeError` se `numeros` não for `list`, se `alvo` não for `int` primitivo, ou se algum elemento não for `type(x) is int` (rejeita `bool` e `float`).
+
+**Verificação:**
+- Os quatro exemplos do enunciado retornam os valores esperados (4, 2, 0, 0).
+- Os casos de tipo inválido levantam `TypeError`.
+- Comparação com força bruta em 2000 entradas aleatórias pequenas: todas batem.
+- Lista de 400.000 elementos: cerca de 0,11 s, bem abaixo do limite de 5 s.
+
+Não criei arquivos de teste no diretório, só o `otimizador.py`.

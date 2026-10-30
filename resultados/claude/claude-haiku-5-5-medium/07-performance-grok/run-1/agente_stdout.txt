@@ -1,0 +1,9 @@
+Criei `solucao.py` neste diretório com `pares_com_soma`, usando só a biblioteca padrão. Não criei outros arquivos.
+
+A função faz uma passagem para contar a frequência de cada valor. Depois, para cada valor `x` com `y = alvo - x`:
+- Se `x == y` (ou seja, `2*x == alvo`), soma `C(freq, 2)`.
+- Se `x < y` e `y` existe na lista, soma `freq[x] * freq[y]`. Isso conta cada par de valores uma única vez.
+
+Também valido tipos: `nums` precisa ser `list`, `alvo` e cada elemento precisam ser `int`, e `bool` é rejeitado com `TypeError`. A lista original não é alterada.
+
+Testei com os exemplos do enunciado (todos batem) e com `[1, 1, 1]` e alvo `2` (resultado `3`). Também confirmei que tipos inválidos levantam `TypeError`. Com 200 000 elementos, a execução levou cerca de 0,04 s. Não testei valores como `10**18` com a lista grande, só o caso pequeno de exemplo.

@@ -1,0 +1,3 @@
+Criei [agenda_cli.py](/tmp/bench-qlwezv00/agenda_cli.py) com os três subcomandos, validação rigorosa do JSON e saídas conforme o enunciado.
+
+As 281 verificações por subprocesso passaram.

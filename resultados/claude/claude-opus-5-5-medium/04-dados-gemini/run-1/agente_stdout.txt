@@ -1,0 +1,14 @@
+Criei `analisador_vendas.py` com a função `processar_vendas` conforme o enunciado. Testei com um CSV de exemplo e com um arquivo vazio, e os resultados bateram com o esperado.
+
+O que ela faz:
+- **Validação:** se o CSV não existe, levanta `FileNotFoundError`. Se `top_n` não é inteiro, levanta `TypeError` (isso inclui `True` e `1.0`). Se `top_n < 1`, levanta `ValueError`.
+- **Leitura:** lê o arquivo em UTF-8 e remove o BOM e os espaços das pontas dos nomes das colunas e dos campos `cliente`, `categoria` e `status`. A comparação do `status` com o filtro ignora maiúsculas e minúsculas.
+- **Linhas ignoradas:** linhas vazias e valores que não viram número ou são negativos.
+- **Arquivo vazio (0 bytes):** retorna todas as métricas zeradas.
+- **Arredondamento:** os valores são somados sem arredondar e só o total de cada grupo vai para 2 casas.
+- **Ranking de clientes:** ordena os totais já arredondados do maior para o menor; em caso de empate, pelo nome em ordem alfabética.
+- **Saída:** grava o JSON com `indent=2` e `ensure_ascii=False`, criando as pastas do caminho se não existirem.
+
+Tomei duas decisões que o enunciado não define:
+- Valores `nan` e `inf` são tratados como inválidos e ignorados, para não estragar as somas nem o JSON.
+- `-0` é aceito, porque não é negativo.

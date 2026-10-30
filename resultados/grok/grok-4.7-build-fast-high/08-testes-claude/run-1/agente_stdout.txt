@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O módulo está intacto; vou ler as docstrings de `senhas.py` e escrever uma suíte que cubra a especificação e os casos de borda.

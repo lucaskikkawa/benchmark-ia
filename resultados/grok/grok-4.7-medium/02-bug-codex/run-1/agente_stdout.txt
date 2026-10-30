@@ -1,0 +1,10 @@
+Vou ler o enunciado e o conteúdo deste diretório para resolver a tarefa aqui mesmo.O laço para uma posição antes do fim e deixa a última janela de fora. Vou corrigir o intervalo para percorrer a lista inteira.A função `somas_janelas` em `janelas.py` está corrigida. O laço usava `range(tamanho, len(valores) - 1)` e parava antes do último índice, então a última janela sumia sempre que havia mais de uma.
+
+O intervalo agora vai até `len(valores)`. A soma continua deslizando em O(n): entra o elemento novo e sai o que deixou a janela. Os inteiros do Python permanecem exatos.
+
+- Uma janela maior que a lista devolve `[]`.
+- Um tamanho zero ou negativo levanta `ValueError`.
+- A lista recebida não é alterada.
+- Cada chamada devolve uma lista nova.
+
+O exemplo `somas_janelas([1, 2, 3, 4], 2)` agora retorna `[3, 5, 7]`.

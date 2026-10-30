@@ -1,0 +1,18 @@
+...........................F....                                         [100%]
+=================================== FAILURES ===================================
+______________________ test_somente_cabecalho_total_float ______________________
+
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-225/test_somente_cabecalho_total_f0')
+
+    def test_somente_cabecalho_total_float(tmp_path):
+        entrada = escrever(tmp_path, CABECALHO)
+        saida = tmp_path / "s.json"
+        retorno = resumir_vendas(entrada, saida)
+>       assert type(retorno["total_geral"]) is float
+E       AssertionError: assert <class 'int'> is float
+E        +  where <class 'int'> = type(0)
+
+testes_ocultos/test_vendas.py:272: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_vendas.py::test_somente_cabecalho_total_float - As...
+1 failed, 31 passed in 0.26s

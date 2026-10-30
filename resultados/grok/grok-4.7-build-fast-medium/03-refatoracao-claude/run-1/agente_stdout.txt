@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede refatorar `relatorio.py` sem mudar o resultado. Vou comparar o comportamento atual, inclusive em floats difíceis, antes de reescrever.O desconto de 0% precisa continuar sendo `t * 0` inteiro, senão totais enormes mudam na formatação. Vou aplicar a refatoração com esse cuidado.

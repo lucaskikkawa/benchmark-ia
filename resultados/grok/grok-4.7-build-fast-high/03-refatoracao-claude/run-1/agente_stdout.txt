@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O comportamento original depende de aritmética exata e da ordem das operações. Vou comparar a refatoração com esse comportamento em casos difíceis antes de gravar o arquivo.

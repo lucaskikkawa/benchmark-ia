@@ -1,0 +1,569 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-lufg66x7
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189cf-ad4b-71b3-b8e2-18f54a20341d
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:37:33.107748Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório para implementar e verificar a solução.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' -g '"'!package-lock.json'"'" in /tmp/bench-lufg66x7
+ succeeded in 0ms:
+/tmp/bench-lufg66x7
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-lufg66x7
+ succeeded in 0ms:
+# 05 - Ferramenta CLI de Contagem e Métricas de Texto
+
+Implemente uma ferramenta de linha de comando no arquivo `contatexto.py` na raiz do seu diretório de trabalho.
+
+## Invocação
+
+```bash
+python contatexto.py [ARQUIVO] [FLAGS]
+```
+
+A CLI deve utilizar a biblioteca padrão `argparse`.
+
+## Argumentos e Flags
+
+- `ARQUIVO` (posicional, obrigatório): caminho para o arquivo de texto UTF-8 a ser analisado.
+- `-l`, `--linhas` (flag booleana): contabiliza a quantidade de linhas no arquivo (utilizando quebras de linha/`splitlines()`).
+- `-p`, `--palavras` (flag booleana): contabiliza o total de palavras (tokens separados por espaços em branco via `split()`).
+- `-c`, `--chars` (flag booleana): contabiliza o total de caracteres no arquivo (`len(conteudo)`).
+- `--top N` (inteiro >= 1): lista as `N` palavras mais frequentes.
+  - Para o top palavras, tokens são convertidos para minúsculas e caracteres de pontuação nas pontas (`.,!?;:"'()[]{}`) são removidos via `.strip(...)`. Tokens vazios resultantes são descartados.
+  - Em caso de empate de frequência, ordene as palavras alfabeticamente.
+- `--json` (flag booleana): formata o resultado como um objeto JSON.
+- `-o`, `--saida CAMINHO` (string): grava a saída no caminho especificado em vez de imprimir o resultado na stdout. Quando esta flag for utilizada, a CLI deve escrever o resultado no arquivo e imprimir na stdout exatamente: `Salvo em CAMINHO\n`. Caso as pastas pai do arquivo de saída não existam, crie-as automaticamente.
+
+### Regras de Exibição das Métricas
+1. Se **nenhuma** das flags de métrica (`-l`, `-p`, `-c`, `--top`) for fornecida, a ferramenta deve exibir **linhas, palavras e caracteres** por padrão.
+2. Se **ao menos uma** flag de métrica for informada, ela deve exibir **estritamente** as métricas selecionadas.
+
+### Formato de Saída em Texto (padrão)
+Cada métrica selecionada é exibida em uma linha:
+```
+Linhas: 10
+Palavras: 50
+Caracteres: 320
+Top Palavras:
+  - python: 6
+  - codigo: 4
+```
+
+### Formato de Saída em JSON (`--json`)
+Um objeto JSON indentado (`indent=2`, `ensure_ascii=False`) contendo apenas as chaves das métricas selecionadas:
+- `"linhas"`: int
+- `"palavras"`: int
+- `"caracteres"`: int
+- `"top_palavras"`: lista de objetos `{"palavra": str, "ocorrencias": int}`
+
+### Códigos de Saída (Exit Codes)
+- `0`: Operação concluída com sucesso.
+- `1`: Erro operacional (ex.: arquivo não existe, caminho aponta para um diretório em vez de arquivo regular, ou erro de leitura / decodificação). Deve exibir mensagem de erro na `stderr` iniciando com `Erro` (por exemplo, `Erro: ...` ou `Erro ao ler arquivo: ...`) e terminar com código 1.
+- `2`: Erro de sintaxe nos argumentos (ex.: arquivo ausente, flag inexistente, ou `--top` com valor menor que 1).
+
+apply patch
+patch: completed
+/tmp/bench-lufg66x7/contatexto.py
+/tmp/bench-lufg66x7/test_contatexto.py
+diff --git a/contatexto.py b/contatexto.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..47a6e9d976af824ed52c3c8101b7554e734b35b5
+--- /dev/null
++++ b/contatexto.py
+@@ -0,0 +1,93 @@
++"""Ferramenta de linha de comando para contar e analisar texto UTF-8."""
++
++import argparse
++from collections import Counter
++import json
++from pathlib import Path
++import sys
++
++
++PONTUACAO = ".,!?;:\"'()[]{}"
++
++
++def inteiro_positivo(valor):
++    """Valida o limite de palavras usando os erros de sintaxe do argparse."""
++    try:
++        numero = int(valor)
++    except ValueError:
++        raise argparse.ArgumentTypeError("deve ser um inteiro >= 1") from None
++    if numero < 1:
++        raise argparse.ArgumentTypeError("deve ser um inteiro >= 1")
++    return numero
++
++
++def analisar(conteudo, args):
++    resultado = {}
++    padrao = not (args.linhas or args.palavras or args.chars or args.top)
++    if padrao or args.linhas:
++        resultado["linhas"] = len(conteudo.splitlines())
++    if padrao or args.palavras:
++        resultado["palavras"] = len(conteudo.split())
++    if padrao or args.chars:
++        resultado["caracteres"] = len(conteudo)
++    if args.top is not None:
++        tokens = (token.lower().strip(PONTUACAO) for token in conteudo.split())
++        frequencias = Counter(token for token in tokens if token)
++        ordenadas = sorted(frequencias.items(), key=lambda item: (-item[1], item[0]))
++        resultado["top_palavras"] = [
++            {"palavra": palavra, "ocorrencias": ocorrencias}
++            for palavra, ocorrencias in ordenadas[:args.top]
++        ]
++    return resultado
++
++
++def formatar(resultado, usar_json):
++    if usar_json:
++        return json.dumps(resultado, indent=2, ensure_ascii=False)
++    rotulos = {"linhas": "Linhas", "palavras": "Palavras", "caracteres": "Caracteres"}
++    linhas = []
++    for metrica, valor in resultado.items():
++        if metrica == "top_palavras":
++            linhas.append("Top Palavras:")
++            linhas.extend(
++                f"  - {item['palavra']}: {item['ocorrencias']}" for item in valor
++            )
++        else:
++            linhas.append(f"{rotulos[metrica]}: {valor}")
++    return "\n".join(linhas)
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("arquivo", metavar="ARQUIVO", help="arquivo de texto UTF-8")
++    parser.add_argument("-l", "--linhas", action="store_true", help="contar linhas")
++    parser.add_argument("-p", "--palavras", action="store_true", help="contar palavras")
++    parser.add_argument("-c", "--chars", action="store_true", help="contar caracteres")
++    parser.add_argument("--top", type=inteiro_positivo, metavar="N", help="listar as N palavras mais frequentes")
++    parser.add_argument("--json", action="store_true", help="formatar como JSON")
++    parser.add_argument("-o", "--saida", metavar="CAMINHO", help="salvar resultado em arquivo")
++    args = parser.parse_args(argv)
++
++    try:
++        entrada = Path(args.arquivo)
++        if not entrada.is_file():
++            raise OSError(f"'{args.arquivo}' não é um arquivo regular existente")
++        with entrada.open("r", encoding="utf-8", newline="") as arquivo:
++            conteudo = arquivo.read()
++        saida = formatar(analisar(conteudo, args), args.json) + "\n"
++        if args.saida is not None:
++            destino = Path(args.saida)
++            destino.parent.mkdir(parents=True, exist_ok=True)
++            with destino.open("w", encoding="utf-8", newline="") as arquivo:
++                arquivo.write(saida)
++            print(f"Salvo em {args.saida}")
++        else:
++            sys.stdout.write(saida)
++    except (OSError, UnicodeError, ValueError) as erro:
++        print(f"Erro: {erro}", file=sys.stderr)
++        return 1
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/test_contatexto.py b/test_contatexto.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..39de5d5dbe871b36f3d06018cb2695e6f102e1be
+--- /dev/null
++++ b/test_contatexto.py
+@@ -0,0 +1,97 @@
++"""Testes da interface pública da CLI, executados com unittest."""
++
++import json
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++
++
++RAIZ = Path(__file__).resolve().parent
++
++
++class ContatextoTests(unittest.TestCase):
++    def setUp(self):
++        self.temporario = tempfile.TemporaryDirectory(dir=RAIZ)
++        self.addCleanup(self.temporario.cleanup)
++        self.pasta = Path(self.temporario.name)
++        self.entrada = self.pasta / "entrada.txt"
++        self.entrada.write_text('Olá, mundo!\nOlá python.\n', encoding="utf-8")
++
++    def executar(self, *argumentos):
++        return subprocess.run(
++            [sys.executable, str(RAIZ / "contatexto.py"), *map(str, argumentos)],
++            capture_output=True, text=True, encoding="utf-8", cwd=RAIZ,
++        )
++
++    def test_padrao(self):
++        retorno = self.executar(self.entrada)
++        self.assertEqual(retorno.returncode, 0, retorno.stderr)
++        self.assertEqual(retorno.stdout, "Linhas: 2\nPalavras: 4\nCaracteres: 23\n")
++
++    def test_selecao_de_metricas(self):
++        for flag, chave, valor in [("-l", "linhas", 2), ("-p", "palavras", 4), ("-c", "caracteres", 23)]:
++            with self.subTest(flag=flag):
++                retorno = self.executar(self.entrada, flag, "--json")
++                self.assertEqual(retorno.returncode, 0, retorno.stderr)
++                self.assertEqual(json.loads(retorno.stdout), {chave: valor})
++
++    def test_top_normalizacao_e_desempate(self):
++        self.entrada.write_text('B! a, b A (ação) "ação" ... [] {}', encoding="utf-8")
++        retorno = self.executar(self.entrada, "--top", 3, "--json")
++        esperado = {"top_palavras": [
++            {"palavra": "a", "ocorrencias": 2},
++            {"palavra": "ação", "ocorrencias": 2},
++            {"palavra": "b", "ocorrencias": 2},
++        ]}
++        self.assertEqual(json.loads(retorno.stdout), esperado)
++        self.assertEqual(retorno.stdout, json.dumps(esperado, indent=2, ensure_ascii=False) + "\n")
++
++    def test_top_texto_com_metrica(self):
++        retorno = self.executar(self.entrada, "--palavras", "--top", 2)
++        self.assertEqual(retorno.stdout, "Palavras: 4\nTop Palavras:\n  - olá: 2\n  - mundo: 1\n")
++
++    def test_arquivo_vazio(self):
++        self.entrada.write_bytes(b"")
++        retorno = self.executar(self.entrada, "--json")
++        self.assertEqual(json.loads(retorno.stdout), {"linhas": 0, "palavras": 0, "caracteres": 0})
++        retorno = self.executar(self.entrada, "--top", 10, "--json")
++        self.assertEqual(json.loads(retorno.stdout), {"top_palavras": []})
++
++    def test_quebras_de_linha_e_unicode(self):
++        conteudo = "á\r\nb\rc\u2028d"
++        self.entrada.write_bytes(conteudo.encode("utf-8"))
++        retorno = self.executar(self.entrada, "--json")
++        self.assertEqual(json.loads(retorno.stdout), {"linhas": 4, "palavras": 4, "caracteres": len(conteudo)})
++
++    def test_saida_cria_pastas(self):
++        destino = self.pasta / "nova" / "subpasta" / "resultado.json"
++        retorno = self.executar(self.entrada, "-l", "--json", "--saida", destino)
++        self.assertEqual(retorno.returncode, 0, retorno.stderr)
++        self.assertEqual(retorno.stdout, f"Salvo em {destino}\n")
++        self.assertEqual(destino.read_text(encoding="utf-8"), '{\n  "linhas": 2\n}\n')
++
++    def test_erros_operacionais(self):
++        invalido = self.pasta / "invalido.txt"
++        invalido.write_bytes(b"\xff")
++        for caminho in (self.pasta / "ausente", self.pasta, invalido):
++            with self.subTest(caminho=caminho):
++                retorno = self.executar(caminho)
++                self.assertEqual(retorno.returncode, 1)
++                self.assertTrue(retorno.stderr.startswith("Erro"))
++                self.assertEqual(retorno.stdout, "")
++        retorno = self.executar(self.entrada, "-o", self.pasta)
++        self.assertEqual(retorno.returncode, 1)
++        self.assertTrue(retorno.stderr.startswith("Erro"))
++
++    def test_erros_de_argumentos(self):
++        for argumentos in ((), (self.entrada, "--inexistente"), (self.entrada, "--top", "0"), (self.entrada, "--top", "-1"), (self.entrada, "--top", "abc")):
++            with self.subTest(argumentos=argumentos):
++                retorno = self.executar(*argumentos)
++                self.assertEqual(retorno.returncode, 2)
++                self.assertEqual(retorno.stdout, "")
++
++
++if __name__ == "__main__":
++    unittest.main()
+
+exec
+/bin/bash -lc 'python -m unittest -v' in /tmp/bench-lufg66x7
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc 'python3 -m unittest -v' in /tmp/bench-lufg66x7
+ exited 1 in 375ms:
+test_arquivo_vazio (test_contatexto.ContatextoTests.test_arquivo_vazio) ... ok
+test_erros_de_argumentos (test_contatexto.ContatextoTests.test_erros_de_argumentos) ... ok
+test_erros_operacionais (test_contatexto.ContatextoTests.test_erros_operacionais) ... ok
+test_padrao (test_contatexto.ContatextoTests.test_padrao) ... FAIL
+test_quebras_de_linha_e_unicode (test_contatexto.ContatextoTests.test_quebras_de_linha_e_unicode) ... ok
+test_saida_cria_pastas (test_contatexto.ContatextoTests.test_saida_cria_pastas) ... ok
+test_selecao_de_metricas (test_contatexto.ContatextoTests.test_selecao_de_metricas) ... 
+  test_selecao_de_metricas (test_contatexto.ContatextoTests.test_selecao_de_metricas) (flag='-c') ... FAIL
+test_top_normalizacao_e_desempate (test_contatexto.ContatextoTests.test_top_normalizacao_e_desempate) ... ok
+test_top_texto_com_metrica (test_contatexto.ContatextoTests.test_top_texto_com_metrica) ... ok
+
+======================================================================
+FAIL: test_padrao (test_contatexto.ContatextoTests.test_padrao)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/bench-lufg66x7/test_contatexto.py", line 31, in test_padrao
+    self.assertEqual(retorno.stdout, "Linhas: 2\nPalavras: 4\nCaracteres: 23\n")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Linhas: 2\nPalavras: 4\nCaracteres: 24\n' != 'Linhas: 2\nPalavras: 4\nCaracteres: 23\n'
+  Linhas: 2
+  Palavras: 4
+- Caracteres: 24
+?              ^
++ Caracteres: 23
+?              ^
+
+
+======================================================================
+FAIL: test_selecao_de_metricas (test_contatexto.ContatextoTests.test_selecao_de_metricas) (flag='-c')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/bench-lufg66x7/test_contatexto.py", line 38, in test_selecao_de_metricas
+    self.assertEqual(json.loads(retorno.stdout), {chave: valor})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'caracteres': 24} != {'caracteres': 23}
+- {'caracteres': 24}
+?                 ^
+
++ {'caracteres': 23}
+?                 ^
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.474s
+
+FAILED (failures=2)
+
+apply patch
+patch: completed
+/tmp/bench-lufg66x7/test_contatexto.py
+diff --git a/contatexto.py b/contatexto.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..47a6e9d976af824ed52c3c8101b7554e734b35b5
+--- /dev/null
++++ b/contatexto.py
+@@ -0,0 +1,93 @@
++"""Ferramenta de linha de comando para contar e analisar texto UTF-8."""
++
++import argparse
++from collections import Counter
++import json
++from pathlib import Path
++import sys
++
++
++PONTUACAO = ".,!?;:\"'()[]{}"
++
++
++def inteiro_positivo(valor):
++    """Valida o limite de palavras usando os erros de sintaxe do argparse."""
++    try:
++        numero = int(valor)
++    except ValueError:
++        raise argparse.ArgumentTypeError("deve ser um inteiro >= 1") from None
++    if numero < 1:
++        raise argparse.ArgumentTypeError("deve ser um inteiro >= 1")
++    return numero
++
++
++def analisar(conteudo, args):
++    resultado = {}
++    padrao = not (args.linhas or args.palavras or args.chars or args.top)
++    if padrao or args.linhas:
++        resultado["linhas"] = len(conteudo.splitlines())
++    if padrao or args.palavras:
++        resultado["palavras"] = len(conteudo.split())
++    if padrao or args.chars:
++        resultado["caracteres"] = len(conteudo)
++    if args.top is not None:
++        tokens = (token.lower().strip(PONTUACAO) for token in conteudo.split())
++        frequencias = Counter(token for token in tokens if token)
++        ordenadas = sorted(frequencias.items(), key=lambda item: (-item[1], item[0]))
++        resultado["top_palavras"] = [
++            {"palavra": palavra, "ocorrencias": ocorrencias}
++            for palavra, ocorrencias in ordenadas[:args.top]
++        ]
++    return resultado
++
++
++def formatar(resultado, usar_json):
++    if usar_json:
++        return json.dumps(resultado, indent=2, ensure_ascii=False)
++    rotulos = {"linhas": "Linhas", "palavras": "Palavras", "caracteres": "Caracteres"}
++    linhas = []
++    for metrica, valor in resultado.items():
++        if metrica == "top_palavras":
++            linhas.append("Top Palavras:")
++            linhas.extend(
++                f"  - {item['palavra']}: {item['ocorrencias']}" for item in valor
++            )
++        else:
++            linhas.append(f"{rotulos[metrica]}: {valor}")
++    return "\n".join(linhas)
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("arquivo", metavar="ARQUIVO", help="arquivo de texto UTF-8")
++    parser.add_argument("-l", "--linhas", action="store_true", help="contar linhas")
++    parser.add_argument("-p", "--palavras", action="store_true", help="contar palavras")
++    parser.add_argument("-c", "--chars", action="store_true", help="contar caracteres")
++    parser.add_argument("--top", type=inteiro_positivo, metavar="N", help="listar as N palavras mais frequentes")
++    parser.add_argument("--json", action="store_true", help="formatar como JSON")
++    parser.add_argument("-o", "--saida", metavar="CAMINHO", help="salvar resultado em arquivo")
++    args = parser.parse_args(argv)
++
++    try:
++        entrada = Path(args.arquivo)
++        if not entrada.is_file():
++            raise OSError(f"'{args.arquivo}' não é um arquivo regular existente")
++        with entrada.open("r", encoding="utf-8", newline="") as arquivo:
++            conteudo = arquivo.read()
++        saida = formatar(analisar(conteudo, args), args.json) + "\n"
++        if args.saida is not None:
++            destino = Path(args.saida)
++            destino.parent.mkdir(parents=True, exist_ok=True)
++            with destino.open("w", encoding="utf-8", newline="") as arquivo:
++                arquivo.write(saida)
++            print(f"Salvo em {args.saida}")
++        else:
++            sys.stdout.write(saida)
++    except (OSError, UnicodeError, ValueError) as erro:
++        print(f"Erro: {erro}", file=sys.stderr)
++        return 1
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/test_contatexto.py b/test_contatexto.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..806e2ff2dbdc6539787c892a12a0f39b8dd729ae
+--- /dev/null
++++ b/test_contatexto.py
+@@ -0,0 +1,97 @@
++"""Testes da interface pública da CLI, executados com unittest."""
++
++import json
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++
++
++RAIZ = Path(__file__).resolve().parent
++
++
++class ContatextoTests(unittest.TestCase):
++    def setUp(self):
++        self.temporario = tempfile.TemporaryDirectory(dir=RAIZ)
++        self.addCleanup(self.temporario.cleanup)
++        self.pasta = Path(self.temporario.name)
++        self.entrada = self.pasta / "entrada.txt"
++        self.entrada.write_text('Olá, mundo!\nOlá python.\n', encoding="utf-8")
++
++    def executar(self, *argumentos):
++        return subprocess.run(
++            [sys.executable, str(RAIZ / "contatexto.py"), *map(str, argumentos)],
++            capture_output=True, text=True, encoding="utf-8", cwd=RAIZ,
++        )
++
++    def test_padrao(self):
++        retorno = self.executar(self.entrada)
++        self.assertEqual(retorno.returncode, 0, retorno.stderr)
++        self.assertEqual(retorno.stdout, "Linhas: 2\nPalavras: 4\nCaracteres: 24\n")
++
++    def test_selecao_de_metricas(self):
++        for flag, chave, valor in [("-l", "linhas", 2), ("-p", "palavras", 4), ("-c", "caracteres", 24)]:
++            with self.subTest(flag=flag):
++                retorno = self.executar(self.entrada, flag, "--json")
++                self.assertEqual(retorno.returncode, 0, retorno.stderr)
++                self.assertEqual(json.loads(retorno.stdout), {chave: valor})
++
++    def test_top_normalizacao_e_desempate(self):
++        self.entrada.write_text('B! a, b A (ação) "ação" ... [] {}', encoding="utf-8")
++        retorno = self.executar(self.entrada, "--top", 3, "--json")
++        esperado = {"top_palavras": [
++            {"palavra": "a", "ocorrencias": 2},
++            {"palavra": "ação", "ocorrencias": 2},
++            {"palavra": "b", "ocorrencias": 2},
++        ]}
++        self.assertEqual(json.loads(retorno.stdout), esperado)
++        self.assertEqual(retorno.stdout, json.dumps(esperado, indent=2, ensure_ascii=False) + "\n")
++
++    def test_top_texto_com_metrica(self):
++        retorno = self.executar(self.entrada, "--palavras", "--top", 2)
++        self.assertEqual(retorno.stdout, "Palavras: 4\nTop Palavras:\n  - olá: 2\n  - mundo: 1\n")
++
++    def test_arquivo_vazio(self):
++        self.entrada.write_bytes(b"")
++        retorno = self.executar(self.entrada, "--json")
++        self.assertEqual(json.loads(retorno.stdout), {"linhas": 0, "palavras": 0, "caracteres": 0})
++        retorno = self.executar(self.entrada, "--top", 10, "--json")
++        self.assertEqual(json.loads(retorno.stdout), {"top_palavras": []})
++
++    def test_quebras_de_linha_e_unicode(self):
++        conteudo = "á\r\nb\rc\u2028d"
++        self.entrada.write_bytes(conteudo.encode("utf-8"))
++        retorno = self.executar(self.entrada, "--json")
++        self.assertEqual(json.loads(retorno.stdout), {"linhas": 4, "palavras": 4, "caracteres": len(conteudo)})
++
++    def test_saida_cria_pastas(self):
++        destino = self.pasta / "nova" / "subpasta" / "resultado.json"
++        retorno = self.executar(self.entrada, "-l", "--json", "--saida", destino)
++        self.assertEqual(retorno.returncode, 0, retorno.stderr)
++        self.assertEqual(retorno.stdout, f"Salvo em {destino}\n")
++        self.assertEqual(destino.read_text(encoding="utf-8"), '{\n  "linhas": 2\n}\n')
++
++    def test_erros_operacionais(self):
++        invalido = self.pasta / "invalido.txt"
++        invalido.write_bytes(b"\xff")
++        for caminho in (self.pasta / "ausente", self.pasta, invalido):
++            with self.subTest(caminho=caminho):
++                retorno = self.executar(caminho)
++                self.assertEqual(retorno.returncode, 1)
++                self.assertTrue(retorno.stderr.startswith("Erro"))
++                self.assertEqual(retorno.stdout, "")
++        retorno = self.executar(self.entrada, "-o", self.pasta)
++        self.assertEqual(retorno.returncode, 1)
++        self.assertTrue(retorno.stderr.startswith("Erro"))
++
++    def test_erros_de_argumentos(self):
++        for argumentos in ((), (self.entrada, "--inexistente"), (self.entrada, "--top", "0"), (self.entrada, "--top", "-1"), (self.entrada, "--top", "abc")):
++            with self.subTest(argumentos=argumentos):
++                retorno = self.executar(*argumentos)
++                self.assertEqual(retorno.returncode, 2)
++                self.assertEqual(retorno.stdout, "")
++
++
++if __name__ == "__main__":
++    unittest.main()
+
+exec
+/bin/bash -lc 'python3 -m unittest -v' in /tmp/bench-lufg66x7
+ succeeded in 395ms:
+test_arquivo_vazio (test_contatexto.ContatextoTests.test_arquivo_vazio) ... ok
+test_erros_de_argumentos (test_contatexto.ContatextoTests.test_erros_de_argumentos) ... ok
+test_erros_operacionais (test_contatexto.ContatextoTests.test_erros_operacionais) ... ok
+test_padrao (test_contatexto.ContatextoTests.test_padrao) ... ok
+test_quebras_de_linha_e_unicode (test_contatexto.ContatextoTests.test_quebras_de_linha_e_unicode) ... ok
+test_saida_cria_pastas (test_contatexto.ContatextoTests.test_saida_cria_pastas) ... ok
+test_selecao_de_metricas (test_contatexto.ContatextoTests.test_selecao_de_metricas) ... ok
+test_top_normalizacao_e_desempate (test_contatexto.ContatextoTests.test_top_normalizacao_e_desempate) ... ok
+test_top_texto_com_metrica (test_contatexto.ContatextoTests.test_top_texto_com_metrica) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.500s
+
+OK
+
+codex
+Implementado em [contatexto.py](/tmp/bench-lufg66x7/contatexto.py), com todas as flags, formatos de saída e tratamentos de erro solicitados.
+
+Validação: 9 testes passaram com `python3 -m unittest -v`. Neste ambiente, use `python3` para executar a ferramenta.
+tokens used
+7,908

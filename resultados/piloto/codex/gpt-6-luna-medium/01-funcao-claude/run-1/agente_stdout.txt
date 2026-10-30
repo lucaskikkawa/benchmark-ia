@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-ykymv3ut/solucao.py) com `parse_duracao`, que valida o formato, a ordem e a unicidade das unidades, e retorna o total em segundos.

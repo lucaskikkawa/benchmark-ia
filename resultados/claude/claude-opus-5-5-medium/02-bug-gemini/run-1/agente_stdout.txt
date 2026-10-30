@@ -1,0 +1,19 @@
+Corrigi `carrinho.py` seguindo o enunciado. Fiz um teste rápido cobrindo os casos principais e todos passaram. Não havia arquivo de testes no diretório, então não rodei nenhuma suíte oficial.
+
+**O que foi corrigido:**
+- **Itens compartilhados entre instâncias:** o padrão agora é `None`. Quando `itens` é informado, o carrinho guarda uma cópia isolada, incluindo os dicionários de cada item. Mudanças feitas depois no dicionário original não afetam o carrinho.
+- **`adicionar_item`:**
+  - `nome` não pode ser vazio nem só espaços.
+  - `preco` precisa ser numérico (`bool` é recusado) e maior que 0.
+  - `quantidade` precisa ser `int` e maior que 0.
+  - Valor do tipo errado levanta `TypeError`; valor fora do limite levanta `ValueError`.
+  - Se o item já existe, a quantidade é somada e o preço passa a ser o novo.
+- **`remover_item`:** levanta `KeyError` se o item não existe. Quantidade que não é `int` (ou é `bool`) levanta `TypeError`, e quantidade `<= 0` levanta `ValueError`. O item é removido por inteiro quando a quantidade é `None` ou maior ou igual à atual.
+- **`aplicar_cupom`:** o código precisa ser um texto não vazio e a porcentagem um número entre 0 e 100. Um cupom novo substitui o anterior.
+- **Cálculos:**
+  - O subtotal agora é arredondado para 2 casas.
+  - O desconto passou a dividir a porcentagem por 100. Antes, ele multiplicava o subtotal pela porcentagem inteira.
+  - O total é arredondado e nunca fica abaixo de 0.0.
+- **`listar_itens`:** retorna dicionários novos, ordenados com `sorted` padrão. Por isso nomes acentuados ficam depois dos sem acento: "Zeta" vem antes de "Ábaco".
+
+Também adicionei uma validação que o enunciado não pede: se `itens` for passado e não for um dicionário, o construtor levanta `TypeError`.

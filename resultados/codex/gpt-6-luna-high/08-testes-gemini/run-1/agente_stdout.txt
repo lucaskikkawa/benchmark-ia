@@ -1,0 +1,3 @@
+Criei [tests/test_validador.py](/tmp/bench-7rjtqqxf/tests/test_validador.py) com 51 casos cobrindo as regras, os limites de comprimento, os caracteres especiais, Unicode e as faixas de força.
+
+Verifiquei com `pytest -q`: **51 testes passaram**.

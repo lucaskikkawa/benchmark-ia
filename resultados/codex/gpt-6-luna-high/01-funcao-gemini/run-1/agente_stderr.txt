@@ -1,0 +1,136 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-ts76ac7u
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189b9-4d4e-7452-91f0-118a7692d68c
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:13:07.152640Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos existentes neste diretório, depois implemento a solução aqui.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!dist'"' && cat enunciado.md" in /tmp/bench-ts76ac7u
+ succeeded in 0ms:
+/tmp/bench-ts76ac7u
+enunciado.md
+# 01 - Resumidor de Intervalos Numéricos
+
+Implemente a função `resumir_intervalos` no arquivo `solucao.py` na raiz do seu diretório de trabalho.
+
+## Especificação
+
+A função deve ter a seguinte assinatura:
+
+```python
+def resumir_intervalos(numeros: list[int]) -> str:
+    ...
+```
+
+### Comportamento:
+1. Recebe uma lista de inteiros (`numeros`). A lista pode conter valores desordenados, duplicados ou negativos.
+2. Deve remover números duplicados e ordenar os valores em ordem crescente.
+3. Deve agrupar sequências de números consecutivos em intervalos no formato `"inicio-fim"` se houver 2 ou mais números consecutivos (por exemplo, `[1, 2, 3]` vira `"1-3"`; `[7, 8]` vira `"7-8"`).
+4. Números que não formam sequência com seus vizinhos devem aparecer isolados (por exemplo, `5` vira `"5"`).
+5. Os intervalos e números isolados devem ser concatenados em uma única string separados por vírgula e espaço (`", "`).
+6. Se a lista de entrada for vazia, deve retornar uma string vazia `""`.
+7. **Validação de tipos**:
+   - Caso o argumento `numeros` não seja uma lista (`isinstance(numeros, list)` deve ser verdadeiro), levanta `TypeError`.
+   - Todos os elementos devem ser estritamente do tipo inteiro primitivo (`type(x) is int`). Note que `bool` e quaisquer subclasses de `int` não são permitidos e devem levantar `TypeError`.
+8. **Imutabilidade**: A função não deve modificar a lista original recebida no parâmetro `numeros` (não realize mutações in-place na lista do chamador).
+9. A função deve suportar listas com grandes volumes de dados de forma eficiente, bem como inteiros de magnitude arbitrária (positivos ou negativos).
+
+### Exemplos:
+- `resumir_intervalos([1, 2, 3, 5, 7, 8, 9])` -> `"1-3, 5, 7-9"`
+- `resumir_intervalos([9, 1, 8, 2, 7, 3, 5])` -> `"1-3, 5, 7-9"`
+- `resumir_intervalos([1, 1, 2, 2, 3])` -> `"1-3"`
+- `resumir_intervalos([42])` -> `"42"`
+- `resumir_intervalos([])` -> `""`
+- `resumir_intervalos([-3, -2, -1, 1, 2])` -> `"-3--1, 1-2"`
+
+exec
+/bin/bash -lc "rg --files -g '"'!node_modules'"' -g '"'!dist'"' && ls -la" in /tmp/bench-ts76ac7u
+ succeeded in 0ms:
+enunciado.md
+total 8
+drwx------ 2 box box 4096 Oct 29 19:13 .
+drwxr-xr-x 3 box box   60 Oct 29 19:13 ..
+-rw-r--r-- 1 box box    0 Oct 29 16:06 .gitkeep
+-rw-r--r-- 1 box box 1993 Oct 29 19:07 enunciado.md
+
+codex
+O diretório contém apenas o enunciado. Vou criar `solucao.py` com validação estrita dos tipos e agrupamento após deduplicar e ordenar, sem alterar a lista recebida.
+apply patch
+patch: completed
+/tmp/bench-ts76ac7u/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..27e23b2a63493e26c27037f3938203a884395841
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,25 @@
++def resumir_intervalos(numeros: list[int]) -> str:
++    """Resume números inteiros distintos em intervalos consecutivos."""
++    if not isinstance(numeros, list):
++        raise TypeError("numeros deve ser uma lista")
++
++    if any(type(numero) is not int for numero in numeros):
++        raise TypeError("todos os elementos devem ser inteiros primitivos")
++
++    ordenados = sorted(set(numeros))
++    if not ordenados:
++        return ""
++
++    partes: list[str] = []
++    inicio = fim = ordenados[0]
++
++    for numero in ordenados[1:]:
++        if numero == fim + 1:
++            fim = numero
++            continue
++
++        partes.append(str(inicio) if inicio == fim else f"{inicio}-{fim}")
++        inicio = fim = numero
++
++    partes.append(str(inicio) if inicio == fim else f"{inicio}-{fim}")
++    return ", ".join(partes)
+
+exec
+/bin/bash -lc 'cat solucao.py' in /tmp/bench-ts76ac7u
+ succeeded in 0ms:
+def resumir_intervalos(numeros: list[int]) -> str:
+    """Resume números inteiros distintos em intervalos consecutivos."""
+    if not isinstance(numeros, list):
+        raise TypeError("numeros deve ser uma lista")
+
+    if any(type(numero) is not int for numero in numeros):
+        raise TypeError("todos os elementos devem ser inteiros primitivos")
+
+    ordenados = sorted(set(numeros))
+    if not ordenados:
+        return ""
+
+    partes: list[str] = []
+    inicio = fim = ordenados[0]
+
+    for numero in ordenados[1:]:
+        if numero == fim + 1:
+            fim = numero
+            continue
+
+        partes.append(str(inicio) if inicio == fim else f"{inicio}-{fim}")
+        inicio = fim = numero
+
+    partes.append(str(inicio) if inicio == fim else f"{inicio}-{fim}")
+    return ", ".join(partes)
+
+codex
+Implementei `resumir_intervalos` em [solucao.py](/tmp/bench-ts76ac7u/solucao.py). A função valida os tipos, remove duplicatas, ordena os valores e resume sequências consecutivas sem modificar a lista original.
+tokens used
+8,297

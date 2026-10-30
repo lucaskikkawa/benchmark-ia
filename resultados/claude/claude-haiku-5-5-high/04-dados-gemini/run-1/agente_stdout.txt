@@ -1,0 +1,12 @@
+Implementei `processar_vendas` em `analisador_vendas.py` e os 9 testes passam (`python3 -m unittest`).
+
+**Arquivos**
+- `analisador_vendas.py`: a implementação, seguindo a especificação do `enunciado.md`.
+- `test_analisador_vendas.py`: testes que eu adicionei para verificar o comportamento. Não foi pedido, então pode remover se não quiser.
+
+**Escolhas de interpretação**
+- **Ordem das validações:** arquivo, depois `top_n` tipo, depois `top_n < 1`, na ordem da especificação. Se os dois erros existirem ao mesmo tempo, vence o `FileNotFoundError`.
+- **Valores descartados:** além de não conversíveis e negativos, descarto também `nan` e `inf`, porque corromperiam as somas. Linhas com `cliente` ou `categoria` vazios também são ignoradas, já que são valores inválidos.
+- **Ticket médio:** calculado sobre a `receita_total` já arredondada.
+- **BOM:** tratado com `utf-8-sig`, e os nomes das colunas também têm o `\ufeff` removido e os espaços das pontas retirados.
+- **Diretórios de saída:** criados com `os.makedirs` quando não existem.

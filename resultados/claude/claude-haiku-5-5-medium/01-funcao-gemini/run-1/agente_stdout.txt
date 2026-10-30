@@ -1,0 +1,10 @@
+Criei `solucao.py` na raiz deste diretório com a função `resumir_intervalos`, conforme o enunciado. Todos os exemplos do enunciado passam, além de alguns casos extras.
+
+A implementação:
+- **Validação:** levanta `TypeError` se `numeros` não for uma lista ou se algum elemento não for `type(x) is int`, o que rejeita `bool` e subclasses de `int`.
+- **Imutabilidade:** usa `sorted(set(numeros))`, que cria uma nova lista e não altera a do chamador.
+- **Agrupamento:** percorre os valores ordenados e junta sequências consecutivas em `"inicio-fim"`. Números isolados saem como `"n"`, e a saída é unida por `", "`.
+- **Desempenho:** a ordenação é O(n log n). Uma lista de 2 milhões de inteiros levou cerca de 0,3 s.
+- **Inteiros grandes:** funcionam porque Python tem inteiros de precisão arbitrária.
+
+Os testes foram rodados com `python3 -I` e um `sys.path` explícito, porque o modo isolado não inclui o diretório atual no import. Não criei um arquivo de testes separado; os testes foram só uma verificação pontual.

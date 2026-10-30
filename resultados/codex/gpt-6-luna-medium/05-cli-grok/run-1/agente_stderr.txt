@@ -1,0 +1,312 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-2aeu51sq
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189b6-17ca-73b3-8e18-9f443850604f
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:09:36.108488Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para entender a tarefa e implementá-la aqui.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-2aeu51sq
+ succeeded in 0ms:
+/tmp/bench-2aeu51sq
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md && rg --files' in /tmp/bench-2aeu51sq
+ succeeded in 0ms:
+# Tarefa: CLI de agenda pessoal
+
+Crie `agenda_cli.py` no diretório de trabalho. Ele é o programa completo: `argparse`, subcomandos, arquivo JSON e códigos de saída. Só a biblioteca padrão. Os testes chamam o script com `subprocess`.
+
+```text
+python agenda_cli.py adicionar --titulo TEXTO --prioridade baixa|media|alta [--prazo YYYY-MM-DD] --arquivo CAMINHO
+python agenda_cli.py listar --arquivo CAMINHO [--prioridade baixa|media|alta] [--somente-abertas]
+python agenda_cli.py concluir --id N --arquivo CAMINHO
+```
+
+`--arquivo` é obrigatório em todos. Sem subcomando, argumento desconhecido ou escolha inválida de prioridade: o `argparse` encerra com código 2.
+
+## Arquivo JSON
+
+Se `adicionar` receber um caminho que não existe, crie o arquivo. `listar` e `concluir` num caminho que não existe: código 2, stderr exatamente `erro: arquivo inexistente\n`, stdout vazio.
+
+Formato (UTF-8, `indent=2`, `ensure_ascii=False`, quebra de linha final):
+
+```json
+{
+  "proximo_id": 1,
+  "tarefas": [
+    {
+      "id": 1,
+      "titulo": "Comprar leite",
+      "prioridade": "alta",
+      "prazo": null,
+      "concluida": false
+    }
+  ]
+}
+```
+
+Na leitura, qualquer JSON que não siga esse formato gera `erro: arquivo invalido` (código 2). Exija:
+
+- objeto com exatamente as chaves `proximo_id` e `tarefas`;
+- `proximo_id` inteiro ≥ 1 (`bool` não vale; `1.0` também não) e **maior** que todo `id` já usado (se não houver tarefas, só ≥ 1). Buracos são válidos: ids `1` e `3` com `proximo_id` `5` podem ser listados. O próximo `adicionar` grava id `5`, não `4` e não `max+1`;
+- `tarefas` é uma lista de objetos com exatamente `id`, `titulo`, `prioridade`, `prazo`, `concluida`;
+- `id` inteiro ≥ 1, único, não `bool`;
+- `titulo` string não vazia depois das regras abaixo, sem `\n`, `\r` ou `\t`, e sem espaço nas pontas (o arquivo já deve estar normalizado; título `"  a  "` ou `"\n"` é inválido);
+- `prioridade` é `baixa`, `media` ou `alta`;
+- `prazo` é `null` ou `YYYY-MM-DD` de um dia real no calendário gregoriano de `datetime.date` (anos 1 a 9999). `2000-02-29` existe; `1900-02-29` e `2100-02-29` não;
+- `concluida` é bool (`0` e `1` não valem).
+- `id` duplicado, chave a mais ou chave a menos torna o arquivo inválido.
+
+## adicionar
+
+- `--titulo` é obrigatório. Vale o texto depois de `str.strip` (isso inclui espaços Unicode, como `\u00a0`). Se ficar vazio: `erro: titulo vazio`.
+- `adicionar` em arquivo que já existe e é inválido: `erro: arquivo invalido`, e o arquivo **permanece byte a byte** como estava.
+- `listar` não reescreve o arquivo.
+- Se o título (já sem espaços das pontas) contiver `\n`, `\r` ou `\t`: `erro: titulo invalido`.
+- `--prioridade` obrigatória, uma das três opções.
+- `--prazo` opcional. Se vier, tem de ser uma data real `YYYY-MM-DD`; senão `erro: prazo invalido`. Ausente grava `null`.
+- O id novo é o `proximo_id` atual. Depois grave `proximo_id` incrementado em 1 e `concluida` false.
+- Sucesso: stdout exatamente `ok id=N\n`, stderr vazio, código 0. Nada além disso.
+
+## listar
+
+Imprima uma tarefa por linha, sem cabeçalho, separador tab (`\t`), nesta ordem de colunas:
+
+```text
+id	prioridade	estado	prazo	titulo
+```
+
+- `estado` é `aberta` ou `concluida`.
+- `prazo` nulo vira `-`.
+- Ordem: prioridade `alta`, depois `media`, depois `baixa`; dentro da mesma prioridade, `id` crescente.
+- `--prioridade` filtra uma prioridade. `--somente-abertas` tira as concluídas. Os dois filtros juntos são um E.
+- Nenhuma tarefa (ou nenhuma após o filtro): stdout vazio (zero bytes), código 0.
+- Cada linha impressa termina com `\n`.
+
+## concluir
+
+- `--id` inteiro (`01` é o id `1`). Se não existir: `erro: id inexistente`.
+- Se já estiver concluída: `erro: ja concluida`.
+- Senão marque `concluida` true, grave o arquivo e imprima `ok id=N\n` com código 0.
+
+## Erros de regra
+
+Código 2, stdout vazio, stderr exatamente `erro: MENSAGEM\n` (sem traceback), com uma destas mensagens:
+
+- `titulo vazio`
+- `titulo invalido`
+- `prazo invalido`
+- `arquivo inexistente`
+- `arquivo invalido`
+- `id inexistente`
+- `ja concluida`
+enunciado.md
+
+codex
+Vou implementar as validações e a gravação determinística do JSON conforme o contrato, incluindo distinção entre erros do argparse e erros de regra.
+apply patch
+patch: completed
+/tmp/bench-2aeu51sq/agenda_cli.py
+diff --git a/agenda_cli.py b/agenda_cli.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d35472a5ffe92f49f6d3bb5d1e362d4592562b01
+--- /dev/null
++++ b/agenda_cli.py
+@@ -0,0 +1,180 @@
++#!/usr/bin/env python3
++"""CLI simples para manter uma agenda de tarefas em JSON."""
++
++import argparse
++import datetime
++import json
++import os
++import re
++import sys
++
++
++PRIORIDADES = ("baixa", "media", "alta")
++CHAVES_RAIZ = {"proximo_id", "tarefas"}
++CHAVES_TAREFA = {"id", "titulo", "prioridade", "prazo", "concluida"}
++
++
++class ErroRegra(Exception):
++    pass
++
++
++def inteiro(valor):
++    return isinstance(valor, int) and not isinstance(valor, bool)
++
++
++def data_valida(valor):
++    if not isinstance(valor, str) or re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", valor) is None:
++        return False
++    try:
++        datetime.date.fromisoformat(valor)
++    except ValueError:
++        return False
++    return True
++
++
++def arquivo_valido(dados):
++    if not isinstance(dados, dict) or set(dados) != CHAVES_RAIZ:
++        return False
++    proximo = dados["proximo_id"]
++    tarefas = dados["tarefas"]
++    if not inteiro(proximo) or proximo < 1 or not isinstance(tarefas, list):
++        return False
++    ids = set()
++    for tarefa in tarefas:
++        if not isinstance(tarefa, dict) or set(tarefa) != CHAVES_TAREFA:
++            return False
++        ident = tarefa["id"]
++        titulo = tarefa["titulo"]
++        prioridade = tarefa["prioridade"]
++        prazo = tarefa["prazo"]
++        concluida = tarefa["concluida"]
++        if not inteiro(ident) or ident < 1 or ident in ids:
++            return False
++        ids.add(ident)
++        if (not isinstance(titulo, str) or not titulo or titulo != titulo.strip()
++                or any(c in titulo for c in "\n\r\t")):
++            return False
++        if prioridade not in PRIORIDADES:
++            return False
++        if prazo is not None and not data_valida(prazo):
++            return False
++        if not isinstance(concluida, bool):
++            return False
++    return proximo > max(ids, default=0)
++
++
++def carregar(caminho):
++    try:
++        with open(caminho, "r", encoding="utf-8") as arquivo:
++            dados = json.load(arquivo)
++    except (OSError, UnicodeError, json.JSONDecodeError):
++        raise ErroRegra("arquivo invalido")
++    if not arquivo_valido(dados):
++        raise ErroRegra("arquivo invalido")
++    return dados
++
++
++def salvar(caminho, dados):
++    with open(caminho, "w", encoding="utf-8", newline="\n") as arquivo:
++        json.dump(dados, arquivo, ensure_ascii=False, indent=2)
++        arquivo.write("\n")
++
++
++def prazo_cli(valor):
++    if not data_valida(valor):
++        raise ErroRegra("prazo invalido")
++    return valor
++
++
++def criar_parser():
++    parser = argparse.ArgumentParser()
++    subparsers = parser.add_subparsers(dest="comando", required=True)
++
++    adicionar = subparsers.add_parser("adicionar")
++    adicionar.add_argument("--titulo", required=True)
++    adicionar.add_argument("--prioridade", required=True, choices=PRIORIDADES)
++    adicionar.add_argument("--prazo", type=prazo_cli)
++    adicionar.add_argument("--arquivo", required=True)
++
++    listar = subparsers.add_parser("listar")
++    listar.add_argument("--arquivo", required=True)
++    listar.add_argument("--prioridade", choices=PRIORIDADES)
++    listar.add_argument("--somente-abertas", action="store_true")
++
++    concluir = subparsers.add_parser("concluir")
++    concluir.add_argument("--id", required=True, type=int)
++    concluir.add_argument("--arquivo", required=True)
++    return parser
++
++
++def executar(args):
++    if args.comando == "adicionar":
++        titulo = args.titulo.strip()
++        if not titulo:
++            raise ErroRegra("titulo vazio")
++        if any(c in titulo for c in "\n\r\t"):
++            raise ErroRegra("titulo invalido")
++        if os.path.exists(args.arquivo):
++            dados = carregar(args.arquivo)
++        else:
++            dados = {"proximo_id": 1, "tarefas": []}
++        ident = dados["proximo_id"]
++        dados["tarefas"].append({
++            "id": ident,
++            "titulo": titulo,
++            "prioridade": args.prioridade,
++            "prazo": args.prazo,
++            "concluida": False,
++        })
++        dados["proximo_id"] = ident + 1
++        try:
++            salvar(args.arquivo, dados)
++        except OSError:
++            raise ErroRegra("arquivo invalido")
++        print(f"ok id={ident}")
++        return
++
++    if not os.path.exists(args.arquivo):
++        raise ErroRegra("arquivo inexistente")
++    dados = carregar(args.arquivo)
++
++    if args.comando == "listar":
++        ordem = {"alta": 0, "media": 1, "baixa": 2}
++        tarefas = sorted(dados["tarefas"], key=lambda t: (ordem[t["prioridade"]], t["id"]))
++        for tarefa in tarefas:
++            if args.prioridade is not None and tarefa["prioridade"] != args.prioridade:
++                continue
++            if args.somente_abertas and tarefa["concluida"]:
++                continue
++            estado = "concluida" if tarefa["concluida"] else "aberta"
++            prazo = tarefa["prazo"] if tarefa["prazo"] is not None else "-"
++            print(f"{tarefa['id']}\t{tarefa['prioridade']}\t{estado}\t{prazo}\t{tarefa['titulo']}")
++        return
++
++    tarefa = next((t for t in dados["tarefas"] if t["id"] == args.id), None)
++    if tarefa is None:
++        raise ErroRegra("id inexistente")
++    if tarefa["concluida"]:
++        raise ErroRegra("ja concluida")
++    tarefa["concluida"] = True
++    try:
++        salvar(args.arquivo, dados)
++    except OSError:
++        raise ErroRegra("arquivo invalido")
++    print(f"ok id={args.id}")
++
++
++def main():
++    parser = criar_parser()
++    try:
++        args = parser.parse_args()
++        executar(args)
++    except ErroRegra as erro:
++        sys.stdout.write("")
++        sys.stderr.write(f"erro: {erro}\n")
++        return 2
++    return 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+
+codex
+Implementei [agenda_cli.py](/tmp/bench-2aeu51sq/agenda_cli.py) com os três subcomandos, validação do arquivo JSON, filtros e mensagens de erro conforme o enunciado.
+tokens used
+10,971

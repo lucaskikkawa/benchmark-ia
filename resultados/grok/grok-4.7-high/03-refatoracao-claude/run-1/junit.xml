@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="32" time="0.077" timestamp="2026-10-30T01:15:30.365849-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_relatorio" name="test_exemplos_basicos" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_exatamente_1000_usa_faixa_baixa" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_agrupa_por_cliente_e_ordena" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_qtd_zero_e_qtd_negativa" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_nao_modifica_entrada" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_arredondamento_do_desconto_igual_ao_original[1275.1-vip]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_arredondamento_do_desconto_igual_ao_original[858.5-atacado]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_arredondamento_do_desconto_igual_ao_original[2217.875-atacado]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_arredondamento_do_desconto_igual_ao_original[1323.75-comum]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_arredondamento_do_desconto_igual_ao_original[2718.25-outro]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_total_somado_na_ordem_alfabetica" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_acumulo_por_cliente_na_ordem_dos_pedidos" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_inf_e_nan" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_precos_inteiros_e_negativos" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_tipo_comparado_exatamente" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_nomes_unicode_ordenados_como_str" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_aleatorio_igual_ao_original" time="0.006" /><testcase classname="testes_ocultos.test_relatorio" name="test_excecoes_iguais_ao_original[sem_cliente]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_excecoes_iguais_ao_original[sem_tipo]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_excecoes_iguais_ao_original[sem_preco_antes]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_excecoes_iguais_ao_original[negativa_sem_preco]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_excecoes_iguais_ao_original[sem_qtd]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_excecoes_iguais_ao_original[sem_itens]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_excecoes_iguais_ao_original[segundo_sem_tipo]" time="0.000" /><testcase classname="testes_ocultos.test_relatorio" name="test_calcular_subtotal" time="0.000"><failure message="AttributeError: module 'relatorio' has no attribute 'calcular_subtotal'">def test_calcular_subtotal():
+&gt;       assert relatorio.calcular_subtotal([{"preco": 2.5, "qtd": 4}, {"preco": 1.0, "qtd": 3}]) == pytest.approx(13.0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'relatorio' has no attribute 'calcular_subtotal'
+
+testes_ocultos/test_relatorio.py:225: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_relatorio" name="test_calcular_desconto" time="0.000"><failure message="AttributeError: module 'relatorio' has no attribute 'calcular_desconto'">def test_calcular_desconto():
+        casos = [
+            (500.0, "vip", 50.0),
+            (2000.0, "vip", 300.0),
+            (1000.0, "vip", 100.0),
+            (400.0, "atacado", 20.0),
+            (1500.0, "atacado", 120.0),
+            (800.0, "comum", 0.0),
+            (1000.0, "desconhecido", 0.0),
+            (5000.0, "qualquer", 100.0),
+            (5000.0, "Vip", 100.0),
+        ]
+        for subtotal, tipo, desconto in casos:
+&gt;           assert relatorio.calcular_desconto(subtotal, tipo) == pytest.approx(desconto), (subtotal, tipo)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'relatorio' has no attribute 'calcular_desconto'
+
+testes_ocultos/test_relatorio.py:244: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_relatorio" name="test_constantes_de_taxas" time="0.000"><failure message="AttributeError: module 'relatorio' has no attribute 'LIMITE_FAIXA_ALTA'">def test_constantes_de_taxas():
+&gt;       assert relatorio.LIMITE_FAIXA_ALTA == 1000
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'relatorio' has no attribute 'LIMITE_FAIXA_ALTA'
+
+testes_ocultos/test_relatorio.py:248: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_relatorio" name="test_calcular_desconto_consulta_constantes" time="0.000"><failure message="AttributeError: module 'relatorio' has no attribute 'TAXAS_DESCONTO'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f5e63b23ce0&gt;
+
+    def test_calcular_desconto_consulta_constantes(monkeypatch):
+&gt;       monkeypatch.setitem(relatorio.TAXAS_DESCONTO, "ouro", (0.25, 0.5))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'relatorio' has no attribute 'TAXAS_DESCONTO'
+
+testes_ocultos/test_relatorio.py:255: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_relatorio" name="test_formatar_relatorio" time="0.000"><failure message="AttributeError: module 'relatorio' has no attribute 'formatar_relatorio'. Did you mean: 'gerar_relatorio'?">def test_formatar_relatorio():
+        # A ordenação alfabética é exigida na saída de gerar_relatorio; formatar pode
+        # preservar a ordem recebida ou ordenar ela mesma.
+&gt;       assert relatorio.formatar_relatorio({"Ana": 2.345, "Bia": 10.0}) == "Ana: 2.35\nBia: 10.00\nTOTAL: 12.35"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'relatorio' has no attribute 'formatar_relatorio'. Did you mean: 'gerar_relatorio'?
+
+testes_ocultos/test_relatorio.py:267: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_relatorio" name="test_gerar_relatorio_usa_calcular_subtotal" time="0.000"><failure message="AttributeError: &lt;module 'relatorio' from '/tmp/bench-3bjlbs2t/relatorio.py'&gt; has no attribute 'calcular_subtotal'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f5e63b225d0&gt;
+
+    def test_gerar_relatorio_usa_calcular_subtotal(monkeypatch):
+&gt;       monkeypatch.setattr(relatorio, "calcular_subtotal", lambda itens: 80.0)
+E       AttributeError: &lt;module 'relatorio' from '/tmp/bench-3bjlbs2t/relatorio.py'&gt; has no attribute 'calcular_subtotal'
+
+testes_ocultos/test_relatorio.py:272: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_relatorio" name="test_gerar_relatorio_usa_calcular_desconto" time="0.000"><failure message="AttributeError: &lt;module 'relatorio' from '/tmp/bench-3bjlbs2t/relatorio.py'&gt; has no attribute 'calcular_desconto'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f5e63b36300&gt;
+
+    def test_gerar_relatorio_usa_calcular_desconto(monkeypatch):
+&gt;       monkeypatch.setattr(relatorio, "calcular_desconto", lambda subtotal, tipo: 0.0)
+E       AttributeError: &lt;module 'relatorio' from '/tmp/bench-3bjlbs2t/relatorio.py'&gt; has no attribute 'calcular_desconto'
+
+testes_ocultos/test_relatorio.py:277: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_relatorio" name="test_gerar_relatorio_usa_formatar_relatorio" time="0.000"><failure message="AttributeError: &lt;module 'relatorio' from '/tmp/bench-3bjlbs2t/relatorio.py'&gt; has no attribute 'formatar_relatorio'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f5e63b37fb0&gt;
+
+    def test_gerar_relatorio_usa_formatar_relatorio(monkeypatch):
+        capturado = {}
+    
+        def falso(totais):
+            capturado.update(totais)
+            return "X"
+    
+&gt;       monkeypatch.setattr(relatorio, "formatar_relatorio", falso)
+E       AttributeError: &lt;module 'relatorio' from '/tmp/bench-3bjlbs2t/relatorio.py'&gt; has no attribute 'formatar_relatorio'
+
+testes_ocultos/test_relatorio.py:288: AttributeError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,16 @@
+Criei `cliente.py` neste diretório. `loja_api.py` e `enunciado.md` ficaram intactos.
+
+**Como ficou:**
+- `TempoEsgotado` e `baixar_pedidos` com a assinatura do enunciado, usando só a biblioteca padrão.
+- O timeout é imposto de verdade: cada chamada à API roda numa thread daemon e o cliente espera no máximo `timeout_s`. Assim um `timeout-` não bloqueia os `ATRASO_S` segundos, e a thread abandonada não impede o processo de terminar.
+- `LojaErroCliente` propaga sem retry nem backoff. `LojaIndisponivel` e timeout são retentáveis, e a última falha é relevante: `LojaIndisponivel` ou `TempoEsgotado`, conforme o caso.
+- O backoff é `backoff_s * 2 ** (i - 1)`, sem dormir após a última tentativa, após sucesso ou com `backoff_s == 0`.
+- Ids são processados em ordem e a execução para no primeiro id que falha de vez.
+- A validação roda antes de qualquer chamada, com `bool` rejeitado onde o enunciado pede.
+
+**Escolhas que fiz onde o enunciado não cobria:**
+- `ids` é aceito por `isinstance(ids, list)`, então subclasses de `list` passam.
+- `backoff_s` e `timeout_s` com `NaN` levantam `ValueError`, porque a checagem é feita como `not x >= 0` / `not x > 0`.
+- `timeout_s` é limitado a `threading.TIMEOUT_MAX`, então `inf` funciona em vez de falhar no `join`.
+
+**Verificação:** rodei um script de checagem temporário cobrindo os casos do enunciado: sucesso e ordem, `missing-`, `down-`, `flaky-` com seeds diferentes, `timeout-`, `slow-` com seed ímpar, parada no primeiro erro, lista vazia e as validações. Todos passaram. Na primeira rodada, dois casos de tempo falharam por um erro no meu script (ele silenciou o `time.sleep` do módulo); corrigi o script e os três casos de tempo passaram com os tempos esperados (por exemplo, o timeout levanta em ~0,4 s, não em 1,2 s). O script não ficou no diretório.

@@ -1,8 +1,1 @@
-Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede a união de intervalos fechados: fundir só quando se sobrepõem ou tocam a extremidade, e manter separados os que distam uma unidade. Vou implementar isso em `solucao.py`.O caso do gerador no teste estava errado: pontos separados por uma unidade não se fundem. Vou repetir a verificação com esse critério.`solucao.py` implementa `unir_intervalos`: ordena os pares sem alterar a entrada e devolve a união ordenada por início.
-
-- Intervalos que se sobrepõem ou compartilham uma extremidade são fundidos (`inicio` do próximo `<=` fim do atual).
-- Um vão de uma unidade permanece separado: `(1, 2)` e `(3, 4)` não se unem.
-- A entrada vazia devolve `[]`. Se algum par tiver início maior que o fim, a função lança `ValueError`.
-- Geradores são consumidos uma única vez.
-
-O exemplo `[(5, 8), (1, 3), (3, 6), (10, 10)]` retorna `[(1, 8), (10, 10)]`.
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede a união de intervalos fechados em `solucao.py`. Vou implementar a função e testá-la neste diretório.

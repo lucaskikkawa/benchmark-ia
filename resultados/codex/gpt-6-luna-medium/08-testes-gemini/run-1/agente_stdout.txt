@@ -1,0 +1,1 @@
+Criei a suíte em [tests/test_validador.py](/tmp/bench-x86j8xpb/tests/test_validador.py). Ela cobre limites de tamanho, configurações personalizadas, cada regra de validação, todos os caracteres especiais permitidos e as faixas de força da senha.

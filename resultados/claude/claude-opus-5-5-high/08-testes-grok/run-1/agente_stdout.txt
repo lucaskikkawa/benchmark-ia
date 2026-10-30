@@ -1,0 +1,26 @@
+Escrevi a suíte em `tests/test_descontos.py`. Os 6873 testes passam contra o `descontos.py` original, que não foi alterado.
+
+Para conferir que ela detecta bugs, rodei a suíte contra 18 cópias do módulo, cada uma com um defeito injetado, numa pasta temporária que já apaguei:
+
+- **17 cópias:** a suíte falhou, como deveria. Os defeitos incluíam:
+  - trocar as fórmulas de porcentagem pelas versões erradas que o enunciado proíbe;
+  - deixar o `FIXO500` dar preço negativo;
+  - excluir os extremos de `BEMVINDO`;
+  - aplicar `NATAL` só no dia 25;
+  - aceitar `bool` ou preço negativo;
+  - remover espaços do cupom ou ignorar maiúsculas/minúsculas;
+  - tratar `" "` como cupom vazio;
+  - calcular o `desconto` errado;
+  - aceitar cupom desconhecido;
+  - devolver uma chave a mais no dict.
+- **1 cópia passou, mas esse defeito não mudava nada:** era uma checagem de 29 de fevereiro que o Python já faz por conta própria, então o módulo continuava correto. Um erro de verdade na regra de ano bissexto é pego pelo teste que verifica 29 de fevereiro em todos os anos de 1 a 9999.
+
+O que a suíte verifica:
+- **Formato do retorno:** exatamente as três chaves, valores `int` e `desconto` sempre igual a `preco_centavos - preco_final`.
+- **Fórmulas:** os exemplos do enunciado e a conta exata para os preços de 0 a 1200 e para inteiros muito grandes.
+- **Pisos:** preço 1 com `OFF10`/`NATAL` vira 0 e o cupom conta como aplicado; `FIXO500` nunca dá preço negativo.
+- **`BEMVINDO`:** cada dia de 2023 a 2025, incluindo os dois extremos de 2024.
+- **`NATAL`:** cada dia de vários anos, incluindo 1, 1900, 2100 e 9999.
+- **Cupons:** `None` e `""` não dão desconto; `" "`, `"\t"`, variações de maiúsculas/minúsculas, espaços nas pontas e códigos desconhecidos levantam `ValueError`.
+- **Tipos e valores errados:** `TypeError` para tipo errado em cada parâmetro (incluindo `bool` e `float` no preço) e `ValueError` para preço negativo.
+- **Datas:** cada dia possível de anos importantes, 29 de fevereiro com a regra do século, e formatos inválidos (`2024-1-1`, `20241225`, espaços, horário, ano 0000).

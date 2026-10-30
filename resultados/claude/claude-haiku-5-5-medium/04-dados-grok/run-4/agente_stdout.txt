@@ -1,0 +1,10 @@
+Criei `solucao.py` neste diretório com `consolidar(caminho_csv, caminho_sla, caminho_saida)`. Usa só a biblioteca padrão e não deixa nenhum arquivo de amostra.
+
+Testei com um CSV temporário (criado e removido em seguida), que incluía linha em branco, `\r\n`, campo entre aspas e ids com espaços. O resultado bateu com o exemplo do enunciado: média 45, pior id `a1`, e a ordenação `"A"` < `"São, Paulo"` < `"n1"`. O teste não cobriu todos os casos de erro.
+
+Interpretações que tomei onde o enunciado não era explícito:
+- **Cabeçalho:** é a primeira linha não vazia. Uma linha só com espaços antes do cabeçalho gera `ValueError`, não é pulada.
+- **Linhas em branco:** uma linha só com campos vazios é ignorada mesmo que tenha número de colunas diferente (ex.: `,,`). Uma linha com conteúdo e número de colunas errado é `ValueError`.
+- **Erros do módulo `csv`:** são convertidos em `ValueError`, pois `csv.Error` não herda de `ValueError`.
+- **Ordem de leitura:** o CSV é lido antes do SLA. Se os dois estiverem inválidos, o erro reportado é o do CSV.
+- **Gravação:** usa `newline=""` para o arquivo bater byte a byte com `json.dumps(...) + "\n"`, também no Windows. Se a pasta de `caminho_saida` não existir, o `open` levanta `FileNotFoundError`.

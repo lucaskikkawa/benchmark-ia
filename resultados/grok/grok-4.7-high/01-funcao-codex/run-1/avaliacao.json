@@ -1,13 +1,29 @@
 {
- "juiz_empresa": "gemini",
- "juiz_modelo": "gemini-3.8-flash",
- "itens": {
-  "legibilidade": 2,
-  "erros_bordas": 2,
-  "idiomatico": 2,
-  "manutenibilidade": 2,
-  "documentacao_instrucoes": 1
+ "autora": "codex",
+ "resolvedora": "grok",
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": null,
+   "rubrica_10": null
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 0.0
+  }
  },
- "rubrica_10": 9.0,
- "nota_final_10": 9.7
+ "obs": [
+  "claude tentativa 1 falhou: JSON inválido",
+  "claude tentativa 2 falhou: JSON inválido",
+  "só 1 juiz válido; usada só a nota dele"
+ ],
+ "rubrica_10": 0.0,
+ "nota_final_10": 0.0
 }

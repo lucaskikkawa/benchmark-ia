@@ -1,0 +1,1 @@
+Implementei `resumir_intervalos` em [solucao.py](/tmp/bench-ts76ac7u/solucao.py). A função valida os tipos, remove duplicatas, ordena os valores e resume sequências consecutivas sem modificar a lista original.

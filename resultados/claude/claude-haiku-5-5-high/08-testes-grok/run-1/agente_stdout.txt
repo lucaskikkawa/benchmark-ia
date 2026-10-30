@@ -1,0 +1,8 @@
+Escrevi a suíte em `tests/test_descontos.py` e um `tests/conftest.py` pequeno. `descontos.py` não foi alterado.
+
+- **Módulo correto:** os 106 testes passam, rodando do diretório do projeto e de fora dele.
+- **Módulos com bug:** gerei 30 cópias, cada uma com um bug (piso errado, subtração no lugar de multiplicação, janela de BEMVINDO exclusiva, NATAL só no dia 25, bool aceito, `strip` no cupom, regra do século ignorada, chave extra no dict etc.). A suíte falhou em todas. Esse teste de mutação usou uma pasta temporária que apaguei em seguida, então ele não fica no repositório.
+
+Duas escolhas que você pode querer rever:
+- `conftest.py` acrescenta o diretório pai ao `sys.path`, para o `from descontos import aplicar_desconto` funcionar mesmo rodando o pytest de outra pasta.
+- Testo que `hoje` inválido levanta `ValueError` mesmo quando o cupom não usa a data (ex.: `OFF10` com `1900-02-29`). O enunciado valida `hoje` de forma geral, então li assim.

@@ -1,0 +1,3 @@
+Criei [cliente.py](/tmp/bench-asa56bp3/cliente.py) com validação dos argumentos, timeout por chamada, retries com backoff exponencial e interrupção ao encontrar uma falha definitiva.
+
+Não executei testes.

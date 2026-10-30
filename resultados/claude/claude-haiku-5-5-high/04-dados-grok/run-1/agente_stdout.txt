@@ -1,0 +1,12 @@
+Criei `solucao.py` neste diretório com `consolidar(caminho_csv, caminho_sla, caminho_saida)`. Usa só a biblioteca padrão e não depende de nenhum arquivo de amostra.
+
+Testei com CSVs temporários numa subpasta que apaguei depois. O exemplo do enunciado dá `n1`, 2 chamados, 1 estourado, média 45 e pior id `a1`, e o arquivo gravado é idêntico a `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`. Também testei BOM, arquivo vazio, id duplicado com espaços, data inexistente, prioridade `Alta`, limite `true` no SLA e arquivo ausente. Todos deram o erro esperado.
+
+Decisões que tomei onde o enunciado não cobre:
+- **Ordem de leitura:** o CSV é lido antes do SLA, então, se ambos estiverem com problema, o erro reportado é o do CSV.
+- **Linhas só com espaços:** são tratadas como em branco e ignoradas, junto com `,,,,`.
+- **Linha com número de colunas errado:** é `ValueError`, como o cabeçalho.
+- **Encoding do SLA:** lido como UTF-8.
+- **Escrita da saída:** feita com `newline=""`, para que o arquivo saia com `\n` também no Windows.
+
+Não criei commit nem repositório git, porque o diretório não é um repositório.

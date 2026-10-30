@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede o pacote `biblioteca` com modelos, acervo e empréstimos. Vou conferir o diretório e implementar os quatro arquivos.Vou criar o pacote `biblioteca` com os quatro módulos e a API pública descrita no enunciado.

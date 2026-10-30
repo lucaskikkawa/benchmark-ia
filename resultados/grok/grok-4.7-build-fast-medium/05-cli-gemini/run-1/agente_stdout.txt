@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com arquivos daqui.O enunciado pede uma CLI de métricas de texto. Vou implementar `contatexto.py` e validar os formatos, o `--top` e os códigos de saída.A contagem de caracteres deve refletir o arquivo, sem traduzir `\r\n`. Vou ajustar a leitura e gravar a saída com quebras de linha literais.A ferramenta `contatexto.py` está pronta na raiz do diretório e analisa um arquivo UTF-8 pela linha de comando.
+
+- Sem `-l`, `-p`, `-c` ou `--top`, ela mostra linhas, palavras e caracteres. Com alguma dessas flags, mostra só as métricas pedidas.
+- `--top N` lista as N palavras mais frequentes, em minúsculas, sem pontuação nas pontas, e desempatadas em ordem alfabética.
+- `--json` grava um objeto indentado. Com `-o`, o resultado vai para o arquivo (criando as pastas que faltarem) e a stdout recebe apenas `Salvo em CAMINHO`.
+- Arquivo inexistente, diretório ou erro de leitura termina com código 1 e uma mensagem na stderr começando com `Erro`. Argumento inválido termina com código 2.

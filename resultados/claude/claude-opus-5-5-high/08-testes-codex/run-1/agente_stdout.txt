@@ -1,0 +1,26 @@
+Escrevi a suíte de testes com pytest: são 62 testes, todos passando no `carrinho.py` correto em cerca de 0,05 s. Não alterei o `carrinho.py`.
+
+**Arquivos criados**
+- `tests/conftest.py`: só coloca a raiz do diretório no `sys.path`, para que `from carrinho import calcular_total` funcione.
+- `tests/test_carrinho.py`: os testes, todos sobre o comportamento público da função e só com asserts e `pytest.raises`.
+
+**O que está coberto**
+- **Cálculo básico:** carrinho vazio, valores padrão e soma de quantidade × preço.
+- **Desconto:** os limites 0, 1, 99 e 100, e o truncamento para baixo (sem arredondar).
+- **Desconto sobre o total:** casos em que aplicar o desconto linha a linha daria resultado diferente, como `[(1,1),(1,1)]` com 50% → 1. Também confere que o desconto é aplicado uma única vez.
+- **Frete:**
+  - não recebe desconto e é somado uma única vez;
+  - item gratuito com quantidade positiva paga frete;
+  - linhas com quantidade zero não pagam;
+  - mistura das duas situações;
+  - desconto de 100% ainda paga frete.
+- **Inteiros grandes:** resultados exatos acima de 2**53, inclusive com desconto e frete grandes.
+- **Erros (`ValueError`):**
+  - desconto -1 ou 101, frete -1, quantidade negativa e preço negativo;
+  - os mesmos erros com carrinho vazio ou quantidade zero;
+  - linhas inválidas depois de uma linha com quantidade zero ou no fim da lista;
+  - valores negativos que se compensariam na soma.
+- **Lista preservada:** continua igual após sucesso e após cada tipo de erro, e pode ser usada de novo depois disso.
+- **Chamadas independentes:** sequências de chamadas, erro seguido de chamada válida, mesma lista reutilizada e ordem das linhas.
+
+**Teste contra mutantes:** criei 18 versões com bugs plausíveis numa pasta temporária, já apagada. Como os 14 mutantes do avaliador não estão disponíveis, isso só aproxima o resultado real. A suíte detectou 17 das 18. A que passou fazia exatamente o mesmo que o código correto, por erro meu ao escrevê-la; a versão que eu queria testar (`frete <= 0`) deve ser pega pelo teste com frete zero, mas não a rodei como mutante.

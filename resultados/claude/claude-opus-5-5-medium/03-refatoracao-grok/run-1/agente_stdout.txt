@@ -1,0 +1,13 @@
+Refatorei o `frete.py` e `cotar` continua dando o mesmo resultado que antes. Comparei com uma cópia do código original em todas as combinações de valores de borda e tipos inválidos (bool, float, `None`, str), incluindo o tipo e a mensagem da exceção, e em mais 100 mil entradas válidas aleatórias. Nenhuma diferença.
+
+O que mudou:
+- **`TabelaFrete.FAIXAS`**: é a tabela única, com as 4 faixas na ordem e com os números do enunciado. Os quatro blocos copiados viraram uma única busca nessa tabela.
+- **`TabelaFrete().cotar(...)`**: tem toda a lógica e valida na mesma ordem do original (primeiro os tipos de peso, distância e expresso, depois os intervalos). A ordem importa: uma entrada com dois erros continua levantando o mesmo erro de antes.
+- **`cotar(...)`**: só chama `TabelaFrete().cotar(...)`, então as duas sempre devolvem o mesmo dict.
+- **`faixa_de_peso(peso_g)`**: recebe só o peso, levanta o mesmo `TypeError("peso_g")` / `ValueError("peso fora da faixa")` e devolve o nome da faixa.
+
+As três funções leem `TabelaFrete.FAIXAS` a cada chamada. Testei trocar a tupla por outra: elas passaram a usar a tabela nova, e os limites globais (peso 1..30000, distância 0..3000, bool inválido) continuaram valendo. Um peso válido que não cai em nenhuma faixa da tabela nova dá `ValueError`.
+
+Os exemplos do enunciado conferem: 2253, 3757, `"sedex"` etc.
+
+O script de comparação ficou numa pasta temporária fora deste diretório, `/tmp/chk_frete`, e já foi apagado. Neste diretório só o `frete.py` foi alterado.

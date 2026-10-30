@@ -1,0 +1,12 @@
+A tarefa foi concluída com a criação dos arquivos solicitados:
+
+1. [`organizador.py`](file:///tmp/bench-i6fpuio0/organizador.py):
+   - Implementa a função `organizar_tarefas(tarefas: list[dict]) -> list[dict]`.
+   - Filtra apenas tarefas pendentes (`concluida == False`) e as ordena em ordem decrescente de `prioridade`.
+   - Preserva os dados originais sem modificar as listas ou dicionários fornecidos na entrada.
+   - Retorna cópias rasas independentes de cada dicionário (inclusive para múltiplas ocorrências do mesmo objeto), preservando campos extras e referências internas.
+   - Não normaliza títulos e mantém suporte eficiente para grandes volumes de dados (ex.: 30.000 itens).
+
+2. [`SUPOSICOES.md`](file:///tmp/bench-i6fpuio0/SUPOSICOES.md):
+   - Documenta a política de desempate adotada (ordenação estável preservando a ordem relativa original de inserção).
+   - Documenta as decisões e regras adotadas para o tratamento de entradas inválidas ou fora do domínio esperado.

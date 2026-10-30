@@ -1,0 +1,36 @@
+Implementei o pacote `estoque/` com os quatro módulos existentes, sem criar outros. Não criei arquivos de teste; verifiquei o comportamento com scripts inline que não gravam nada.
+
+**O que foi feito**
+
+- **`modelos.py`**: `Movimento` como `@dataclass(frozen=True)` com `sku: str` e `delta: int`, sem validação no construtor.
+- **`operacoes.py`**: `calcular_saldos(movimentos, iniciais=None) -> dict[str, int]`.
+  - Copia `iniciais` para um dict novo, então a entrada nunca é alterada, mesmo se a função falhar no meio.
+  - Lança `ValueError` se algum saldo inicial for negativo.
+  - Aplica os movimentos na ordem e lança `ValueError` assim que um saldo intermediário fica negativo, mesmo que um movimento posterior reponha o estoque.
+  - Mantém entradas com saldo zero e SKUs iniciais sem movimentos.
+- **`persistencia.py`**: `carregar_movimentos(caminho) -> list[Movimento]`.
+  - Lê JSON UTF-8 com `open(..., encoding="utf-8")`, aceitando `str` ou `Path`.
+  - Exige uma lista de objetos. Cada objeto precisa de `sku` (string com ao menos um caractere não branco, preservada sem `strip`) e `delta` (inteiro, excluindo `bool`).
+  - Campos extras são ignorados. Forma, campos ausentes, SKU ou delta inválidos lançam `ValueError`. JSON inválido já é `ValueError` pelo próprio `json`.
+- **`__init__.py`**: mantido como estava, já exportava as três APIs.
+
+**Verificação**
+
+Testei com um script inline que cobriu:
+- igualdade e imutabilidade de `Movimento`;
+- saldos intermediários negativos mesmo com reposição posterior;
+- saldos iniciais negativos;
+- entrada de passagem única;
+- não alteração de `iniciais` após erro;
+- sensibilidade a maiúsculas e sem `strip` nos SKUs;
+- inteiros grandes;
+- carregamento de arquivo com campos extras, listas vazias e vários casos inválidos;
+- carregamento de 20.000 movimentos.
+
+Todos passaram. O código também faz parse com `feature_version=(3,11)`. O ambiente local é Python 3.13, então não rodei sob 3.11 de fato.
+
+**Escolhas que você pode querer rever**
+
+- Mensagens de erro em português, seguindo o enunciado.
+- Validação de saldo inicial negativo feita antes de aplicar qualquer movimento.
+- Campo `delta` aceita apenas `int` exato do JSON; `1.0` ou `"1"` são rejeitados.

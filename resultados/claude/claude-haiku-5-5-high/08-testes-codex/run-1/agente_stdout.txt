@@ -1,0 +1,21 @@
+Criei `tests/test_carrinho.py`, uma suíte pytest com 60 testes. Todos passam no `carrinho.py` original, que não foi editado.
+
+**Cobertura**
+- **Total e carrinho vazio:** soma de quantidade × preço, carrinho vazio retorna 0 mesmo com desconto e frete.
+- **Desconto:** limites 0 e 100, truncamento para baixo (7,5 → 7 e 98,01 → 98), desconto aplicado uma vez sobre o bruto agregado e não por linha.
+- **Frete:** só cobra com unidades > 0, item gratuito com quantidade positiva paga frete, frete não recebe desconto, frete entra depois do truncamento.
+- **Validação:** desconto fora de [0, 100], frete negativo, quantidade e preço negativos, inclusive em carrinho vazio ou com quantidade zero.
+- **Linhas de quantidade zero:** não encerram o processamento, e linhas posteriores continuam sendo validadas.
+- **Inteiros grandes:** resultados exatos acima de 2**53 e 2**60, incluindo desconto e frete.
+- **Lista de entrada:** não é alterada em chamadas válidas nem quando há `ValueError`.
+- **Independência:** chamadas repetidas dão o mesmo resultado e erros ou parâmetros de uma chamada não vazam para a seguinte.
+
+**Verificação**
+- Rodei a suíte contra 15 mutantes gerados por mim em uma pasta temporária dentro do diretório, depois apagada. Os 14 que correspondem a bugs reais foram todos detectados (exit code 1), incluindo arredondamento, ceil, truncamento por linha, float, pular ou interromper em quantidade zero, remover validação de preço, mutar a lista e frete descontado.
+- O 15º mutante que sobreviveu foi um erro meu ao escrevê-lo: era semanticamente equivalente ao original.
+- A suíte roda em menos de 0,1 s.
+
+**Escolhas que você pode querer revisar**
+- Carrinho vazio com parâmetros válidos retorna 0 e não lança erro, porque o enunciado não lista carrinho vazio como violação. Interpretei a frase "inclusive em carrinho vazio ou quantidade zero" como se referindo à validação de desconto e frete, que continua valendo com carrinho vazio.
+- O `test_carrinho.py` insere o diretório pai no `sys.path` a partir do próprio arquivo, para importar `carrinho` sem depender do diretório de execução.
+- Testei com Python 3.13.5 e pytest 9.2.0. O enunciado pede 3.11, e a suíte só usa recursos disponíveis desde 3.9.

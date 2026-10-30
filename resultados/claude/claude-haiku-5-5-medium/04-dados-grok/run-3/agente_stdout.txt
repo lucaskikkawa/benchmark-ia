@@ -1,0 +1,16 @@
+Criei `solucao.py` neste diretório com a função `consolidar(caminho_csv, caminho_sla, caminho_saida)`. Usa só a biblioteca padrão e não deixa nenhum arquivo de amostra aqui.
+
+Testei com arquivos temporários em `/tmp/testes_solucao`, fora do diretório de trabalho. Os testes cobriram:
+- o exemplo do enunciado (média 45, pior id `a1`);
+- empate de id (`a10` antes de `a2`), `\r\n`, strip, campo entre aspas com vírgula, linhas em branco e CSV só com cabeçalho;
+- a ordenação por code point (`"A"`, `"São, Paulo"`, `"a"`, `"alfa"`);
+- o conteúdo gravado, que bate com `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`;
+- os erros que devem virar `ValueError` (BOM, cabeçalho errado, duplicata, data inexistente, formato de data, fim antes do início, prioridade com maiúscula, equipe vazia, número de colunas, SLA inválido) e `FileNotFoundError` para arquivo ausente.
+
+Todos passaram. Em três casos a falha foi na minha expectativa do teste, não no código, e corrigi o teste.
+
+Escolhas que fiz onde o enunciado não detalha:
+- Linha de dados com número de campos diferente de 5 (sem contar linhas totalmente vazias) é `ValueError`.
+- Os dois arquivos são lidos na ordem CSV, depois SLA. Se ambos tiverem problema, o erro reportado é o do CSV.
+- A validação termina antes de gravar, então um erro não deixa arquivo de saída parcial.
+- O `open` de saída usa `newline=""`, para que o arquivo seja gravado exatamente com `\n`, também no Windows.

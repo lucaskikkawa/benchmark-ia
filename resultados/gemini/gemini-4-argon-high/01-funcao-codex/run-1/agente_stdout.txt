@@ -1,1 +1,5 @@
-O arquivo [solucao.py](file:///tmp/bench-zn1o0w9y/solucao.py) foi criado com a implementação de [`unir_intervalos`](file:///tmp/bench-zn1o0w9y/solucao.py#L4-L25) conforme especificado em [enunciado.md](file:///tmp/bench-zn1o0w9y/enunciado.md).
+A função [`unir_intervalos`](file:///tmp/bench-egfuxyna/solucao.py#L1-L40) foi implementada em [solucao.py](file:///tmp/bench-egfuxyna/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-egfuxyna/enunciado.md):
+
+- Valida `limites` (quando fornecido apenas por nome) e todos os pares de entrada, lançando `ValueError` caso algum intervalo ou limite esteja invertido.
+- Realiza o recorte contra `limites` antes da união, preservando interseções pontuais nas extremidades e descartando interseções vazias.
+- Consome iteráveis/geradores uma única vez sem modificar coleções de entrada, opera exclusivamente com inteiros de precisão arbitrária e executa ordenação e varredura linear em tempo $O(n \log n)$ e memória $O(n)$.

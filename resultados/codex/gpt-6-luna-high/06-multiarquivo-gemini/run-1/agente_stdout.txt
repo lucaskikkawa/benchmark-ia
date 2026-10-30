@@ -1,0 +1,3 @@
+Implementei o pacote `eventhub` nos quatro arquivos especificados. O barramento ordena eventos por prioridade e, em caso de empate, por timestamp e ordem de publicação; também oferece inscrições, histórico e encaminhamento de falhas à DLQ.
+
+Não executei testes.

@@ -1,0 +1,10 @@
+Criei `solucao.py` com a função `resumir_intervalos`. Ela passa em todos os exemplos do enunciado e nos testes extras que rodei.
+
+**Como funciona:**
+- **Validação:** se o argumento não for uma lista, ou se algum elemento não for exatamente `int` (o que exclui `bool` e subclasses de `int`), a função levanta `TypeError`.
+- **Lista original:** não é alterada. A função remove duplicados e ordena com `sorted(set(numeros))`, que cria uma lista nova.
+- **Agrupamento:** percorre os valores uma única vez, juntando números consecutivos em `"inicio-fim"` e deixando os isolados sozinhos. O resultado sai separado por `", "`, e uma lista vazia devolve `""`.
+- **Desempenho:** uma lista embaralhada de 1 milhão de números foi resumida em cerca de 0,16 s.
+- **Inteiros enormes:** a partir do Python 3.11, converter para texto um inteiro com mais de 4300 dígitos gera erro. Nesse caso, a função tira esse limite só durante a conversão e depois o restaura. Testei com números de 5000 dígitos e o limite global continuou em 4300 depois da chamada.
+
+Também testei negativos, a entrada `(1, 2)` (tupla, não lista), `True`, `2.0`, uma subclasse de `int`, strings e `None`: os números negativos são resumidos corretamente e as demais entradas levantam `TypeError`.

@@ -1,0 +1,3 @@
+Refatorei [relatorio.py](/tmp/bench-w4kkit_e/relatorio.py) e adicionei as três funções públicas e as constantes de taxas. `gerar_relatorio` usa essas funções, preservando a ordem dos cálculos e o formato original do texto.
+
+Não executei testes. `git diff --check` não pôde ser usado porque o diretório não é um repositório Git.

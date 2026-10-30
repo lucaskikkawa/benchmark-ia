@@ -1,0 +1,4 @@
+O arquivo [cliente.py](file:///tmp/bench-oyffxpiq/cliente.py) foi implementado conforme especificado em [enunciado.md](file:///tmp/bench-oyffxpiq/enunciado.md):
+
+- [`TempoEsgotado`](file:///tmp/bench-oyffxpiq/cliente.py#L9-L10): exceção levantada quando a última tentativa de obter um pedido atinge o limite de tempo.
+- [`baixar_pedidos`](file:///tmp/bench-oyffxpiq/cliente.py#L38-L83): valida os argumentos de entrada (`ids`, `max_tentativas`, `backoff_s` e `timeout_s`) antes de qualquer chamada à API, executa `api.obter_pedido` com controle de timeout não-bloqueante em thread daemon ([`_chamar_com_timeout`](file:///tmp/bench-oyffxpiq/cliente.py#L13-L35)), propaga [`LojaErroCliente`](file:///tmp/bench-oyffxpiq/loja_api.py#L21-L22) imediatamente e aplica retentativas com backoff exponencial (`backoff_s * 2 ** (i - 1)`) para [`LojaIndisponivel`](file:///tmp/bench-oyffxpiq/loja_api.py#L17-L18) e timeouts.

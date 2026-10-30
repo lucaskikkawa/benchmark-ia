@@ -1,0 +1,12 @@
+Criei o `vendas.py` com a função `resumir_vendas(entrada, saida, minimo_centavos=0)`. Testei com casos de exemplo e todos passaram: BOM, colunas fora de ordem, `+02` e `-0`, inteiros com 5.000 dígitos, CSV só com cabeçalho e várias entradas inválidas. Em todos os casos de erro, a saída anterior ficou intacta. O teste foi feito numa pasta temporária fora deste diretório, que depois apaguei. Não fiz um teste de desempenho com 30.000 linhas.
+
+Como funciona:
+- **Validação primeiro:** `minimo_centavos` precisa ser exatamente `int` e ≥ 0. Isso é conferido antes de abrir qualquer arquivo. Depois o CSV é lido e validado por inteiro, e só no final o JSON é gravado. Assim, um `ValueError` nunca altera a saída anterior.
+- **Leitura do CSV:** uso `utf-8-sig` para aceitar o BOM e o módulo `csv` para tratar aspas. Isso preserva quebras de linha e aspas dentro dos nomes de produto.
+- **Linhas:** primeiro vejo o status. Linhas não pagas, inclusive as sem campo de status ou em branco, são ignoradas sem validar o resto. Numa linha paga, um campo obrigatório faltando gera `ValueError`.
+- **Números:** cada célula precisa casar com `[+-]?[0-9]+` depois de `strip()`, e o resultado tem que ser ≥ 0.
+- **Resultado:** os produtos são agrupados e ordenados com `sorted`, e o filtro de receita mínima é aplicado depois da soma. O JSON é gravado com `ensure_ascii=False`, para manter os acentos, e termina com uma quebra de linha.
+
+Um detalhe: o Python 3.11 limita a conversão entre inteiro e texto a 4.300 dígitos. Sem ajuste, números enormes falhariam na leitura ou na gravação do JSON. Por isso a função desliga esse limite, e também o limite de tamanho de campo do `csv`, só durante a execução, e restaura os dois no final. Esses limites valem para o programa inteiro, então outro código rodando em paralelo veria a mudança nesse intervalo.
+
+Sobre o cabeçalho: os nomes das colunas precisam ser exatamente iguais aos do enunciado. Um nome com espaços em volta, como `" produto"`, conta como coluna ausente e gera `ValueError`.

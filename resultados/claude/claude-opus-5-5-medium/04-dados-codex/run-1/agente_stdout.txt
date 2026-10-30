@@ -1,0 +1,19 @@
+Criei `vendas.py` com `resumir_vendas(entrada, saida, minimo_centavos=0)`. Fiz um teste rápido à parte, fora deste diretório, e todos os casos que verifiquei passaram.
+
+**Como funciona:**
+- O CSV é lido como UTF-8 aceitando BOM, pelo módulo `csv`, então aspas, quebras de linha e aspas internas nos produtos são preservadas. As colunas são localizadas pelo nome no cabeçalho, em qualquer ordem, e as extras são ignoradas.
+- Linhas que não estão pagas (incluindo as sem a coluna de status) são descartadas antes de qualquer validação. Numa linha paga, falta de campo obrigatório, produto vazio após `strip()` ou número fora de `[+-]?[0-9]+` ou negativo lançam `ValueError`.
+- `minimo_centavos` precisa ser exatamente `int` e maior ou igual a 0; isso é checado antes de abrir qualquer arquivo. Arquivo vazio ou cabeçalho sem uma coluna obrigatória também lançam `ValueError`.
+- Os valores são somados por produto, os que ficam abaixo do mínimo são removidos e a lista sai ordenada por produto. O JSON é gravado com `ensure_ascii=False` e uma quebra de linha final, e só depois de tudo validado: em caso de erro, a saída anterior fica intacta.
+- O Python 3.11 limita a conversão entre texto e inteiros a 4300 dígitos, o que quebraria a exigência de aritmética exata. Por isso a função desliga esse limite enquanto roda e restaura o valor original no fim.
+
+**Duas decisões que tomei sozinho:**
+- Os nomes do cabeçalho passam por `strip()` antes da busca, então ` produto` também é aceito. O enunciado não define isso.
+- Esse ajuste do limite é global no processo. Se outra thread converter números ao mesmo tempo, ela também fica sem limite durante a chamada.
+
+**O que testei:**
+- BOM, colunas em outra ordem, status com espaços e maiúsculas, e produto cotado com quebra de linha e aspas internas.
+- Sinal `+`, zeros à esquerda e um preço de 5000 dígitos.
+- Os casos de erro: valores inválidos de `minimo_centavos`, underscore, dígito árabe, decimal, notação exponencial, número negativo, célula vazia, coluna faltando, arquivo vazio e linha paga incompleta. Em todos a saída antiga ficou intacta.
+- CSV só com cabeçalho gera `[]\n`.
+- 30.000 linhas rodaram em cerca de 0,04 s.

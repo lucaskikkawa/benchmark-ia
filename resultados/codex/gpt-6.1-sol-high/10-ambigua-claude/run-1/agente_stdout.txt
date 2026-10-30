@@ -1,0 +1,7 @@
+Criados neste diretório:
+
+- `telefones.py`: normalização e extração conforme o enunciado.
+- `SUPOSICOES.md`: ambiguidades e decisões documentadas.
+- `test_telefones.py`: testes de validação, extração e casos limítrofes.
+
+Verificação: `python3 -m unittest -v` — 11 testes aprovados.

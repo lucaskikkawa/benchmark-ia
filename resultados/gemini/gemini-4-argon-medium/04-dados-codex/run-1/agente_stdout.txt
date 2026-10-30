@@ -1,0 +1,1 @@
+Implementado o módulo [vendas.py](file:///tmp/bench-_x51afbz/vendas.py) com a função [`resumir_vendas`](file:///tmp/bench-_x51afbz/vendas.py#L22-L86) conforme especificado em [enunciado.md](file:///tmp/bench-_x51afbz/enunciado.md).

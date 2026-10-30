@@ -1,0 +1,7 @@
+Vou ler o enunciado e ver o que já existe neste diretório para resolver a tarefa aqui.O módulo tem estado compartilhado, validações faltando e cálculos de desconto incorretos. Vou reescrever `carrinho.py` conforme o enunciado e testar os casos.O arquivo `carrinho.py` foi corrigido e agora segue o enunciado.
+
+- Cada carrinho guarda a sua própria cópia dos itens, inclusive quando o dicionário inicial é passado de fora.
+- Nome, preço, quantidade e cupom são validados com `TypeError` ou `ValueError` conforme o caso.
+- Remover um item tira a quantidade pedida ou apaga o item quando a quantidade é omitida ou cobre o saldo.
+- O cupom substitui o anterior. O subtotal, o desconto e o total são arredondados para duas casas, e o total não fica abaixo de zero.
+- `listar_itens` devolve dicionários novos, ordenados pelo nome na ordem lexicográfica padrão do Python.

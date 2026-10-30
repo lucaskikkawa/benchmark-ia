@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="19" time="0.096" timestamp="2026-10-29T19:23:19.252207-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_endurecimento" name="test_subtotal_exato[1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003-100000000000000000000000000000000000000000000000000000000000000007-1]" time="0.001"><failure message="AssertionError: Falta subtotal público&#10;assert False&#10; +  where False = callable(None)&#10; +    where None = getattr(pedidos, 'subtotal', None)">quantidade = 100000000000000000...0000000000000000003
+preco = 100000000000000000...0000000000000000007, desconto = 1
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+&gt;       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_subtotal_exato[3-1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001-99]" time="0.000"><failure message="AssertionError: Falta subtotal público&#10;assert False&#10; +  where False = callable(None)&#10; +    where None = getattr(pedidos, 'subtotal', None)">quantidade = 3, preco = 100000000000000000...0000000000000000001, desconto = 99
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+&gt;       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_subtotal_exato[0-10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000-37]" time="0.001"><failure message="AssertionError: Falta subtotal público&#10;assert False&#10; +  where False = callable(None)&#10; +    where None = getattr(pedidos, 'subtotal', None)">quantidade = 0, preco = 100000000000000000...0000000000000000000, desconto = 37
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+&gt;       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_subtotal_exato[9-0-73]" time="0.000"><failure message="AssertionError: Falta subtotal público&#10;assert False&#10; +  where False = callable(None)&#10; +    where None = getattr(pedidos, 'subtotal', None)">quantidade = 9, preco = 0, desconto = 73
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+&gt;       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_subtotal_exato[100000000000000000000000000000000000000000000000000000000000000000000000000000000-77-100]" time="0.000"><failure message="AssertionError: Falta subtotal público&#10;assert False&#10; +  where False = callable(None)&#10; +    where None = getattr(pedidos, 'subtotal', None)">quantidade = 100000000000000000...0000000000000000000, preco = 77
+desconto = 100
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+&gt;       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_subtotal_exato[3-1-50]" time="0.000"><failure message="AssertionError: Falta subtotal público&#10;assert False&#10; +  where False = callable(None)&#10; +    where None = getattr(pedidos, 'subtotal', None)">quantidade = 3, preco = 1, desconto = 50
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+&gt;       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_subtotal_exato[17-13-33]" time="0.000"><failure message="AssertionError: Falta subtotal público&#10;assert False&#10; +  where False = callable(None)&#10; +    where None = getattr(pedidos, 'subtotal', None)">quantidade = 17, preco = 13, desconto = 33
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+&gt;       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_delegacao_ordenada_usa_cada_retorno" time="0.000"><failure message="AssertionError: Falta subtotal público&#10;assert False&#10; +  where False = hasattr(pedidos, 'subtotal')">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fc8bdf4bad0&gt;
+
+    def test_delegacao_ordenada_usa_cada_retorno(monkeypatch):
+&gt;       assert hasattr(pedidos, 'subtotal'), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = hasattr(pedidos, 'subtotal')
+
+testes_ocultos/test_endurecimento.py:20: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_oraculo_volume_categorias_exatas_e_chamadas_independentes" time="0.027" /><testcase classname="testes_ocultos.test_pedidos" name="test_vazio" time="0.000" /><testcase classname="testes_ocultos.test_pedidos" name="test_simples" time="0.000" /><testcase classname="testes_ocultos.test_pedidos" name="test_agrega_categorias" time="0.000" /><testcase classname="testes_ocultos.test_pedidos" name="test_desconto_total" time="0.000" /><testcase classname="testes_ocultos.test_pedidos" name="test_truncamento_por_linha" time="0.000" /><testcase classname="testes_ocultos.test_pedidos" name="test_categoria_zerada_preservada" time="0.000" /><testcase classname="testes_ocultos.test_pedidos" name="test_gerador_e_unicode" time="0.000" /><testcase classname="testes_ocultos.test_pedidos" name="test_nao_muda_entrada" time="0.000" /><testcase classname="testes_ocultos.test_pedidos" name="test_helper_publico" time="0.000"><failure message="AssertionError: Crie subtotal em pedidos.py&#10;assert False&#10; +  where False = callable(None)&#10; +    where None = getattr(pedidos, 'subtotal', None)">def test_helper_publico():
+&gt;       assert callable(getattr(pedidos, 'subtotal', None)), 'Crie subtotal em pedidos.py'
+E       AssertionError: Crie subtotal em pedidos.py
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_pedidos.py:49: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_pedidos" name="test_delegacao_uma_vez_por_pedido" time="0.000"><failure message="AssertionError: Falta a função extraída&#10;assert False&#10; +  where False = hasattr(pedidos, 'subtotal')">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fc8bdf4ae40&gt;
+
+    def test_delegacao_uma_vez_por_pedido(monkeypatch):
+&gt;       assert hasattr(pedidos, 'subtotal'), 'Falta a função extraída'
+E       AssertionError: Falta a função extraída
+E       assert False
+E        +  where False = hasattr(pedidos, 'subtotal')
+
+testes_ocultos/test_pedidos.py:56: AssertionError</failure></testcase></testsuite></testsuites>

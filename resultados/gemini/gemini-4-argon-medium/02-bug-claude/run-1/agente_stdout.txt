@@ -1,0 +1,6 @@
+Os bugs em [`mesclar_intervalos`](file:///tmp/bench-55e7pj0p/intervalos.py#L4-L43) e [`total_coberto`](file:///tmp/bench-55e7pj0p/intervalos.py#L46-L52) no arquivo [intervalos.py](file:///tmp/bench-55e7pj0p/intervalos.py) foram corrigidos para atender integralmente às especificações das docstrings:
+
+- **Validação de tipos (`TypeError`)**: verifica se `inicio` e `fim` são estritamente `int`, rejeitando `bool` (`isinstance(x, int) and not isinstance(x, bool)`).
+- **Suporte a qualquer iterável sem mutar a entrada**: consome o iterável uma única vez convertendo cada par em tupla `(inicio, fim)` em uma nova lista `pares`, preservando a entrada original e suportando geradores, tuplas e listas mistas.
+- **Entrada vazia**: retorna `[]` imediatamente quando não há intervalos (e `0` em [`total_coberto`](file:///tmp/bench-55e7pj0p/intervalos.py#L46-L52)).
+- **Fusão de intervalos**: une intervalos que se tocam (`inicio <= ultimo[1]`) e preserva o maior limite final quando um intervalo está contido em outro (`ultimo[1] = max(ultimo[1], fim)`).

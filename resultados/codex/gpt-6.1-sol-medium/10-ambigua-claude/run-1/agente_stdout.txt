@@ -1,0 +1,3 @@
+Criei `telefones.py` com as duas funções solicitadas e `SUPOSICOES.md` com as decisões sobre ambiguidades.
+
+As verificações com Python 3 passaram, incluindo os exemplos, entradas inválidas, extração e remoção de duplicatas.

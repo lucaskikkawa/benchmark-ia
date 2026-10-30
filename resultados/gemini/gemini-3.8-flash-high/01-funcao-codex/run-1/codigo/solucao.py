@@ -1,31 +1,49 @@
-def unir_intervalos(intervalos) -> list[tuple[int, int]]:
+def unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]:
     """Une intervalos fechados que se sobrepõem ou compartilham extremidades.
 
-    Recebe um iterável finito de pares (inicio, fim) com inicio <= fim.
-    Retorna uma lista de tuplas ordenada pelo início com os intervalos unidos.
-    Lança ValueError se algum par tiver inicio > fim.
-    """
-    lista: list[tuple[int, int]] = []
-    for item in intervalos:
-        inicio, fim = item
-        if inicio > fim:
-            raise ValueError(f"Intervalo inválido: início ({inicio}) maior que fim ({fim})")
-        lista.append((int(inicio), int(fim)))
+    Parâmetros:
+        intervalos: Iterável finito de pares de inteiros (inicio, fim).
+        limites: Par opcional (minimo, maximo) de inteiros para recorte fechado.
 
-    if not lista:
+    Retorna:
+        Lista de tuplas (inicio, fim) representando a união ordenada por início.
+    """
+    min_lim = None
+    max_lim = None
+    if limites is not None:
+        min_lim, max_lim = limites
+        if min_lim > max_lim:
+            raise ValueError(f"Limites invertidos: {min_lim} > {max_lim}")
+
+    valid_intervals: list[tuple[int, int]] = []
+    for pair in intervalos:
+        inicio, fim = pair
+        if inicio > fim:
+            raise ValueError(f"Intervalo com início maior que fim: ({inicio}, {fim})")
+        if min_lim is not None:
+            c_inicio = max(inicio, min_lim)
+            c_fim = min(fim, max_lim)
+            if c_inicio <= c_fim:
+                valid_intervals.append((c_inicio, c_fim))
+        else:
+            valid_intervals.append((inicio, fim))
+
+    if not valid_intervals:
         return []
 
-    lista.sort()
+    valid_intervals.sort()
 
-    resultado: list[tuple[int, int]] = []
-    for inicio, fim in lista:
-        if not resultado:
-            resultado.append((inicio, fim))
+    merged: list[tuple[int, int]] = []
+    it = iter(valid_intervals)
+    curr_start, curr_end = next(it)
+
+    for next_start, next_end in it:
+        if next_start <= curr_end:
+            if next_end > curr_end:
+                curr_end = next_end
         else:
-            ult_inicio, ult_fim = resultado[-1]
-            if inicio <= ult_fim:
-                resultado[-1] = (ult_inicio, max(ult_fim, fim))
-            else:
-                resultado.append((inicio, fim))
+            merged.append((curr_start, curr_end))
+            curr_start, curr_end = next_start, next_end
 
-    return resultado
+    merged.append((curr_start, curr_end))
+    return merged

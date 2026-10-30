@@ -1,0 +1,5 @@
+O limite padrão de dígitos do `int()` no Python 3.11 corta números longos. Vou converter em blocos para o resultado continuar exato.`solucao.py` define `parse_duracao`, que converte uma duração no formato `w`/`d`/`h`/`m`/`s` para o total em segundos.
+
+- A leitura é linear: ignora espaços só entre componentes e exige a ordem `w d h m s`, sem repetir unidade.
+- Entrada que não é `str` gera `TypeError`. Formato inválido gera `ValueError`.
+- Inteiros de qualquer tamanho são somados em blocos, então o resultado continua exato acima do limite padrão de `int()`.

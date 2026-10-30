@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O cálculo por linha fica em `subtotal`, e `resumo_pedidos` passa a delegar cada pedido a essa função, na ordem, sem mudar o resultado.`pedidos.py` agora calcula cada linha em `subtotal` e `resumo_pedidos` só agrega esses valores.
+
+- `subtotal(quantidade, preco_centavos, desconto_percentual=0)` devolve `quantidade * preco_centavos * (100 - desconto_percentual) // 100`, com truncamento inteiro por linha.
+- `resumo_pedidos` chama `subtotal` uma vez por pedido, na ordem do iterável, inclusive quando a quantidade é zero, e usa o valor devolvido no total e em `por_categoria`.
+- Categorias são preservadas como vieram, inclusive as que somam zero. A entrada vazia devolve `{'itens': 0, 'total_centavos': 0, 'por_categoria': {}}`. Cada chamada usa acumuladores próprios.

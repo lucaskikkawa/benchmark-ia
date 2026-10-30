@@ -1,0 +1,1 @@
+Implementei `classificar_mensagem` em [solucao.py](/tmp/bench-bdbqlagm/solucao.py) e registrei as categorias, prioridades e regras de normalização em [SUPOSICOES.md](/tmp/bench-bdbqlagm/SUPOSICOES.md). Não executei testes.

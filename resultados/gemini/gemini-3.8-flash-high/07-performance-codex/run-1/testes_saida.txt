@@ -1,0 +1,27 @@
+
+==================================== ERRORS ====================================
+____________ ERROR collecting testes_ocultos/test_endurecimento.py _____________
+ImportError while importing test module '/tmp/bench-s_tx0usz/testes_ocultos/test_endurecimento.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_endurecimento.py:6: in <module>
+    from pares import contar_pares
+E   ModuleNotFoundError: No module named 'pares'
+________________ ERROR collecting testes_ocultos/test_pares.py _________________
+ImportError while importing test module '/tmp/bench-s_tx0usz/testes_ocultos/test_pares.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_pares.py:7: in <module>
+    from pares import contar_pares
+E   ModuleNotFoundError: No module named 'pares'
+=========================== short test summary info ============================
+ERROR testes_ocultos/test_endurecimento.py
+ERROR testes_ocultos/test_pares.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!
+2 errors in 0.08s

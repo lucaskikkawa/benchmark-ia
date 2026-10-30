@@ -1,0 +1,221 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-5t_0jh0l
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189dc-6852-7d22-b032-1422bc1ff5b1
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:51:27.441102Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório para implementar a solução.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!'"\\.git'" in /tmp/bench-5t_0jh0l
+ succeeded in 0ms:
+/tmp/bench-5t_0jh0l
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-5t_0jh0l
+ succeeded in 0ms:
+# Tarefa: normalizar telefones brasileiros
+
+O time de CRM tem uma base de contatos com telefones digitados de qualquer jeito e quer padronizá-los.
+Crie `telefones.py` no diretório de trabalho com:
+
+```python
+def normalizar_telefone(texto: str) -> str: ...
+def extrair_telefones(texto: str) -> list[str]: ...
+```
+
+## O que se sabe
+
+- `normalizar_telefone` recebe **um** telefone e devolve no formato E.164 brasileiro:
+  `+55` + DDD (2 dígitos) + número, só dígitos após o `+`.
+- O telefone pode vir com ou sem o código do país `55` (com ou sem `+`), e com separadores
+  comuns: espaços, hífens, pontos e parênteses — que podem aparecer repetidos ou combinados
+  (`( 11 )  98765 - 4321` é válido).
+- O DDD é sempre informado e tem 2 dígitos, nenhum deles `0` (`11` a `99`, exceto `20`, `30`, ..., `90`).
+- Números fixos têm 8 dígitos e começam com `2`, `3`, `4` ou `5`; celulares têm 9 dígitos e começam com `9`.
+  Qualquer outro tamanho ou dígito inicial é inválido (nunca complete nem corte dígitos).
+- Se não der para interpretar o texto como telefone, levante `ValueError`.
+- `extrair_telefones` recebe um texto livre (ex.: o campo "observações" de um contato) e devolve
+  os telefones encontrados já normalizados, sem repetições, na ordem em que aparecem pela primeira vez.
+  - Trechos numéricos que não formam um telefone válido (datas, CPFs, valores, CEPs, códigos) são
+    ignorados sem erro; um telefone nunca é recortado de dentro de uma sequência maior de dígitos.
+  - Telefones podem estar separados por vírgula, ponto e vírgula, barra, quebra de linha ou palavras,
+    e podem vir seguidos de pontuação (`.`, `,`, `;`, `)`).
+
+Exemplos:
+
+```python
+normalizar_telefone("+55 (11) 98765-4321")  # "+5511987654321"
+normalizar_telefone("(21) 3456-7890")       # "+552134567890"
+normalizar_telefone("11987654321")          # "+5511987654321"
+normalizar_telefone("telefone")             # ValueError
+
+extrair_telefones("Ligar para (11) 98765-4321 ou 21 3456-7890 à tarde")
+# ["+5511987654321", "+552134567890"]
+```
+
+O resto não foi especificado pelo time. Onde houver dúvida (o que fazer com casos que o texto acima
+não cobre), decida você mesmo e **registre cada decisão em `SUPOSICOES.md`** no diretório de trabalho:
+a dúvida, a decisão tomada e o motivo. Use apenas a biblioteca padrão.
+
+codex
+Vou validar os números sem completar ou cortar dígitos. Na extração, tratarei cada bloco numérico unido por separadores como um candidato inteiro, para evitar aproveitar partes de números inválidos. Vou registrar essa escolha e as demais ambiguidades em `SUPOSICOES.md` e conferir o comportamento com testes.
+exec
+/bin/bash -lc "cat > telefones.py <<'EOF'
+\"\"\"Validação e extração de telefones brasileiros, sem dependências externas.\"\"\"
+
+import re
+
+
+_SEPARADORES = re.compile(r\"[ \\t\\r\\n().-]\")
+_BLOCO = re.compile(r\"[0-9+(). \\t-]+\")
+_CPF_FORMATADO = re.compile(r\"[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}\")
+
+
+def normalizar_telefone(texto: str) -> str:
+    \"\"\"Retorna um telefone em E.164 ou levanta ValueError se for inválido.\"\"\"
+    if not isinstance(texto, str):
+        raise ValueError(\"O telefone deve ser uma string.\")
+
+    compacto = _SEPARADORES.sub(\"\", texto)
+    if re.fullmatch(r\"\\+?[0-9]+\", compacto) is None:
+        raise ValueError(\"Caracteres inválidos no telefone.\")
+
+    if compacto.startswith(\"+\"):
+        if not compacto.startswith(\"+55\"):
+            raise ValueError(\"O código do país deve ser 55.\")
+        nacional = compacto[3:]
+    elif len(compacto) in (12, 13) and compacto.startswith(\"55\"):
+        nacional = compacto[2:]
+    else:
+        nacional = compacto
+
+    if re.fullmatch(r\"[1-9]{2}(?:[2-5][0-9]{7}|9[0-9]{8})\", nacional) is None:
+        raise ValueError(\"DDD ou número de telefone inválido.\")
+    return \"+55\" + nacional
+
+
+def extrair_telefones(texto: str) -> list[str]:
+    \"\"\"Extrai candidatos completos e válidos, preservando a ordem e sem duplicatas.\"\"\"
+    if not isinstance(texto, str):
+        raise ValueError(\"O texto deve ser uma string.\")
+
+    encontrados: list[str] = []
+    vistos: set[str] = set()
+    for correspondencia in _BLOCO.finditer(texto):
+        candidato = correspondencia.group()
+        inicio, fim = correspondencia.span()
+        # Não reconhecer números colados a letras, '_' ou dígitos Unicode.
+        if inicio and (texto[inicio - 1].isalnum() or texto[inicio - 1] == \"_\"):
+            if candidato[0] in \"+0123456789\":
+                continue
+        if fim < len(texto) and (texto[fim].isalnum() or texto[fim] == \"_\"):
+            if candidato[-1] in \"+0123456789\":
+                continue
+
+        if _CPF_FORMATADO.fullmatch(candidato.strip(\" \\t().-\")):
+            continue
+        try:
+            telefone = normalizar_telefone(candidato)
+        except ValueError:
+            continue
+        if telefone not in vistos:
+            vistos.add(telefone)
+            encontrados.append(telefone)
+    return encontrados
+EOF
+cat > SUPOSICOES.md <<'EOF'
+# Decisões sobre pontos não especificados
+
+- **Quais DDDs aceitar?** Aceito quaisquer dois dígitos de 1 a 9, inclusive DDDs que não estejam atribuídos geograficamente. Motivo: essa é a regra expressa no enunciado; não há uma tabela de DDDs exigida.
+- **Como distinguir o DDD 55 do país 55?** Sem "'`+`, uso o tamanho total: 10 ou 11 dígitos representam um telefone nacional; 12 ou 13 exigem o prefixo 55. Com `+`, o código 55 é obrigatório. Motivo: preservar o DDD 55 sem remover dígitos de números nacionais.
+- **Onde os separadores podem ocorrer?** Na normalização, espaços ASCII, tabulações, quebras de linha, pontos, hífens e parênteses são removidos independentemente de posição, repetição ou balanceamento. Motivo: o enunciado permite combinações de separadores e não exige uma máscara. Outros caracteres, incluindo barras, letras, extensões/ramais e espaços Unicode, invalidam o telefone individual.
+- **Como interpretar o sinal de mais?** Aceito no máximo um `+`, antes de todos os dígitos, desconsiderando os separadores. Motivo: ele indica o código internacional; não é um separador genérico.
+- **Aceitar dígitos Unicode?** Não; apenas `0` a `9`. Motivo: o resultado deve usar os dígitos ASCII do formato solicitado, sem conversões implícitas.
+- **Como delimitar candidatos no texto livre?** Um bloco máximo de dígitos ASCII, `+`, espaços, tabulações, pontos, hífens e parênteses é um único candidato. Vírgulas, ponto e vírgula, barras, quebras de linha e palavras separam blocos. Motivo: esses separadores internos podem estar repetidos e não há como inferir com segurança onde cortar um bloco inválido. Dois telefones unidos somente por espaços, pontos, hífens ou parênteses são, portanto, ignorados como um bloco inválido; também não se recupera um telefone de um bloco que contenha outro código numérico separado apenas por espaços.
+- **Aceitar telefones colados a palavras ou identificadores?** Não quando o primeiro ou último dígito (ou `+`) toca uma letra, outro dígito Unicode ou `_`. Pontuação e espaços permitem a separação. Motivo: evitar extrair números de identificadores como `abc11987654321`.
+- **Como distinguir CPF, data ou código de um telefone com os mesmos dígitos?** Na extração, rejeito explicitamente o formato convencional de CPF `ddd.ddd.ddd-dd`, mesmo quando os dígitos coincidam com um telefone válido. Os demais candidatos passam pela validação de DDD, tamanho e início do assinante. Sem uma marca inequívoca, uma sequência que satisfaça essas regras é interpretada como telefone; não verifico dígitos de CPF nem infiro o significado pelo texto ao redor. Motivo: os mesmos dígitos podem representar tanto um telefone quanto um código. A normalização individual aceita qualquer disposição dos separadores permitidos, inclusive uma máscara de CPF com dígitos que atendam às regras de telefone.
+- **Como tratar pontuação e duplicatas?** Pontos e parênteses finais são separadores descartáveis; vírgulas e ponto e vírgula encerram candidatos. Deduplico pelo E.164 e mantenho a primeira ocorrência. Motivo: permitir a pontuação descrita e unificar diferentes grafias do mesmo telefone.
+- **Como tratar entrada vazia ou de outro tipo?** A normalização levanta `ValueError`; a extração de uma string sem telefones retorna `[]`. Para valores que não sejam strings, ambas levantam `ValueError`. Motivo: sinalizar entrada fora do contrato de forma consistente, sem coerção silenciosa.
+EOF
+python - <<'"'PY'
+from telefones import normalizar_telefone as n, extrair_telefones as e
+
+validos = {
+    '+55 (11) 98765-4321': '+5511987654321',
+    '(21) 3456-7890': '+552134567890',
+    '11987654321': '+5511987654321',
+    '( 11 )  98765 - 4321': '+5511987654321',
+    '55 11 98765-4321': '+5511987654321',
+    '55 2345-6789': '+555523456789',
+    '99 99999-9999': '+5599999999999',
+}
+for entrada, esperado in validos.items():
+    assert n(entrada) == esperado, entrada
+for entrada in ('telefone', '', '01 98765-4321', '10 98765-4321',
+                '11 88765-4321', '11 1234-5678', '119876543210',
+                '+11 98765-4321', '++5511987654321', '11/98765-4321',
+                '１１９８７６５４３２１', None):
+    try:
+        n(entrada)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError(entrada)
+assert e('Ligar para (11) 98765-4321 ou 21 3456-7890 à tarde') == ['+5511987654321', '+552134567890']
+assert e('11987654321, +55 (11) 98765-4321; (21) 3456-7890.\\n99 99999-9999 / 21 3456-7890)') == ['+5511987654321', '+552134567890', '+5599999999999']
+assert e('1231198765432199, 01/02/2024; 123.456.789-09; 12345-678; 119.876.543-21') == []
+assert e('abc11987654321; 11987654321abc; _11987654321; 11987654321_') == []
+assert e('') == []
+print('Verificações concluídas com sucesso.')
+PY" in /tmp/bench-5t_0jh0l
+ exited 127 in 0ms:
+/bin/bash: line 78: python: command not found
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+from telefones import normalizar_telefone as n, extrair_telefones as e
+validos = {
+ '+55 (11) 98765-4321': '+5511987654321',
+ '(21) 3456-7890': '+552134567890',
+ '11987654321': '+5511987654321',
+ '( 11 )  98765 - 4321': '+5511987654321',
+ '55 11 98765-4321': '+5511987654321',
+ '55 2345-6789': '+555523456789',
+ '99 99999-9999': '+5599999999999',
+}
+for entrada, esperado in validos.items():
+ assert n(entrada) == esperado, entrada
+for entrada in ('telefone', '', '01 98765-4321', '10 98765-4321', '11 88765-4321', '11 1234-5678', '119876543210', '+11 98765-4321', '++5511987654321', '11/98765-4321', '１１９８７６５４３２１', None):
+ try:
+  n(entrada)
+ except ValueError:
+  pass
+ else:
+  raise AssertionError(entrada)
+assert e('Ligar para (11) 98765-4321 ou 21 3456-7890 à tarde') == ['+5511987654321', '+552134567890']
+assert e('11987654321, +55 (11) 98765-4321; (21) 3456-7890.\\n99 99999-9999 / 21 3456-7890)') == ['+5511987654321', '+552134567890', '+5599999999999']
+assert e('1231198765432199, 01/02/2024; 123.456.789-09; 12345-678; 119.876.543-21') == []
+assert e('abc11987654321; 11987654321abc; _11987654321; 11987654321_') == []
+assert e('') == []
+print('Verificações concluídas com sucesso.')
+PY" in /tmp/bench-5t_0jh0l
+ succeeded in 0ms:
+Verificações concluídas com sucesso.
+
+codex
+Criei `telefones.py` com as duas funções solicitadas e `SUPOSICOES.md` com as decisões sobre ambiguidades.
+
+As verificações com Python 3 passaram, incluindo os exemplos, entradas inválidas, extração e remoção de duplicatas.
+tokens used
+13,873

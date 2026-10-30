@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede `processar_vendas` em `analisador_vendas.py`. Vou implementar a validação, o filtro do CSV e a geração do JSON.A função `processar_vendas` está em `analisador_vendas.py`. Ela valida o CSV e o parâmetro `top_n`, agrega só as transações válidas do status pedido e grava o mesmo dicionário em JSON (`indent=2`, `ensure_ascii=False`), criando os diretórios de saída se faltarem.
+
+- O arquivo de entrada inexistente ou que não seja um arquivo comum gera `FileNotFoundError`. `top_n` que não seja `int` gera `TypeError`. `top_n < 1` gera `ValueError`.
+- Um CSV vazio (0 bytes) ou sem transações válidas produz métricas zeradas.
+- Status é comparado sem distinção de maiúsculas e sem espaços nas pontas. Linhas vazias, valores não numéricos, negativos ou não finitos são ignoradas.
+- `por_categoria` sai em ordem alfabética. `top_clientes` usa o total já arredondado para 2 casas, do maior para o menor, com desempate pelo nome.

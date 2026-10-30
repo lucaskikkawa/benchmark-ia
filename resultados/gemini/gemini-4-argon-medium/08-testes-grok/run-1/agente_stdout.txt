@@ -1,0 +1,5 @@
+A suíte de testes foi criada em [tests/test_descontos.py](file:///tmp/bench-5ug8srld/tests/test_descontos.py) para validar o contrato de [`aplicar_desconto`](file:///tmp/bench-5ug8srld/descontos.py#L6-L34) sem alterar [descontos.py](file:///tmp/bench-5ug8srld/descontos.py):
+
+- **Estrutura de retorno**: verificação das três chaves exatas (`preco_final`, `desconto`, `cupom_aplicado`) e dos tipos dos valores retornados.
+- **Validação de entradas**: testes de `TypeError` e `ValueError` para `preco_centavos` (incluindo `bool`, `float` e valores negativos), `cupom` (tipos inválidos, espaços em branco como `" "`/`"\t"`, variações com espaço ou caixa baixa e códigos inexistentes) e `hoje` (tipos inválidos, formatos fora de `YYYY-MM-DD`, anos bissextos seculares como `1900-02-29` e `2100-02-29` vs `2000-02-29`, e limites do calendário `0001-01-01` a `9999-12-31`).
+- **Regras de cupons e arredondamento por piso**: cobertura de `None`, `""`, `"OFF10"`, `"OFF5"`, `"FIXO500"` (incluindo piso em zero), `"BEMVINDO"` (limites exatos de `2024-01-01` a `2024-12-31` e datas adjacentes fora da janela) e `"NATAL"` (24 e 25 de dezembro em diferentes anos e datas fora do período).

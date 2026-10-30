@@ -1,0 +1,6 @@
+Criados os arquivos:
+
+- [solucao.py](/tmp/bench-7iq54btn/solucao.py) com a função solicitada.
+- [SUPOSICOES.md](/tmp/bench-7iq54btn/SUPOSICOES.md) com as decisões documentadas.
+
+Verificações com Python 3 aprovadas, incluindo Unicode, tipos inválidos, urgência e prioridades das categorias.

@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede `processar_vendas` em `analisador_vendas.py`. Vou implementar a validação, o filtro do CSV e

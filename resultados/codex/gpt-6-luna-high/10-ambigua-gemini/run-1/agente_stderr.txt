@@ -1,0 +1,283 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-v5li5xkx
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189c4-2c9f-7b12-a435-36a9a660bca6
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:24:59.257690Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, depois implementar a solução aqui e conferir o resultado.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' && cat enunciado.md" in /tmp/bench-v5li5xkx
+ succeeded in 0ms:
+/tmp/bench-v5li5xkx
+enunciado.md
+# 10 - Classificação de Clientes e Score de Fidelidade (Especificação com Pontos Abertos)
+
+Implemente a função `classificar_cliente` no arquivo `solucao.py` na raiz do seu diretório de trabalho.
+
+## Assinatura
+
+```python
+def classificar_cliente(dados: dict) -> dict:
+    ...
+```
+
+## Núcleo Explícito Obrigatório
+
+O dicionário `dados` de entrada possui as seguintes informações sobre o cliente:
+- `id` (str): identificador único do cliente.
+- `nome` (str): nome do cliente.
+- `compras` (list[float | int]): histórico de valores de compras realizadas.
+- `anos_ativo` (int): número de anos em que o cliente é usuário ativo.
+
+### Regras Inequívocas de Cálculo do Score:
+1. O score base de compras corresponde a **10% da soma dos valores das compras** (`soma_compras * 0.1`).
+2. O score de fidelidade concede **5 pontos por cada ano ativo** (`anos_ativo * 5`).
+3. O score final é a soma do score base de compras com o score de fidelidade, devendo ser arredondado para 2 casas decimais (`round(..., 2)`).
+4. O dicionário de retorno deve conter obrigatoriamente as chaves:
+   - `"id"`: mesmo id de entrada (preservado).
+   - `"nome"`: mesmo nome de entrada (preservado).
+   - `"score"`: número (float ou int) correspondente ao score final calculado.
+   - `"categoria"`: uma string não vazia representando o segmento/nível do cliente.
+5. **Imutabilidade**: A função não deve modificar o dicionário `dados` fornecido na entrada nem a lista `compras` nele contida.
+6. A função deve suportar grande volume de compras e entradas com caracteres Unicode em `id` e `nome`.
+
+## Pontos Abertos e Arquivo `SUPOSICOES.md` (OBRIGATÓRIO)
+
+Alguns aspectos do comportamento não foram fechados na especificação, tais como:
+- Quais nomes de categorias atribuir e quais faixas/critérios de pontuação utilizar para categorizar o cliente.
+- Como lidar com valores negativos na lista de compras (ex.: estornos/devoluções vs. ignorar).
+- Como interpretar ou ajustar anos ativos negativos caso ocorram.
+- Como tratar campos adicionais presentes na entrada.
+
+Você **DEVE** criar um arquivo chamado `SUPOSICOES.md` na raiz do diretório de trabalho documentando detalhadamente suas decisões de design, critérios de categorização adotados e premissas assumidas.
+
+> **Importante:** A suíte de testes automatizados valida exclusivamente o **núcleo explícito inequívoco** e a presença do arquivo `SUPOSICOES.md`. A qualidade e profundidade da sua documentação de suposições serão avaliadas pela rubrica qualitativa.
+
+exec
+/bin/bash -lc "rg --files -g '"'!node_modules'"' -g '"'!vendor'"' && ls -la" in /tmp/bench-v5li5xkx
+ succeeded in 0ms:
+enunciado.md
+total 8
+drwx------ 2 box box 4096 Oct 29 19:24 .
+drwxr-xr-x 3 box box   60 Oct 29 19:24 ..
+-rw-r--r-- 1 box box    0 Oct 29 16:06 .gitkeep
+-rw-r--r-- 1 box box 2534 Oct 29 19:07 enunciado.md
+
+codex
+O diretório contém apenas o enunciado. Vou criar `solucao.py` seguindo as fórmulas exatamente e documentar em `SUPOSICOES.md` as escolhas para categorias, estornos, anos negativos e campos extras.
+apply patch
+patch: completed
+/tmp/bench-v5li5xkx/SUPOSICOES.md
+/tmp/bench-v5li5xkx/solucao.py
+diff --git a/SUPOSICOES.md b/SUPOSICOES.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a3417dce8e9b8a45359e110e40efb28ff23fcb5d
+--- /dev/null
++++ b/SUPOSICOES.md
+@@ -0,0 +1,56 @@
++# Suposições de design
++
++Este documento registra as decisões adotadas para os aspectos que o enunciado
++deixa em aberto. As fórmulas do núcleo explícito são aplicadas sem alterações:
++o score de compras é `sum(compras) * 0.1`, a fidelidade é `anos_ativo * 5`, e o
++score final é a soma dos dois arredondada com `round(..., 2)`.
++
++## Categorias e faixas
++
++As categorias são determinadas pelo score final, já arredondado, para que a
++classificação corresponda ao número exibido e retornado:
++
++| Score final | Categoria |
++| --- | --- |
++| Menor que 100 | Bronze |
++| De 100 até menos que 500 | Prata |
++| De 500 até menos que 1.000 | Ouro |
++| 1.000 ou mais | Platina |
++
++As faixas são inclusivas no limite inferior e exclusivas no limite superior.
++Scores negativos permanecem na categoria Bronze. Os nomes são rótulos
++qualitativos simples e sempre formam uma string não vazia.
++
++## Valores negativos em compras
++
++Valores negativos são considerados parte do histórico e entram diretamente na
++soma. Assim, um estorno ou devolução reduz o total de compras e, portanto, o
++score de compras. Não se converte valor negativo em zero nem se elimina esse
++registro: o enunciado define a parcela de compras a partir da soma dos valores,
++e interpretar valores negativos como ajustes é uma convenção coerente com essa
++fórmula.
++
++## Anos ativos negativos
++
++`anos_ativo` é usado como recebido, inclusive se negativo, seguindo a fórmula
++explícita `anos_ativo * 5`. Portanto, um valor negativo diminui o score de
++fidelidade. Não há normalização para zero nem validação adicional, pois o
++enunciado não define um comportamento alternativo e a fórmula especificada é
++direta.
++
++## Campos adicionais e imutabilidade
++
++Campos além de `id`, `nome`, `compras` e `anos_ativo` são ignorados; o retorno
++contém somente as quatro chaves obrigatórias. `id` e `nome` são copiados para
++as respectivas chaves do novo dicionário sem transformação, preservando seu
++valor (inclusive caracteres Unicode). As compras são apenas percorridas por
++`sum`; nem o dicionário de entrada nem a lista são alterados. O algoritmo
++percorre as compras uma vez, com tempo linear e memória auxiliar constante,
++suportando históricos grandes.
++
++## Entradas consideradas
++
++Assume-se que os campos obrigatórios estão presentes e que compras e anos
++ativos contêm valores numéricos compatíveis com os tipos descritos no
++enunciado. Entradas ausentes ou tipos incompatíveis estão fora do contrato e
++não recebem tratamento especial.
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..472a3ac765d86890d76f2b01cbaa37a53fcfb262
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,28 @@
++"""Classificação de clientes pelo histórico de compras e tempo de atividade."""
++
++
++def classificar_cliente(dados: dict) -> dict:
++    """Calcula o score e atribui uma categoria sem alterar os dados de entrada.
++
++    Espera que ``dados`` contenha ``id``, ``nome``, ``compras`` e
++    ``anos_ativo`` nos tipos descritos no enunciado.
++    """
++    score_compras = sum(dados["compras"]) * 0.1
++    score_fidelidade = dados["anos_ativo"] * 5
++    score = round(score_compras + score_fidelidade, 2)
++
++    if score < 100:
++        categoria = "Bronze"
++    elif score < 500:
++        categoria = "Prata"
++    elif score < 1000:
++        categoria = "Ouro"
++    else:
++        categoria = "Platina"
++
++    return {
++        "id": dados["id"],
++        "nome": dados["nome"],
++        "score": score,
++        "categoria": categoria,
++    }
+
+exec
+/bin/bash -lc 'git diff -- solucao.py SUPOSICOES.md && ls -l solucao.py SUPOSICOES.md' in /tmp/bench-v5li5xkx
+ exited 1 in 0ms:
+diff --git a/solucao.py b/SUPOSICOES.md
+index 472a3ac..a3417dc 100644
+--- a/solucao.py
++++ b/SUPOSICOES.md
+@@ -1,28 +1,56 @@
+-"""Classificação de clientes pelo histórico de compras e tempo de atividade."""
+-
+-
+-def classificar_cliente(dados: dict) -> dict:
+-    """Calcula o score e atribui uma categoria sem alterar os dados de entrada.
+-
+-    Espera que ``dados`` contenha ``id``, ``nome``, ``compras`` e
+-    ``anos_ativo`` nos tipos descritos no enunciado.
+-    """
+-    score_compras = sum(dados["compras"]) * 0.1
+-    score_fidelidade = dados["anos_ativo"] * 5
+-    score = round(score_compras + score_fidelidade, 2)
+-
+-    if score < 100:
+-        categoria = "Bronze"
+-    elif score < 500:
+-        categoria = "Prata"
+-    elif score < 1000:
+-        categoria = "Ouro"
+-    else:
+-        categoria = "Platina"
+-
+-    return {
+-        "id": dados["id"],
+-        "nome": dados["nome"],
+-        "score": score,
+-        "categoria": categoria,
+-    }
++# Suposições de design
++
++Este documento registra as decisões adotadas para os aspectos que o enunciado
++deixa em aberto. As fórmulas do núcleo explícito são aplicadas sem alterações:
++o score de compras é `sum(compras) * 0.1`, a fidelidade é `anos_ativo * 5`, e o
++score final é a soma dos dois arredondada com `round(..., 2)`.
++
++## Categorias e faixas
++
++As categorias são determinadas pelo score final, já arredondado, para que a
++classificação corresponda ao número exibido e retornado:
++
++| Score final | Categoria |
++| --- | --- |
++| Menor que 100 | Bronze |
++| De 100 até menos que 500 | Prata |
++| De 500 até menos que 1.000 | Ouro |
++| 1.000 ou mais | Platina |
++
++As faixas são inclusivas no limite inferior e exclusivas no limite superior.
++Scores negativos permanecem na categoria Bronze. Os nomes são rótulos
++qualitativos simples e sempre formam uma string não vazia.
++
++## Valores negativos em compras
++
++Valores negativos são considerados parte do histórico e entram diretamente na
++soma. Assim, um estorno ou devolução reduz o total de compras e, portanto, o
++score de compras. Não se converte valor negativo em zero nem se elimina esse
++registro: o enunciado define a parcela de compras a partir da soma dos valores,
++e interpretar valores negativos como ajustes é uma convenção coerente com essa
++fórmula.
++
++## Anos ativos negativos
++
++`anos_ativo` é usado como recebido, inclusive se negativo, seguindo a fórmula
++explícita `anos_ativo * 5`. Portanto, um valor negativo diminui o score de
++fidelidade. Não há normalização para zero nem validação adicional, pois o
++enunciado não define um comportamento alternativo e a fórmula especificada é
++direta.
++
++## Campos adicionais e imutabilidade
++
++Campos além de `id`, `nome`, `compras` e `anos_ativo` são ignorados; o retorno
++contém somente as quatro chaves obrigatórias. `id` e `nome` são copiados para
++as respectivas chaves do novo dicionário sem transformação, preservando seu
++valor (inclusive caracteres Unicode). As compras são apenas percorridas por
++`sum`; nem o dicionário de entrada nem a lista são alterados. O algoritmo
++percorre as compras uma vez, com tempo linear e memória auxiliar constante,
++suportando históricos grandes.
++
++## Entradas consideradas
++
++Assume-se que os campos obrigatórios estão presentes e que compras e anos
++ativos contêm valores numéricos compatíveis com os tipos descritos no
++enunciado. Entradas ausentes ou tipos incompatíveis estão fora do contrato e
++não recebem tratamento especial.
+
+exec
+/bin/bash -lc 'git status --short && ls -la' in /tmp/bench-v5li5xkx
+ exited 128 in 0ms:
+fatal: not a git repository (or any parent up to mount point /tmp)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+
+codex
+Implementei `classificar_cliente` em [solucao.py](/tmp/bench-v5li5xkx/solucao.py), com as fórmulas do enunciado, categorias por faixa e sem alterar a entrada.
+
+Documentei as decisões sobre categorias, compras negativas, anos ativos negativos e campos extras em [SUPOSICOES.md](/tmp/bench-v5li5xkx/SUPOSICOES.md). Não executei testes.
+tokens used
+11,123

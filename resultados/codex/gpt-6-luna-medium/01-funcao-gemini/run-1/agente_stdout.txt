@@ -1,0 +1,1 @@
+Implementei `resumir_intervalos` em [solucao.py](/tmp/bench-kggi2lvn/solucao.py). A função valida os tipos, remove duplicatas, ordena sem modificar a lista original e agrupa números consecutivos.

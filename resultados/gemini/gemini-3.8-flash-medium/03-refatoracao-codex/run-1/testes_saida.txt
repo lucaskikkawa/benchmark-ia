@@ -1,0 +1,167 @@
+FFFFFFFF.........FF                                                      [100%]
+=================================== FAILURES ===================================
+_ test_subtotal_exato[1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003-100000000000000000000000000000000000000000000000000000000000000007-1] _
+
+quantidade = 100000000000000000...0000000000000000003
+preco = 100000000000000000...0000000000000000007, desconto = 1
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+>       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError
+_ test_subtotal_exato[3-1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001-99] _
+
+quantidade = 3, preco = 100000000000000000...0000000000000000001, desconto = 99
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+>       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError
+_ test_subtotal_exato[0-10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000-37] _
+
+quantidade = 0, preco = 100000000000000000...0000000000000000000, desconto = 37
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+>       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError
+_________________________ test_subtotal_exato[9-0-73] __________________________
+
+quantidade = 9, preco = 0, desconto = 73
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+>       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError
+_ test_subtotal_exato[100000000000000000000000000000000000000000000000000000000000000000000000000000000-77-100] _
+
+quantidade = 100000000000000000...0000000000000000000, preco = 77
+desconto = 100
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+>       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError
+_________________________ test_subtotal_exato[3-1-50] __________________________
+
+quantidade = 3, preco = 1, desconto = 50
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+>       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError
+________________________ test_subtotal_exato[17-13-33] _________________________
+
+quantidade = 17, preco = 13, desconto = 33
+
+    @pytest.mark.parametrize('quantidade,preco,desconto', [
+        (10**90 + 3, 10**65 + 7, 1), (3, 10**120 + 1, 99),
+        (0, 10**100, 37), (9, 0, 73), (10**80, 77, 100),
+        (3, 1, 50), (17, 13, 33),
+    ])
+    def test_subtotal_exato(quantidade, preco, desconto):
+>       assert callable(getattr(pedidos, 'subtotal', None)), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_endurecimento.py:13: AssertionError
+___________________ test_delegacao_ordenada_usa_cada_retorno ___________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fc8bdf4bad0>
+
+    def test_delegacao_ordenada_usa_cada_retorno(monkeypatch):
+>       assert hasattr(pedidos, 'subtotal'), 'Falta subtotal público'
+E       AssertionError: Falta subtotal público
+E       assert False
+E        +  where False = hasattr(pedidos, 'subtotal')
+
+testes_ocultos/test_endurecimento.py:20: AssertionError
+_____________________________ test_helper_publico ______________________________
+
+    def test_helper_publico():
+>       assert callable(getattr(pedidos, 'subtotal', None)), 'Crie subtotal em pedidos.py'
+E       AssertionError: Crie subtotal em pedidos.py
+E       assert False
+E        +  where False = callable(None)
+E        +    where None = getattr(pedidos, 'subtotal', None)
+
+testes_ocultos/test_pedidos.py:49: AssertionError
+______________________ test_delegacao_uma_vez_por_pedido _______________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fc8bdf4ae40>
+
+    def test_delegacao_uma_vez_por_pedido(monkeypatch):
+>       assert hasattr(pedidos, 'subtotal'), 'Falta a função extraída'
+E       AssertionError: Falta a função extraída
+E       assert False
+E        +  where False = hasattr(pedidos, 'subtotal')
+
+testes_ocultos/test_pedidos.py:56: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_endurecimento.py::test_subtotal_exato[1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003-100000000000000000000000000000000000000000000000000000000000000007-1]
+FAILED testes_ocultos/test_endurecimento.py::test_subtotal_exato[3-1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001-99]
+FAILED testes_ocultos/test_endurecimento.py::test_subtotal_exato[0-10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000-37]
+FAILED testes_ocultos/test_endurecimento.py::test_subtotal_exato[9-0-73] - As...
+FAILED testes_ocultos/test_endurecimento.py::test_subtotal_exato[100000000000000000000000000000000000000000000000000000000000000000000000000000000-77-100]
+FAILED testes_ocultos/test_endurecimento.py::test_subtotal_exato[3-1-50] - As...
+FAILED testes_ocultos/test_endurecimento.py::test_subtotal_exato[17-13-33] - ...
+FAILED testes_ocultos/test_endurecimento.py::test_delegacao_ordenada_usa_cada_retorno
+FAILED testes_ocultos/test_pedidos.py::test_helper_publico - AssertionError: ...
+FAILED testes_ocultos/test_pedidos.py::test_delegacao_uma_vez_por_pedido - As...
+10 failed, 9 passed in 0.09s

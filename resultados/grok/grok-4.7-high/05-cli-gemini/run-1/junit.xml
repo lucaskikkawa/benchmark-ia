@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="16" skipped="0" tests="22" time="0.277" timestamp="2026-10-30T01:23:50.062714-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_cli" name="test_padrao_sem_flags" time="0.011"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">arquivo_exemplo = '/tmp/pytest-of-box/pytest-357/test_padrao_sem_flags0/exemplo.txt'
+
+    def test_padrao_sem_flags(arquivo_exemplo):
+        res = run_cli(arquivo_exemplo)
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:27: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_flag_individual_linhas" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">arquivo_exemplo = '/tmp/pytest-of-box/pytest-357/test_flag_individual_linhas0/exemplo.txt'
+
+    def test_flag_individual_linhas(arquivo_exemplo):
+        res = run_cli(arquivo_exemplo, "--linhas")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:37: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_flag_palavras_e_chars" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">arquivo_exemplo = '/tmp/pytest-of-box/pytest-357/test_flag_palavras_e_chars0/exemplo.txt'
+
+    def test_flag_palavras_e_chars(arquivo_exemplo):
+        res = run_cli(arquivo_exemplo, "-p", "-c")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:46: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_flag_top_palavras" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">arquivo_exemplo = '/tmp/pytest-of-box/pytest-357/test_flag_top_palavras0/exemplo.txt'
+
+    def test_flag_top_palavras(arquivo_exemplo):
+        res = run_cli(arquivo_exemplo, "--top", "2")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:55: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_modo_json" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">arquivo_exemplo = '/tmp/pytest-of-box/pytest-357/test_modo_json0/exemplo.txt'
+
+    def test_modo_json(arquivo_exemplo):
+        res = run_cli(arquivo_exemplo, "--json", "-l", "--top", "1")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:63: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_flag_saida_arquivo" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">arquivo_exemplo = '/tmp/pytest-of-box/pytest-357/test_flag_saida_arquivo0/exemplo.txt'
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_flag_saida_arquivo0')
+
+    def test_flag_saida_arquivo(arquivo_exemplo, tmp_path):
+        out_file = tmp_path / "saida.txt"
+        res = run_cli(arquivo_exemplo, "-l", "-o", str(out_file))
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:74: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_flag_saida_cria_subdiretorios_inexistentes" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">arquivo_exemplo = '/tmp/pytest-of-box/pytest-357/test_flag_saida_cria_subdireto0/exemplo.txt'
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_flag_saida_cria_subdireto0')
+
+    def test_flag_saida_cria_subdiretorios_inexistentes(arquivo_exemplo, tmp_path):
+        out_file = tmp_path / "nivel1" / "nivel2" / "saida_aninhada.txt"
+        res = run_cli(arquivo_exemplo, "-l", "-o", str(out_file))
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:83: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_arquivo_inexistente_exit_1" time="0.009"><failure message="assert 2 == 1&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_arquivo_inexistente_exit_0')
+
+    def test_arquivo_inexistente_exit_1(tmp_path):
+        res = run_cli(str(tmp_path / "arquivo_fantasma.txt"))
+&gt;       assert res.returncode == 1
+E       assert 2 == 1
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:91: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_caminho_e_diretorio_exit_1" time="0.010"><failure message="assert 2 == 1&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_caminho_e_diretorio_exit_0')
+
+    def test_caminho_e_diretorio_exit_1(tmp_path):
+        diretorio = tmp_path / "meu_diretorio"
+        diretorio.mkdir()
+        res = run_cli(str(diretorio))
+&gt;       assert res.returncode == 1
+E       assert 2 == 1
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:99: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_top_invalido_exit_2" time="0.009" /><testcase classname="testes_ocultos.test_cli" name="test_sem_argumentos_exit_2" time="0.009" /><testcase classname="testes_ocultos.test_cli" name="test_arquivo_vazio" time="0.010"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_arquivo_vazio0')
+
+    def test_arquivo_vazio(tmp_path):
+        p = tmp_path / "vazio.txt"
+        p.write_text("", encoding="utf-8")
+        res = run_cli(str(p), "--json")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:117: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_erros_de_sintaxe_exit_2[flags0]" time="0.009" /><testcase classname="testes_ocultos.test_cli" name="test_erros_de_sintaxe_exit_2[flags1]" time="0.009" /><testcase classname="testes_ocultos.test_cli" name="test_erros_de_sintaxe_exit_2[flags2]" time="0.009" /><testcase classname="testes_ocultos.test_cli" name="test_erros_de_sintaxe_exit_2[flags3]" time="0.009" /><testcase classname="testes_ocultos.test_cli" name="test_tokens_pontuacao_unicode_e_espacos" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_tokens_pontuacao_unicode_0')
+
+    def test_tokens_pontuacao_unicode_e_espacos(tmp_path):
+        arquivo = tmp_path / "texto.txt"
+        texto = 'Árvore!\t(árvore)  {BOLA}\n... bola; ""\n'
+        arquivo.write_text(texto, encoding="utf-8")
+        res = run_cli(str(arquivo), "-l", "-p", "--chars", "--top", "20", "--json")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:134: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_top_sem_palavras" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_top_sem_palavras0')
+
+    def test_top_sem_palavras(tmp_path):
+        arquivo = tmp_path / "pontuacao.txt"
+        arquivo.write_text("... () !!!", encoding="utf-8")
+        res = run_cli(str(arquivo), "--json", "--top", "1")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:149: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_erro_de_leitura_utf8" time="0.009"><failure message="assert 2 == 1&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_erro_de_leitura_utf80')
+
+    def test_erro_de_leitura_utf8(tmp_path):
+        arquivo = tmp_path / "invalido.txt"
+        arquivo.write_bytes(b"\xff\xfe")
+        res = run_cli(str(arquivo))
+&gt;       assert res.returncode == 1
+E       assert 2 == 1
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:157: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_json_gravado_em_arquivo" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">arquivo_exemplo = '/tmp/pytest-of-box/pytest-357/test_json_gravado_em_arquivo0/exemplo.txt'
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_json_gravado_em_arquivo0')
+
+    def test_json_gravado_em_arquivo(arquivo_exemplo, tmp_path):
+        saida = tmp_path / "saida.json"
+        res = run_cli(arquivo_exemplo, "--json", "-p", "--saida", str(saida))
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:164: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_quebras_de_linha_crlf_e_lf_mistas" time="0.011"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_quebras_de_linha_crlf_e_l0')
+
+    def test_quebras_de_linha_crlf_e_lf_mistas(tmp_path):
+        arquivo = tmp_path / "crlf.txt"
+        arquivo.write_bytes(b"Linha 1\r\nLinha 2\nLinha 3\r\n")
+        res = run_cli(str(arquivo), "--json", "-l", "-p")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:173: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_cli" name="test_pontuacoes_aninhadas_e_aspas_multiplas" time="0.009"><failure message="assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-357/test_pontuacoes_aninhadas_e_as0')
+
+    def test_pontuacoes_aninhadas_e_aspas_multiplas(tmp_path):
+        arquivo = tmp_path / "aninhado.txt"
+        arquivo.write_text('"""[[[palavra]]]""" ...palavra... ((palavra))!?', encoding="utf-8")
+        res = run_cli(str(arquivo), "--json", "--top", "1")
+&gt;       assert res.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-qyf6vikx/contatexto.py', '/tmp/pyte...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-qyf6vikx/contatexto.py': [Errno 2] No such file or directory\n").returncode
+
+testes_ocultos/test_cli.py:183: AssertionError</failure></testcase></testsuite></testsuites>

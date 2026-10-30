@@ -1,0 +1,3 @@
+Criei [freq.py](/tmp/bench-z8wfw0lb/freq.py) com os argumentos, filtros, ordenação e formatos de saída descritos no enunciado. Erros de leitura e de UTF-8 são reportados em stderr com código de saída 1; erros de argumentos ficam a cargo do `argparse`.
+
+Não executei testes.

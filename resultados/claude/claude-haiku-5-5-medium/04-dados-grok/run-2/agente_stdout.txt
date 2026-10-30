@@ -1,0 +1,15 @@
+Criei `solucao.py` neste diretório com `consolidar(caminho_csv, caminho_sla, caminho_saida)`. Usa só a biblioteca padrão e não exige arquivo de amostra.
+
+Testei com um CSV e um SLA temporários, depois apaguei a pasta de teste. Confirmei:
+- o resultado para a equipe `n1` do exemplo (2 chamados, 1 estourado, média 45, pior `a1`);
+- a ordenação, com `"São Paulo"` antes de `alfa`;
+- `ValueError` para cabeçalho com BOM, arquivo vazio e prioridade `Alta`;
+- `FileNotFoundError` para arquivo ausente;
+- a saída terminada em `}\n`.
+
+Não testei a fundo casos como `pior_id` em empate com `a10`/`a2`, meses e anos cruzados, nem SLA com `bool`/`float`. A implementação cobre esses casos pela leitura do código, sem teste automatizado.
+
+Escolhas de interpretação:
+- Linhas com número de colunas errado (e não vazias) geram `ValueError`.
+- Os campos de data são validados por regex `YYYY-MM-DDTHH:MM` antes do `strptime`, porque o `strptime` aceitaria formatos como `2024-3-1T1:0`.
+- O arquivo de saída é escrito só depois de toda a validação, para não deixar um JSON parcial em caso de erro.

@@ -1,0 +1,213 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-7iq54btn
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189ff-d96e-7c42-9f01-db61a88e4f78
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:30:10.251492Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para executar a tarefa e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!'"\\.git'" in /tmp/bench-7iq54btn
+ succeeded in 0ms:
+/tmp/bench-7iq54btn
+enunciado.md
+
+exec
+/bin/bash -lc "cat enunciado.md && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!'"\\.git'" in /tmp/bench-7iq54btn
+ succeeded in 0ms:
+# Tarefa: classificar uma mensagem curta
+
+Crie dois arquivos no diretório de trabalho:
+
+- `solucao.py` com `classificar_mensagem(texto: str) -> dict`
+- `SUPOSICOES.md` em UTF-8, com as decisões que você tomar nos pontos abertos
+
+Só a biblioteca padrão. A função é pura: o mesmo texto sempre devolve o mesmo dict, sem ler arquivo, relógio ou rede.
+
+## O que está fechado
+
+O dict tem **pelo menos** estas chaves (pode ter outras):
+
+```python
+{
+    "categoria": str,
+    "urgente": bool,
+    "tamanho": int,
+}
+```
+
+- `tamanho` é `len(texto)`, em code points, **sem** `strip`, sem normalizar (NFC, NFD, NFKC) e sem contar bytes UTF-8. `"ação"` tem tamanho 4. `"🙂"` tem tamanho 1. `"a\u0301"` tem tamanho 2. `"\ud800"` tem tamanho 1 e não pode levantar erro. Quebra de linha, `\u00a0` e `\u200b` contam.
+- `urgente` é `True` exatamente quando a substring `"URGENTE"` aparece em `texto` (maiúsculas, sem exigir palavra inteira, sem casefold e sem normalizar antes). `"urgente"`, `"Urgente"` e `"URGEN"` são `False`. `"XURGENTEY"` e `" URGENTE"` são `True`. Um lookalike cirílico (`"URGENT\u0415"`, com `Е`) é `False`. `"URGENTE"` no fim de um texto de 100_000 caracteres continua `True`, e `tamanho` é 100_000 mais o que vier junto.
+- `texto == ""` (string vazia, e só ela) devolve `categoria == "vazia"`, `urgente is False` e `tamanho == 0`.
+- Qualquer outro texto, inclusive só espaços, `"vazia"`, `"\u00a0"` ou `"\n"`, tem `categoria` string não vazia e **diferente** de `"vazia"`.
+- Se `texto` não for `str` (`None`, `bytes`, `bytearray`, `int`), levante `TypeError`. Não codifique o texto para decidir isso.
+
+Os testes automáticos cobrem só este núcleo.
+
+## O que fica em aberto
+
+Você escolhe e **registra em `SUPOSICOES.md`** (pelo menos duas linhas não vazias; o texto todo, sem contar espaços das pontas, com 80 caracteres ou mais):
+
+- Quais categorias existem além de `"vazia"` (por exemplo reclamação, dúvida, elogio, pedido, outro — a lista não é obrigatória).
+- Quais palavras ou sinais disparam cada categoria, e o que acontece quando o texto casa com mais de uma.
+- Se a classificação ignora maiúsculas e acentos. Isso **não** muda a regra de `"URGENTE"`, que continua sensível a maiúsculas.
+- Como classificar texto que não é vazio mas não tem palavra (espaços, pontuação). Lembre que ele não pode usar a categoria `"vazia"`.
+- Se o dict leva campos extras (idioma, confiança, etc.).
+
+Não há resposta única. O arquivo existe para outro avaliador entender o que você assumiu. Os testes não comparam o texto das suposições com um gabarito.
+enunciado.md
+
+codex
+Vou usar categorias por palavras-chave, com uma ordem de prioridade documentada. A classificação ignorará maiúsculas e acentos; a urgência e o tamanho seguirão exatamente as regras do enunciado.
+
+apply patch
+patch: completed
+/tmp/bench-7iq54btn/SUPOSICOES.md
+/tmp/bench-7iq54btn/solucao.py
+diff --git a/SUPOSICOES.md b/SUPOSICOES.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..2debdb341f5bc6e272a7dc05ca32fd109ed23fee
+--- /dev/null
++++ b/SUPOSICOES.md
+@@ -0,0 +1,13 @@
++# Decisões de classificação
++
++- As categorias são `vazia`, `reclamacao`, `duvida`, `pedido`, `elogio` e `outro`. Somente a string exatamente vazia recebe `vazia`.
++- Para escolher a categoria, aplica-se `casefold`, decomposição Unicode NFD e remoção dos caracteres de categoria Unicode `Mn` (marcas não espaçadoras). Assim, maiúsculas e acentos usuais não distinguem palavras-chave. Essa transformação ocorre apenas numa cópia usada para classificar.
++- Uma palavra é uma sequência máxima reconhecida pela expressão regular Unicode `[^\W\d_]+`: caracteres de palavra, exceto dígitos decimais e sublinhado. As palavras-chave precisam coincidir com uma dessas sequências inteiras; não basta aparecerem dentro de outra palavra.
++- `reclamacao`: palavras `ruim`, `pessimo`, `problema`, `defeito` ou `reclamacao`.
++- `duvida`: presença literal do sinal ASCII `?`, ou palavras `duvida`, `como`, `qual`, `quando`, `onde` ou `porque`.
++- `pedido`: palavras `preciso`, `solicito`, `gostaria` ou `ajuda`.
++- `elogio`: palavras `obrigado`, `obrigada`, `otimo`, `excelente` ou `parabens`.
++- Havendo múltiplas correspondências, a prioridade é `reclamacao`, depois `duvida`, depois `pedido`, depois `elogio`. Não há inferência de contexto, negação ou ironia.
++- Qualquer texto não vazio sem correspondência recebe `outro`, inclusive espaços, quebras de linha, pontuação sem `?`, caracteres invisíveis e a palavra `vazia`. Pontuação que contenha `?` recebe `duvida`.
++- O resultado tem exatamente os três campos solicitados, sem campos extras. `tamanho` é sempre `len(texto)` original e `urgente` é sempre o resultado de `"URGENTE" in texto`, sem nenhuma transformação ou limite de busca.
++- São aceitas instâncias de `str`, inclusive subclasses; qualquer outro tipo levanta `TypeError`. Não se faz codificação em bytes, leitura de arquivos, consulta de relógio ou acesso à rede.
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..00d1b13a54b8efe65c324101af80e135c31bee83
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,42 @@
++"""Classificação determinística de mensagens, usando só a biblioteca padrão."""
++
++import re
++import unicodedata
++
++
++def classificar_mensagem(texto: str) -> dict:
++    """Retorna categoria, urgência literal e tamanho original da mensagem.
++
++    As regras de categoria e sua prioridade estão em SUPOSICOES.md.
++    Entradas que não sejam strings levantam TypeError.
++    """
++    if not isinstance(texto, str):
++        raise TypeError("texto deve ser uma str")
++
++    tamanho = len(texto)
++    urgente = "URGENTE" in texto
++
++    if texto == "":
++        categoria = "vazia"
++    else:
++        simplificado = "".join(
++            caractere
++            for caractere in unicodedata.normalize("NFD", texto.casefold())
++            if unicodedata.category(caractere) != "Mn"
++        )
++        palavras = set(re.findall(r"[^\W\d_]+", simplificado))
++
++        if palavras & {"ruim", "pessimo", "problema", "defeito", "reclamacao"}:
++            categoria = "reclamacao"
++        elif "?" in texto or palavras & {
++            "duvida", "como", "qual", "quando", "onde", "porque"
++        }:
++            categoria = "duvida"
++        elif palavras & {"preciso", "solicito", "gostaria", "ajuda"}:
++            categoria = "pedido"
++        elif palavras & {"obrigado", "obrigada", "otimo", "excelente", "parabens"}:
++            categoria = "elogio"
++        else:
++            categoria = "outro"
++
++    return {"categoria": categoria, "urgente": urgente, "tamanho": tamanho}
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+from pathlib import Path
+from solucao import classificar_mensagem
+
+assert classificar_mensagem('') == {'categoria': 'vazia', 'urgente': False, 'tamanho': 0}
+for texto in ['ação', '🙂', 'a\\u0301', '\\ud800', '\\n', '\\u00a0', '\\u200b', ' ', 'vazia', 'urgente', 'Urgente', 'URGEN', 'URGENT\\u0415', 'XURGENTEY', ' URGENTE', 'x' * 100_000 + 'URGENTE']:
+    resultado = classificar_mensagem(texto)
+    assert resultado == classificar_mensagem(texto)
+    assert isinstance(resultado['categoria'], str)
+    assert resultado['categoria'] and resultado['categoria'] "'!= '"'vazia'
+    assert resultado['urgente'] is ('URGENTE' in texto)
+    assert resultado['tamanho'] == len(texto)
+for valor in [None, b'URGENTE', bytearray(b'URGENTE'), 1, True, [], {}]:
+    try:
+        classificar_mensagem(valor)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError(f'TypeError esperado para {type(valor)}')
+for texto, categoria in [('PÉSSIMO, como solicito ajuda? Obrigado"'!'"', 'reclamacao'), ('Como solicito ajuda?', 'duvida'), ('Preciso de ajuda, obrigado', 'pedido'), ('ÓTIMO"'!'"', 'elogio'), ('o\\u0301timo', 'elogio'), ('excelentemente', 'outro'), ('... ', 'outro'), ('???', 'duvida')]:
+    assert classificar_mensagem(texto)['categoria'] == categoria, texto
+suposicoes = Path('SUPOSICOES.md').read_text(encoding='utf-8')
+assert len(suposicoes.strip()) >= 80
+assert len([linha for linha in suposicoes.splitlines() if linha.strip()]) >= 2
+print('Verificações aprovadas: núcleo, Unicode, tipos inválidos, categorias e suposições.')
+PY" in /tmp/bench-7iq54btn
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from pathlib import Path
+from solucao import classificar_mensagem
+
+assert classificar_mensagem('') == {'categoria': 'vazia', 'urgente': False, 'tamanho': 0}
+for texto in ['ação', '🙂', 'a\\u0301', '\\ud800', '\\n', '\\u00a0', '\\u200b', ' ', 'vazia', 'urgente', 'Urgente', 'URGEN', 'URGENT\\u0415', 'XURGENTEY', ' URGENTE', 'x' * 100_000 + 'URGENTE']:
+    resultado = classificar_mensagem(texto)
+    assert resultado == classificar_mensagem(texto)
+    assert isinstance(resultado['categoria'], str)
+    assert resultado['categoria'] and resultado['categoria'] "'!= '"'vazia'
+    assert resultado['urgente'] is ('URGENTE' in texto)
+    assert resultado['tamanho'] == len(texto)
+for valor in [None, b'URGENTE', bytearray(b'URGENTE'), 1, True, [], {}]:
+    try:
+        classificar_mensagem(valor)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError(f'TypeError esperado para {type(valor)}')
+for texto, categoria in [('PÉSSIMO, como solicito ajuda? Obrigado"'!'"', 'reclamacao'), ('Como solicito ajuda?', 'duvida'), ('Preciso de ajuda, obrigado', 'pedido'), ('ÓTIMO"'!'"', 'elogio'), ('o\\u0301timo', 'elogio'), ('excelentemente', 'outro'), ('... ', 'outro'), ('???', 'duvida')]:
+    assert classificar_mensagem(texto)['categoria'] == categoria, texto
+suposicoes = Path('SUPOSICOES.md').read_text(encoding='utf-8')
+assert len(suposicoes.strip()) >= 80
+assert len([linha for linha in suposicoes.splitlines() if linha.strip()]) >= 2
+print('Verificações aprovadas: núcleo, Unicode, tipos inválidos, categorias e suposições.')
+PY" in /tmp/bench-7iq54btn
+ succeeded in 0ms:
+Verificações aprovadas: núcleo, Unicode, tipos inválidos, categorias e suposições.
+
+codex
+Criados os arquivos:
+
+- [solucao.py](/tmp/bench-7iq54btn/solucao.py) com a função solicitada.
+- [SUPOSICOES.md](/tmp/bench-7iq54btn/SUPOSICOES.md) com as decisões documentadas.
+
+Verificações com Python 3 aprovadas, incluindo Unicode, tipos inválidos, urgência e prioridades das categorias.
+tokens used
+11,180

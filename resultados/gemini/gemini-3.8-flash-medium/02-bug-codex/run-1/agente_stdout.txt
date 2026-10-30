@@ -1,0 +1,5 @@
+O bug em [`janelas.py`](file:///tmp/bench-pgyhq75y/janelas.py#L9) foi corrigido.
+
+### Causa e Solução
+- **Causa**: O laço `for indice in range(tamanho, len(valores) - 1)` encerrava antes do último elemento da lista, omitindo a soma da última janela contígua.
+- **Solução**: Ajustado o limite superior do `range` para `len(valores)`, garantindo que todas as `len(valores) - tamanho + 1` janelas sejam computadas em tempo $O(n)$, preservando a assinatura, o tratamento de erros e as regras especificadas no [enunciado.md](file:///tmp/bench-pgyhq75y/enunciado.md).

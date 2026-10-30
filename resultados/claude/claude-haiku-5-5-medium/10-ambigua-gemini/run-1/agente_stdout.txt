@@ -1,0 +1,15 @@
+Criei `solucao.py` e `SUPOSICOES.md` neste diretório, seguindo o `enunciado.md`.
+
+**`solucao.py`**: implementa `classificar_cliente(dados)`.
+- Score = `round(soma_compras * 0.1 + anos_ativo * 5, 2)`, com `math.fsum` na soma.
+- Retorna `id`, `nome`, `score` e `categoria`. A entrada não é modificada.
+- As faixas de categoria estão em `FAIXAS_CATEGORIA`, para ajuste fácil.
+
+**`SUPOSICOES.md`**: documenta as decisões sobre os pontos abertos:
+- **Categorias:** Bronze (< 50), Prata (50 a 150), Ouro (150 a 300) e Diamante (≥ 300). Os limites são arbitrários, pois o enunciado não os define.
+- **Compras negativas:** tratadas como estornos e somadas normalmente, então o score pode ficar negativo. Nesse caso a categoria é Bronze.
+- **Anos negativos:** tratados como zero.
+- **Campos extras:** ignorados. Campos ausentes: `compras` vira `[]` e `anos_ativo` vira `0`; `id` e `nome` geram `KeyError`.
+- Também cobre imutabilidade, Unicode, volume grande e arredondamento.
+
+Verifiquei com um script rápido: o caso com Unicode, campos extras e entrada não modificada funcionou; lista vazia, estorno com anos negativos e uma lista de 1 milhão de compras também. Não há suíte de testes no diretório, então não rodei testes formais.

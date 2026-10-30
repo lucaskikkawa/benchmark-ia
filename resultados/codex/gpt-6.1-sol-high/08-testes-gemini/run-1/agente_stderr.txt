@@ -1,0 +1,334 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-7q0i4m58
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189f4-88a1-7de2-a76a-acb028add3b9
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:17:48.362802Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, implementar a solução e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' -g '"'!package-lock.json'"' -g '"'!yarn.lock'"'" in /tmp/bench-7q0i4m58
+ succeeded in 0ms:
+/tmp/bench-7q0i4m58
+validador.py
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md validador.py' in /tmp/bench-7q0i4m58
+ succeeded in 0ms:
+# 08 - Elaboração de Suíte de Testes Unitários
+
+Você recebeu o módulo correto `validador.py` contendo a implementação da classe `ValidadorSenha` e a constante `CARACTERES_ESPECIAIS_PERMITIDOS`.
+
+Sua tarefa é escrever uma suíte de testes unitários abrangente utilizando `pytest` no diretório `tests/` (por exemplo, no arquivo `tests/test_validador.py`).
+
+## Avaliação por Testes de Mutação (Mutation Testing)
+
+A avaliação da sua suíte será realizada por um executor automatizado que:
+1. Executará os seus testes contra a implementação correta de `validador.py` (seus testes **devem passar com 100% de sucesso**).
+2. Executará os seus testes contra **12 mutantes** (versões de `validador.py` contendo bugs sutis, regras negligenciadas ou erros de off-by-one em limites e faixas de classificação).
+3. Cada mutante é considerado **morto (eliminado)** se a sua suíte apresentar **falha de teste** ao rodar contra ele (código de saída 1 do pytest). Erros de coleta, ausência de testes, interrupções e timeouts não eliminam mutantes. Se a sua suíte passar em um mutante com bug, o mutante terá sobrevivido e o teste correspondente será reprovado.
+4. Cada execução da suíte tem limite de **10 segundos**. A pasta `tests/` é copiada, com seus recursos e subpastas, para um diretório temporário junto com a versão avaliada de `validador.py`, tanto para o original quanto para os mutantes. Use a descoberta padrão do pytest; não é necessário que os arquivos estejam diretamente na raiz de `tests/`.
+
+## Especificação do Módulo `validador.py`
+
+### Constante
+- `CARACTERES_ESPECIAIS_PERMITIDOS = set("!@#$%^&*()-_+=") `
+
+### Classe `ValidadorSenha`
+- `__init__(self, min_tam: int = 8, max_tam: int = 64) -> None`:
+  Define os limites mínimo e máximo de caracteres (respeitando os parâmetros caso sejam fornecidos).
+
+- `validar(self, senha: str) -> tuple[bool, list[str]]`:
+  Valida a string fornecida contra as regras:
+  1. Comprimento mínimo: `len(senha) >= self.min_tam`. Se violado: adiciona erro. Note que comprimentos exatamente iguais a `min_tam` são válidos.
+  2. Comprimento máximo: `len(senha) <= self.max_tam`. Se violado: adiciona erro. Note que comprimentos exatamente iguais a `max_tam` são válidos.
+  3. Deve conter ao menos uma letra maiúscula (`c.isupper()`).
+  4. Deve conter ao menos uma letra minúscula (`c.islower()`).
+  5. Deve conter ao menos um dígito numérico (`c.isdigit()`).
+  6. Deve conter ao menos um caractere especial pertencente a `CARACTERES_ESPECIAIS_PERMITIDOS` (outros caracteres de pontuação não pertencentes ao conjunto não contam como caractere especial permitido).
+  7. **Não pode** conter espaços em branco (`c.isspace()`, incluindo espaços comuns, tabulações e quebras de linha).
+  8. **Não pode** conter 3 caracteres repetidos consecutivos em qualquer parte da senha, inclusive no final (ex.: `"aaa"`, `"111"`).
+  - Retorna `(True, [])` se todas as regras forem cumpridas, ou `(False, lista_de_mensagens_de_erro)` caso haja violações (acumulando todos os erros identificados).
+  - O texto e a ordem das mensagens de erro não fazem parte do contrato; os testes não devem depender deles.
+
+- `calcular_forca(self, senha: str) -> str`:
+  - Se a senha for inválida perante `validar(senha)`: retorna `"invalida"`.
+  - Se for válida e `len(senha) < 10`: retorna `"fraca"`.
+  - Se for válida e `10 <= len(senha) < 14`: retorna `"media"`.
+  - Se for válida e `len(senha) >= 14`: retorna `"forte"`.
+
+## Arquivos a Entregar
+
+Crie seus arquivos de teste dentro da pasta `tests/` na raiz do seu projeto (ex.: `tests/test_validador.py`).
+CARACTERES_ESPECIAIS_PERMITIDOS = set("!@#$%^&*()-_+=")
+
+
+class ValidadorSenha:
+    """Validador de senhas e políticas de segurança."""
+
+    def __init__(self, min_tam: int = 8, max_tam: int = 64) -> None:
+        self.min_tam = min_tam
+        self.max_tam = max_tam
+
+    def validar(self, senha: str) -> tuple[bool, list[str]]:
+        erros: list[str] = []
+
+        if len(senha) < self.min_tam:
+            erros.append(f"A senha deve ter pelo menos {self.min_tam} caracteres.")
+
+        if len(senha) > self.max_tam:
+            erros.append(f"A senha deve ter no máximo {self.max_tam} caracteres.")
+
+        if not any(c.isupper() for c in senha):
+            erros.append("A senha deve conter pelo menos uma letra maiúscula.")
+
+        if not any(c.islower() for c in senha):
+            erros.append("A senha deve conter pelo menos uma letra minúscula.")
+
+        if not any(c.isdigit() for c in senha):
+            erros.append("A senha deve conter pelo menos um dígito numérico.")
+
+        if not any(c in CARACTERES_ESPECIAIS_PERMITIDOS for c in senha):
+            erros.append("A senha deve conter pelo menos um caractere especial permitido.")
+
+        if any(c.isspace() for c in senha):
+            erros.append("A senha não pode conter espaços em branco.")
+
+        for i in range(len(senha) - 2):
+            if senha[i] == senha[i + 1] == senha[i + 2]:
+                erros.append("A senha não pode conter 3 caracteres repetidos consecutivos.")
+                break
+
+        valida = len(erros) == 0
+        return valida, erros
+
+    def calcular_forca(self, senha: str) -> str:
+        valida, _ = self.validar(senha)
+        if not valida:
+            return "invalida"
+
+        tam = len(senha)
+        if tam < 10:
+            return "fraca"
+        if tam < 14:
+            return "media"
+        return "forte"
+
+codex
+O enunciado exige testes que detectem mutações sem depender do texto das mensagens de erro. Vou cobrir os limites de tamanho e força, cada regra de validação, a acumulação de erros e casos como espaços Unicode e repetições no final da senha.
+
+exec
+/bin/bash -lc 'mkdir -p tests' in /tmp/bench-7q0i4m58
+ succeeded in 0ms:
+apply patch
+patch: completed
+/tmp/bench-7q0i4m58/tests/conftest.py
+/tmp/bench-7q0i4m58/tests/test_validador.py
+diff --git a/tests/conftest.py b/tests/conftest.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ebd9d3889a98cb0bf5f2aa1b9626ed9807654d84
+--- /dev/null
++++ b/tests/conftest.py
+@@ -0,0 +1,7 @@
++"""Permite importar o módulo local também com o comando ``pytest``."""
++
++import sys
++from pathlib import Path
++
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+diff --git a/tests/test_validador.py b/tests/test_validador.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ed9dcc79554efdaa9e72b78d0d22703d7a0db8e9
+--- /dev/null
++++ b/tests/test_validador.py
+@@ -0,0 +1,177 @@
++"""Testes do contrato público, sem depender do texto ou da ordem dos erros."""
++
++import pytest
++
++from validador import CARACTERES_ESPECIAIS_PERMITIDOS, ValidadorSenha
++
++
++def senha_com_tamanho(tamanho):
++    """Contém as quatro categorias a partir de 4 caracteres, sem trincas."""
++    return ("Aa1!" + "bC2@" * ((tamanho + 3) // 4))[:tamanho]
++
++
++def conferir_resultado(validador, senha, esperada, quantidade_erros=None):
++    resultado = validador.validar(senha)
++    assert isinstance(resultado, tuple)
++    assert len(resultado) == 2
++    valida, erros = resultado
++    assert valida is esperada
++    assert isinstance(erros, list)
++    assert all(isinstance(erro, str) for erro in erros)
++    if esperada:
++        assert erros == []
++    else:
++        assert erros
++    if quantidade_erros is not None:
++        assert len(erros) == quantidade_erros
++
++
++def test_constante_de_especiais():
++    assert CARACTERES_ESPECIAIS_PERMITIDOS == set("!@#$%^&*()-_+=")
++
++
++def test_limites_padrao():
++    validador = ValidadorSenha()
++    assert validador.min_tam == 8
++    assert validador.max_tam == 64
++
++
++@pytest.mark.parametrize("tamanho", range(8, 65))
++def test_todos_os_tamanhos_validos_padrao(tamanho):
++    conferir_resultado(ValidadorSenha(), senha_com_tamanho(tamanho), True)
++
++
++@pytest.mark.parametrize("tamanho", [4, 5, 6, 7, 65, 66, 100])
++def test_tamanho_invalido_com_demais_regras_satisfeitas(tamanho):
++    conferir_resultado(
++        ValidadorSenha(), senha_com_tamanho(tamanho), False, quantidade_erros=1
++    )
++
++
++@pytest.mark.parametrize("minimo,maximo", [(4, 4), (5, 7), (10, 14), (65, 70)])
++def test_parametros_do_construtor_e_limites_inclusivos(minimo, maximo):
++    validador = ValidadorSenha(min_tam=minimo, max_tam=maximo)
++    assert validador.min_tam == minimo
++    assert validador.max_tam == maximo
++    conferir_resultado(validador, senha_com_tamanho(minimo), True)
++    conferir_resultado(validador, senha_com_tamanho(maximo), True)
++    conferir_resultado(validador, senha_com_tamanho(minimo - 1), False)
++    conferir_resultado(validador, senha_com_tamanho(maximo + 1), False, 1)
++
++
++def test_parametros_posicionais_e_instancias_independentes():
++    curta = ValidadorSenha(4, 6)
++    longa = ValidadorSenha(10, 80)
++    conferir_resultado(curta, "Aa1!", True)
++    conferir_resultado(longa, "Aa1!", False, 1)
++    conferir_resultado(longa, senha_com_tamanho(80), True)
++    conferir_resultado(curta, senha_com_tamanho(80), False, 1)
++    conferir_resultado(curta, "Aa1!", True)
++
++
++@pytest.mark.parametrize(
++    "senha",
++    [
++        "ab1!cd2@",  # falta maiúscula
++        "AB1!CD2@",  # falta minúscula
++        "Abc!Def@",  # falta dígito
++        "Ab12Cd34",  # falta especial permitido
++    ],
++)
++def test_cada_categoria_e_obrigatoria(senha):
++    conferir_resultado(ValidadorSenha(), senha, False, 1)
++    assert ValidadorSenha().calcular_forca(senha) == "invalida"
++
++
++@pytest.mark.parametrize("especial", list("!@#$%^&*()-_+="))
++def test_cada_especial_permitido_e_suficiente(especial):
++    conferir_resultado(ValidadorSenha(), "Ab12Cd3" + especial, True)
++
++
++@pytest.mark.parametrize("pontuacao", list(".,:;?/\\|[]{}<>`~\"'") + ["©", "🙂"])
++def test_outros_simbolos_nao_substituem_especial_permitido(pontuacao):
++    conferir_resultado(ValidadorSenha(), "Ab12Cd3" + pontuacao, False, 1)
++
++
++@pytest.mark.parametrize("extra", ["?", "/", "[", "🙂", "\u200b"])
++def test_simbolos_extras_nao_sao_proibidos_se_ha_especial_permitido(extra):
++    conferir_resultado(ValidadorSenha(), "Ab12Cd3!" + extra, True)
++
++
++@pytest.mark.parametrize(
++    "espaco", [" ", "\t", "\n", "\r", "\v", "\f", "\u00a0", "\u2003", "\u2028", "\u3000"]
++)
++@pytest.mark.parametrize("posicao", [0, 4, 8])
++def test_espacos_em_branco_em_qualquer_posicao(espaco, posicao):
++    base = "Ab12Cd3!"
++    senha = base[:posicao] + espaco + base[posicao:]
++    conferir_resultado(ValidadorSenha(), senha, False, 1)
++    assert ValidadorSenha().calcular_forca(senha) == "invalida"
++
++
++@pytest.mark.parametrize("caractere", ["a", "A", "1", "!", "é", "🙂"])
++@pytest.mark.parametrize("posicao", [0, 4, 8])
++def test_trincas_inclusive_no_inicio_e_no_final(caractere, posicao):
++    base = "Ab12Cd3!"
++    senha = base[:posicao] + caractere * 3 + base[posicao:]
++    conferir_resultado(ValidadorSenha(), senha, False, 1)
++    assert ValidadorSenha().calcular_forca(senha) == "invalida"
++
++
++@pytest.mark.parametrize(
++    "senha",
++    ["Aa1!bbCd", "bbAa1!Cd", "Aa1!Cdbb", "AAaa11!!", "Aa1!abababa", "Aa1!aaaa"],
++)
++def test_duplas_e_repeticoes_nao_consecutivas(senha):
++    # O último exemplo contém uma sequência maior que três, também proibida.
++    conferir_resultado(ValidadorSenha(), senha, senha != "Aa1!aaaa")
++
++
++@pytest.mark.parametrize("senha", ["Éa1!bcde", "Aé1!bcde", "Aa١!bcde", "Aa²!bcde"])
++def test_categorias_unicode_seguem_metodos_de_str(senha):
++    conferir_resultado(ValidadorSenha(), senha, True)
++
++
++@pytest.mark.parametrize(
++    "senha,quantidade",
++    [("", 5), (" ", 6), ("aaa", 5), (" " * 65, 7), ("aaa " * 17, 6)],
++)
++def test_acumula_todas_as_regras_violadas(senha, quantidade):
++    conferir_resultado(ValidadorSenha(), senha, False, quantidade)
++
++
++def test_chamadas_sucessivas_nao_acumulam_estado():
++    validador = ValidadorSenha()
++    _, erros_anteriores = validador.validar("")
++    copia = erros_anteriores.copy()
++    conferir_resultado(validador, "Ab12Cd3!", True)
++    conferir_resultado(validador, "Ab12Cd34", False, 1)
++    conferir_resultado(validador, "Ab12Cd3!", True)
++    assert erros_anteriores == copia
++
++
++@pytest.mark.parametrize(
++    "tamanho,forca",
++    [(8, "fraca"), (9, "fraca"), (10, "media"), (11, "media"),
++     (12, "media"), (13, "media"), (14, "forte"), (15, "forte"), (64, "forte")],
++)
++def test_faixas_de_forca_e_fronteiras(tamanho, forca):
++    assert ValidadorSenha().calcular_forca(senha_com_tamanho(tamanho)) == forca
++
++
++@pytest.mark.parametrize(
++    "senha", ["", "Aa1!bcD", senha_com_tamanho(65), "abcdefghij", "Ab1!bcDefaaa"]
++)
++def test_forca_invalida_tem_precedencia_sobre_tamanho(senha):
++    assert ValidadorSenha().calcular_forca(senha) == "invalida"
++
++
++@pytest.mark.parametrize(
++    "minimo,maximo,tamanho,forca",
++    [(4, 100, 4, "fraca"), (4, 100, 65, "forte"),
++     (10, 64, 9, "invalida"), (4, 9, 10, "invalida"),
++     (14, 20, 13, "invalida"), (14, 20, 14, "forte")],
++)
++def test_forca_respeita_politica_configurada(minimo, maximo, tamanho, forca):
++    validador = ValidadorSenha(minimo, maximo)
++    assert validador.calcular_forca(senha_com_tamanho(tamanho)) == forca
+

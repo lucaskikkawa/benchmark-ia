@@ -1,0 +1,13 @@
+Criei o `pares.py` com a função `contar_pares(valores, alvo)`. Ela passa em todos os testes que escrevi, incluindo as medições de tempo e de memória pedidas no enunciado.
+
+**Como funciona:** a função percorre a entrada uma única vez e conta quantas vezes aparece cada valor distinto. Depois, para cada valor `v`, procura o complemento `w = alvo - v`:
+- se `v < w`, soma o produto das contagens de `v` e de `w`, o que conta cada par uma só vez;
+- se `v == w`, soma `c·(c-1)/2`, ou seja, as combinações de pares entre as `c` ocorrências repetidas.
+
+Por isso o tempo esperado é O(n) e a memória é O(k), onde k é a quantidade de valores distintos. A lista recebida nunca é alterada, e geradores são lidos uma vez só, sem guardar a entrada inteira. Os inteiros do Python não têm limite de tamanho, então números acima de 64 bits são comparados com exatidão. Nenhum estado fica guardado entre chamadas.
+
+**Testes (script em `/tmp`, fora do diretório da tarefa):**
+- Os exemplos do enunciado dão o resultado certo: `[1, 3, 2, 2]` com alvo 4 retorna 2, `[2, 2, 2]` com alvo 4 retorna 3, e entrada vazia ou com um elemento retorna 0. Um caso com inteiros de 2¹⁰⁰ também confere.
+- Comparei com uma contagem por força bruta em 2000 entradas aleatórias, tanto em lista quanto em gerador, e conferi que a lista recebida continua igual depois da chamada.
+- Com 1.000.000 de elementos, a chamada levou de 0,02 s a 0,25 s, bem abaixo do limite de 5 s.
+- Com `tracemalloc`, um gerador de 1.000.000 de valores com 4 valores distintos teve pico adicional de cerca de 1,6 KB, bem abaixo do limite de 4 MiB.

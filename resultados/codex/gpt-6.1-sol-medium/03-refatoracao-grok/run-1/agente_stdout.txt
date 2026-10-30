@@ -1,0 +1,3 @@
+Refatorei [frete.py](/tmp/bench-vgtsy1uv/frete.py), expondo `TabelaFrete`, `FAIXAS` e `faixa_de_peso`, com leitura dinâmica da tabela.
+
+Validação concluída: 240.000 cotações comparadas ao código original, 6.859 combinações de entradas e testes de substituição da tabela. Tudo passou.

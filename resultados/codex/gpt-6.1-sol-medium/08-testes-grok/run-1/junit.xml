@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="15" time="74.110" timestamp="2026-10-29T19:42:22.781375-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_mutantes" name="test_suite_passa_no_modulo_correto" time="0.910" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m01_off10.py]" time="1.665" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m02_off5.py]" time="1.509" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m03_fixo_sem_piso.py]" time="1.649" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m04_bemvindo_fim.py]" time="0.936" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m05_bemvindo_inicio.py]" time="0.910" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m06_natal_dia24.py]" time="1.102" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m07_cupom_desconhecido.py]" time="56.144"><failure message="TypeError: can't concat str to bytes">origem_modulo = PosixPath('/tmp/bench-0ldwthpg/testes_ocultos/mutantes/m07_cupom_desconhecido.py')
+
+    def _executar(origem_modulo: Path) -&gt; tuple[int, str]:
+        if not DIR_TESTES.is_dir() or not any(DIR_TESTES.glob("test_*.py")):
+            return 5, "nenhum tests/test_*.py"
+        with tempfile.TemporaryDirectory() as pasta:
+            destino = Path(pasta)
+            shutil.copy2(origem_modulo, destino / "descontos.py")
+            shutil.copytree(DIR_TESTES, destino / "tests")
+            ambiente = os.environ.copy()
+            for chave in list(ambiente):
+                if chave.startswith("PYTEST_"):
+                    ambiente.pop(chave, None)
+            ambiente["PYTHONPATH"] = str(destino)
+            ambiente["PYTHONIOENCODING"] = "utf-8"
+            try:
+&gt;               proc = subprocess.run(
+                    [
+                        sys.executable,
+                        "-m",
+                        "pytest",
+                        "-q",
+                        "-p",
+                        "no:cacheprovider",
+                        "--rootdir",
+                        str(destino),
+                        "tests",
+                    ],
+                    cwd=destino,
+                    env=ambiente,
+                    capture_output=True,
+                    text=True,
+                    timeout=45,
+                    check=False,
+                )
+
+testes_ocultos/test_mutantes.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/subprocess.py:550: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/subprocess.py:1209: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/subprocess.py:2116: in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;Popen: returncode: -9 args: ['/workspace/benchmark-ia/.bench-py/bin/python'...&gt;
+endtime = 130488.85112359, orig_timeout = 45
+stdout_seq = [b'.', b'.', b'.', b'.', b'.', b'.', ...], stderr_seq = []
+skip_check_and_raise = False
+
+    def _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
+                       skip_check_and_raise=False):
+        """Convenience for checking if a timeout has expired."""
+        if endtime is None:
+            return
+        if skip_check_and_raise or _time() &gt; endtime:
+&gt;           raise TimeoutExpired(
+                    self.args, orig_timeout,
+                    output=b''.join(stdout_seq) if stdout_seq else None,
+                    stderr=b''.join(stderr_seq) if stderr_seq else None)
+E           subprocess.TimeoutExpired: Command '['/workspace/benchmark-ia/.bench-py/bin/python', '-m', 'pytest', '-q', '-p', 'no:cacheprovider', '--rootdir', '/tmp/tmpri71nkz3', 'tests']' timed out after 45 seconds
+
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/subprocess.py:1253: TimeoutExpired
+
+During handling of the above exception, another exception occurred:
+
+nome = 'm07_cupom_desconhecido.py'
+
+    @pytest.mark.parametrize("nome", MUTANTES)
+    def test_mutante_morto(nome):
+&gt;       codigo, saida = _executar(DIR_MUTANTES / nome)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_mutantes.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+origem_modulo = PosixPath('/tmp/bench-0ldwthpg/testes_ocultos/mutantes/m07_cupom_desconhecido.py')
+
+    def _executar(origem_modulo: Path) -&gt; tuple[int, str]:
+        if not DIR_TESTES.is_dir() or not any(DIR_TESTES.glob("test_*.py")):
+            return 5, "nenhum tests/test_*.py"
+        with tempfile.TemporaryDirectory() as pasta:
+            destino = Path(pasta)
+            shutil.copy2(origem_modulo, destino / "descontos.py")
+            shutil.copytree(DIR_TESTES, destino / "tests")
+            ambiente = os.environ.copy()
+            for chave in list(ambiente):
+                if chave.startswith("PYTEST_"):
+                    ambiente.pop(chave, None)
+            ambiente["PYTHONPATH"] = str(destino)
+            ambiente["PYTHONIOENCODING"] = "utf-8"
+            try:
+                proc = subprocess.run(
+                    [
+                        sys.executable,
+                        "-m",
+                        "pytest",
+                        "-q",
+                        "-p",
+                        "no:cacheprovider",
+                        "--rootdir",
+                        str(destino),
+                        "tests",
+                    ],
+                    cwd=destino,
+                    env=ambiente,
+                    capture_output=True,
+                    text=True,
+                    timeout=45,
+                    check=False,
+                )
+            except subprocess.TimeoutExpired as exc:
+&gt;               saida = (exc.stdout or "") + (exc.stderr or "")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               TypeError: can't concat str to bytes
+
+testes_ocultos/test_mutantes.py:69: TypeError</failure></testcase><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m08_cupom_vazio.py]" time="2.118" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m09_cupom_fora_da_janela.py]" time="1.171" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m10_preco_negativo.py]" time="1.036" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m11_natal_por_subtracao.py]" time="1.252" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m12_espacos_viram_vazio.py]" time="0.969" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m13_1900_bissexto.py]" time="0.948" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m14_rejeita_ano_1.py]" time="1.667" /></testsuite></testsuites>

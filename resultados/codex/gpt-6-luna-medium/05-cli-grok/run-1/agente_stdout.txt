@@ -1,0 +1,1 @@
+Implementei [agenda_cli.py](/tmp/bench-2aeu51sq/agenda_cli.py) com os três subcomandos, validação do arquivo JSON, filtros e mensagens de erro conforme o enunciado.

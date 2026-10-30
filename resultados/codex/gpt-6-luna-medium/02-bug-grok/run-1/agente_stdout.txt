@@ -1,0 +1,3 @@
+Atualizei [boletim.py](/tmp/bench-nqpamuxb/boletim.py) para validar as entradas, ignorar ausências, descartar uma nota mínima somente quando há quatro notas válidas e calcular a média com `Decimal` e `ROUND_HALF_UP`. A lista recebida não é alterada.
+
+Conferi os exemplos do enunciado e confirmei que a lista permanece intacta.

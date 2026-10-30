@@ -1,29 +1,29 @@
 Reading additional input from stdin...
 OpenAI Codex v0.163.0
 --------
-workdir: /tmp/bench-1w4szn6v
+workdir: /tmp/bench-9qhcel0i
 model: gpt-6.1-sol
 provider: openai
 approval: never
 sandbox: danger-full-access
 reasoning effort: medium
 reasoning summaries: none
-session id: 01a1890e-f148-7aa3-b40c-03ebe3478660
+session id: 01a189c5-472c-77b3-b871-b924b02dd58e
 --------
 user
 Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
-2026-10-29T19:07:02.268109Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+2026-10-29T22:26:11.779516Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
 codex
-Vou ler o enunciado e os arquivos deste diretório e implementar a solução.
+Vou ler o enunciado e os arquivos do diretório para executar a tarefa.
 
 exec
-/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' -g '"'!package-lock.json'"'" in /tmp/bench-1w4szn6v
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"'" in /tmp/bench-9qhcel0i
  succeeded in 0ms:
-/tmp/bench-1w4szn6v
+/tmp/bench-9qhcel0i
 enunciado.md
 
 exec
-/bin/bash -lc 'cat enunciado.md' in /tmp/bench-1w4szn6v
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-9qhcel0i
  succeeded in 0ms:
 # Tarefa: converter texto de duração em segundos
 
@@ -38,22 +38,30 @@ A função recebe uma duração escrita por humanos e retorna o total em **segun
 
 ## Formato aceito
 
-- A duração é formada por 1 a 4 componentes `<inteiro><unidade>`, onde o inteiro é composto
-  só por dígitos `0-9` (zeros à esquerda são permitidos) e a unidade é uma de:
-  - `d` = dias (86400 s), `h` = horas (3600 s), `m` = minutos (60 s), `s` = segundos (1 s).
-- Unidades aceitas em maiúsculas ou minúsculas (`1H30M` == `1h30m`).
-- Os componentes devem aparecer na ordem `d`, `h`, `m`, `s`, cada unidade **no máximo uma vez**
+- A duração é formada por 1 a 5 componentes `<inteiro><unidade>`, onde o inteiro é composto
+  só por dígitos ASCII `0-9` (zeros à esquerda são permitidos) e a unidade é uma de:
+  - `w` = semanas (604800 s), `d` = dias (86400 s), `h` = horas (3600 s), `m` = minutos (60 s),
+    `s` = segundos (1 s).
+- Unidades aceitas em maiúsculas ou minúsculas (`1H30M` == `1h30m`); nenhum outro caractere é unidade.
+- Os componentes devem aparecer na ordem `w`, `d`, `h`, `m`, `s`, cada unidade **no máximo uma vez**
   (componentes podem ser omitidos: `1d5s` é válido).
-- Componentes podem estar colados (`1h30m`) ou separados por espaços em branco (`1h 30m`).
+- Componentes podem estar colados (`1h30m`) ou separados por espaços em branco (`1h 30m`, `1h\t30m`).
   Espaços em branco no início/fim são ignorados. **Não** pode haver espaço entre o número e sua unidade (`1 h` é inválido).
-- Não há limite por componente: `90m` == 5400.
+- Não há limite por componente: `90m` == 5400. O inteiro pode ter **qualquer quantidade de dígitos**
+  (inclusive milhares de dígitos) e o resultado deve ser exato.
 
 ## Erros
 
-- `TypeError` se `texto` não for `str`.
+- `TypeError` se `texto` não for `str` (subclasses de `str` são aceitas).
 - `ValueError` para qualquer entrada fora do formato: string vazia/só espaços, número sem unidade
   (`"90"`), unidade desconhecida (`"5x"`), números negativos ou decimais (`"-5s"`, `"1.5h"`),
   ordem errada (`"30m1h"`), unidade repetida (`"1h2h"`) ou texto extra.
+
+## Desempenho
+
+O tempo deve crescer linearmente com o tamanho da entrada: textos de até ~1 MB compostos basicamente
+por espaços em branco (válidos ou inválidos, ex.: `"1d" + " " * 500_000 + "x"`) devem ser processados
+em bem menos de 1 segundo.
 
 ## Exemplos
 
@@ -62,119 +70,173 @@ A função recebe uma duração escrita por humanos e retorna o total em **segun
 | `"45s"` | `45` |
 | `"1h30m"` | `5400` |
 | `"2d 3h 4m 5s"` | `183845` |
+| `"1w 1s"` | `604801` |
 | `"  0s  "` | `0` |
 | `"1D1S"` | `86401` |
 
 Use apenas a biblioteca padrão (Python 3.11).
 
+codex
+O enunciado exige números com milhares de dígitos, além do limite padrão de conversão do Python 3.11. Vou convertê-los em blocos e verificar o formato e o desempenho com entradas grandes.
+
 apply patch
 patch: completed
-/tmp/bench-1w4szn6v/solucao.py
+/tmp/bench-9qhcel0i/solucao.py
 diff --git a/solucao.py b/solucao.py
 new file mode 100644
-index 0000000000000000000000000000000000000000..113ddd7bb25b7116bfea002db52e9ba1ed29068d
+index 0000000000000000000000000000000000000000..981f5f8e96d69022d3c76f5ebf7c4e110bcbf60b
 --- /dev/null
 +++ b/solucao.py
-@@ -0,0 +1,43 @@
-+"""Conversão de durações com unidades d, h, m e s para segundos."""
+@@ -0,0 +1,57 @@
++"""Conversão de durações humanas para segundos."""
 +
 +import re
 +
 +
-+_COMPONENTE = re.compile(r"([0-9]+)([dDhHmMsS])\s*")
-+_UNIDADES = {"d": (0, 86400), "h": (1, 3600), "m": (2, 60), "s": (3, 1)}
++_COMPONENTE = re.compile(r"([0-9]+)([wWdDhHmMsS])")
++_ESPACOS = re.compile(r"\s*")
++_UNIDADES = {
++    "w": (0, 604800),
++    "d": (1, 86400),
++    "h": (2, 3600),
++    "m": (3, 60),
++    "s": (4, 1),
++}
++
++
++def _inteiro_ascii(digitos: str) -> int:
++    # Blocos pequenos evitam o limite de dígitos de int(str) no Python 3.11,
++    # sem alterar configurações globais do interpretador.
++    valor = 0
++    for inicio in range(0, len(digitos), 9):
++        bloco = digitos[inicio:inicio + 9]
++        valor = valor * (10 ** len(bloco)) + int(bloco)
++    return valor
 +
 +
 +def parse_duracao(texto: str) -> int:
-+    """Retorna os segundos; rejeita componentes inválidos ou fora de ordem."""
++    """Retorna os segundos; rejeita tipos e formatos fora da especificação."""
 +    if not isinstance(texto, str):
 +        raise TypeError("texto deve ser uma string")
 +
-+    texto = texto.strip()
-+    if not texto:
-+        raise ValueError("duração vazia")
-+
-+    total = 0
 +    posicao = 0
-+    ordem_anterior = -1
-+    while posicao < len(texto):
++    ultima_ordem = -1
++    total = 0
++    tamanho = len(texto)
++
++    while True:
++        # Cada trecho de espaços é percorrido uma única vez, inclusive quando
++        # há texto inválido depois dele.
++        posicao = _ESPACOS.match(texto, posicao).end()
++        if posicao == tamanho:
++            if ultima_ordem == -1:
++                raise ValueError("duração vazia")
++            return total
++
 +        componente = _COMPONENTE.match(texto, posicao)
 +        if componente is None:
-+            raise ValueError("formato de duração inválido")
++            raise ValueError("componente de duração inválido")
 +
 +        digitos, unidade = componente.groups()
 +        ordem, fator = _UNIDADES[unidade.lower()]
-+        if ordem <= ordem_anterior:
-+            raise ValueError("unidades repetidas ou fora de ordem")
++        if ordem <= ultima_ordem:
++            raise ValueError("unidade repetida ou fora de ordem")
 +
-+        # Blocos pequenos evitam o limite de conversão de strings do Python
-+        # 3.11, mantendo componentes sem limite de quantidade de dígitos.
-+        valor = 0
-+        for inicio in range(0, len(digitos), 9):
-+            bloco = digitos[inicio:inicio + 9]
-+            valor = valor * 10 ** len(bloco) + int(bloco)
-+
-+        total += valor * fator
-+        ordem_anterior = ordem
++        total += _inteiro_ascii(digitos) * fator
++        ultima_ordem = ordem
 +        posicao = componente.end()
-+
-+    return total
 
 exec
 /bin/bash -lc "python - <<'PY'
 from solucao import parse_duracao
+from time import perf_counter
 
-validos = {'45s': 45, '1h30m': 5400, '2d 3h 4m 5s': 183845, '  0s  ': 0, '1D1S': 86401, '90m': 5400, '1d5s': 86405, '\\t001H\\n02m\\r3S ': 3723}
+validos = {'45s': 45, '1h30m': 5400, '2d 3h 4m 5s': 183845,
+           '1w 1s': 604801, '  0s  ': 0, '1D1S': 86401,
+           '90m': 5400, '01h\\t030m': 5400, '1w2d3h4m5s': 788645,
+           '\\u20031s\\u2003': 1}
 for texto, esperado in validos.items():
-    assert parse_duracao(texto) == esperado, texto
-for texto in ['', '  ', '90', '5x', '-5s', '1.5h', '30m1h', '1h2h', '1 h', '1h texto', '١s', '１s', '1s2', '1s1d', '1h 2 h']:
+    assert parse_duracao(texto) == esperado, repr(texto)
+for texto in ['', '  ', '90', '5x', '-5s', '1.5h', '30m1h', '1h2h',
+              '1 h', '1h lixo', '١s', '１s', '1s1w', '1s\\x001m', '1ss',
+              '1h\\n30 m', '+1s', '1e2s']:
     try:
         parse_duracao(texto)
     except ValueError:
         pass
     else:
         raise AssertionError(repr(texto))
-for texto in [None, 1, 1.5, b'1s', [], {}]:
+for texto in [None, 1, b'1s', [], True]:
     try:
         parse_duracao(texto)
     except TypeError:
         pass
     else:
         raise AssertionError(repr(texto))
-assert parse_duracao('1' + '0' * 5000 + 's') == 10 ** 5000
-print('Todos os testes passaram.')
-PY" in /tmp/bench-1w4szn6v
+class Texto(str):
+    pass
+assert parse_duracao(Texto('1m')) == 60
+assert parse_duracao('9' * 10000 + 's') == 10 ** 10000 - 1
+assert parse_duracao('0' * 10000 + '1h') == 3600
+for texto in ['1d' + ' ' * 1000000 + 'x', ' ' * 1000000, '1d' + ' ' * 1000000 + '1s']:
+    inicio = perf_counter()
+    try:
+        parse_duracao(texto)
+    except ValueError:
+        pass
+    tempo = perf_counter() - inicio
+    assert tempo < 1, tempo
+    print(f'Entrada de {len(texto)} caracteres: {tempo:.4f} s')
+print('Todas as verificações passaram.')
+PY" in /tmp/bench-9qhcel0i
  exited 127 in 0ms:
 /bin/bash: line 1: python: command not found
 
 exec
 /bin/bash -lc "python3 - <<'PY'
 from solucao import parse_duracao
-for texto, esperado in [('45s',45),('1h30m',5400),('2d 3h 4m 5s',183845),('  0s  ',0),('1D1S',86401),('90m',5400),('1d5s',86405),('\\t001H\\n02m\\r3S ',3723)]:
-    assert parse_duracao(texto) == esperado
-for texto in ['', '  ', '90', '5x', '-5s', '1.5h', '30m1h', '1h2h', '1 h', '1h texto', '١s', '１s', '1s2', '1s1d', '1h 2 h']:
+from time import perf_counter
+for texto, esperado in [('45s',45),('1h30m',5400),('2d 3h 4m 5s',183845),('1w 1s',604801),('  0s  ',0),('1D1S',86401),('90m',5400),('01h\\t030m',5400),('1w2d3h4m5s',788645),('\\u20031s\\u2003',1)]:
+    assert parse_duracao(texto) == esperado, repr(texto)
+for texto in ['', '  ', '90', '5x', '-5s', '1.5h', '30m1h', '1h2h', '1 h', '1h lixo', '١s', '１s', '1s1w', '1s\\x001m', '1ss', '1h\\n30 m', '+1s', '1e2s']:
     try:
         parse_duracao(texto)
     except ValueError:
         pass
     else:
         raise AssertionError(repr(texto))
-for texto in [None, 1, 1.5, b'1s', [], {}]:
+for texto in [None, 1, b'1s', [], True]:
     try:
         parse_duracao(texto)
     except TypeError:
         pass
     else:
         raise AssertionError(repr(texto))
-assert parse_duracao('1' + '0' * 5000 + 's') == 10 ** 5000
-print('Todos os testes passaram.')
-PY" in /tmp/bench-1w4szn6v
+class Texto(str):
+    pass
+assert parse_duracao(Texto('1m')) == 60
+assert parse_duracao('9' * 10000 + 's') == 10 ** 10000 - 1
+assert parse_duracao('0' * 10000 + '1h') == 3600
+for texto in ['1d' + ' ' * 1000000 + 'x', ' ' * 1000000, '1d' + ' ' * 1000000 + '1s']:
+    inicio = perf_counter()
+    try:
+        parse_duracao(texto)
+    except ValueError:
+        pass
+    tempo = perf_counter() - inicio
+    assert tempo < 1, tempo
+    print(f'Entrada de {len(texto)} caracteres: {tempo:.4f} s')
+print('Todas as verificações passaram.')
+PY" in /tmp/bench-9qhcel0i
  succeeded in 0ms:
-Todos os testes passaram.
+Entrada de 1000003 caracteres: 0.0024 s
+Entrada de 1000000 caracteres: 0.0023 s
+Entrada de 1000004 caracteres: 0.0023 s
+Todas as verificações passaram.
 
 codex
-Criei [solucao.py](/tmp/bench-1w4szn6v/solucao.py) com `parse_duracao`, conforme o enunciado.
+Criei [solucao.py](solucao.py) com `parse_duracao`.
 
-Testes passaram para exemplos, entradas inválidas, tipos incorretos e números muito grandes.
+As verificações passaram, incluindo formatos inválidos, números com 10 mil dígitos e entradas de aproximadamente 1 MB, processadas em cerca de 0,0024 segundo.
 tokens used
-8,667
+7,485

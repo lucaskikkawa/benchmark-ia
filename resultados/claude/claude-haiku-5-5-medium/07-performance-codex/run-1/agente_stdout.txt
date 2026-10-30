@@ -1,0 +1,12 @@
+Criei `pares.py` em `/tmp/bench-3drbtn88/` com `contar_pares(valores, alvo)`.
+
+A solução faz uma única passagem sobre o iterável. Para cada valor, soma a contagem já vista de `alvo - valor` e depois registra o valor atual. Como a consulta vem antes da inserção, nenhum elemento forma par consigo mesmo, e duplicatas são contadas como elementos distintos. O tempo esperado é O(n) e a memória O(k), com inteiros de precisão arbitrária do Python.
+
+Verificações feitas com `python3 -I`:
+- Casos do enunciado: `[1, 3, 2, 2]` com alvo 4 retorna 2; `[2, 2, 2]` com alvo 4 retorna 3; vazio e um elemento retornam 0.
+- Iterador de passagem única e inteiros acima de 64 bits (`10**30`, `-10**30`) funcionam.
+- 300 entradas aleatórias pequenas conferidas contra força bruta: todas batem.
+- Lista de 1.000.000 de elementos: 0,085 s.
+- Gerador de 1.000.000 de valores com 4 distintos: resultado correto (125000000000). O pico medido com `tracemalloc` foi 0 KiB, bem abaixo de 4 MiB.
+
+Não criei arquivos de teste no diretório, e o `pares.py` não foi executado como módulo importado, então não há `__pycache__`.

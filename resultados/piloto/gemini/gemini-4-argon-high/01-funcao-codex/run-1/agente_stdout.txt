@@ -1,0 +1,1 @@
+O arquivo [solucao.py](file:///tmp/bench-zn1o0w9y/solucao.py) foi criado com a implementação de [`unir_intervalos`](file:///tmp/bench-zn1o0w9y/solucao.py#L4-L25) conforme especificado em [enunciado.md](file:///tmp/bench-zn1o0w9y/enunciado.md).

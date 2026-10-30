@@ -1,0 +1,5 @@
+Criei [tests/test_descontos.py](tests/test_descontos.py) com cobertura de cálculos, limites das promoções, datas, tipos inválidos e formato do retorno.
+
+Validação: `python3 -m pytest -q` — **2040 testes passaram**.
+
+`descontos.py` não foi alterado.

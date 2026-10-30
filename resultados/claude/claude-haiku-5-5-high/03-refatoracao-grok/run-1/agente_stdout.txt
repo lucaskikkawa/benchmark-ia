@@ -1,0 +1,21 @@
+Refatorei `frete.py` conforme o `enunciado.md`. A tabela de faixas agora fica em `TabelaFrete.FAIXAS` e é lida a cada chamada, e `cotar` passou a delegar para ela.
+
+**Estrutura**
+- `TabelaFrete.FAIXAS`: atributo de classe com as quatro tuplas, nos números e na ordem do enunciado.
+- `TabelaFrete.cotar`: valida tipos, depois os intervalos de peso e de distância, busca a faixa em `TabelaFrete.FAIXAS` e aplica base, km e o desconto expresso `(valor * 3) // 2`.
+- `cotar(...)`: retorna `TabelaFrete().cotar(...)`.
+- `faixa_de_peso(peso_g)`: valida só o peso e devolve o nome da faixa.
+- Helpers privados `_checar_tipo` e `_checar_peso` evitam repetir validação.
+
+**Escolhas que tomei**
+- A ordem das validações foi mantida: tipos de peso, distância e expresso primeiro, depois os intervalos. Assim, a exceção que sai em entradas com vários erros é a mesma do original.
+- A busca de faixa usa `TabelaFrete.FAIXAS` literalmente, como pede o enunciado.
+- Mantive as mensagens de exceção originais e os comentários em português.
+
+**Verificação**
+- Comparei com a lógica original em 1.584 combinações de peso, distância e `expresso` (válidas, inválidas e de tipos errados). Não houve divergência, nem em `cotar` nem em `TabelaFrete.cotar`.
+- Testei uma varredura aleatória de 20.000 entradas válidas e `faixa_de_peso` contra a faixa do original.
+- Os cinco exemplos do enunciado batem.
+- Trocar `TabelaFrete.FAIXAS` em tempo de execução muda o resultado das três funções. Uma tabela que não cobre o peso gera `ValueError`.
+
+O teste foi feito com código inline, sem criar arquivos. Só `frete.py` foi alterado, e o `__pycache__` gerado pela importação foi removido.

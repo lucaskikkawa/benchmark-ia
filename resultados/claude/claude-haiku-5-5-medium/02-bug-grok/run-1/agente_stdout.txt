@@ -1,0 +1,14 @@
+Reescrevi `fechar_boletim` em `boletim.py` para seguir o contrato do `enunciado.md`. Não alterei nenhum outro arquivo, e o nome e a assinatura continuam iguais.
+
+Os principais problemas da versão anterior eram:
+- **Ausências:** `None` virava `0.0`, quando deveria ser ignorado.
+- **Descarte:** era aplicado com 2 ou 3 notas, e deveria acontecer só com exatamente 4.
+- **Arredondamento:** usava truncamento (`int(media * 100)`), e deveria ser `HALF_UP` com `Decimal`, arredondando uma única vez no final.
+- **Conceitos:** os limites eram exclusivos (`> 9`, `> 7`, `> 5`), e deveriam ser inclusivos.
+- **Entrada:** o código invertia a lista recebida (`reverse()`), e agora ela não é alterada. Também faltavam os checks de `nan`/`inf`, de faixa de 1 a 4 posições e de "nenhuma nota válida".
+
+Testei com o script em modo isolado (`python3 -I`). Passaram todos os 16 exemplos do enunciado com os valores esperados, além dos casos de erro (`ValueError` para lista vazia, só `None`, 5 notas, `nan`, `inf`, notas fora de [0, 10]; `TypeError` para `bool`, string, tupla), e a lista de entrada permanece intacta.
+
+Duas escolhas de interpretação que você pode querer revisar:
+- Quando a lista tem tipo errado e também tamanho inválido, a checagem de tipo vem primeiro.
+- `isinstance(provas, list)` aceita subclasses de `list`. Se o contrato exigir exatamente `list`, troque por `type(provas) is list`.

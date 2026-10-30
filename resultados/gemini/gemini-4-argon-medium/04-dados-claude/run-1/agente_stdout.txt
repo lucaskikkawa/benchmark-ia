@@ -1,0 +1,1 @@
+A solução foi implementada em [solucao.py](file:///tmp/bench-wq8bl_u2/solucao.py) através da função [`resumir_vendas`](file:///tmp/bench-wq8bl_u2/solucao.py#L16-L120), atendendo a todas as regras especificadas em [enunciado.md](file:///tmp/bench-wq8bl_u2/enunciado.md).
