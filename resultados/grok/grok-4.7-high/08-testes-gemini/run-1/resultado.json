@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "08-testes-gemini",
   "run": 1,
-  "status": "erro",
-  "exit_code": 1,
-  "duracao_agente_s": 0.793,
+  "status": "timeout",
+  "exit_code": -9,
+  "duracao_agente_s": 180.16,
   "testes_total": 13,
   "testes_passados": 0,
   "pct_passados": 0.0,
-  "inicio_iso": "2026-10-30T01:26:59.994221-03:00",
+  "inicio_iso": "2026-11-03T10:27:51.561560-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-wu_p1gtz",
-    "/tmp/bench-wu_p1gtz",
+    "/tmp/bench-g6m71r4v",
+    "/tmp/bench-g6m71r4v",
     "--chdir",
-    "/tmp/bench-wu_p1gtz",
+    "/tmp/bench-g6m71r4v",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,6 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-wu_p1gtz"
+    "/tmp/bench-g6m71r4v"
   ]
 }

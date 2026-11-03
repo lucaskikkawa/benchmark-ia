@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "04-dados-claude",
   "run": 2,
-  "status": "erro",
-  "exit_code": 1,
-  "duracao_agente_s": 0.818,
+  "status": "timeout",
+  "exit_code": -9,
+  "duracao_agente_s": 180.057,
   "testes_total": 1,
   "testes_passados": 0,
   "pct_passados": 0.0,
-  "inicio_iso": "2026-10-30T01:27:07.975888-03:00",
+  "inicio_iso": "2026-11-03T10:50:00.927569-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-mdji1avw",
-    "/tmp/bench-mdji1avw",
+    "/tmp/bench-ezgkl_uy",
+    "/tmp/bench-ezgkl_uy",
     "--chdir",
-    "/tmp/bench-mdji1avw",
+    "/tmp/bench-ezgkl_uy",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,6 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-mdji1avw"
+    "/tmp/bench-ezgkl_uy"
   ]
 }

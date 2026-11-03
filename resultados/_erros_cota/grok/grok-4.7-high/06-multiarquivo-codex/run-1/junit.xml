@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="41" skipped="0" tests="42" time="0.173" timestamp="2026-10-30T01:27:28.154505-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_endurecimento" name="test_api_dos_modulos_e_construtor_sem_validacao" time="0.000"><failure message="TypeError: Movimento() takes no arguments">def test_api_dos_modulos_e_construtor_sem_validacao():
+        assert Movimento is Modelo and calcular_saldos is Operacao
+        assert carregar_movimentos is Carregador
+        # A validação está no carregador, não no dataclass.
+&gt;       m = Movimento('', True)
+            ^^^^^^^^^^^^^^^^^^^
+E       TypeError: Movimento() takes no arguments
+
+testes_ocultos/test_endurecimento.py:14: TypeError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_iniciais_preservados_apos_falha_tardia" time="0.000"><failure message="TypeError: Movimento() takes no arguments">def test_iniciais_preservados_apos_falha_tardia():
+        iniciais = {'A': 5, 'intocado': 0}
+&gt;       movimentos = [Movimento('A', -2), Movimento('novo', 7),
+                      ^^^^^^^^^^^^^^^^^^
+                      Movimento('A', -4), Movimento('A', 100)]
+E       TypeError: Movimento() takes no arguments
+
+testes_ocultos/test_endurecimento.py:24: TypeError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_saldo_negativo_inicial_nao_pode_ser_reposto" time="0.000"><failure message="TypeError: Movimento() takes no arguments">def test_saldo_negativo_inicial_nao_pode_ser_reposto():
+        with pytest.raises(ValueError):
+&gt;           calcular_saldos(iter([Movimento('A', 10)]), {'A': -1})
+                                  ^^^^^^^^^^^^^^^^^^
+E           TypeError: Movimento() takes no arguments
+
+testes_ocultos/test_endurecimento.py:36: TypeError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_saldos_enormes_precisao_skus_exatos_e_sem_estado" time="0.000"><failure message="TypeError: Movimento() takes no arguments">def test_saldos_enormes_precisao_skus_exatos_e_sem_estado():
+        grande = 10**150
+        iniciais = {'A': grande, 'a': 0, ' A ': 1, 'é': 2, 'e\u0301': 3}
+        resultado = calcular_saldos((m for m in [
+&gt;           Movimento('A', -grande + 1), Movimento('A', -1),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            Movimento('a', grande + 7), Movimento('a', -grande),
+            Movimento('🧪', 0)]), iniciais)
+E       TypeError: Movimento() takes no arguments
+
+testes_ocultos/test_endurecimento.py:43: TypeError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[False]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p0')
+invalido = False
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p0/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[0]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p1')
+invalido = 0
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p1/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p2')
+invalido = ''
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p2/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido3]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p3')
+invalido = [[]]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p3/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido4]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p4')
+invalido = [None]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p4/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido5]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p5')
+invalido = [True]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p5/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido6]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p6')
+invalido = [{'sku': None, 'delta': 0}]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p6/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido7]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p7')
+invalido = [{'sku': False, 'delta': 0}]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p7/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido8]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p8')
+invalido = [{'sku': '\u2003\xa0\t\n', 'delta': 0}]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p8/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido9]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p9')
+invalido = [{'sku': 'A', 'delta': False}]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p9/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido10]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p10')
+invalido = [{'sku': 'A', 'delta': None}]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p10/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido11]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p11')
+invalido = [{'sku': 'A', 'delta': []}]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p11/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido12]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p12')
+invalido = [{'sku': 'A', 'delta': {}}]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p12/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_invalido_e_chamada_posterior_valida[invalido13]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p13')
+invalido = [{'sku': 'A', 'delta': -1.0}]
+
+    @pytest.mark.parametrize('invalido', [
+        False, 0, '', [[]], [None], [True],
+        [{'sku': None, 'delta': 0}], [{'sku': False, 'delta': 0}],
+        [{'sku': '\u2003\u00a0\t\n', 'delta': 0}],
+        [{'sku': 'A', 'delta': False}], [{'sku': 'A', 'delta': None}],
+        [{'sku': 'A', 'delta': []}], [{'sku': 'A', 'delta': {}}],
+        [{'sku': 'A', 'delta': -1.0}],
+    ])
+    def test_json_invalido_e_chamada_posterior_valida(tmp_path, invalido):
+        p = tmp_path / 'dados.json'
+        p.write_text(json.dumps(invalido), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p13/dados.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_integracao_volume_arquivo_recarregado" time="0.039"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_integracao_volume_arquivo0')
+
+    def test_integracao_volume_arquivo_recarregado(tmp_path):
+        skus = [' A ', 'a', 'é', 'e\u0301', '🧪']
+        grande = 10**80 + 1
+        objetos = [dict(sku=skus[(i // 2) % 5], delta=grande if i % 2 == 0 else -grande,
+                        ignorar={'delta': True}) for i in range(20_000)]
+        p = tmp_path / 'ação.json'
+        p.write_text(json.dumps(objetos, ensure_ascii=False), encoding='utf-8')
+&gt;       movimentos = carregar_movimentos(p)
+                     ^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_endurecimento.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_integracao_volume_arquivo0/ação.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_endurecimento" name="test_json_erro_no_ultimo_item" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_erro_no_ultimo_item0')
+
+    def test_json_erro_no_ultimo_item(tmp_path):
+        p = tmp_path / 'fim.json'
+        dados = [{'sku': 'A', 'delta': 1}] * 300 + [{'sku': 'A', 'delta': True}]
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_endurecimento.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_erro_no_ultimo_item0/fim.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_exportacoes_e_quatro_modulos" time="0.000" /><testcase classname="testes_ocultos.test_estoque" name="test_modelo_dataclass_imutavel" time="0.000"><failure message="TypeError: Movimento() takes no arguments">def test_modelo_dataclass_imutavel():
+&gt;       m = Movimento('A', 2)
+            ^^^^^^^^^^^^^^^^^
+E       TypeError: Movimento() takes no arguments
+
+testes_ocultos/test_estoque.py:18: TypeError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_vazio" time="0.000"><failure message="NotImplementedError">def test_vazio():
+&gt;       assert calcular_saldos([]) == {}
+               ^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_estoque.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+movimentos = [], iniciais = None
+
+    def calcular_saldos(movimentos, iniciais=None):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/operacoes.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_iniciais_copiados_e_retidos" time="0.000"><failure message="NotImplementedError">def test_iniciais_copiados_e_retidos():
+        iniciais = {'A': 4, 'B': 0}
+&gt;       resultado = calcular_saldos([], iniciais)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_estoque.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+movimentos = [], iniciais = {'A': 4, 'B': 0}
+
+    def calcular_saldos(movimentos, iniciais=None):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/operacoes.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_gerador_e_novo_sku" time="0.000"><failure message="TypeError: Movimento() takes no arguments">def test_gerador_e_novo_sku():
+&gt;       dados = (m for m in [Movimento('ç', 3), Movimento('ç', -3), Movimento('B', 0)])
+                             ^^^^^^^^^^^^^^^^^
+E       TypeError: Movimento() takes no arguments
+
+testes_ocultos/test_estoque.py:37: TypeError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_ordem_nao_compensa_negativo" time="0.000"><failure message="TypeError: Movimento() takes no arguments">def test_ordem_nao_compensa_negativo():
+        with pytest.raises(ValueError):
+&gt;           calcular_saldos([Movimento('A', -1), Movimento('A', 4)])
+                             ^^^^^^^^^^^^^^^^^^
+E           TypeError: Movimento() takes no arguments
+
+testes_ocultos/test_estoque.py:43: TypeError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_inicial_negativo" time="0.000"><failure message="NotImplementedError">def test_inicial_negativo():
+        with pytest.raises(ValueError):
+&gt;           calcular_saldos([], {'A': -1})
+
+testes_ocultos/test_estoque.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+movimentos = [], iniciais = {'A': -1}
+
+    def calcular_saldos(movimentos, iniciais=None):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/operacoes.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_varios_skus" time="0.000"><failure message="TypeError: Movimento() takes no arguments">def test_varios_skus():
+&gt;       assert calcular_saldos([Movimento('A', 2), Movimento('B', 8), Movimento('A', -1)], {'A': 1}) == {'A': 2, 'B': 8}
+                                ^^^^^^^^^^^^^^^^^
+E       TypeError: Movimento() takes no arguments
+
+testes_ocultos/test_estoque.py:52: TypeError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_carregar_e_integrar" time="0.000"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_carregar_e_integrar0')
+
+    def test_carregar_e_integrar(tmp_path):
+        p = tmp_path / 'movimentos.json'
+        p.write_text(json.dumps([{'sku': 'ação', 'delta': 3, 'extra': 9},
+                                 {'sku': 'ação', 'delta': -1}, {'sku': ' X ', 'delta': 0}]), encoding='utf-8')
+&gt;       dados = carregar_movimentos(str(p))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_estoque.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = '/tmp/pytest-of-box/pytest-361/test_carregar_e_integrar0/movimentos.json'
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_vazio" time="0.000"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_vazio0')
+
+    def test_json_vazio(tmp_path):
+        p = tmp_path / 'vazio.json'
+        p.write_text('[]', encoding='utf-8')
+&gt;       assert carregar_movimentos(p) == []
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_estoque.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_vazio0/vazio.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados0]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d0')
+dados = {}
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d0/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[None]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_N0')
+dados = None
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_N0/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados2]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d1')
+dados = [1]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d1/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados3]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d2')
+dados = [{'sku': 'A'}]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d2/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados4]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d3')
+dados = [{'delta': 1}]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d3/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados5]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d4')
+dados = [{'sku': '', 'delta': 1}]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d4/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados6]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d5')
+dados = [{'sku': '  ', 'delta': 1}]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d5/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados7]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d6')
+dados = [{'sku': 2, 'delta': 1}]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d6/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados8]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d7')
+dados = [{'sku': 'A', 'delta': True}]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d7/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados9]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d8')
+dados = [{'sku': 'A', 'delta': 1.0}]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d8/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_estrutura_invalida[dados10]" time="0.001"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d9')
+dados = [{'sku': 'A', 'delta': '1'}]
+
+    @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
+        [{'sku': '', 'delta': 1}], [{'sku': '  ', 'delta': 1}], [{'sku': 2, 'delta': 1}],
+        [{'sku': 'A', 'delta': True}], [{'sku': 'A', 'delta': 1.0}], [{'sku': 'A', 'delta': '1'}]])
+    def test_json_estrutura_invalida(tmp_path, dados):
+        p = tmp_path / 'invalido.json'
+        p.write_text(json.dumps(dados), encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d9/invalido.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase><testcase classname="testes_ocultos.test_estoque" name="test_json_malformado" time="0.000"><failure message="NotImplementedError">tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_malformado0')
+
+    def test_json_malformado(tmp_path):
+        p = tmp_path / 'quebrado.json'
+        p.write_text('[', encoding='utf-8')
+        with pytest.raises(ValueError):
+&gt;           carregar_movimentos(p)
+
+testes_ocultos/test_estoque.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_malformado0/quebrado.json')
+
+    def carregar_movimentos(caminho):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+estoque/persistencia.py:2: NotImplementedError</failure></testcase></testsuite></testsuites>

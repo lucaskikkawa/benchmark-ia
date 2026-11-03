@@ -20,7 +20,7 @@
 |12|grok-4.7-medium (grok)|6.40|7.95|82.0|7.36|145|11|0|33|
 |13|grok-4.7-build-fast-high (grok)|3.50|5.15|54.0|4.58|172|21|0|33|
 |14|gemini-3.8-flash-medium (gemini)|2.63|5.55|58.7|4.80|193|24|0|33|
-|15|grok-4.7-high (grok)|1.22|1.73|18.4|1.47|101|13|16|33|
+|15|grok-4.7-high (grok)|2.05|3.22|33.5|2.89|184|26|0|33|
 |16|gemini-3.8-flash-high (gemini)|1.19|3.22|34.6|2.67|207|29|0|33|
 
 ## Tipo × empresa (nota com penalidade)
@@ -32,11 +32,11 @@
 |03-refatoracao|9.69|9.52|4.07|5.58|
 |04-dados|9.69|8.68|3.00|1.14|
 |05-cli|8.90|7.70|4.72|5.65|
-|06-multiarquivo|9.59|9.45|4.76|4.99|
-|07-performance|9.59|8.29|5.36|7.14|
-|08-testes|9.85|6.91|0.83|0.87|
+|06-multiarquivo|9.59|9.45|4.76|4.86|
+|07-performance|9.59|8.29|5.36|8.78|
+|08-testes|9.85|6.91|0.83|0.83|
 |09-api|9.72|7.73|5.66|4.94|
-|10-ambigua|10.00|9.36|6.49|4.07|
+|10-ambigua|10.00|9.36|6.49|4.88|
 
 ## Medium vs high
 
@@ -48,7 +48,7 @@
 |gemini-4-argon|7.37|6.62|-0.75|120/138|
 |gpt-6-luna|8.96|8.84|-0.13|20/32|
 |gpt-6.1-sol|8.77|7.86|-0.91|61/88|
-|grok-4.7|6.40|1.22|-5.18|145/101|
+|grok-4.7|6.40|2.05|-4.35|145/184|
 |grok-4.7-build-fast|7.00|3.50|-3.50|110/172|
 
 ## Consistência (04-dados-claude; Claude usa 04-dados-grok; runs 1–4)
@@ -76,26 +76,29 @@
 
 - 01-funcao-gemini
 - 02-bug-codex
+- 07-performance-gemini
+- 09-api-codex
+- 10-ambigua-codex
 - 10-ambigua-grok
 
-Quase (≥90% das execuções com 100%): 01-funcao-codex (11/12), 02-bug-gemini (11/12), 02-bug-grok (11/12), 03-refatoracao-gemini (11/12), 04-dados-grok (22/24), 06-multiarquivo-grok (11/12), 07-performance-gemini (11/12), 09-api-codex (11/12), 10-ambigua-codex (11/12)
+Quase (≥90% das execuções com 100%): 01-funcao-codex (11/12), 02-bug-gemini (11/12), 02-bug-grok (11/12), 03-refatoracao-gemini (11/12), 04-dados-grok (22/24), 06-multiarquivo-grok (11/12), 07-performance-codex (11/12), 09-api-gemini (11/12)
 
 ## Divergência entre juízes
 
-- Execuções com 2 juízes válidos: 342; com só 1: 177; com 0: 9. (sem juiz válido → rubrica 0)
+- Execuções com 2 juízes válidos: 345; com só 1: 174; com 0: 9. (sem juiz válido → rubrica 0)
 - |diferença| média: 0.62 pts (de 10); mediana 0.00; >3 pts: 5.
-- Falhas de juiz (tentativas): grok — JSON inválido: 216; gemini — timeout: 129; claude — JSON inválido: 66; grok — timeout: 13
-- Média dada por juiz: claude 6.87 (n=211), codex 6.32 (n=276), gemini 7.19 (n=222), grok 8.67 (n=152)
+- Falhas de juiz (tentativas): grok — JSON inválido: 216; gemini — timeout: 129; claude — JSON inválido: 62; grok — timeout: 13
+- Média dada por juiz: claude 7.02 (n=213), codex 6.39 (n=276), gemini 7.29 (n=223), grok 8.67 (n=152)
 
 ## Casos com rubrica 0,0 de algum juiz
 
-90 execuções. Todas são timeout ou erro do agente — nenhuma com status ok: timeout/código vazio: 56, timeout/código parcial: 19, erro/código vazio: 9, erro/código parcial: 6.
+85 execuções. Todas são timeout ou erro do agente — nenhuma com status ok: timeout/código vazio: 62, timeout/código parcial: 23.
 Ou seja, o 0 é o juiz avaliando solução vazia/incompleta, não falha do juiz. As falhas reais de juiz (JSON inválido, sobretudo do Grok build-fast e também do Claude Haiku; timeouts do Gemini Flash) aparecem como 'só 1 juiz válido' e são cobertas pelo fallback.
 
 |Modelo|Rubrica 0|
 |-|-|
-|grok-4.7-high|24|
 |gemini-3.8-flash-high|20|
+|grok-4.7-high|19|
 |grok-4.7-build-fast-high|15|
 |gemini-3.8-flash-medium|12|
 |grok-4.7-medium|6|

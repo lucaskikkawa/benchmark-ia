@@ -45,7 +45,7 @@ E       TypeError: Movimento() takes no arguments
 testes_ocultos/test_endurecimento.py:43: TypeError
 _____________ test_json_invalido_e_chamada_posterior_valida[False] _____________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p0')
 invalido = False
 
     @pytest.mark.parametrize('invalido', [
@@ -65,7 +65,7 @@ invalido = False
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p0/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p0/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -74,7 +74,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _______________ test_json_invalido_e_chamada_posterior_valida[0] _______________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p1')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p1')
 invalido = 0
 
     @pytest.mark.parametrize('invalido', [
@@ -94,7 +94,7 @@ invalido = 0
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p1/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p1/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -103,7 +103,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _______________ test_json_invalido_e_chamada_posterior_valida[] ________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p2')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p2')
 invalido = ''
 
     @pytest.mark.parametrize('invalido', [
@@ -123,7 +123,7 @@ invalido = ''
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p2/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p2/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -132,7 +132,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ___________ test_json_invalido_e_chamada_posterior_valida[invalido3] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p3')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p3')
 invalido = [[]]
 
     @pytest.mark.parametrize('invalido', [
@@ -152,7 +152,7 @@ invalido = [[]]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p3/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p3/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -161,7 +161,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ___________ test_json_invalido_e_chamada_posterior_valida[invalido4] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p4')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p4')
 invalido = [None]
 
     @pytest.mark.parametrize('invalido', [
@@ -181,7 +181,7 @@ invalido = [None]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p4/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p4/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -190,7 +190,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ___________ test_json_invalido_e_chamada_posterior_valida[invalido5] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p5')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p5')
 invalido = [True]
 
     @pytest.mark.parametrize('invalido', [
@@ -210,7 +210,7 @@ invalido = [True]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p5/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p5/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -219,7 +219,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ___________ test_json_invalido_e_chamada_posterior_valida[invalido6] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p6')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p6')
 invalido = [{'sku': None, 'delta': 0}]
 
     @pytest.mark.parametrize('invalido', [
@@ -239,7 +239,7 @@ invalido = [{'sku': None, 'delta': 0}]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p6/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p6/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -248,7 +248,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ___________ test_json_invalido_e_chamada_posterior_valida[invalido7] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p7')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p7')
 invalido = [{'sku': False, 'delta': 0}]
 
     @pytest.mark.parametrize('invalido', [
@@ -268,7 +268,7 @@ invalido = [{'sku': False, 'delta': 0}]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p7/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p7/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -277,7 +277,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ___________ test_json_invalido_e_chamada_posterior_valida[invalido8] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p8')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p8')
 invalido = [{'sku': '\u2003\xa0\t\n', 'delta': 0}]
 
     @pytest.mark.parametrize('invalido', [
@@ -297,7 +297,7 @@ invalido = [{'sku': '\u2003\xa0\t\n', 'delta': 0}]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p8/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p8/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -306,7 +306,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ___________ test_json_invalido_e_chamada_posterior_valida[invalido9] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p9')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p9')
 invalido = [{'sku': 'A', 'delta': False}]
 
     @pytest.mark.parametrize('invalido', [
@@ -326,7 +326,7 @@ invalido = [{'sku': 'A', 'delta': False}]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p9/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p9/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -335,7 +335,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 __________ test_json_invalido_e_chamada_posterior_valida[invalido10] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p10')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p10')
 invalido = [{'sku': 'A', 'delta': None}]
 
     @pytest.mark.parametrize('invalido', [
@@ -355,7 +355,7 @@ invalido = [{'sku': 'A', 'delta': None}]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p10/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p10/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -364,7 +364,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 __________ test_json_invalido_e_chamada_posterior_valida[invalido11] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p11')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p11')
 invalido = [{'sku': 'A', 'delta': []}]
 
     @pytest.mark.parametrize('invalido', [
@@ -384,7 +384,7 @@ invalido = [{'sku': 'A', 'delta': []}]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p11/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p11/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -393,7 +393,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 __________ test_json_invalido_e_chamada_posterior_valida[invalido12] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p12')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p12')
 invalido = [{'sku': 'A', 'delta': {}}]
 
     @pytest.mark.parametrize('invalido', [
@@ -413,7 +413,7 @@ invalido = [{'sku': 'A', 'delta': {}}]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p12/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p12/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -422,7 +422,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 __________ test_json_invalido_e_chamada_posterior_valida[invalido13] ___________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p13')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p13')
 invalido = [{'sku': 'A', 'delta': -1.0}]
 
     @pytest.mark.parametrize('invalido', [
@@ -442,7 +442,7 @@ invalido = [{'sku': 'A', 'delta': -1.0}]
 testes_ocultos/test_endurecimento.py:68: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_invalido_e_chamada_p13/dados.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_invalido_e_chamada_p13/dados.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -451,7 +451,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 __________________ test_integracao_volume_arquivo_recarregado __________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_integracao_volume_arquivo0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_integracao_volume_arquivo0')
 
     def test_integracao_volume_arquivo_recarregado(tmp_path):
         skus = [' A ', 'a', 'é', 'e\u0301', '🧪']
@@ -466,7 +466,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_integracao_volume_arqui
 testes_ocultos/test_endurecimento.py:80: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_integracao_volume_arquivo0/ação.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_integracao_volume_arquivo0/ação.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -475,7 +475,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ________________________ test_json_erro_no_ultimo_item _________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_erro_no_ultimo_item0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_erro_no_ultimo_item0')
 
     def test_json_erro_no_ultimo_item(tmp_path):
         p = tmp_path / 'fim.json'
@@ -487,7 +487,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_erro_no_ultimo_ite
 testes_ocultos/test_endurecimento.py:92: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_erro_no_ultimo_item0/fim.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_erro_no_ultimo_item0/fim.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -578,7 +578,7 @@ E       TypeError: Movimento() takes no arguments
 testes_ocultos/test_estoque.py:52: TypeError
 ___________________________ test_carregar_e_integrar ___________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_carregar_e_integrar0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_carregar_e_integrar0')
 
     def test_carregar_e_integrar(tmp_path):
         p = tmp_path / 'movimentos.json'
@@ -590,7 +590,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_carregar_e_integrar0')
 testes_ocultos/test_estoque.py:59: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = '/tmp/pytest-of-box/pytest-361/test_carregar_e_integrar0/movimentos.json'
+caminho = '/tmp/pytest-of-box/pytest-3/test_carregar_e_integrar0/movimentos.json'
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -599,7 +599,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _______________________________ test_json_vazio ________________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_vazio0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_vazio0')
 
     def test_json_vazio(tmp_path):
         p = tmp_path / 'vazio.json'
@@ -610,7 +610,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_vazio0')
 testes_ocultos/test_estoque.py:67: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_vazio0/vazio.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_vazio0/vazio.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -619,7 +619,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados0] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d0')
 dados = {}
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -634,7 +634,7 @@ dados = {}
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d0/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d0/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -643,7 +643,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ______________________ test_json_estrutura_invalida[None] ______________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_N0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_N0')
 dados = None
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -658,7 +658,7 @@ dados = None
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_N0/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_N0/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -667,7 +667,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados2] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d1')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d1')
 dados = [1]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -682,7 +682,7 @@ dados = [1]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d1/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d1/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -691,7 +691,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados3] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d2')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d2')
 dados = [{'sku': 'A'}]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -706,7 +706,7 @@ dados = [{'sku': 'A'}]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d2/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d2/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -715,7 +715,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados4] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d3')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d3')
 dados = [{'delta': 1}]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -730,7 +730,7 @@ dados = [{'delta': 1}]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d3/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d3/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -739,7 +739,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados5] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d4')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d4')
 dados = [{'sku': '', 'delta': 1}]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -754,7 +754,7 @@ dados = [{'sku': '', 'delta': 1}]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d4/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d4/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -763,7 +763,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados6] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d5')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d5')
 dados = [{'sku': '  ', 'delta': 1}]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -778,7 +778,7 @@ dados = [{'sku': '  ', 'delta': 1}]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d5/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d5/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -787,7 +787,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados7] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d6')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d6')
 dados = [{'sku': 2, 'delta': 1}]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -802,7 +802,7 @@ dados = [{'sku': 2, 'delta': 1}]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d6/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d6/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -811,7 +811,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados8] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d7')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d7')
 dados = [{'sku': 'A', 'delta': True}]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -826,7 +826,7 @@ dados = [{'sku': 'A', 'delta': True}]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d7/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d7/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -835,7 +835,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________ test_json_estrutura_invalida[dados9] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d8')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d8')
 dados = [{'sku': 'A', 'delta': 1.0}]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -850,7 +850,7 @@ dados = [{'sku': 'A', 'delta': 1.0}]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d8/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d8/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -859,7 +859,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 ____________________ test_json_estrutura_invalida[dados10] _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d9')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d9')
 dados = [{'sku': 'A', 'delta': '1'}]
 
     @pytest.mark.parametrize('dados', [{}, None, [1], [{'sku': 'A'}], [{'delta': 1}],
@@ -874,7 +874,7 @@ dados = [{'sku': 'A', 'delta': '1'}]
 testes_ocultos/test_estoque.py:77: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_estrutura_invalida_d9/invalido.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_estrutura_invalida_d9/invalido.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -883,7 +883,7 @@ E       NotImplementedError
 estoque/persistencia.py:2: NotImplementedError
 _____________________________ test_json_malformado _____________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_malformado0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_malformado0')
 
     def test_json_malformado(tmp_path):
         p = tmp_path / 'quebrado.json'
@@ -894,7 +894,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_malformado0')
 testes_ocultos/test_estoque.py:84: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-caminho = PosixPath('/tmp/pytest-of-box/pytest-361/test_json_malformado0/quebrado.json')
+caminho = PosixPath('/tmp/pytest-of-box/pytest-3/test_json_malformado0/quebrado.json')
 
     def carregar_movimentos(caminho):
 >       raise NotImplementedError
@@ -943,4 +943,4 @@ FAILED testes_ocultos/test_estoque.py::test_json_estrutura_invalida[dados8]
 FAILED testes_ocultos/test_estoque.py::test_json_estrutura_invalida[dados9]
 FAILED testes_ocultos/test_estoque.py::test_json_estrutura_invalida[dados10]
 FAILED testes_ocultos/test_estoque.py::test_json_malformado - NotImplementedE...
-41 failed, 1 passed in 0.18s
+41 failed, 1 passed in 0.24s

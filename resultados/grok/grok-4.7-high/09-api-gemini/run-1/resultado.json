@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "09-api-gemini",
   "run": 1,
-  "status": "erro",
-  "exit_code": 1,
-  "duracao_agente_s": 0.933,
-  "testes_total": 1,
-  "testes_passados": 0,
-  "pct_passados": 0.0,
-  "inicio_iso": "2026-10-30T01:27:03.421532-03:00",
+  "status": "timeout",
+  "exit_code": -9,
+  "duracao_agente_s": 180.065,
+  "testes_total": 46,
+  "testes_passados": 46,
+  "pct_passados": 100.0,
+  "inicio_iso": "2026-11-03T10:38:36.757950-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-dvsm3_cz",
-    "/tmp/bench-dvsm3_cz",
+    "/tmp/bench-z_0azdl2",
+    "/tmp/bench-z_0azdl2",
     "--chdir",
-    "/tmp/bench-dvsm3_cz",
+    "/tmp/bench-z_0azdl2",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,6 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-dvsm3_cz"
+    "/tmp/bench-z_0azdl2"
   ]
 }

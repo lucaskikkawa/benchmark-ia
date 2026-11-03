@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "09-api-codex",
   "run": 1,
-  "status": "erro",
-  "exit_code": 1,
-  "duracao_agente_s": 0.854,
-  "testes_total": 2,
-  "testes_passados": 0,
-  "pct_passados": 0.0,
-  "inicio_iso": "2026-10-30T01:27:02.301855-03:00",
+  "status": "timeout",
+  "exit_code": -9,
+  "duracao_agente_s": 300.094,
+  "testes_total": 38,
+  "testes_passados": 38,
+  "pct_passados": 100.0,
+  "inicio_iso": "2026-11-03T10:36:35.245246-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-0rj0lcpa",
-    "/tmp/bench-0rj0lcpa",
+    "/tmp/bench-_aewbzkb",
+    "/tmp/bench-_aewbzkb",
     "--chdir",
-    "/tmp/bench-0rj0lcpa",
+    "/tmp/bench-_aewbzkb",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,6 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-0rj0lcpa"
+    "/tmp/bench-_aewbzkb"
   ]
 }

@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="0.069" timestamp="2026-10-30T01:26:53.019128-03:00" hostname="grok-bot-vm-197759088"><testcase classname="" name="testes_ocultos.test_endurecimento" time="0.000"><error message="collection failure">ImportError while importing test module '/tmp/bench-4powf_p2/testes_ocultos/test_endurecimento.py'.
-Hint: make sure your test modules/packages have valid Python names.
-Traceback:
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-testes_ocultos/test_endurecimento.py:6: in &lt;module&gt;
-    from pares import contar_pares
-E   ModuleNotFoundError: No module named 'pares'</error></testcase><testcase classname="" name="testes_ocultos.test_pares" time="0.000"><error message="collection failure">ImportError while importing test module '/tmp/bench-4powf_p2/testes_ocultos/test_pares.py'.
-Hint: make sure your test modules/packages have valid Python names.
-Traceback:
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-testes_ocultos/test_pares.py:7: in &lt;module&gt;
-    from pares import contar_pares
-E   ModuleNotFoundError: No module named 'pares'</error></testcase></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="17" time="1.800" timestamp="2026-11-03T10:24:49.238710-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_endurecimento" name="test_inteiros_enormes_e_complementos_vizinhos" time="0.000" /><testcase classname="testes_ocultos.test_endurecimento" name="test_oraculo_deslocamento_permutacao_e_chamadas_repetidas" time="0.010" /><testcase classname="testes_ocultos.test_endurecimento" name="test_memoria_do_gerador_depende_de_distintos" time="1.081" /><testcase classname="testes_ocultos.test_pares" name="test_vazio" time="0.000" /><testcase classname="testes_ocultos.test_pares" name="test_unitario_nao_pareia_consigo" time="0.000" /><testcase classname="testes_ocultos.test_pares" name="test_exemplo" time="0.000" /><testcase classname="testes_ocultos.test_pares" name="test_duplicatas" time="0.000" /><testcase classname="testes_ocultos.test_pares" name="test_negativos" time="0.000" /><testcase classname="testes_ocultos.test_pares" name="test_zeros" time="0.000" /><testcase classname="testes_ocultos.test_pares" name="test_sem_pares" time="0.000" /><testcase classname="testes_ocultos.test_pares" name="test_gerador_e_nao_mutacao" time="0.000" /><testcase classname="testes_ocultos.test_pares" name="test_oraculo_pequeno_deterministico" time="0.001" /><testcase classname="testes_ocultos.test_pares" name="test_limite_de_tempo[distintos-1000000-999999-500000]" time="0.182" /><testcase classname="testes_ocultos.test_pares" name="test_limite_de_tempo[repetidos-1000000-0-499999500000]" time="0.090" /><testcase classname="testes_ocultos.test_pares" name="test_limite_de_tempo[permutados-600000-599999-300000]" time="0.169" /><testcase classname="testes_ocultos.test_pares" name="test_limite_de_tempo[blocos-800000-2-160000000000]" time="0.085" /><testcase classname="testes_ocultos.test_pares" name="test_limite_de_tempo[sem_pares-800000--1-0]" time="0.142" /></testsuite></testsuites>

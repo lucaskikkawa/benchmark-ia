@@ -10,7 +10,7 @@ ____________ ERROR at setup of test_suite_passou_no_modulo_correto _____________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -18,7 +18,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 ___________ ERROR at setup of test_mata_mutante[mutante_01_produto] ____________
@@ -31,7 +31,7 @@ ___________ ERROR at setup of test_mata_mutante[mutante_01_produto] ____________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -39,7 +39,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 ________ ERROR at setup of test_mata_mutante[mutante_02_sinal_desconto] ________
@@ -52,7 +52,7 @@ ________ ERROR at setup of test_mata_mutante[mutante_02_sinal_desconto] ________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -60,7 +60,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 ________ ERROR at setup of test_mata_mutante[mutante_03_arredondamento] ________
@@ -73,7 +73,7 @@ ________ ERROR at setup of test_mata_mutante[mutante_03_arredondamento] ________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -81,7 +81,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 _________ ERROR at setup of test_mata_mutante[mutante_04_frete_vazio] __________
@@ -94,7 +94,7 @@ _________ ERROR at setup of test_mata_mutante[mutante_04_frete_vazio] __________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -102,7 +102,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 __________ ERROR at setup of test_mata_mutante[mutante_05_sem_frete] ___________
@@ -115,7 +115,7 @@ __________ ERROR at setup of test_mata_mutante[mutante_05_sem_frete] ___________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -123,7 +123,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 _______ ERROR at setup of test_mata_mutante[mutante_06_limite_desconto] ________
@@ -136,7 +136,7 @@ _______ ERROR at setup of test_mata_mutante[mutante_06_limite_desconto] ________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -144,7 +144,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 _____ ERROR at setup of test_mata_mutante[mutante_07_quantidade_negativa] ______
@@ -157,7 +157,7 @@ _____ ERROR at setup of test_mata_mutante[mutante_07_quantidade_negativa] ______
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -165,7 +165,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 ________ ERROR at setup of test_mata_mutante[mutante_08_preco_negativo] ________
@@ -178,7 +178,7 @@ ________ ERROR at setup of test_mata_mutante[mutante_08_preco_negativo] ________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -186,7 +186,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 ______ ERROR at setup of test_mata_mutante[mutante_09_zero_como_unidade] _______
@@ -199,7 +199,7 @@ ______ ERROR at setup of test_mata_mutante[mutante_09_zero_como_unidade] _______
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -207,7 +207,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 _______ ERROR at setup of test_mata_mutante[mutante_10_mutacao_entrada] ________
@@ -220,7 +220,7 @@ _______ ERROR at setup of test_mata_mutante[mutante_10_mutacao_entrada] ________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -228,7 +228,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 ________ ERROR at setup of test_mata_mutante[mutante_11_float_centavos] ________
@@ -241,7 +241,7 @@ ________ ERROR at setup of test_mata_mutante[mutante_11_float_centavos] ________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -249,7 +249,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 _______ ERROR at setup of test_mata_mutante[mutante_12_trunca_por_linha] _______
@@ -262,7 +262,7 @@ _______ ERROR at setup of test_mata_mutante[mutante_12_trunca_por_linha] _______
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -270,7 +270,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 _________ ERROR at setup of test_mata_mutante[mutante_13_para_em_zero] _________
@@ -283,7 +283,7 @@ _________ ERROR at setup of test_mata_mutante[mutante_13_para_em_zero] _________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -291,7 +291,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 ________ ERROR at setup of test_mata_mutante[mutante_14_muta_apos_erro] ________
@@ -304,7 +304,7 @@ ________ ERROR at setup of test_mata_mutante[mutante_14_muta_apos_erro] ________
 testes_ocultos/test_mutacao.py:38: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.py')
+modulo = PosixPath('/tmp/bench-x7cffz2l/testes_ocultos/suporte/carrinho_correto.py')
 
     def executar_suite(modulo):
         testes = TRABALHO / 'tests'
@@ -312,7 +312,7 @@ modulo = PosixPath('/tmp/bench-eyr9023j/testes_ocultos/suporte/carrinho_correto.
 E       AssertionError: Crie tests/test_*.py
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-eyr9023j/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-x7cffz2l/tests').is_dir
 
 testes_ocultos/test_mutacao.py:17: AssertionError
 =========================== short test summary info ============================

@@ -1,0 +1,236 @@
+FF.FFFFFFFFFFFFFF                                                        [100%]
+=================================== FAILURES ===================================
+_________________________ test_existe_suite_do_modelo __________________________
+
+    def test_existe_suite_do_modelo():
+>       assert TESTES_MODELO.is_dir(), "diretório tests/ não encontrado"
+E       AssertionError: diretório tests/ não encontrado
+E       assert False
+E        +  where False = is_dir()
+E        +    where is_dir = PosixPath('/tmp/bench-twygw0lh/tests').is_dir
+
+testes_ocultos/test_mutacao.py:47: AssertionError
+______________________ test_suite_passa_no_modulo_correto ______________________
+
+resultado_original = None
+
+    def test_suite_passa_no_modulo_correto(resultado_original):
+>       assert resultado_original is not None, "suíte do modelo ausente"
+E       AssertionError: suíte do modelo ausente
+E       assert None is not None
+
+testes_ocultos/test_mutacao.py:52: AssertionError
+__________________ test_mutante_morto[m01_curta_menor_igual] ___________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m01_curta_menor_igual.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m01_curta_m0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+__________________ test_mutante_morto[m02_maiuscula_isalpha] ___________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m02_maiuscula_isalpha.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m02_maiuscu0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+____________________ test_mutante_morto[m03_digito_isdigit] ____________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m03_digito_isdigit.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m03_digito_0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+__________________ test_mutante_morto[m04_espaco_so_literal] ___________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m04_espaco_so_literal.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m04_espaco_0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+_________________ test_mutante_morto[m05_tamanho_minimo_zero] __________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m05_tamanho_minimo_zero.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m05_tamanho0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+_________________ test_mutante_morto[m06_limite_25_caracteres] _________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m06_limite_25_caracteres.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m06_limite_0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+_______________ test_mutante_morto[m07_trincas_sem_sobreposicao] _______________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m07_trincas_sem_sobreposicao.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m07_trincas0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+____________________ test_mutante_morto[m08_sem_piso_zero] _____________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m08_sem_piso_zero.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m08_sem_pis0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+__________________ test_mutante_morto[m09_fraca_menor_igual] ___________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m09_fraca_menor_igual.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m09_fraca_m0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+____________ test_mutante_morto[m10_invalida_so_espaco_tab_quebra] _____________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m10_invalida_so_espaco_tab_quebra.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m10_invalid0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+___________________ test_mutante_morto[m11_especial_vale_10] ___________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m11_especial_vale_10.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m11_especia0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+_______________ test_mutante_morto[m12_especiais_sem_sublinhado] _______________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m12_especiais_sem_sublinhado.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m12_especia0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+________________ test_mutante_morto[m13_ultima_trinca_ignorada] ________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m13_ultima_trinca_ignorada.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m13_ultima_0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+_________________ test_mutante_morto[m14_sem_checagem_de_tipo] _________________
+
+mutante = PosixPath('/tmp/bench-twygw0lh/testes_ocultos/mutantes/m14_sem_checagem_de_tipo.py')
+resultado_original = None
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-360/test_mutante_morto_m14_sem_che0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+>           pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+E           Failed: suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto
+
+testes_ocultos/test_mutacao.py:64: Failed
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_mutacao.py::test_existe_suite_do_modelo - Assertio...
+FAILED testes_ocultos/test_mutacao.py::test_suite_passa_no_modulo_correto - A...
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m01_curta_menor_igual]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m02_maiuscula_isalpha]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m03_digito_isdigit]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m04_espaco_so_literal]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m05_tamanho_minimo_zero]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m06_limite_25_caracteres]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m07_trincas_sem_sobreposicao]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m08_sem_piso_zero]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m09_fraca_menor_igual]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m10_invalida_so_espaco_tab_quebra]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m11_especial_vale_10]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m12_especiais_sem_sublinhado]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m13_ultima_trinca_ignorada]
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m14_sem_checagem_de_tipo]
+16 failed, 1 passed in 0.11s

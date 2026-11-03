@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "07-performance-claude",
   "run": 1,
-  "status": "erro",
-  "exit_code": 1,
-  "duracao_agente_s": 0.88,
+  "status": "timeout",
+  "exit_code": -9,
+  "duracao_agente_s": 180.115,
   "testes_total": 1,
   "testes_passados": 0,
   "pct_passados": 0.0,
-  "inicio_iso": "2026-10-30T01:26:50.863152-03:00",
+  "inicio_iso": "2026-11-03T10:09:37.519653-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-d5d4uf99",
-    "/tmp/bench-d5d4uf99",
+    "/tmp/bench-k5ks5awy",
+    "/tmp/bench-k5ks5awy",
     "--chdir",
-    "/tmp/bench-d5d4uf99",
+    "/tmp/bench-k5ks5awy",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,6 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-d5d4uf99"
+    "/tmp/bench-k5ks5awy"
   ]
 }

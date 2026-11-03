@@ -25,7 +25,9 @@
    "rubrica_10": 0.0
   }
  },
- "obs": [],
+ "obs": [
+  "gemini tentativa 1 falhou: timeout"
+ ],
  "rubrica_10": 0.0,
  "nota_final_10": 0.0
 }

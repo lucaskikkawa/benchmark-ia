@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "06-multiarquivo-codex",
   "run": 1,
-  "status": "erro",
-  "exit_code": 1,
-  "duracao_agente_s": 236.719,
+  "status": "timeout",
+  "exit_code": -9,
+  "duracao_agente_s": 300.1,
   "testes_total": 42,
   "testes_passados": 1,
   "pct_passados": 2.380952380952381,
-  "inicio_iso": "2026-10-30T01:23:31.315476-03:00",
+  "inicio_iso": "2026-11-03T10:09:37.519907-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-9f2_2m7v",
-    "/tmp/bench-9f2_2m7v",
+    "/tmp/bench-j7xdbi4s",
+    "/tmp/bench-j7xdbi4s",
     "--chdir",
-    "/tmp/bench-9f2_2m7v",
+    "/tmp/bench-j7xdbi4s",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,6 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-9f2_2m7v"
+    "/tmp/bench-j7xdbi4s"
   ]
 }
