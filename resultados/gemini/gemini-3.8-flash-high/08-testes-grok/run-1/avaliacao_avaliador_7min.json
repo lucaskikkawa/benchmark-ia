@@ -1,0 +1,53 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "high",
+ "tarefa": "08-testes-grok",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "timeout",
+ "duracao_agente_s": 420.051,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Suíte organizada por regra, cobre cálculos, pisos, limites, entradas inválidas e formato do retorno. Usa parametrização e pytest.raises, importa a função e não altera o módulo.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Um bloco nomeado por regra, fronteiras de janela, Natal, piso e erros cobertas, pytest.raises e parametrize com finais explícitos. Pontos fracos: sys.path duplicado do conftest e algum código repetido.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0
+}

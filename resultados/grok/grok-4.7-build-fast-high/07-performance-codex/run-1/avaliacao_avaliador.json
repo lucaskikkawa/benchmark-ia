@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/grok/grok-4.7-build-fast-high/07-performance-codex/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7-build-fast",
+ "esforco": "high",
+ "tarefa": "07-performance-codex",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 61.176,
+ "testes_passados": 17,
+ "testes_total": 17,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes claros, mas o complemento fica inline e não é nomeado. Índices distintos, duplicatas, zeros, negativos e geradores tratados em uma passagem. Docstring explica i<j e O(n)/O(k).",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Solução exemplar em uma única passagem, tratando geradores e duplicatas com complexidade O(n) de tempo e O(k) de memória, além de código e documentação claros.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85,
+ "reexecucao_testes": {
+  "total": 17,
+  "passados": 17,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.85,
+ "nota_antiga_com_penalidade": 9.85
+}

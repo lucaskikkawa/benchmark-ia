@@ -1,0 +1,4 @@
+A refatoração de [`pedidos.py`](file:///tmp/bench-345i1ykz/pedidos.py) foi concluída conforme especificado em [`enunciado.md`](file:///tmp/bench-345i1ykz/enunciado.md):
+
+- Extraída a função pública [`subtotal`](file:///tmp/bench-345i1ykz/pedidos.py#L5-L6) com assinatura `subtotal(quantidade: int, preco_centavos: int, desconto_percentual: int = 0) -> int` e aritmética inteira exata com truncamento por linha.
+- Atualizada [`resumo_pedidos`](file:///tmp/bench-345i1ykz/pedidos.py#L9-L33) para usar nomes descritivos e delegar o cálculo de cada pedido para [`subtotal`](file:///tmp/bench-345i1ykz/pedidos.py#L5-L6) em passagem única, preservando a ordem, as categorias originais e os acumuladores por chamada.

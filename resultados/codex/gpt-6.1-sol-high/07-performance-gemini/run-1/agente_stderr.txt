@@ -1,0 +1,207 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-tp03m45z
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189f3-db1b-7302-928f-734dfcdae549
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:17:04.371612Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o `enunciado.md` e os arquivos do diretório para executar a tarefa e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' -g '"'!package-lock.json'"' -g '"'!yarn.lock'"' -g '"'!pnpm-lock.yaml'"'" in /tmp/bench-tp03m45z
+ succeeded in 0ms:
+/tmp/bench-tp03m45z
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-tp03m45z
+ succeeded in 0ms:
+# 07 - Maior Subarray com Soma Alvo (Algoritmo de Alta Performance)
+
+Implemente a função `maior_subarray_soma` no arquivo `otimizador.py` na raiz do seu diretório de trabalho.
+
+## Assinatura
+
+```python
+def maior_subarray_soma(numeros: list[int], alvo: int) -> int:
+    ...
+```
+
+## Especificação
+
+A função recebe:
+- `numeros`: lista de inteiros (podendo conter números positivos, negativos e zeros).
+- `alvo`: inteiro representando a soma desejada.
+
+Ela deve retornar o **comprimento máximo** (quantidade de elementos) de um subarray contíguo cuja soma seja exatamente igual a `alvo`.
+
+### Regras:
+1. Se nenhum subarray contíguo somar `alvo`, ou se a lista for vazia, retorne `0`.
+2. Um subarray é uma sequência contígua de elementos da lista (isto é, `numeros[i:j]`).
+3. Em caso de múltiplos subarrays que somem `alvo`, deve ser retornado o comprimento do maior deles.
+4. **Validação de tipos**:
+   - Se `numeros` não for uma lista (`list`), levanta `TypeError`.
+   - Se qualquer elemento de `numeros` não for estritamente um inteiro primitivo (`type(x) is int`, rejeitando `bool`), levanta `TypeError`.
+   - Se `alvo` não for estritamente um inteiro primitivo (`type(alvo) is int`, rejeitando `bool`), levanta `TypeError`.
+
+### Requisito de Desempenho:
+- O benchmark executa testes com listas contendo **centenas de milhares de elementos** ($N \ge 350.000$).
+- Cada chamada com 350.000 elementos tem limite de **5 segundos** para o cálculo, excluindo geração dos dados e inicialização do processo. Há margem para variações de máquina; soluções quadráticas $O(N^2)$ não atendem a esse limite. Execuções que não retornam são interrompidas após 15 segundos, incluindo a inicialização do processo.
+- Sua solução deve operar em complexidade linear $O(N)$ de tempo e espaço.
+
+### Exemplos:
+- `maior_subarray_soma([1, -1, 5, -2, 3], 3)` -> `4` (o subarray `[1, -1, 5, -2]` soma 3 e tem tamanho 4)
+- `maior_subarray_soma([-2, -1, 2, 1], 1)` -> `2` (o subarray `[-1, 2]` tem tamanho 2)
+- `maior_subarray_soma([1, 2, 3], 10)` -> `0` (nenhum subarray soma 10)
+- `maior_subarray_soma([], 0)` -> `0`
+
+codex
+Vou usar somas acumuladas, guardando a primeira posição de cada soma para encontrar o maior comprimento em tempo linear. A função também validará os tipos exigidos, rejeitando `bool` nos elementos e no alvo.
+
+apply patch
+patch: completed
+/tmp/bench-tp03m45z/otimizador.py
+diff --git a/otimizador.py b/otimizador.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..0bb3c1b6f9a9cabde1b6908b8d74a42e2c3741c3
+--- /dev/null
++++ b/otimizador.py
+@@ -0,0 +1,25 @@
++def maior_subarray_soma(numeros: list[int], alvo: int) -> int:
++    """Retorna o maior comprimento com soma alvo em tempo e espaço O(N)."""
++    if not isinstance(numeros, list):
++        raise TypeError("numeros deve ser uma lista")
++    if type(alvo) is not int:
++        raise TypeError("alvo deve ser um inteiro primitivo")
++
++    # Preservar a primeira posição de cada soma maximiza o comprimento.
++    primeiras_posicoes = {0: -1}
++    soma = 0
++    maior = 0
++
++    for indice, numero in enumerate(numeros):
++        if type(numero) is not int:
++            raise TypeError("cada elemento de numeros deve ser um inteiro primitivo")
++
++        soma += numero
++        inicio = primeiras_posicoes.get(soma - alvo)
++        if inicio is not None:
++            comprimento = indice - inicio
++            if comprimento > maior:
++                maior = comprimento
++        primeiras_posicoes.setdefault(soma, indice)
++
++    return maior
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+from itertools import product
+from time import perf_counter
+from otimizador import maior_subarray_soma
+
+exemplos = [([1, -1, 5, -2, 3], 3, 4), ([-2, -1, 2, 1], 1, 2), ([1, 2, 3], 10, 0), ([], 0, 0), ([0, 0, 0], 0, 3)]
+for numeros, alvo, esperado in exemplos:
+    assert maior_subarray_soma(numeros, alvo) == esperado
+
+class Inteiro(int):
+    pass
+
+class Lista(list):
+    pass
+
+invalidos = [(None, 0), ((1, 2), 3), ([True], 1), ([1.0], 1), ([Inteiro(1)], 1), ([], False), ([], 0.0), ([], Inteiro(0)), ([1, -1, None], 0)]
+for numeros, alvo in invalidos:
+    try:
+        maior_subarray_soma(numeros, alvo)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError((numeros, alvo))
+assert maior_subarray_soma(Lista([1, -1]), 0) == 2
+
+casos = 0
+for tamanho in range(7):
+    for valores in product((-1, 0, 1), repeat=tamanho):
+        numeros = list(valores)
+        for alvo in range(-3, 4):
+            esperado = max((j - i for i in range(tamanho) for j in range(i + 1, tamanho + 1) if sum(numeros[i:j]) == alvo), default=0)
+            assert maior_subarray_soma(numeros, alvo) == esperado, (numeros, alvo)
+            casos += 1
+print(f'Exemplos, validação de tipos e {casos} casos exaustivos: OK')
+
+for numeros, alvo, esperado in [([1] * 350_000, 175_000, 175_000), ([1, -1] * 175_000, 0, 350_000), ([0] * 350_000, 1, 0)]:
+    inicio = perf_counter()
+    resultado = maior_subarray_soma(numeros, alvo)
+    duracao = perf_counter() - inicio
+    assert resultado == esperado
+    assert duracao < 5, duracao
+    print(f'350.000 elementos: {duracao:.3f}s, resultado {resultado}')
+PY" in /tmp/bench-tp03m45z
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from itertools import product
+from time import perf_counter
+from otimizador import maior_subarray_soma
+
+exemplos = [([1, -1, 5, -2, 3], 3, 4), ([-2, -1, 2, 1], 1, 2), ([1, 2, 3], 10, 0), ([], 0, 0), ([0, 0, 0], 0, 3)]
+for numeros, alvo, esperado in exemplos:
+    assert maior_subarray_soma(numeros, alvo) == esperado
+
+class Inteiro(int):
+    pass
+
+class Lista(list):
+    pass
+
+invalidos = [(None, 0), ((1, 2), 3), ([True], 1), ([1.0], 1), ([Inteiro(1)], 1), ([], False), ([], 0.0), ([], Inteiro(0)), ([1, -1, None], 0)]
+for numeros, alvo in invalidos:
+    try:
+        maior_subarray_soma(numeros, alvo)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError((numeros, alvo))
+assert maior_subarray_soma(Lista([1, -1]), 0) == 2
+
+casos = 0
+for tamanho in range(7):
+    for valores in product((-1, 0, 1), repeat=tamanho):
+        numeros = list(valores)
+        for alvo in range(-3, 4):
+            esperado = max((j - i for i in range(tamanho) for j in range(i + 1, tamanho + 1) if sum(numeros[i:j]) == alvo), default=0)
+            assert maior_subarray_soma(numeros, alvo) == esperado, (numeros, alvo)
+            casos += 1
+print(f'Exemplos, validação de tipos e {casos} casos exaustivos: OK')
+
+for numeros, alvo, esperado in [([1] * 350_000, 175_000, 175_000), ([1, -1] * 175_000, 0, 350_000), ([0] * 350_000, 1, 0)]:
+    inicio = perf_counter()
+    resultado = maior_subarray_soma(numeros, alvo)
+    duracao = perf_counter() - inicio
+    assert resultado == esperado
+    assert duracao < 5, duracao
+    print(f'350.000 elementos: {duracao:.3f}s, resultado {resultado}')
+PY" in /tmp/bench-tp03m45z
+ succeeded in 17ms:
+Exemplos, validação de tipos e 7651 casos exaustivos: OK
+350.000 elementos: 0.071s, resultado 175000
+350.000 elementos: 0.029s, resultado 350000
+350.000 elementos: 0.021s, resultado 0
+
+codex
+Implementado em [otimizador.py](/tmp/bench-tp03m45z/otimizador.py), com tempo e espaço O(N) e validação estrita dos inteiros.
+
+Verificado com os exemplos, tipos inválidos e 7.651 casos exaustivos. Os testes com 350.000 elementos levaram menos de 0,08 segundo por chamada.
+tokens used
+14,601

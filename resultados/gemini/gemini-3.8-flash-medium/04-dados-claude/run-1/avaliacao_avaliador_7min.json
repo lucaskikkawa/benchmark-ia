@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "medium",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 368.864,
+ "testes_passados": 32,
+ "testes_total": 32,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Valida as regras e trata CSV vazio, mas mistura etapas, não usa DictReader nem constantes; falta docstring.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Função única mistura validação e agregação. Erros e bordas de linha estão corretos. csv/json com with, sem DictReader, defaultdict ou docstring; constantes e agregação pouco extensíveis.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.0,
+ "nota_final_10": 8.8
+}

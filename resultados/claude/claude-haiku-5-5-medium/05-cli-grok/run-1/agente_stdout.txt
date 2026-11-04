@@ -1,0 +1,12 @@
+Criei `agenda_cli.py` neste diretório. Ele implementa os três subcomandos (`adicionar`, `listar`, `concluir`) só com a biblioteca padrão, seguindo o enunciado.
+
+Testei com um arquivo temporário (apaguei depois): adição com espaços nas pontas, prazo bissexto válido e inválido, conclusão com id `01`, repetição de conclusão, listagem com os dois filtros, arquivo inexistente, subcomando ausente e prioridade inválida. Os códigos de saída e as mensagens batem com o enunciado. Não rodei uma suíte de testes própria.
+
+Escolhas que fiz onde o enunciado não definia:
+
+- **Ordem de validação no `adicionar`:** primeiro título e prazo, depois o arquivo. Assim, uma entrada inválida não cria o arquivo.
+- **Chave JSON duplicada:** conta como arquivo inválido.
+- **Erro de gravação** (ex.: diretório inexistente): sai com código 2 e `erro: nao foi possivel gravar o arquivo`. Essa mensagem não está na lista do enunciado.
+- **`--id` não inteiro:** o `argparse` rejeita com código 2 e a mensagem padrão de uso, não `erro: ...`.
+
+Não fiz commit.

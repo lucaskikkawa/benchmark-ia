@@ -1,0 +1,3 @@
+Corrigido apenas [boletim.py](/tmp/bench-s8b1_hpo/boletim.py), conforme o contrato: validação, ausências, descarte, arredondamento com `Decimal`, conceitos e preservação da lista original.
+
+Verificação concluída: 18 casos válidos e 15 inválidos passaram.

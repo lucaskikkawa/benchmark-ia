@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/codex/gpt-6.1-sol-medium/01-funcao-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6.1-sol",
+ "esforco": "medium",
+ "tarefa": "01-funcao-claude",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 59.1,
+ "testes_passados": 23,
+ "testes_total": 23,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Boa estrutura e tabela única, mas mensagens não contêm entrada, nova unidade exige mudar regex e dict, docstring omite formato/erros e usa laço manual sem sum/fullmatch.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Parser linear e tabela única de unidades, com tipos corretos. Regex repete as letras das unidades; docstring não descreve o formato nem cita TypeError/ValueError; mensagens não incluem a entrada.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.95,
+ "reexecucao_testes": {
+  "total": 23,
+  "passados": 23,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+ ],
+ "nota_antiga_avaliacao_json": 9.1,
+ "nota_antiga_com_penalidade": 9.1
+}

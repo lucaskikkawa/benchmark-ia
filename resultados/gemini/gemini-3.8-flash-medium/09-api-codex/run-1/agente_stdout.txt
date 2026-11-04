@@ -1,0 +1,9 @@
+A tarefa descrita em [enunciado.md](file:///tmp/bench-tx1aiebh/enunciado.md) foi implementada no arquivo [cliente.py](file:///tmp/bench-tx1aiebh/cliente.py), preservando intacto o arquivo [fake_api.py](file:///tmp/bench-tx1aiebh/fake_api.py).
+
+### O que foi implementado:
+- Função [`buscar_com_retry`](file:///tmp/bench-tx1aiebh/cliente.py#L8-L55) com a assinatura e valores padrão especificados.
+- Validação estrita de parâmetros antes de quaisquer chamadas ou efeitos colaterais (`tentativas` como inteiro $\ge 1$, `timeout` como número real finito $> 0$ e `backoff` como número real finito $\ge 0$), lançando `ValueError` caso inválidos.
+- Repetição exclusiva para [`fake_api.ErroTemporario`](file:///tmp/bench-tx1aiebh/fake_api.py#L6-L7), `TimeoutError` e suas respectivas subclasses.
+- Cálculo de recuo exponencial pela fórmula `backoff * (2 ** indice)`, chamando a função `dormir` antes da próxima tentativa (mesmo com atraso zero), sem esperar após sucesso ou após a última falha.
+- Propagação imediata da última exceção original ao esgotar tentativas, e propagação imediata de [`fake_api.ErroPermanente`](file:///tmp/bench-tx1aiebh/fake_api.py#L10-L11), exceções desconhecidas ou quaisquer exceções disparadas por `dormir`.
+- Manutenção da chave e do timeout em todas as tentativas, com retorno do resultado sem modificações.

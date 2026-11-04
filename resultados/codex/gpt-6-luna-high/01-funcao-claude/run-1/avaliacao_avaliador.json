@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/01-funcao-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "01-funcao-claude",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 17.597,
+ "testes_passados": 23,
+ "testes_total": 23,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 4.0,
+   "justificativa": "Unidades centralizadas, mas parsing manual caractere a caractere com laços aninhados e índices, docstring sem descrever exceções e erros sem incluir a entrada.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Scanner manual compreensível, sem separar validação e cálculo. Exceções certas, mas mensagens omitem a entrada. Unidades e ordem num único dict. Docstring não descreve formato nem exceções.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 5.0,
+ "nota_final_10": 8.5,
+ "reexecucao_testes": {
+  "total": 23,
+  "passados": 23,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+ ],
+ "nota_antiga_avaliacao_json": 8.8,
+ "nota_antiga_com_penalidade": 8.8
+}

@@ -1,0 +1,3 @@
+Corrigi [intervalos.py](/tmp/bench-fny00kuj/intervalos.py): entradas vazias, suporte a geradores, validação de inteiros sem booleanos, preservação da entrada e união correta de intervalos que se tocam ou se sobrepõem.
+
+As duas funções passaram pelos exemplos, pelas verificações de validação e por 3.876 casos exaustivos.

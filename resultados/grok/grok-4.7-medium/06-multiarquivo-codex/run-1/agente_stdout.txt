@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O pacote `estoque` está só com esboços. Vou completar a dataclass, o cálculo de saldos e a leitura do JSON conforme o enunciado.O pacote `estoque` está completo com as três APIs pedidas.
+
+- `Movimento` é uma dataclass congelada (`sku`, `delta`), sem validação no construtor.
+- `calcular_saldos` copia os saldos iniciais, aplica os movimentos na ordem e lança `ValueError` se algum saldo inicial ou intermediário ficar negativo. Saldos zero e SKUs iniciais sem movimento permanecem no dict novo.
+- `carregar_movimentos` lê o JSON em UTF-8, preserva a ordem e o `sku` original, ignora campos extras e rejeita forma inválida, SKU em branco e `delta` que não seja inteiro (inclusive `bool`). JSON inválido continua sendo `ValueError`.

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rodada 1 — mock tarefas</title><style>
+:root{--bg:#FFF8EC;--card:#fff;--ink:#2B2340;--ink2:#6B6280;--sun:#FFD23F;--orange:#FF9F1C;--up:#2FB86B;--down:#E5484D;
+  --claude:#E06A1E;--codex:#C3C8D0;--gemini:#3B6FE0;--grok:#1C1B22;--line:#E7E0F0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden}
+body{background:var(--bg);background-image:radial-gradient(rgba(43,35,64,.07) 1.5px,transparent 1.6px);background-size:18px 18px;
+  color:var(--ink);font-family:Nunito,ui-rounded,system-ui,sans-serif;font-variant-numeric:tabular-nums;position:relative}
+.f{font-family:Fredoka,Nunito,sans-serif}
+.box{background:var(--card);border:3px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink)}
+header{padding:14px 16px 0;display:flex;align-items:center;gap:10px}
+.bubble{position:relative;background:var(--sun);border:3px solid var(--ink);border-radius:18px;padding:6px 14px 4px;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink)}
+.bubble h1{font-family:Fredoka,sans-serif;font-weight:700;font-size:30px;line-height:1}
+.bubble:after{content:"";position:absolute;right:-12px;bottom:6px;width:16px;height:16px;background:var(--sun);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(-45deg)}
+.bubble.sm{padding:3px 10px 2px;border-radius:14px}.bubble.sm h1{font-size:20px}.bubble.sm:after{width:12px;height:12px;right:-9px;bottom:4px}
+.sub{font-size:12px;color:var(--ink2);font-weight:700;line-height:1.25}
+.crew{display:flex;gap:2px;margin-left:auto}.crew svg{width:34px;height:34px}
+.pill{margin-left:auto;font-size:11px;font-weight:800;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:2px 8px;box-shadow:2px 2px 0 var(--ink);white-space:nowrap}
+h2{font-family:Fredoka,sans-serif;font-size:20px;margin:12px 16px 6px;display:flex;align-items:center;gap:8px;line-height:1.1}
+h2 .tag{font-family:Nunito;font-size:11px;font-weight:800;background:var(--sun);border:2px solid var(--ink);border-radius:10px;padding:1px 7px;transform:rotate(2deg)}
+h3{font-family:Fredoka,sans-serif;font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+h3 small{font-family:Nunito;font-size:11px;font-weight:800;color:var(--ink2)}
+.card{margin:8px 20px 0 16px;padding:8px 12px}
+.chip{display:inline-block;font-size:10px;font-weight:800;border:2px solid var(--ink);border-radius:8px;padding:0 5px;margin-left:3px;vertical-align:1px;background:#fff;line-height:1.35}
+.chip.high{background:repeating-linear-gradient(45deg,#fff 0 3px,#E7E0F0 3px 6px)}
+.leg{display:flex;gap:12px;font-size:11px;font-weight:800;color:var(--ink2);align-items:center;flex-wrap:wrap}
+.leg i{display:inline-block;width:12px;height:12px;border:2px solid var(--ink);border-radius:50%;vertical-align:-2px;margin-right:3px}
+.tip{margin:8px 20px 0 16px;padding:5px 10px;line-height:1.2;display:flex;gap:8px;align-items:center;font-size:12px;font-weight:700;background:#FFF3C4;border-radius:16px}
+.tip svg{flex:none}
+.seg{display:flex;margin:0 20px 0 16px;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.seg span{flex:1;text-align:center;font-size:11px;font-weight:800;padding:4px 2px;line-height:1.15}
+.seg span+span{border-left:2px solid var(--ink)}.seg .on{background:var(--sun)}
+.sw{flex:none;display:inline-block;width:38px;height:22px;border-radius:12px;border:3px solid var(--ink);background:#EDE6F5;position:relative}
+.sw:after{content:"";position:absolute;top:1px;left:1px;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--ink)}
+.sw.on{background:var(--up)}.sw.on:after{left:17px}
+nav{position:absolute;left:10px;right:10px;bottom:8px;height:56px;display:flex;justify-content:space-around;align-items:center;border-radius:22px;background:var(--ink);box-shadow:0 4px 0 #0E0B18}
+nav a{color:#fff;text-decoration:none;font-size:10px;font-weight:800;text-align:center;line-height:1.2;width:62px;border:2px solid transparent;padding:3px 0;border-radius:14px}
+nav a span{display:block;font-size:20px}
+nav a.on{background:var(--sun);color:var(--ink);border-color:#fff}
+svg text{font-family:Nunito,sans-serif;font-weight:800;fill:var(--ink)}
+</style></head>
+<body><svg width="0" height="0" style="position:absolute"><defs><symbol id="m-claude" viewBox="0 0 40 40"><line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><path d="M20 0.5 l1.3 2.9 2.9 1.3 -2.9 1.3 -1.3 2.9 -1.3 -2.9 -2.9 -1.3 2.9 -1.3z" fill="#FFD23F" stroke="#2B2340" stroke-width="1.1" stroke-linejoin="round"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#E06A1E" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-codex" viewBox="0 0 40 40"><line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="20" cy="4.5" r="2.8" fill="#FFD23F" stroke="#2B2340" stroke-width="1.5"/><rect x="1.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/><rect x="34.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#C3C8D0" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-gemini" viewBox="0 0 40 40"><line x1="13" y1="4" x2="13" y2="10" stroke="#2B2340" stroke-width="2.5"/><line x1="27" y1="4" x2="27" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="13" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/><circle cx="27" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#3B6FE0" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-grok" viewBox="0 0 40 40"><rect x="10" y="5.5" width="20" height="5" rx="2.5" fill="#6B6280" stroke="#2B2340" stroke-width="1.8"/><circle cx="3.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/><circle cx="36.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#1C1B22" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="toga" viewBox="0 0 40 30"><path d="M7 2 h26 l5 27 h-36z" fill="#2B2340"/><path d="M14 2 l6 9 6-9" fill="#fff" stroke="#2B2340" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+<pattern id="hach" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#fff"/><rect width="2.2" height="5" fill="#2B2340" fill-opacity=".55"/></pattern>
+</defs></svg>
+<style>
+.hm{display:grid;grid-template-columns:98px repeat(4,1fr);gap:3px;margin-top:4px}
+.hm .ch{display:flex;flex-direction:column;align-items:center;font-size:10px;font-weight:800;line-height:1}
+.rl{font-size:11.5px;font-weight:800;display:flex;align-items:center;white-space:nowrap}.rl.d{background:#FFF3C4;border-radius:6px;padding-left:3px;margin-left:-3px}
+.c{height:26px;border:2px solid var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:Fredoka;font-weight:600;font-size:13px;position:relative}
+.c.esc{color:#fff}.c em{font-style:normal;font-size:9px;position:absolute;top:-1px;right:3px}
+.esc2{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;color:var(--ink2);margin-top:6px}
+.esc2 i{flex:1;height:10px;border:2px solid var(--ink);border-radius:6px;background:linear-gradient(90deg,#FFF3C4, #FFDA60, #9DB76E, #377E85, #2B2340)}
+.gab{margin:8px 20px 0 16px;padding:6px 12px;font-size:11.5px;font-weight:700;line-height:1.3}.gab b{font-family:Fredoka;font-size:14px}
+.tg2{display:inline-block;border:2px solid var(--ink);border-radius:8px;padding:0 5px;margin:1px 2px 0 0;font-weight:800;background:#E3F6EA}
+</style>
+<header><div class="bubble sm"><h1>Rodada 1</h1></div>
+<span class="pill">⚖️ 70% testes · ⏱ timeout = 0</span></header>
+<h2>🧩 Mapa de tarefas <span class="tag">tipo × empresa</span></h2>
+<div class="seg"><span class="on">empresa<br>resolvedora</span><span>modelo ×<br>esforço</span><span>empresa<br>autora</span></div>
+<section class="card box"><h3>Nota média (com penalidade) <small>★ = melhor da linha</small></h3>
+<div class="hm"><span></span><span class="ch"><svg width="24" height="24" aria-hidden="true"><use href="#m-claude"/></svg>claude</span><span class="ch"><svg width="24" height="24" aria-hidden="true"><use href="#m-codex"/></svg>codex</span><span class="ch"><svg width="24" height="24" aria-hidden="true"><use href="#m-gemini"/></svg>gemini</span><span class="ch"><svg width="24" height="24" aria-hidden="true"><use href="#m-grok"/></svg>grok</span><span class="rl">01 função</span><span class="c esc" style="background:#2D324B">9.6<em>★</em></span><span class="c esc" style="background:#30485C">9.0</span><span class="c" style="background:#ABBB67">4.8</span><span class="c esc" style="background:#398E91">7.0</span><span class="rl">02 bug</span><span class="c esc" style="background:#2C2E48">9.7<em>★</em></span><span class="c esc" style="background:#2E3850">9.4</span><span class="c esc" style="background:#4EA193">6.3</span><span class="c esc" style="background:#38868B">7.3</span><span class="rl">03 refatoração</span><span class="c esc" style="background:#2C2E49">9.7<em>★</em></span><span class="c esc" style="background:#2D344D">9.5</span><span class="c" style="background:#D4C653">4.1</span><span class="c" style="background:#7BAE7E">5.6</span><span class="rl">04 dados</span><span class="c esc" style="background:#325A6A">8.5</span><span class="c esc" style="background:#315365">8.7<em>★</em></span><span class="c" style="background:#FFD54C">3.0</span><span class="c" style="background:#FFE896">1.1</span><span class="rl">05 cli</span><span class="c esc" style="background:#304B5E">8.9<em>★</em></span><span class="c esc" style="background:#367780">7.7</span><span class="c" style="background:#ADBB66">4.7</span><span class="c" style="background:#77AD80">5.6</span><span class="rl">06 multiarquivo</span><span class="c esc" style="background:#2D324B">9.6<em>★</em></span><span class="c esc" style="background:#2E374F">9.4</span><span class="c" style="background:#ABBB67">4.8</span><span class="c" style="background:#9EB76D">5.0</span><span class="rl">07 performance</span><span class="c esc" style="background:#2D324B">9.6<em>★</em></span><span class="c esc" style="background:#33616F">8.3</span><span class="c" style="background:#88B177">5.4</span><span class="c esc" style="background:#398B8F">7.1</span><span class="rl d">08 testes</span><span class="c esc" style="background:#2C2844">9.8<em>★</em></span><span class="c esc" style="background:#3A9395">6.9</span><span class="c" style="background:#FFEBA3">0.8</span><span class="c" style="background:#FFEAA1">0.9</span><span class="rl">09 api</span><span class="c esc" style="background:#2C2D48">9.7<em>★</em></span><span class="c esc" style="background:#36757F">7.7</span><span class="c" style="background:#76AC80">5.7</span><span class="c" style="background:#A1B86C">4.9</span><span class="rl d">10 ambígua</span><span class="c esc" style="background:#377E85">7.5</span><span class="c esc" style="background:#2E3A52">9.4<em>★</em></span><span class="c esc" style="background:#459F97">6.5</span><span class="c" style="background:#D4C653">4.1</span></div>
+<div class="esc2">0 <i></i> 10 · claro = pior</div></section>
+<div class="tip box"><svg width="30" height="30" aria-hidden="true"><use href="#m-codex"/></svg><span><b>10 ambígua</b> é o único tipo em que o codex passa o claude. Em <b>08 testes</b>, gemini e grok mal pontuam.</span></div>
+<div class="gab box"><b>✅ Todo mundo gabaritou</b><br><span class="tg2">01-funcao-gemini</span><span class="tg2">02-bug-codex</span>
+<span style="color:var(--ink2)"> e mais 8 quase (11 de 12 com 100%)</span></div>
+<nav aria-label="abas"><a href="#ranking"><span>🏆</span>Ranking</a><a href="#comparar"><span>⚖️</span>Comparar</a><a href="#esforco"><span>🔥</span>Esforço</a><a class=on aria-current=page href="#tarefas"><span>🧩</span>Tarefas</a><a href="#juizes"><span>🧑‍⚖️</span>Juízes</a></nav>
+<script>addEventListener('load',()=>{const nb=document.querySelector('nav').getBoundingClientRect().top,p=[];
+for(const e of document.querySelectorAll('body *')){if(e.closest('nav')||e.closest('defs')||e.tagName==='symbol')continue;const r=e.getBoundingClientRect();if(!r.width&&!r.height)continue;
+if(r.right>390.5||r.left<-0.5)p.push('x:'+(e.className.baseVal??e.className)+':'+e.tagName);
+if(r.bottom>nb-2)p.push('y:'+e.tagName+'.'+(e.className.baseVal??e.className)+':'+Math.round(r.bottom));
+if(e.scrollWidth>e.clientWidth+1&&getComputedStyle(e).overflow!=='visible')p.push('corte:'+e.tagName+'.'+e.className)}
+document.title='CHECK '+(p.length?[...new Set(p)].slice(0,8).join(' | '):'ok')+' nav='+Math.round(nb)})</script>
+</body></html>

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-medium/05-cli-grok/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "medium",
+ "tarefa": "05-cli-grok",
+ "tipo": "05-cli",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 48.232,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Script organizado em funções, centraliza erros, usa argparse, valida o JSON e datas, deriva a ordenação das prioridades e cumpre o formato de saída e arquivo.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código modular, robusto e idiomático. Perde ponto em manutenibilidade porque a tupla de prioridades e o mapeamento de ordem foram definidos em estruturas separadas.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85,
+ "reexecucao_testes": {
+  "total": 15,
+  "passados": 15,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.85,
+ "nota_antiga_com_penalidade": 9.85
+}

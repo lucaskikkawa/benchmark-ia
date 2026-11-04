@@ -1,0 +1,4 @@
+Foram criados os arquivos solicitados no diretório de trabalho:
+
+- [organizador.py](file:///tmp/bench-uha9xq0d/organizador.py): implementa a função [`organizar_tarefas`](file:///tmp/bench-uha9xq0d/organizador.py#L4-L53), que filtra tarefas pendentes (`concluida == False`), realiza cópia rasa independente de cada ocorrência (preservando campos extras e identidades de objetos internos sem alterar a entrada) e ordena por `prioridade` em ordem decrescente mantendo a estabilidade em empates.
+- [SUPOSICOES.md](file:///tmp/bench-uha9xq0d/SUPOSICOES.md): documenta a política de desempate (preservação da ordem relativa de entrada) e a validação de tipos e domínio para entradas inválidas.

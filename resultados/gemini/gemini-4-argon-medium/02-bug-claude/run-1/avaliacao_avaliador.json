@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-medium/02-bug-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "medium",
+ "tarefa": "02-bug-claude",
+ "tipo": "02-bug",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 85.591,
+ "testes_passados": 26,
+ "testes_total": 26,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Corrige união, ordenação, contato e intervalos contidos, preservando a API e reutilizando a mesclagem. Porém sort() muta a lista local e as docstrings foram removidas.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Cobre vazio, ordenação em cópia, contato com <=, extensão com max e ValueError; total_coberto reusa a mesclagem. O if de lista vazia é redundante e falta comentário sobre o max.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.25,
+ "reexecucao_testes": {
+  "total": 26,
+  "passados": 26,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.1,
+ "nota_antiga_com_penalidade": 9.1
+}

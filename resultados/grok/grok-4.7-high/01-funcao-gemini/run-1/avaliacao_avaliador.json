@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/grok/grok-4.7-high/01-funcao-gemini/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "high",
+ "tarefa": "01-funcao-gemini",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 133.405,
+ "testes_passados": 33,
+ "testes_total": 33,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Código claro e idiomático; valida lista e tipo estrito dos elementos, trata bordas sem mutar a entrada e documenta comportamento e exceções.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Nomes claros e lógica linear; validação estrita de tipos e bordas corretas. Formatação duplicada dentro do loop acopla agrupamento e saída. Docstring não documenta as exceções.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 33,
+  "passados": 33,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.55,
+ "nota_antiga_com_penalidade": 9.55
+}

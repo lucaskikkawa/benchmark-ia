@@ -1,0 +1,68 @@
+{
+ "pasta": "resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "high",
+ "tarefa": "10-ambigua-gemini",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 292.647,
+ "testes_passados": 17,
+ "testes_total": 17,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código claro, preserva a entrada e trata limites; documentação detalha as ambiguidades. Usa sum, mas acessa campos diretamente em vez de dict.get.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Código limpo e tabela de faixas fácil de ajustar; pesos 0.1 e 5 fixos e soma de compras/fidelidade não separada. Bordas tratadas; SUPOSICOES.md completo. Sem dict.get.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 6.58,
+ "reexecucao_testes": {
+  "total": 17,
+  "passados": 17,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/testes_saida.txt']",
+  "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+  "sem avaliacao.json antiga"
+ ],
+ "nota_antiga_avaliacao_json": null,
+ "nota_antiga_com_penalidade": 0.0,
+ "regra_excepcional_grok_4_7_high": {
+  "nota_base": 9.4,
+  "fator": 0.7,
+  "regra": "2ª tentativa, 293 s (≤600 s): ×0,7"
+ }
+}

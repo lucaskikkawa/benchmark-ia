@@ -1,0 +1,53 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "medium",
+ "tarefa": "08-testes-grok",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 365.816,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Suíte organizada por regra, cobre limites, tipos e fórmulas com parametrização e pytest.raises; importa a função no arquivo correto e não altera o módulo.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Uma seção por regra com nomes claros e fronteiras cobertas (24/12, 25/12, janela 2024, piso FIXO500, vazio). Cupons têm tabelas separadas, mas sem estrutura única e com varreduras que recalculam a fórmula.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85
+}

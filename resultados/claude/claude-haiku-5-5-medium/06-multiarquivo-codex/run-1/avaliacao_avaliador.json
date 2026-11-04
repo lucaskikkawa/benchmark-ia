@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-haiku-5-5-medium/06-multiarquivo-codex/run-1",
+ "empresa": "claude",
+ "modelo": "claude-haiku-5-5",
+ "esforco": "medium",
+ "tarefa": "06-multiarquivo-codex",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 24.048,
+ "testes_passados": 42,
+ "testes_total": 42,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código correto, idiomático e com excelente validação de erros e bordas, mas ausente de docstrings documentando as regras nas APIs.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes claros, módulos separados, dataclass frozen, json, imports relativos e cópia de iniciais. Valida saldo intermediário, bool e campos. Sem docstrings de ordem, imutabilidade e JSON.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 42,
+  "passados": 42,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

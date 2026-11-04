@@ -1,0 +1,16 @@
+Criei `contatexto.py` neste diretório, seguindo o `enunciado.md`. Testei com um arquivo de exemplo (depois removido) e os casos principais se comportaram como especificado.
+
+**Verificado:**
+- Sem flags de métrica, exibe linhas, palavras e caracteres.
+- `--top 2 --json` gera o JSON com `top_palavras`, com a pontuação removida e as palavras em minúsculas.
+- `-o saida/sub/r.txt` cria as pastas pai, grava o resultado e imprime `Salvo em saida/sub/r.txt`.
+- `--top 0` sai com código 2.
+- Arquivo inexistente e diretório saem com código 1 e mensagem `Erro: ...` na stderr.
+- Arquivo sem argumento sai com código 2.
+- Arquivo com bytes inválidos em UTF-8 sai com código 1 e `Erro ao ler arquivo: ...`.
+
+**Escolhas de implementação** que o enunciado não detalhava:
+- Se `--top` for usado sozinho, só a lista de palavras é exibida.
+- Empates no top são ordenados alfabeticamente.
+- Em `-o`, o conteúdo gravado é o mesmo que seria impresso, seguido de uma quebra de linha final.
+- Erros ao gravar o arquivo de saída também saem com código 1.

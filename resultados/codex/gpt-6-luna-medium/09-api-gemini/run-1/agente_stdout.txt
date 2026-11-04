@@ -1,0 +1,3 @@
+Implementei `ApiError` e `ClienteResiliente` em [cliente_resiliente.py](/tmp/bench-e04afb8k/cliente_resiliente.py), com validação dos parâmetros, atalhos `get` e `post`, retentativas para falhas transitórias e backoff exponencial. Erros HTTP definitivos são levantados imediatamente; ao esgotar as tentativas, `ApiError.status_code` reflete a resposta HTTP ou fica `None` para falhas de rede e timeout.
+
+Não executei testes.

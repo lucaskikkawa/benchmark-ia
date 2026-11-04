@@ -1,0 +1,7 @@
+A tarefa foi concluída com a criação do arquivo [`solucao.py`](file:///tmp/bench-m1r787nn/solucao.py) contendo a função [`horas_livres`](file:///tmp/bench-m1r787nn/solucao.py#L28-L89), atendendo a todas as especificações:
+
+- Validação rigorosa dos tipos e formatos de horário (`HH:MM` com dígitos ASCII, separador `:` e tratamento de `24:00`).
+- Levantamento de `TypeError` e `ValueError` de acordo com os requisitos descritos em `enunciado.md`.
+- Validação dos intervalos ocupados antes do recorte/descarte (incluindo intervalos de duração zero com horário inválido e ordem `ini > fim`).
+- Recorte dos intervalos ocupados à janela `[inicio, fim)`, união transitiva de intervalos sobrepostos ou adjacentes após o recorte, e preservação da imutabilidade dos dados de entrada.
+- Retorno ordenado dos intervalos livres como lista de tuplas `(ini, fim)`, sem sobreposição nem duração zero.

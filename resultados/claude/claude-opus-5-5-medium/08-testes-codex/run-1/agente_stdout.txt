@@ -1,0 +1,24 @@
+Escrevi a suíte em `tests/test_carrinho.py` e não mexi em `carrinho.py`. Ela tem 55 testes, todos passando no módulo correto em cerca de 0,06 s.
+
+**O que a suíte cobre:**
+- **Cálculo básico:** soma de quantidade × preço em uma ou várias linhas, e os valores padrão de desconto e frete.
+- **Desconto:** os limites 0, 1, 99 e 100, o truncamento para baixo (por exemplo, 0,5 vira 0 e 99,5 vira 99) e o desconto aplicado uma vez só. O truncamento é testado também somado entre linhas: três linhas de 1 centavo com 50% dão 1, e não 0, que seria o resultado truncando linha por linha.
+- **Frete:**
+  - Não recebe desconto e é cobrado uma única vez.
+  - Item gratuito com quantidade positiva paga frete.
+  - Não há frete quando todas as quantidades são zero ou o carrinho está vazio.
+  - Linhas de quantidade zero e positiva misturadas, em qualquer ordem.
+- **Erros (`ValueError`):** desconto -1 e 101, frete negativo, quantidade negativa e preço negativo. Também com carrinho vazio, com quantidade zero, em linhas depois de uma linha válida e em linhas depois de uma linha de quantidade zero. Inclui negativos que se cancelariam na soma.
+- **Inteiros grandes:** resultados exatos acima de 2**53, como 2**64 e 10**30, inclusive com desconto e frete grandes.
+- **Lista e chamadas:** a lista recebida fica igual, mesmo quando a função lança `ValueError`. Uma chamada válida depois de um erro funciona normalmente, chamadas repetidas e alternadas são independentes, e o retorno é sempre `int`.
+
+Também testei a suíte contra 13 mutantes que eu mesmo criei, numa pasta temporária que já apaguei. Os bugs foram:
+- limites trocados (`<` por `<=` e vice-versa);
+- divisão com float e com `round`;
+- desconto aplicado por linha;
+- desconto incidindo no frete;
+- frete decidido pela lista não vazia ou pelo bruto, em vez da soma de quantidades;
+- parar o laço na primeira linha de quantidade zero;
+- alterar a lista com `pop`.
+
+A suíte falhou em todos os 13. Os 14 mutantes do avaliador não estão disponíveis, então não sei se coincidem com esses.

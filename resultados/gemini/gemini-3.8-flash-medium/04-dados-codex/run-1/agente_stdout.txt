@@ -1,0 +1,12 @@
+A tarefa foi concluída com a criação do módulo [`vendas.py`](file:///tmp/bench-p_i17e7e/vendas.py) contendo a função [`resumir_vendas`](file:///tmp/bench-p_i17e7e/vendas.py#L18-L111).
+
+Principais aspectos implementados de acordo com [`enunciado.md`](file:///tmp/bench-p_i17e7e/enunciado.md):
+- Suporte a caminhos `str` e `pathlib.Path` para `entrada` e `saida`.
+- Validação estrita do tipo de `minimo_centavos` (exatamente `int` e `>= 0`).
+- Leitura UTF-8 com suporte transparente a BOM UTF-8 (`utf-8-sig`) e regras de aspas CSV via biblioteca padrão `csv`.
+- Validação das colunas obrigatórias no cabeçalho em qualquer ordem (`produto`, `quantidade`, `preco_centavos`, `status`), ignorando colunas adicionais e tratando arquivo vazio com `ValueError`.
+- Filtragem e validação das linhas: linhas não pagas são descartadas previamente; linhas pagas exigem todos os campos obrigatórios presentes, produto não vazio após `strip()` (mantendo quebras de linha e caracteres internos), e números validados na gramática `[+-]?[0-9]+` com inteiros `>= 0` e precisão arbitrária.
+- Agregação dos totais de quantidade e receita por produto (sensível a maiúsculas/minúsculas), preservando itens com quantidade zero e filtrando após agregação por `receita_centavos >= minimo_centavos`.
+- Ordenação alfabética padrão de strings por produto, gerando a lista de dicionários apenas com as chaves `produto`, `quantidade` e `receita_centavos`.
+- Validação prévia completa garantindo que o arquivo de saída não seja criado nem sobrescrito em caso de `ValueError`.
+- Gravação da saída em JSON UTF-8 com `ensure_ascii=False` e quebra de linha final (`\n`).

@@ -1,0 +1,20 @@
+Criei dois arquivos: `solucao.py`, com a função `classificar_cliente`, e `SUPOSICOES.md`, com as decisões de design. Testei a função com alguns casos: nomes com acentos e caracteres asiáticos, uma lista de 1 milhão de compras, um cliente sem compras e uma conferência de que a entrada não é alterada. Todos deram o resultado esperado. Não havia testes automatizados no diretório, então não rodei nenhuma suíte oficial.
+
+**Cálculo do score:** segue a especificação ao pé da letra. É `round(soma das compras * 0.1 + anos_ativo * 5, 2)`, e o resultado é sempre um número decimal. A função devolve um dicionário novo só com `id`, `nome`, `score` e `categoria`, e o `id` e o `nome` voltam exatamente como entraram.
+
+**Decisões nos pontos abertos (detalhadas em `SUPOSICOES.md`):**
+- **Categorias**, pelo score final já arredondado:
+
+  | Categoria | Score |
+  |---|---|
+  | Diamante | 1000 ou mais |
+  | Ouro | de 500 a menos de 1000 |
+  | Prata | de 100 a menos de 500 |
+  | Bronze | menos de 100 |
+
+  As faixas ficam numa constante (`FAIXAS_CATEGORIA`), fácil de ajustar.
+- **Compras negativas** contam como estornos e abatem a soma. Por isso o score pode ficar negativo; nesse caso o cliente fica em Bronze. Não zerei o score para não fugir da fórmula da especificação.
+- **Anos ativos negativos** são tratados como 0, ou seja, não dão pontos nem tiram.
+- **Campos extras** na entrada são ignorados e não vão para a saída.
+- **Campos ausentes:** sem `compras` ou `anos_ativo`, o valor é tratado como zero; sem `id` ou `nome`, o retorno traz `None`.
+- **Valores inválidos geram erro (`TypeError`)** em vez de serem ignorados: compras que não são números, um `anos_ativo` que não é número ou valores `True`/`False`.

@@ -1,0 +1,5 @@
+A solução foi implementada em [solucao.py](file:///tmp/bench-alyynf0t/solucao.py) através da função [`contar_subarrays_soma`](file:///tmp/bench-alyynf0t/solucao.py#L5-L72).
+
+### Resumo da abordagem
+- **Validação e casos triviais:** Verifica se `comprimento_min >= 1` e `comprimento_max >= 1` (quando informado), levantando `ValueError` caso contrário. Retorna `0` imediatamente se `nums` for vazia, `comprimento_min > len(nums)` ou `comprimento_min > comprimento_max`.
+- **Complexidade $O(n)$ com somas de prefixo e janela deslizante:** Usa `itertools.accumulate` e uma tabela de frequências (`collections.defaultdict`) mantendo apenas as somas de prefixo $P[l]$ dentro da janela válida de comprimentos $[r - \text{comprimento\_max}, r - \text{comprimento\_min}]$ para cada posição final $r$, executando em ~0,03–0,10s para $300.000$ elementos.

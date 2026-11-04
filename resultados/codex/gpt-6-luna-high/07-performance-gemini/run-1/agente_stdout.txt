@@ -1,0 +1,1 @@
+Implementei `maior_subarray_soma` em [otimizador.py](/tmp/bench-ii22qdns/otimizador.py). A solução valida os tipos e usa somas prefixadas para encontrar o maior subarray em tempo e espaço O(N). Não executei testes.

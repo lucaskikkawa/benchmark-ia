@@ -1,0 +1,1 @@
+O arquivo [solucao.py](file:///tmp/bench-jert0q06/solucao.py) foi criado com a implementação de [`pares_com_soma`](file:///tmp/bench-jert0q06/solucao.py#L1-L26) em $O(n)$, com validação estrita de tipos (`list` e `int`, rejeitando `bool`) e contagem por frequência.

@@ -1,0 +1,29 @@
+{
+ "autora": "claude",
+ "resolvedora": "grok",
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": null,
+   "rubrica_10": null
+  }
+ },
+ "obs": [
+  "gemini tentativa 1 falhou: timeout",
+  "gemini tentativa 2 falhou: timeout",
+  "só 1 juiz válido; usada só a nota dele"
+ ],
+ "rubrica_10": 8.0,
+ "nota_final_10": 9.4
+}

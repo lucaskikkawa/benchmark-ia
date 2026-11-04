@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O laço para uma posição antes do fim e deixa de fora a última janela. Vou corrigir o intervalo e conferir os casos do enunciado.A função `somas_janelas` em `janelas.py` agora devolve a soma de todas as janelas contíguas.
+
+O laço usava `range(tamanho, len(valores) - 1)` e parava antes da última janela. O limite passou a ser `len(valores)`, então cada deslize entra no resultado. Para `[1, 2, 3, 4]` com tamanho 2, o retorno é `[3, 5, 7]`.
+
+O restante permanece: janela maior que a lista devolve `[]`, tamanho zero ou negativo lança `ValueError`, a lista de entrada não muda, as somas ficam em inteiros exatos e a varredura continua O(n). Conferi esses casos e uma lista de 200.000 valores.

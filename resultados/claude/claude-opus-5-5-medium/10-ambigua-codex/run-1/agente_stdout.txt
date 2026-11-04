@@ -1,0 +1,9 @@
+Criei os dois arquivos que o enunciado pede e testei com um script rápido; não há suíte de testes no diretório.
+
+- **`organizador.py`**: a função `organizar_tarefas` devolve só as tarefas não concluídas, da prioridade maior para a menor. Cada tarefa vira um dicionário novo (cópia rasa), então a lista e os dicionários recebidos não mudam. Os campos extras são mantidos e continuam apontando para os mesmos objetos (por exemplo, a lista em `etiquetas`).
+- **`SUPOSICOES.md`**: registra as decisões que estavam em aberto:
+  - **Empates:** tarefas com a mesma prioridade ficam na ordem em que aparecem na entrada.
+  - **Entradas inválidas:** são ignoradas sem gerar erro. Conta como inválida qualquer entrada sem `titulo` de texto não vazio, sem `prioridade` inteira de 0 a 5, ou sem `concluida` do tipo bool. `True`/`False` não são aceitos como prioridade, e valores como `0`, `1` ou `"não"` não são aceitos em `concluida`.
+  - **Títulos:** ficam exatamente como vieram.
+
+No teste, o mesmo dicionário repetido na entrada gerou dois dicionários de saída separados. A tarefa concluída e a de prioridade 9 foram excluídas, e entrada vazia retornou `[]`. Uma lista com 30.000 tarefas foi processada em cerca de 0,01 s.

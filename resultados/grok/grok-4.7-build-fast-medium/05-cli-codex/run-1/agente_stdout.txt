@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede um contador de palavras em `cli.py`. Vou implementar a CLI e conferir os casos de erro, ordenação e formatos de saída.`cli.py` implementa o contador de palavras pedido. A função `main(argv=None)` devolve `0` em caso de sucesso e `2` em caso de erro, e o script encerra com esse mesmo código.
+
+- Os tokens vêm de `str.split()`. Com `--ignorar-caixa`, a contagem usa `str.casefold()`.
+- A saída ordena por contagem decrescente e, em empate, pela palavra. `--minimo` e `--top` aplicam-se depois dessa ordenação.
+- O formato padrão é `palavra<TAB>contagem`. Com `--json`, a saída é uma única linha UTF-8 terminada em quebra de linha.
+- Arquivo ausente, ilegível ou com UTF-8 inválido, argumento faltando, flag desconhecida ou `N` inválido em `--minimo` ou `--top` geram código `2`, stdout vazio e uma mensagem no stderr, sem traceback.

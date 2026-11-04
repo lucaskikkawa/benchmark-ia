@@ -1,0 +1,3 @@
+Criei [tests/test_senhas.py](/tmp/bench-ck85md6y/tests/test_senhas.py) com 61 testes para validação, pontuação e classificação, incluindo casos de borda. Não alterei `senhas.py`.
+
+Verificação: `python3 -m pytest -q tests` — **61 passaram**.

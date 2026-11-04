@@ -1,0 +1,691 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-if_2m2nc
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189d3-89ed-77c3-9d40-0ba36e1b064d
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:41:45.928964Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para implementar e verificar a solução.
+exec
+/bin/bash -lc "pwd; rg --files -g 'enunciado.md' -g 'AGENTS.md' -g '*'" in /tmp/bench-if_2m2nc
+ succeeded in 0ms:
+/tmp/bench-if_2m2nc
+enunciado.md
+fake_api.py
+
+exec
+/bin/bash -lc 'cat enunciado.md fake_api.py' in /tmp/bench-if_2m2nc
+ succeeded in 0ms:
+# Tarefa: cliente com retry, backoff e timeout para uma API simulada
+
+O diretório de trabalho contém `fake_api.py` (**não altere**), uma API de usuários simulada em
+processo, sem rede: `FakeAPI.requisitar(metodo, caminho, timeout) -> Resposta` pode devolver
+respostas 500/503/429, levantar `ErroConexao` ou `TempoEsgotado` (quando a latência simulada
+excede `timeout`), de forma determinística por `seed` ou por um `roteiro` de eventos. Leia o arquivo.
+
+Crie `cliente.py` com:
+
+```python
+class ErroAPI(Exception): ...            # base dos erros do cliente
+class NaoEncontrado(ErroAPI): ...        # recurso inexistente (404)
+class FalhaPermanente(ErroAPI): ...      # desistiu; atributo .tentativas: int
+
+class ClienteAPI:
+    def __init__(self, api, max_tentativas: int = 4, backoff_base: float = 0.5,
+                 backoff_max: float = 8.0, timeout: float = 2.0, dormir=time.sleep,
+                 orcamento_espera: float | None = None): ...
+    def obter_usuario(self, id_usuario: int) -> dict: ...
+    def obter_varios(self, ids) -> dict[int, dict | None]: ...
+```
+
+`api` é qualquer objeto com `requisitar(metodo, caminho, timeout)` que retorna um objeto com
+`.status`, `.corpo` e `.headers` (como `fake_api.Resposta`) ou levanta exceções.
+`dormir` é a função usada para esperar entre tentativas (os testes injetam uma função falsa).
+
+## Regras
+
+- `__init__`: `ValueError` se `max_tentativas < 1`, `timeout <= 0`, `backoff_base < 0`, `backoff_max < 0`
+  ou `orcamento_espera < 0`. `max_tentativas` pode ser grande (ex.: `2000`).
+- `obter_usuario(id)`: `ValueError` (sem nenhuma requisição) se `id` não for `int` (bool não vale) ou for `< 1`.
+  Cada tentativa chama `api.requisitar("GET", f"/usuarios/{id}", timeout=self.timeout)`.
+  - `200` → retorna `corpo`.
+  - `404` → levanta `NaoEncontrado` imediatamente (sem retry).
+  - Qualquer outro status que não seja `200`, `404` nem retentável (ex.: `400`, `403`, `301`, `501`)
+    → levanta `ErroAPI` imediatamente (sem retry).
+  - Os `ErroAPI` levantados por causa de um status HTTP (inclusive `NaoEncontrado`) têm o atributo
+    `.status` com o código recebido.
+  - **Retentáveis:** status `429`, `500`, `502`, `503`, `504` e as exceções `fake_api.ErroConexao` e
+    `fake_api.TempoEsgotado`. Qualquer outra exceção da `api` propaga sem retry.
+  - No máximo `max_tentativas` requisições no total. Antes da tentativa `n + 1` (após a falha `n`,
+    com `n` começando em 1) chame `dormir(espera)` **uma vez**, com
+    `espera = min(backoff_max, backoff_base * 2 ** (n - 1))` (calculada sem estourar, mesmo com `n` na
+    casa dos milhares). Se a falha foi `429` com header `Retry-After` numérico (segundos, ex. `"2"` ou
+    `"1.5"`; o nome do header não diferencia maiúsculas/minúsculas, ex. `retry-after`), use
+    `espera = min(backoff_max, float(Retry-After))`; se o header faltar, não for numérico ou não for um
+    número finito `>= 0` (ex. `"-1"`, `"nan"`, `"inf"`), use o backoff calculado.
+  - Não chame `dormir` após a última tentativa nem antes da primeira.
+  - **Orçamento:** se `orcamento_espera` não for `None` e a próxima espera fizer a soma das esperas desta
+    chamada de `obter_usuario` passar de `orcamento_espera` (estritamente maior), **não** espere: desista na
+    hora com `FalhaPermanente`.
+  - Esgotadas as tentativas (ou o orçamento) → `FalhaPermanente` com `.tentativas` = número de requisições
+    feitas nesta chamada; se a última falha foi uma exceção, encadeie-a (`raise ... from erro`); se foi
+    um status HTTP, `__cause__` deve ser `None`.
+- `obter_varios(ids)`: `ids` é qualquer iterável (inclusive gerador). Valida **todos** os ids antes de
+  qualquer requisição (um id inválido → `ValueError` sem nenhuma requisição). Retorna dict `id -> usuário`
+  na ordem de primeira aparição; ids com `NaoEncontrado` mapeiam para `None`; ids repetidos são
+  requisitados uma única vez; `FalhaPermanente` e outros `ErroAPI` propagam.
+
+Use apenas a biblioteca padrão. Exemplo de uso:
+
+```python
+from fake_api import FakeAPI
+from cliente import ClienteAPI
+cliente = ClienteAPI(FakeAPI(seed=1, taxa_falha=0.4), max_tentativas=6, dormir=lambda s: None)
+cliente.obter_usuario(7)   # {"id": 7, "nome": "Usuario 7"}
+```
+"""API HTTP de usuários simulada em processo (sem rede, sem sleep real).
+
+Falhas e lentidão são determinísticas: vêm de um ``roteiro`` explícito de
+eventos ou são sorteadas por ``random.Random(seed)``.
+
+Não altere este arquivo.
+"""
+
+import random
+import re
+from dataclasses import dataclass, field
+
+_CAMINHO_USUARIO = re.compile(r"/usuarios/(\d+)")
+MAX_ID = 1000
+
+# Eventos possíveis por requisição.
+OK = "ok"            # resposta normal (200 ou 404, conforme o caminho)
+ERRO_500 = "500"     # Resposta(500)
+ERRO_503 = "503"     # Resposta(503)
+ERRO_429 = "429"     # Resposta(429) com header Retry-After
+LENTO = "lento"      # demora latencia_lenta segundos (simulados)
+CONEXAO = "conexao"  # levanta ErroConexao
+FALHAS = (ERRO_500, ERRO_503, ERRO_429, LENTO, CONEXAO)
+
+
+class ErroConexao(Exception):
+    """Falha de conexão simulada."""
+
+
+class TempoEsgotado(Exception):
+    """A resposta demoraria mais que o timeout pedido."""
+
+
+@dataclass
+class Resposta:
+    status: int
+    corpo: dict | None = None
+    headers: dict[str, str] = field(default_factory=dict)
+
+
+class FakeAPI:
+    """Servidor simulado.
+
+    Args:
+        seed: semente do sorteio de falhas (usado quando não há roteiro).
+        taxa_falha: probabilidade de cada requisição sortear um evento de FALHAS.
+        latencia_normal: segundos simulados de uma resposta normal.
+        latencia_lenta: segundos simulados do evento LENTO.
+        retry_after: valor do header Retry-After nas respostas 429.
+        roteiro: sequência de eventos consumidos em ordem, um por requisição;
+            quando acaba, as requisições seguintes são OK. Se fornecido, o
+            sorteio por seed não é usado.
+
+    Atributos de inspeção:
+        chamadas: lista de (metodo, caminho, timeout) de cada requisição.
+        eventos: lista do evento aplicado a cada requisição.
+        tempo_simulado: soma das latências simuladas.
+    """
+
+    def __init__(
+        self,
+        seed: int = 0,
+        taxa_falha: float = 0.3,
+        latencia_normal: float = 0.05,
+        latencia_lenta: float = 5.0,
+        retry_after: str = "2",
+        roteiro: list[str] | None = None,
+    ) -> None:
+        self._rng = random.Random(seed)
+        self.taxa_falha = taxa_falha
+        self.latencia_normal = latencia_normal
+        self.latencia_lenta = latencia_lenta
+        self.retry_after = retry_after
+        self._roteiro = list(roteiro) if roteiro is not None else None
+        self.chamadas: list[tuple[str, str, float]] = []
+        self.eventos: list[str] = []
+        self.tempo_simulado = 0.0
+
+    def _proximo_evento(self) -> str:
+        if self._roteiro is not None:
+            return self._roteiro.pop(0) if self._roteiro else OK
+        if self._rng.random() < self.taxa_falha:
+            return self._rng.choice(FALHAS)
+        return OK
+
+    def requisitar(self, metodo: str, caminho: str, timeout: float) -> Resposta:
+        """Executa uma requisição simulada.
+
+        Raises:
+            ErroConexao: evento CONEXAO.
+            TempoEsgotado: latência simulada maior que ``timeout``.
+        """
+        self.chamadas.append((metodo, caminho, timeout))
+        evento = self._proximo_evento()
+        self.eventos.append(evento)
+
+        if evento == CONEXAO:
+            raise ErroConexao("conexão recusada (simulada)")
+        if evento == ERRO_500:
+            return Resposta(500, {"erro": "erro interno"})
+        if evento == ERRO_503:
+            return Resposta(503, {"erro": "serviço indisponível"})
+        if evento == ERRO_429:
+            return Resposta(429, {"erro": "muitas requisições"}, {"Retry-After": self.retry_after})
+
+        latencia = self.latencia_lenta if evento == LENTO else self.latencia_normal
+        if latencia > timeout:
+            self.tempo_simulado += timeout
+            raise TempoEsgotado(f"sem resposta em {timeout}s")
+        self.tempo_simulado += latencia
+        return self._responder(metodo, caminho)
+
+    @staticmethod
+    def _responder(metodo: str, caminho: str) -> Resposta:
+        if metodo != "GET":
+            return Resposta(405, {"erro": "método não permitido"})
+        casamento = _CAMINHO_USUARIO.fullmatch(caminho)
+        if casamento is None or not 1 <= int(casamento.group(1)) <= MAX_ID:
+            return Resposta(404, {"erro": "não encontrado"})
+        id_usuario = int(casamento.group(1))
+        return Resposta(200, {"id": id_usuario, "nome": f"Usuario {id_usuario}"})
+
+apply patch
+patch: completed
+/tmp/bench-if_2m2nc/cliente.py
+diff --git a/cliente.py b/cliente.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..784b949a1614e6dfe98ad5414c2f2792cb7c9b2b
+--- /dev/null
++++ b/cliente.py
+@@ -0,0 +1,124 @@
++"""Cliente da API de usuários com tentativas e espera limitadas."""
++
++import math
++import time
++
++from fake_api import ErroConexao, TempoEsgotado
++
++
++class ErroAPI(Exception):
++    """Erro ao consultar a API; status é preenchido para erros HTTP."""
++
++    def __init__(self, mensagem, status=None):
++        super().__init__(mensagem)
++        self.status = status
++
++
++class NaoEncontrado(ErroAPI):
++    """O usuário solicitado não existe."""
++
++
++class FalhaPermanente(ErroAPI):
++    """As tentativas ou o orçamento de espera foram esgotados."""
++
++    def __init__(self, mensagem, tentativas, status=None):
++        super().__init__(mensagem, status=status)
++        self.tentativas = tentativas
++
++
++class ClienteAPI:
++    _STATUS_RETENTAVEIS = frozenset({429, 500, 502, 503, 504})
++
++    def __init__(self, api, max_tentativas: int = 4,
++                 backoff_base: float = 0.5, backoff_max: float = 8.0,
++                 timeout: float = 2.0, dormir=time.sleep,
++                 orcamento_espera: float | None = None):
++        if max_tentativas < 1:
++            raise ValueError("max_tentativas deve ser pelo menos 1")
++        if timeout <= 0:
++            raise ValueError("timeout deve ser positivo")
++        if backoff_base < 0 or backoff_max < 0:
++            raise ValueError("os valores de backoff não podem ser negativos")
++        if orcamento_espera is not None and orcamento_espera < 0:
++            raise ValueError("orcamento_espera não pode ser negativo")
++        self.api = api
++        self.max_tentativas = max_tentativas
++        self.backoff_base = backoff_base
++        self.backoff_max = backoff_max
++        self.timeout = timeout
++        self.dormir = dormir
++        self.orcamento_espera = orcamento_espera
++
++    @staticmethod
++    def _validar_id(id_usuario):
++        if (not isinstance(id_usuario, int)
++                or isinstance(id_usuario, bool) or id_usuario < 1):
++            raise ValueError("id_usuario deve ser um inteiro positivo")
++
++    def _espera_http(self, resposta, backoff):
++        if resposta.status == 429:
++            for nome, valor in resposta.headers.items():
++                if nome.lower() == "retry-after":
++                    try:
++                        segundos = float(valor)
++                    except (TypeError, ValueError, OverflowError):
++                        break
++                    if math.isfinite(segundos) and segundos >= 0:
++                        return min(self.backoff_max, segundos)
++                    break
++        return backoff
++
++    def obter_usuario(self, id_usuario: int) -> dict:
++        self._validar_id(id_usuario)
++        total_espera = 0.0
++        backoff = min(self.backoff_base, self.backoff_max)
++
++        for tentativa in range(1, self.max_tentativas + 1):
++            ultimo_erro = None
++            status = None
++            espera = backoff
++            try:
++                resposta = self.api.requisitar(
++                    "GET", f"/usuarios/{id_usuario}", timeout=self.timeout)
++            except (ErroConexao, TempoEsgotado) as erro:
++                ultimo_erro = erro
++            else:
++                status = resposta.status
++                if status == 200:
++                    return resposta.corpo
++                if status == 404:
++                    raise NaoEncontrado("Usuário não encontrado", status=status)
++                if status not in self._STATUS_RETENTAVEIS:
++                    raise ErroAPI(f"Resposta HTTP {status}", status=status)
++                espera = self._espera_http(resposta, backoff)
++
++            if tentativa == self.max_tentativas:
++                raise FalhaPermanente(
++                    "Número máximo de tentativas atingido", tentativa,
++                    status=status) from ultimo_erro
++            if (self.orcamento_espera is not None
++                    and total_espera + espera > self.orcamento_espera):
++                raise FalhaPermanente(
++                    "Orçamento de espera esgotado", tentativa,
++                    status=status) from ultimo_erro
++
++            self.dormir(espera)
++            total_espera += espera
++            # Dobra apenas enquanto abaixo do teto, sem criar 2 ** tentativa.
++            if backoff >= self.backoff_max / 2:
++                backoff = self.backoff_max
++            else:
++                backoff *= 2
++
++    def obter_varios(self, ids) -> dict[int, dict | None]:
++        unicos = {}
++        for id_usuario in ids:
++            self._validar_id(id_usuario)
++            unicos.setdefault(id_usuario, None)
++
++        for id_usuario in unicos:
++            try:
++                unicos[id_usuario] = self.obter_usuario(id_usuario)
++            except NaoEncontrado:
++                unicos[id_usuario] = None
++        return unicos
+
+codex
+O cliente está implementado, incluindo o cálculo de backoff sem potências grandes e a validação de todos os IDs antes das consultas em lote. Vou verificar os limites de tentativas e de orçamento, o `Retry-After` e o encadeamento das exceções.
+apply patch
+patch: completed
+/tmp/bench-if_2m2nc/test_cliente.py
+diff --git a/cliente.py b/cliente.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..784b949a1614e6dfe98ad5414c2f2792cb7c9b2b
+--- /dev/null
++++ b/cliente.py
+@@ -0,0 +1,124 @@
++"""Cliente da API de usuários com tentativas e espera limitadas."""
++
++import math
++import time
++
++from fake_api import ErroConexao, TempoEsgotado
++
++
++class ErroAPI(Exception):
++    """Erro ao consultar a API; status é preenchido para erros HTTP."""
++
++    def __init__(self, mensagem, status=None):
++        super().__init__(mensagem)
++        self.status = status
++
++
++class NaoEncontrado(ErroAPI):
++    """O usuário solicitado não existe."""
++
++
++class FalhaPermanente(ErroAPI):
++    """As tentativas ou o orçamento de espera foram esgotados."""
++
++    def __init__(self, mensagem, tentativas, status=None):
++        super().__init__(mensagem, status=status)
++        self.tentativas = tentativas
++
++
++class ClienteAPI:
++    _STATUS_RETENTAVEIS = frozenset({429, 500, 502, 503, 504})
++
++    def __init__(self, api, max_tentativas: int = 4,
++                 backoff_base: float = 0.5, backoff_max: float = 8.0,
++                 timeout: float = 2.0, dormir=time.sleep,
++                 orcamento_espera: float | None = None):
++        if max_tentativas < 1:
++            raise ValueError("max_tentativas deve ser pelo menos 1")
++        if timeout <= 0:
++            raise ValueError("timeout deve ser positivo")
++        if backoff_base < 0 or backoff_max < 0:
++            raise ValueError("os valores de backoff não podem ser negativos")
++        if orcamento_espera is not None and orcamento_espera < 0:
++            raise ValueError("orcamento_espera não pode ser negativo")
++        self.api = api
++        self.max_tentativas = max_tentativas
++        self.backoff_base = backoff_base
++        self.backoff_max = backoff_max
++        self.timeout = timeout
++        self.dormir = dormir
++        self.orcamento_espera = orcamento_espera
++
++    @staticmethod
++    def _validar_id(id_usuario):
++        if (not isinstance(id_usuario, int)
++                or isinstance(id_usuario, bool) or id_usuario < 1):
++            raise ValueError("id_usuario deve ser um inteiro positivo")
++
++    def _espera_http(self, resposta, backoff):
++        if resposta.status == 429:
++            for nome, valor in resposta.headers.items():
++                if nome.lower() == "retry-after":
++                    try:
++                        segundos = float(valor)
++                    except (TypeError, ValueError, OverflowError):
++                        break
++                    if math.isfinite(segundos) and segundos >= 0:
++                        return min(self.backoff_max, segundos)
++                    break
++        return backoff
++
++    def obter_usuario(self, id_usuario: int) -> dict:
++        self._validar_id(id_usuario)
++        total_espera = 0.0
++        backoff = min(self.backoff_base, self.backoff_max)
++
++        for tentativa in range(1, self.max_tentativas + 1):
++            ultimo_erro = None
++            status = None
++            espera = backoff
++            try:
++                resposta = self.api.requisitar(
++                    "GET", f"/usuarios/{id_usuario}", timeout=self.timeout)
++            except (ErroConexao, TempoEsgotado) as erro:
++                ultimo_erro = erro
++            else:
++                status = resposta.status
++                if status == 200:
++                    return resposta.corpo
++                if status == 404:
++                    raise NaoEncontrado("Usuário não encontrado", status=status)
++                if status not in self._STATUS_RETENTAVEIS:
++                    raise ErroAPI(f"Resposta HTTP {status}", status=status)
++                espera = self._espera_http(resposta, backoff)
++
++            if tentativa == self.max_tentativas:
++                raise FalhaPermanente(
++                    "Número máximo de tentativas atingido", tentativa,
++                    status=status) from ultimo_erro
++            if (self.orcamento_espera is not None
++                    and total_espera + espera > self.orcamento_espera):
++                raise FalhaPermanente(
++                    "Orçamento de espera esgotado", tentativa,
++                    status=status) from ultimo_erro
++
++            self.dormir(espera)
++            total_espera += espera
++            # Dobra apenas enquanto abaixo do teto, sem criar 2 ** tentativa.
++            if backoff >= self.backoff_max / 2:
++                backoff = self.backoff_max
++            else:
++                backoff *= 2
++
++    def obter_varios(self, ids) -> dict[int, dict | None]:
++        unicos = {}
++        for id_usuario in ids:
++            self._validar_id(id_usuario)
++            unicos.setdefault(id_usuario, None)
++
++        for id_usuario in unicos:
++            try:
++                unicos[id_usuario] = self.obter_usuario(id_usuario)
++            except NaoEncontrado:
++                unicos[id_usuario] = None
++        return unicos
+diff --git a/test_cliente.py b/test_cliente.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..9ae5a9d0ae2406b75e4f768a5a408d3a99ea7653
+--- /dev/null
++++ b/test_cliente.py
+@@ -0,0 +1,163 @@
++import unittest
++
++from cliente import ClienteAPI, ErroAPI, FalhaPermanente, NaoEncontrado
++from fake_api import ErroConexao, FakeAPI, Resposta, TempoEsgotado
++
++
++class APIComRoteiro:
++    def __init__(self, eventos):
++        self.eventos = iter(eventos)
++        self.chamadas = []
++
++    def requisitar(self, metodo, caminho, timeout):
++        self.chamadas.append((metodo, caminho, timeout))
++        evento = next(self.eventos)
++        if isinstance(evento, Exception):
++            raise evento
++        return evento
++
++
++class TestCliente(unittest.TestCase):
++    def test_validacao_configuracao(self):
++        for config in ({"max_tentativas": 0}, {"timeout": 0},
++                       {"timeout": -1}, {"backoff_base": -1},
++                       {"backoff_max": -1}, {"orcamento_espera": -1}):
++            with self.subTest(config=config), self.assertRaises(ValueError):
++                ClienteAPI(FakeAPI(), **config)
++
++    def test_ids_invalidos_sem_requisicoes(self):
++        api = FakeAPI(roteiro=[])
++        cliente = ClienteAPI(api)
++        for valor in (True, False, 0, -1, 1.0, "1", None, [], {}):
++            with self.subTest(valor=valor), self.assertRaises(ValueError):
++                cliente.obter_usuario(valor)
++            with self.assertRaises(ValueError):
++                cliente.obter_varios(iter([1, 2, valor]))
++        self.assertEqual(api.chamadas, [])
++
++    def test_sucesso_apos_falhas_e_timeout(self):
++        api = FakeAPI(roteiro=["500", "conexao", "lento", "ok"])
++        esperas = []
++        cliente = ClienteAPI(api, timeout=1, dormir=esperas.append)
++        self.assertEqual(cliente.obter_usuario(7), {"id": 7, "nome": "Usuario 7"})
++        self.assertEqual(esperas, [0.5, 1, 2])
++        self.assertEqual(api.chamadas, [("GET", "/usuarios/7", 1)] * 4)
++
++    def test_status_sem_retry(self):
++        for status in (404, 400, 403, 301, 501):
++            with self.subTest(status=status):
++                api = APIComRoteiro([Resposta(status)])
++                esperas = []
++                classe = NaoEncontrado if status == 404 else ErroAPI
++                with self.assertRaises(classe) as ctx:
++                    ClienteAPI(api, dormir=esperas.append).obter_usuario(1)
++                self.assertEqual(ctx.exception.status, status)
++                self.assertEqual(len(api.chamadas), 1)
++                self.assertEqual(esperas, [])
++
++    def test_todos_status_retentaveis(self):
++        for status in (429, 500, 502, 503, 504):
++            with self.subTest(status=status):
++                api = APIComRoteiro([Resposta(status), Resposta(200, {"id": 1})])
++                esperas = []
++                self.assertEqual(
++                    ClienteAPI(api, dormir=esperas.append).obter_usuario(1), {"id": 1})
++                self.assertEqual(esperas, [0.5])
++
++    def test_retry_after(self):
++        for valor, esperado in (("2", 2), ("1.5", 1.5), ("100", 8),
++                                ("0", 0), ("-1", 0.5), ("nan", 0.5),
++                                ("inf", 0.5), ("abc", 0.5), (None, 0.5)):
++            with self.subTest(valor=valor):
++                api = APIComRoteiro([
++                    Resposta(429, headers={"rEtRy-AfTeR": valor}),
++                    Resposta(500), Resposta(200, {})])
++                esperas = []
++                ClienteAPI(api, dormir=esperas.append).obter_usuario(1)
++                self.assertEqual(esperas, [esperado, 1])
++
++    def test_causa_da_ultima_falha(self):
++        for ultimo in (Resposta(503), ErroConexao("conexão"), TempoEsgotado("tempo")):
++            with self.subTest(ultimo=ultimo):
++                api = APIComRoteiro([ErroConexao(), ultimo])
++                esperas = []
++                with self.assertRaises(FalhaPermanente) as ctx:
++                    ClienteAPI(api, max_tentativas=2,
++                               dormir=esperas.append).obter_usuario(1)
++                self.assertEqual(ctx.exception.tentativas, 2)
++                self.assertIs(ctx.exception.__cause__,
++                              ultimo if isinstance(ultimo, Exception) else None)
++                self.assertEqual(esperas, [0.5])
++
++    def test_excecao_nao_retentavel(self):
++        erro = RuntimeError("falha inesperada")
++        api = APIComRoteiro([erro])
++        esperas = []
++        with self.assertRaises(RuntimeError) as ctx:
++            ClienteAPI(api, dormir=esperas.append).obter_usuario(1)
++        self.assertIs(ctx.exception, erro)
++        self.assertEqual(esperas, [])
++
++    def test_orcamento_inclusive_e_reiniciado(self):
++        api = FakeAPI(roteiro=["500", "500", "ok", "500", "500", "ok"])
++        esperas = []
++        cliente = ClienteAPI(api, dormir=esperas.append, orcamento_espera=1.5)
++        cliente.obter_usuario(1)
++        cliente.obter_usuario(2)
++        self.assertEqual(esperas, [0.5, 1, 0.5, 1])
++
++    def test_orcamento_esgotado(self):
++        for ultimo in (Resposta(429, headers={"Retry-After": "2"}), ErroConexao()):
++            with self.subTest(ultimo=ultimo):
++                api = APIComRoteiro([ultimo])
++                esperas = []
++                with self.assertRaises(FalhaPermanente) as ctx:
++                    ClienteAPI(api, orcamento_espera=0,
++                               dormir=esperas.append).obter_usuario(1)
++                self.assertEqual(ctx.exception.tentativas, 1)
++                self.assertIs(ctx.exception.__cause__,
++                              ultimo if isinstance(ultimo, Exception) else None)
++                self.assertEqual(esperas, [])
++
++    def test_milhares_de_tentativas(self):
++        for base, teto in ((0.5, 8), (0, 8), (2, 0), (1e308, 1.7e308)):
++            with self.subTest(base=base, teto=teto):
++                api = APIComRoteiro([Resposta(500)] * 2000)
++                esperas = []
++                with self.assertRaises(FalhaPermanente) as ctx:
++                    ClienteAPI(api, max_tentativas=2000, backoff_base=base,
++                               backoff_max=teto, dormir=esperas.append).obter_usuario(1)
++                self.assertEqual(ctx.exception.tentativas, 2000)
++                self.assertEqual(len(esperas), 1999)
++                self.assertTrue(all(0 <= espera <= teto for espera in esperas))
++                self.assertEqual(esperas[-1], teto if base else 0)
++
++    def test_uma_tentativa_sem_espera(self):
++        esperas = []
++        with self.assertRaises(FalhaPermanente) as ctx:
++            ClienteAPI(FakeAPI(roteiro=["500"]), max_tentativas=1,
++                       dormir=esperas.append).obter_usuario(1)
++        self.assertEqual(ctx.exception.tentativas, 1)
++        self.assertEqual(esperas, [])
++
++    def test_varios_ordem_duplicados_e_404(self):
++        api = FakeAPI(roteiro=[])
++        cliente = ClienteAPI(api)
++        resultado = cliente.obter_varios(i for i in (7, 1001, 7, 2, 1001))
++        self.assertEqual(list(resultado), [7, 1001, 2])
++        self.assertIsNone(resultado[1001])
++        self.assertEqual(resultado[2]["id"], 2)
++        self.assertEqual(len(api.chamadas), 3)
++        self.assertEqual(cliente.obter_varios(iter([])), {})
++
++    def test_varios_propaga_erros(self):
++        for status, classe in ((500, FalhaPermanente), (403, ErroAPI)):
++            with self.subTest(status=status):
++                api = APIComRoteiro([Resposta(status)])
++                with self.assertRaises(classe):
++                    ClienteAPI(api, max_tentativas=1).obter_varios([1, 2])
++                self.assertEqual(len(api.chamadas), 1)
++
++
++if __name__ == "__main__":
++    unittest.main()
+
+exec
+/bin/bash -lc 'python -m unittest -v' in /tmp/bench-if_2m2nc
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc 'python3 -m unittest -v' in /tmp/bench-if_2m2nc
+ succeeded in 0ms:
+test_causa_da_ultima_falha (test_cliente.TestCliente.test_causa_da_ultima_falha) ... ok
+test_excecao_nao_retentavel (test_cliente.TestCliente.test_excecao_nao_retentavel) ... ok
+test_ids_invalidos_sem_requisicoes (test_cliente.TestCliente.test_ids_invalidos_sem_requisicoes) ... ok
+test_milhares_de_tentativas (test_cliente.TestCliente.test_milhares_de_tentativas) ... ok
+test_orcamento_esgotado (test_cliente.TestCliente.test_orcamento_esgotado) ... ok
+test_orcamento_inclusive_e_reiniciado (test_cliente.TestCliente.test_orcamento_inclusive_e_reiniciado) ... ok
+test_retry_after (test_cliente.TestCliente.test_retry_after) ... ok
+test_status_sem_retry (test_cliente.TestCliente.test_status_sem_retry) ... ok
+test_sucesso_apos_falhas_e_timeout (test_cliente.TestCliente.test_sucesso_apos_falhas_e_timeout) ... ok
+test_todos_status_retentaveis (test_cliente.TestCliente.test_todos_status_retentaveis) ... ok
+test_uma_tentativa_sem_espera (test_cliente.TestCliente.test_uma_tentativa_sem_espera) ... ok
+test_validacao_configuracao (test_cliente.TestCliente.test_validacao_configuracao) ... ok
+test_varios_ordem_duplicados_e_404 (test_cliente.TestCliente.test_varios_ordem_duplicados_e_404) ... ok
+test_varios_propaga_erros (test_cliente.TestCliente.test_varios_propaga_erros) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.005s
+
+OK
+
+codex
+Implementado em `cliente.py`, com retry, backoff, timeout, orçamento de espera e consultas em lote conforme o enunciado.
+
+Criado `test_cliente.py`: os 14 testes passaram com `python3 -m unittest -v`, incluindo 2.000 tentativas sem overflow.
+
+`fake_api.py` permaneceu intacto.
+tokens used
+18,746

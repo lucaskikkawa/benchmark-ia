@@ -1,0 +1,24 @@
+............F....                                                        [100%]
+=================================== FAILURES ===================================
+____________ test_mutante_morto[m10_invalida_so_espaco_tab_quebra] _____________
+
+mutante = PosixPath('/tmp/bench-wdo74b3i/testes_ocultos/mutantes/m10_invalida_so_espaco_tab_quebra.py')
+resultado_original = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '-m', 'pytest', '-q', '-x', '-p', 'no:cacheprov...out='.............................................................            [100%]\n61 passed in 0.03s\n', stderr='')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-243/test_mutante_morto_m10_invalid0')
+
+    @pytest.mark.parametrize("mutante", MUTANTES, ids=[m.stem for m in MUTANTES])
+    def test_mutante_morto(mutante, resultado_original, tmp_path):
+        # Só conta como morto se a suíte é válida (passa no módulo correto).
+        if resultado_original is None or resultado_original.returncode != 0:
+            pytest.fail("suíte do modelo não passa no módulo correto; mutante não pode ser considerado morto")
+        resultado = rodar_suite(mutante, tmp_path)
+        # 1 = algum teste falhou. 0 = mutante sobreviveu; 5 = nenhum teste coletado; -1 = timeout.
+>       assert resultado.returncode == 1, f"mutante sobreviveu (returncode={resultado.returncode})"
+E       AssertionError: mutante sobreviveu (returncode=0)
+E       assert 0 == 1
+E        +  where 0 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '-m', 'pytest', '-q', '-x', '-p', 'no:cacheprov...out='.............................................................            [100%]\n61 passed in 0.03s\n', stderr='').returncode
+
+testes_ocultos/test_mutacao.py:67: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_mutacao.py::test_mutante_morto[m10_invalida_so_espaco_tab_quebra]
+1 failed, 16 passed in 2.78s

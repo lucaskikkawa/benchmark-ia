@@ -1,0 +1,1 @@
+O arquivo [pares.py](file:///tmp/bench-qmgtp7rs/pares.py) foi criado com a função [`contar_pares`](file:///tmp/bench-qmgtp7rs/pares.py#L5-L17), contabilizando as frequências em uma única passagem sobre o iterável com complexidade de tempo esperado $O(n)$ e memória $O(k)$ (onde $k$ é a quantidade de valores distintos) e aritmética inteira exata.

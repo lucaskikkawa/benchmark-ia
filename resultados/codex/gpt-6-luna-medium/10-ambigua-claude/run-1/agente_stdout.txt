@@ -1,0 +1,1 @@
+Implementei a normalização e extração de telefones em [telefones.py](/tmp/bench-08846bmd/telefones.py) e registrei as decisões sobre casos não especificados em [SUPOSICOES.md](/tmp/bench-08846bmd/SUPOSICOES.md).

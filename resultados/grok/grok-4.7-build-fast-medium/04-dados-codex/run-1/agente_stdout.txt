@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede um resumo de vendas em CSV. Vou ver o diretório e implementar `vendas.py` conforme as regras.Vou criar `vendas.py` com validação completa antes de gravar o JSON e, em seguida, testar os casos do enunciado.

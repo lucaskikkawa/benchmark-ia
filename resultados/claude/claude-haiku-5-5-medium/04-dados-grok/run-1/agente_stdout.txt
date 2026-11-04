@@ -1,0 +1,9 @@
+Criei `solucao.py` neste diretório com a função `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão. Não deixei nenhum arquivo de amostra.
+
+Testei com um CSV e um SLA temporários, criados numa subpasta que apaguei depois. O resultado bateu com o exemplo do enunciado (`n1`: 2 chamados, 1 estourado, média 45, pior `a1`). Também confirmei que `a10` vence `a2` no empate, que `" São Paulo"` e `"São Paulo"` viram uma equipe só, que um BOM no cabeçalho gera `ValueError` e que arquivo ausente gera `FileNotFoundError`. Não testei a suíte de testes completa porque o diretório não tem nenhuma.
+
+Escolhas de implementação que você pode querer revisar:
+- **Ordem de validação:** o CSV é lido antes do SLA. Se os dois estiverem inválidos, o erro reportado é o do CSV.
+- **Linhas com número de colunas diferente:** só são ignoradas se todos os campos estiverem vazios. Qualquer outra linha com número de colunas diferente de cinco gera `ValueError`.
+- **Erros de `csv`:** são convertidos em `ValueError`, para cumprir a regra de que o erro de entrada deve ser `ValueError`.
+- **Pasta de saída:** o código não cria pastas intermediárias. Se `caminho_saida` apontar para uma pasta que não existe, o `open` levanta `FileNotFoundError`.

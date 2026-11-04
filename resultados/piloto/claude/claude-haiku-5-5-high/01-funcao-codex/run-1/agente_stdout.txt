@@ -1,0 +1,5 @@
+Criei `solucao.py` neste diretório com `unir_intervalos`, e os testes que rodei passaram.
+
+A implementação lê o iterável uma única vez, valida cada par (lança `ValueError` se início > fim), ordena uma cópia e funde os intervalos quando `inicio <= fim` do último intervalo acumulado. Assim intervalos que se tocam em uma extremidade se fundem, e `(1, 2)` e `(3, 4)` continuam separados. A entrada original não é alterada.
+
+Verifiquei com `python3 -I`: o exemplo do enunciado (`[(1, 8), (10, 10)]`), entrada vazia, separação por uma unidade, toque em extremidade, duplicatas, intervalos negativos, gerador consumido uma vez, não-modificação da lista de entrada e o `ValueError`. Não criei um arquivo de testes separado, já que o enunciado pede só a solução.

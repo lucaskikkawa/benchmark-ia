@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rodada 1 — mock ranking</title><style>
+:root{--bg:#FFF8EC;--card:#fff;--ink:#2B2340;--ink2:#6B6280;--sun:#FFD23F;--orange:#FF9F1C;--up:#2FB86B;--down:#E5484D;
+  --claude:#E06A1E;--codex:#C3C8D0;--gemini:#3B6FE0;--grok:#1C1B22;--line:#E7E0F0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden}
+body{background:var(--bg);background-image:radial-gradient(rgba(43,35,64,.07) 1.5px,transparent 1.6px);background-size:18px 18px;
+  color:var(--ink);font-family:Nunito,ui-rounded,system-ui,sans-serif;font-variant-numeric:tabular-nums;position:relative}
+.f{font-family:Fredoka,Nunito,sans-serif}
+.box{background:var(--card);border:3px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink)}
+header{padding:14px 16px 0;display:flex;align-items:center;gap:10px}
+.bubble{position:relative;background:var(--sun);border:3px solid var(--ink);border-radius:18px;padding:6px 14px 4px;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink)}
+.bubble h1{font-family:Fredoka,sans-serif;font-weight:700;font-size:30px;line-height:1}
+.bubble:after{content:"";position:absolute;right:-12px;bottom:6px;width:16px;height:16px;background:var(--sun);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(-45deg)}
+.bubble.sm{padding:3px 10px 2px;border-radius:14px}.bubble.sm h1{font-size:20px}.bubble.sm:after{width:12px;height:12px;right:-9px;bottom:4px}
+.sub{font-size:12px;color:var(--ink2);font-weight:700;line-height:1.25}
+.crew{display:flex;gap:2px;margin-left:auto}.crew svg{width:34px;height:34px}
+.pill{margin-left:auto;font-size:11px;font-weight:800;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:2px 8px;box-shadow:2px 2px 0 var(--ink);white-space:nowrap}
+h2{font-family:Fredoka,sans-serif;font-size:20px;margin:12px 16px 6px;display:flex;align-items:center;gap:8px;line-height:1.1}
+h2 .tag{font-family:Nunito;font-size:11px;font-weight:800;background:var(--sun);border:2px solid var(--ink);border-radius:10px;padding:1px 7px;transform:rotate(2deg)}
+h3{font-family:Fredoka,sans-serif;font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+h3 small{font-family:Nunito;font-size:11px;font-weight:800;color:var(--ink2)}
+.card{margin:8px 20px 0 16px;padding:8px 12px}
+.chip{display:inline-block;font-size:10px;font-weight:800;border:2px solid var(--ink);border-radius:8px;padding:0 5px;margin-left:3px;vertical-align:1px;background:#fff;line-height:1.35}
+.chip.high{background:repeating-linear-gradient(45deg,#fff 0 3px,#E7E0F0 3px 6px)}
+.leg{display:flex;gap:12px;font-size:11px;font-weight:800;color:var(--ink2);align-items:center;flex-wrap:wrap}
+.leg i{display:inline-block;width:12px;height:12px;border:2px solid var(--ink);border-radius:50%;vertical-align:-2px;margin-right:3px}
+.tip{margin:8px 20px 0 16px;padding:5px 10px;line-height:1.2;display:flex;gap:8px;align-items:center;font-size:12px;font-weight:700;background:#FFF3C4;border-radius:16px}
+.tip svg{flex:none}
+.seg{display:flex;margin:0 20px 0 16px;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.seg span{flex:1;text-align:center;font-size:11px;font-weight:800;padding:4px 2px;line-height:1.15}
+.seg span+span{border-left:2px solid var(--ink)}.seg .on{background:var(--sun)}
+.sw{flex:none;display:inline-block;width:38px;height:22px;border-radius:12px;border:3px solid var(--ink);background:#EDE6F5;position:relative}
+.sw:after{content:"";position:absolute;top:1px;left:1px;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--ink)}
+.sw.on{background:var(--up)}.sw.on:after{left:17px}
+nav{position:absolute;left:10px;right:10px;bottom:8px;height:56px;display:flex;justify-content:space-around;align-items:center;border-radius:22px;background:var(--ink);box-shadow:0 4px 0 #0E0B18}
+nav a{color:#fff;text-decoration:none;font-size:10px;font-weight:800;text-align:center;line-height:1.2;width:62px;border:2px solid transparent;padding:3px 0;border-radius:14px}
+nav a span{display:block;font-size:20px}
+nav a.on{background:var(--sun);color:var(--ink);border-color:#fff}
+svg text{font-family:Nunito,sans-serif;font-weight:800;fill:var(--ink)}
+</style></head>
+<body><svg width="0" height="0" style="position:absolute"><defs><symbol id="m-claude" viewBox="0 0 40 40"><line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><path d="M20 0.5 l1.3 2.9 2.9 1.3 -2.9 1.3 -1.3 2.9 -1.3 -2.9 -2.9 -1.3 2.9 -1.3z" fill="#FFD23F" stroke="#2B2340" stroke-width="1.1" stroke-linejoin="round"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#E06A1E" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-codex" viewBox="0 0 40 40"><line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="20" cy="4.5" r="2.8" fill="#FFD23F" stroke="#2B2340" stroke-width="1.5"/><rect x="1.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/><rect x="34.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#C3C8D0" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-gemini" viewBox="0 0 40 40"><line x1="13" y1="4" x2="13" y2="10" stroke="#2B2340" stroke-width="2.5"/><line x1="27" y1="4" x2="27" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="13" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/><circle cx="27" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#3B6FE0" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-grok" viewBox="0 0 40 40"><rect x="10" y="5.5" width="20" height="5" rx="2.5" fill="#6B6280" stroke="#2B2340" stroke-width="1.8"/><circle cx="3.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/><circle cx="36.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#1C1B22" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="toga" viewBox="0 0 40 30"><path d="M7 2 h26 l5 27 h-36z" fill="#2B2340"/><path d="M14 2 l6 9 6-9" fill="#fff" stroke="#2B2340" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+<pattern id="hach" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#fff"/><rect width="2.2" height="5" fill="#2B2340" fill-opacity=".55"/></pattern>
+</defs></svg>
+<style>
+.stats{display:flex;gap:8px;padding:12px 20px 0 16px}.stat{flex:1;padding:6px 8px 5px;text-align:center;border-radius:16px}
+.stat b{display:block;font-family:Fredoka,sans-serif;font-size:22px;line-height:1.05}.stat span{font-size:11px;font-weight:800;color:var(--ink2)}.stat.t b{color:var(--down)}
+.ctrl{margin:10px 20px 0 16px;padding:8px 14px 10px}.ctrl .row{display:flex;justify-content:space-between;align-items:baseline}
+.lbl{font-weight:800;font-size:13px}.val{font-family:Fredoka,sans-serif;font-size:14px;font-weight:600}
+.slider{position:relative;height:26px;margin:6px 0 4px}.track{position:absolute;top:8px;left:0;right:0;height:12px;border:3px solid var(--ink);border-radius:10px;background:linear-gradient(90deg,var(--sun) 0 70%,#EDE6F5 70% 100%)}
+.thumb{position:absolute;left:calc(70% - 15px);top:-2px;width:30px;height:30px;border-radius:50%;background:var(--orange);border:3px solid var(--ink);box-shadow:2px 2px 0 var(--ink);display:grid;place-items:center;font-size:14px}
+.ends{display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--ink2)}
+.toggles{display:flex;gap:8px;margin-top:10px}.tg{flex:1;display:flex;align-items:center;gap:7px;border:3px solid var(--ink);border-radius:14px;padding:6px 8px;font-size:12px;font-weight:800;line-height:1.1;background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.rank{margin:0 20px 0 16px;padding:2px 10px}
+.li{position:relative;display:grid;grid-template-columns:22px 32px 1fr 44px;align-items:center;gap:6px;padding:3px 0;border-bottom:2px dashed var(--line)}.li:last-child{border-bottom:0}
+.pos{font-family:Fredoka,sans-serif;font-weight:700;font-size:17px;text-align:center}
+.nm{font-weight:800;font-size:13px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{height:10px;border:2px solid var(--ink);border-radius:6px;margin-top:4px;background:#F4F0F8;overflow:hidden}.bar i{display:block;height:100%;border-right:2px solid var(--ink)}
+.bar.high i{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.5) 0 3px,transparent 3px 7px)}
+.sc{font-family:Fredoka,sans-serif;font-weight:700;font-size:17px;text-align:right}.mv{font-size:10px;font-weight:800;display:block;text-align:right;line-height:1}.mv.dn{color:var(--down)}
+.crown{position:absolute;left:30px;top:-7px;font-size:14px;transform:rotate(-15deg)}
+.more{text-align:center;font-size:12px;font-weight:800;color:var(--ink2);padding:2px 0}.gap{text-align:center;font-size:11px;font-weight:800;color:var(--ink2);padding:1px 0;border-bottom:2px dashed var(--line)}
+</style>
+<header><div><div class="bubble"><h1>Rodada 1</h1></div>
+<p class="sub" style="margin-top:8px">16 modelos × esforço · 40 tarefas<br>29/10 19:07 → 30/10 01:27</p></div>
+<div class="crew" aria-label="mascotes"><svg width="34" height="34" aria-hidden="true"><use href="#m-claude"/></svg><svg width="34" height="34" aria-hidden="true"><use href="#m-codex"/></svg><svg width="34" height="34" aria-hidden="true"><use href="#m-gemini"/></svg><svg width="34" height="34" aria-hidden="true"><use href="#m-grok"/></svg></div></header>
+<section class="stats"><div class="stat box"><b>528</b><span>execuções</span></div>
+<div class="stat box t"><b>133</b><span>⏱ timeouts</span></div><div class="stat box"><b>23</b><span>⚠ erros de cota</span></div></section>
+<section class="ctrl box"><div class="row"><span class="lbl">⚖️ Peso da nota</span><span class="val">70% testes · 30% rubrica</span></div>
+<div class="slider"><div class="track"></div><div class="thumb">💡</div></div><div class="ends"><span>🧑‍⚖️ só rubrica</span><span>só testes 🧪</span></div>
+<div class="toggles"><div class="tg"><span class="sw on"></span>Timeout<br>vale zero</div><div class="tg"><span class="sw"></span>Ignorar erros<br>de cota</div></div></section>
+<h2>🏆 Ranking ao vivo <span class="tag">padrão do relatório</span></h2>
+<section class="rank box"><div class="li"><span class="pos">1</span><svg width="32" height="32" aria-hidden="true"><use href="#m-claude"/></svg>
+  <div><div class="nm">claude-haiku-5-5<span class="chip high">high</span></div><div class="bar high"><i style="width:97.6%;background-color:var(--claude)"></i></div></div>
+  <div class="sc">9.76<span class="mv">—</span></div><span class="crown">👑</span></div><div class="li"><span class="pos">2</span><svg width="32" height="32" aria-hidden="true"><use href="#m-claude"/></svg>
+  <div><div class="nm">claude-haiku-5-5<span class="chip">medium</span></div><div class="bar"><i style="width:97.1%;background-color:var(--claude)"></i></div></div>
+  <div class="sc">9.71<span class="mv">—</span></div></div><div class="li"><span class="pos">3</span><svg width="32" height="32" aria-hidden="true"><use href="#m-claude"/></svg>
+  <div><div class="nm">claude-opus-5-5<span class="chip">medium</span></div><div class="bar"><i style="width:96.8%;background-color:var(--claude)"></i></div></div>
+  <div class="sc">9.68<span class="mv">—</span></div></div><div class="li"><span class="pos">4</span><svg width="32" height="32" aria-hidden="true"><use href="#m-codex"/></svg>
+  <div><div class="nm">gpt-6-luna<span class="chip">medium</span></div><div class="bar"><i style="width:89.6%;background-color:var(--codex)"></i></div></div>
+  <div class="sc">8.96<span class="mv">—</span></div></div><div class="li"><span class="pos">5</span><svg width="32" height="32" aria-hidden="true"><use href="#m-codex"/></svg>
+  <div><div class="nm">gpt-6-luna<span class="chip high">high</span></div><div class="bar high"><i style="width:88.4%;background-color:var(--codex)"></i></div></div>
+  <div class="sc">8.84<span class="mv">—</span></div></div><div class="gap">· · · 6º a 8º · · ·</div><div class="li"><span class="pos">9</span><svg width="32" height="32" aria-hidden="true"><use href="#m-gemini"/></svg>
+  <div><div class="nm">gemini-4-argon<span class="chip">medium</span></div><div class="bar"><i style="width:73.7%;background-color:var(--gemini)"></i></div></div>
+  <div class="sc">7.37<span class="mv dn">⏱ 7</span></div></div><div class="li"><span class="pos">10</span><svg width="32" height="32" aria-hidden="true"><use href="#m-grok"/></svg>
+  <div><div class="nm">grok-4.7-build-fast<span class="chip">medium</span></div><div class="bar"><i style="width:70.0%;background-color:var(--grok)"></i></div></div>
+  <div class="sc">7.00<span class="mv dn">⏱ 9</span></div></div><div class="more">▾ ver os 16 · toque num modelo para a ficha</div></section>
+<div class="tip box"><svg width="30" height="30" aria-hidden="true"><use href="#m-grok"/></svg><span>Desligue <b>“Timeout vale zero”</b>: grok-4.7-build-fast-medium pula de 7.00 para <b>8.73</b>!</span></div>
+<nav aria-label="abas"><a class=on aria-current=page href="#ranking"><span>🏆</span>Ranking</a><a href="#comparar"><span>⚖️</span>Comparar</a><a href="#esforco"><span>🔥</span>Esforço</a><a href="#tarefas"><span>🧩</span>Tarefas</a><a href="#juizes"><span>🧑‍⚖️</span>Juízes</a></nav>
+<script>addEventListener('load',()=>{const nb=document.querySelector('nav').getBoundingClientRect().top,p=[];
+for(const e of document.querySelectorAll('body *')){if(e.closest('nav')||e.closest('defs')||e.tagName==='symbol')continue;const r=e.getBoundingClientRect();if(!r.width&&!r.height)continue;
+if(r.right>390.5||r.left<-0.5)p.push('x:'+(e.className.baseVal??e.className)+':'+e.tagName);
+if(r.bottom>nb-2)p.push('y:'+e.tagName+'.'+(e.className.baseVal??e.className)+':'+Math.round(r.bottom));
+if(e.scrollWidth>e.clientWidth+1&&getComputedStyle(e).overflow!=='visible')p.push('corte:'+e.tagName+'.'+e.className)}
+document.title='CHECK '+(p.length?[...new Set(p)].slice(0,8).join(' | '):'ok')+' nav='+Math.round(nb)})</script>
+</body></html>

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6.1-sol-medium/10-ambigua-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6.1-sol",
+ "esforco": "medium",
+ "tarefa": "10-ambigua-claude",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 100.877,
+ "testes_passados": 42,
+ "testes_total": 42,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Código exemplar e idiomático, com regexes compiladas, etapas claras, extração delegando à normalização e SUPOSICOES.md completo detalhando dúvidas, decisões e motivos de forma coerente.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Regras de país, DDD e tamanho num bloco só; re.fullmatch recompila e 55/tamanhos/separadores são literais repetidos. Bordas coerentes com o doc. SUPOSICOES omite prefixo 0 e celular de 8 dígitos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 9.4,
+ "reexecucao_testes": {
+  "total": 42,
+  "passados": 42,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

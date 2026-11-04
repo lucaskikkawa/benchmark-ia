@@ -1,0 +1,15 @@
+Criei o `contatexto.py` na raiz do diretório. Testei à mão todas as situações abaixo e todas deram o resultado esperado; não há testes automatizados.
+
+**O que faz:**
+- **Argumentos:** usa `argparse` com `ARQUIVO` obrigatório e as flags `-l/--linhas`, `-p/--palavras`, `-c/--chars`, `--top N`, `--json` e `-o/--saida`.
+- **Métricas exibidas:** sem nenhuma flag de métrica, mostra linhas, palavras e caracteres. Com pelo menos uma, mostra só as que foram pedidas.
+- **`--top`:** converte para minúsculas, remove a pontuação `.,!?;:"'()[]{}` das pontas e descarta tokens vazios. Ordena por frequência e, em caso de empate, em ordem alfabética.
+- **Saída:** em texto, no formato do enunciado. Com `--json`, usa `indent=2` e `ensure_ascii=False` e inclui só as chaves das métricas pedidas.
+- **`-o`:** cria as pastas pai que faltarem, grava o resultado no arquivo e imprime `Salvo em CAMINHO`.
+- **Códigos de saída:**
+  - `1` para arquivo inexistente, diretório no lugar de arquivo ou erro de leitura/UTF-8, com mensagem na stderr começando por `Erro`.
+  - `2` para erros de argumento: `ARQUIVO` ausente, flag inexistente ou `--top` menor que 1.
+
+**Escolhas que fiz onde o enunciado não define:**
+- **Quebras de linha `\r\n`:** o arquivo é lido em modo texto, que converte `\r\n` em `\n`. Num arquivo com finais de linha do Windows, a contagem de caracteres sai menor que o tamanho bruto do arquivo. Linhas e palavras não mudam.
+- **Falha ao gravar com `-o`:** se não for possível gravar o arquivo de saída, o programa também termina com código `1` e uma mensagem `Erro ao gravar arquivo: ...`.

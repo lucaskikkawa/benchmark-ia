@@ -1,0 +1,330 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-s8b1_hpo
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189c6-b7fe-7b71-b0e3-83821d08fd6d
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:27:45.654811Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório para executar a tarefa e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-s8b1_hpo
+ succeeded in 0ms:
+/tmp/bench-s8b1_hpo
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-s8b1_hpo
+ succeeded in 0ms:
+# Tarefa: corrigir o fechamento de boletim
+
+O arquivo `boletim.py` (no diretório de trabalho) expõe `fechar_boletim(provas)`. O comportamento abaixo é o contrato. A implementação atual discorda dele em vários pontos (notas de fronteira, ausências, descarte, arredondamento, conceitos e a própria lista recebida). **Edite apenas `boletim.py`**. Não mude o nome nem a assinatura. Use só a biblioteca padrão.
+
+```python
+def fechar_boletim(provas: list) -> dict:
+    ...
+```
+
+## Entrada
+
+`provas` é uma `list` com 1 a 4 posições. Cada item é:
+
+- `int` ou `float` finito no intervalo fechado `[0, 10]`, ou
+- `None`, que significa ausência e **não entra** na conta (não é zero).
+
+`bool` não é nota (`True`/`False` → `TypeError`). Outro tipo que não seja `int`, `float` ou `None` → `TypeError`. `provas` que não seja `list` → `TypeError`.
+
+`ValueError` quando:
+
+- `len(provas)` é 0 ou maior que 4;
+- depois de ignorar `None` não sobra nenhuma nota;
+- alguma nota não é finita ou está fora de `[0, 10]` (10 e 0 são válidos).
+
+Não altere a lista recebida.
+
+## Cálculo
+
+1. Separe as notas válidas, na ordem original, ignorando `None`.
+2. Só quando houver **exatamente 4** notas válidas, descarte **uma** ocorrência do menor valor (se houver empate, remova só a primeira). Com 1, 2 ou 3 notas válidas não se descarta nada. O campo `descartada` é esse valor convertido com `float`, ou `None` se nada foi descartado.
+3. Converta cada nota restante com `Decimal(str(nota))` (não use `Decimal(nota)` direto num float, nem `round`). Some todas e só então divida por `n`. Arredonde **uma vez**, a média já dividida: `(soma / n).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`. Não arredonde nota a nota antes de somar. O campo `media` é `float` desse resultado. O valor cabe em `[0, 10]` e pode chegar a `10.0` por arredondamento (entrada `9.995`).
+4. Conceito em cima da média já arredondada, limites inclusivos:
+   - `>= 9` → `"A"`
+   - `>= 7` → `"B"`
+   - `>= 5` → `"C"`
+   - caso contrário → `"D"`
+5. `aprovado` é `True` somente quando o conceito não é `"D"`.
+
+## Retorno
+
+Dict com exatamente estas chaves:
+
+```python
+{
+    "media": float,
+    "conceito": str,       # "A", "B", "C" ou "D"
+    "aprovado": bool,
+    "descartada": float | None,
+}
+```
+
+## Exemplos
+
+```python
+fechar_boletim([9])                # media 9.0,  conceito "A", aprovado True,  descartada None
+fechar_boletim([7])                # media 7.0,  conceito "B"
+fechar_boletim([5])                # media 5.0,  conceito "C"
+fechar_boletim([4])                # media 4.0,  conceito "D", aprovado False
+fechar_boletim([1.005])            # media 1.01
+fechar_boletim([4.999])            # media 5.0,  conceito "C"
+fechar_boletim([1.0, 1.01])        # media 1.01, descartada None
+fechar_boletim([1, 2, 3, 4])       # descarta 1.0, media 3.0, conceito "D"
+fechar_boletim([10, 0, 10, 10])    # descarta 0.0, media 10.0, conceito "A"
+fechar_boletim([None, 8, 8])       # media 8.0, descartada None
+fechar_boletim([0.015])            # media 0.02  (HALF_UP; round(0.015, 2) não serve)
+fechar_boletim([8.995])            # media 9.0, conceito "A"
+fechar_boletim([9.995])            # media 10.0, conceito "A"
+fechar_boletim([1.005, 1.004])     # sem descarte; soma 2.009 / 2 = 1.0045 → media 1.0
+fechar_boletim([5, 1, 1, 9])       # descarta só o primeiro 1.0; media 5.0
+fechar_boletim([7, 7, 7, 7])       # descarta 7.0; media 7.0, conceito "B"
+fechar_boletim([])                  # ValueError
+fechar_boletim([None, None])        # ValueError
+fechar_boletim([1, 1, 1, 1, 1])     # ValueError
+fechar_boletim([True])              # TypeError
+```
+
+exec
+/bin/bash -lc 'ls -la && cat boletim.py' in /tmp/bench-s8b1_hpo
+ succeeded in 0ms:
+total 12
+drwx------ 2 box box 4096 Oct 29 19:27 .
+drwxr-xr-x 3 box box   60 Oct 29 19:27 ..
+-rw-r--r-- 1 box box 1237 Oct 29 16:06 boletim.py
+-rw-r--r-- 1 box box 3667 Oct 29 19:07 enunciado.md
+"""Fechamento de boletim. A implementação abaixo não segue o contrato do enunciado."""
+
+
+def fechar_boletim(provas):
+    if type(provas) is not list:
+        raise TypeError("provas deve ser list")
+    provas.reverse()
+    if len(provas) == 0:
+        return {
+            "media": 0.0,
+            "conceito": "D",
+            "aprovado": False,
+            "descartada": None,
+        }
+    nums = []
+    for nota in provas:
+        if nota is None:
+            nums.append(0.0)
+            continue
+        if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+            raise TypeError("nota invalida")
+        if nota < 0 or nota >= 10:
+            raise ValueError("nota invalida")
+        nums.append(float(nota))
+    descartada = None
+    if len(nums) >= 2:
+        menor = min(nums)
+        nums.remove(menor)
+        descartada = menor
+    media = sum(nums) / len(nums)
+    media = int(media * 100) / 100.0
+    if media > 9:
+        conceito = "A"
+    elif media > 7:
+        conceito = "B"
+    elif media > 5:
+        conceito = "C"
+    else:
+        conceito = "D"
+    return {
+        "media": media,
+        "conceito": conceito,
+        "aprovado": conceito != "D",
+        "descartada": descartada,
+    }
+
+apply patch
+patch: completed
+/tmp/bench-s8b1_hpo/boletim.py
+diff --git a/boletim.py b/boletim.py
+index 7dbf35b0e0bfa8bafa895a75d8463b8325920e55..e6d3aa9573582bb0e3a82afe0149c82644dda599
+--- a/boletim.py
++++ b/boletim.py
+@@ -1,44 +1,44 @@
+-"""Fechamento de boletim. A implementação abaixo não segue o contrato do enunciado."""
++"""Validação de notas e fechamento de boletim."""
+ 
++from decimal import Decimal, ROUND_HALF_UP
++from math import isfinite
+ 
+-def fechar_boletim(provas):
+-    if type(provas) is not list:
++
++def fechar_boletim(provas: list) -> dict:
++    if not isinstance(provas, list):
+         raise TypeError("provas deve ser list")
+-    provas.reverse()
+-    if len(provas) == 0:
+-        return {
+-            "media": 0.0,
+-            "conceito": "D",
+-            "aprovado": False,
+-            "descartada": None,
+-        }
++    if not 1 <= len(provas) <= 4:
++        raise ValueError("provas deve conter de 1 a 4 posições")
+     nums = []
+     for nota in provas:
+         if nota is None:
+-            nums.append(0.0)
+             continue
+         if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+             raise TypeError("nota invalida")
+-        if nota < 0 or nota >= 10:
++        if not 0 <= nota <= 10 or not isfinite(nota):
+             raise ValueError("nota invalida")
+-        nums.append(float(nota))
++        nums.append(nota)
++    if not nums:
++        raise ValueError("é necessária pelo menos uma nota")
++
+     descartada = None
+-    if len(nums) >= 2:
++    if len(nums) == 4:
+         menor = min(nums)
+         nums.remove(menor)
+-        descartada = menor
+-    media = sum(nums) / len(nums)
+-    media = int(media * 100) / 100.0
+-    if media > 9:
++        descartada = float(menor)
++
++    soma = sum((Decimal(str(nota)) for nota in nums), Decimal(0))
++    media = (soma / len(nums)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
++    if media >= 9:
+         conceito = "A"
+-    elif media > 7:
++    elif media >= 7:
+         conceito = "B"
+-    elif media > 5:
++    elif media >= 5:
+         conceito = "C"
+     else:
+         conceito = "D"
+     return {
+-        "media": media,
++        "media": float(media),
+         "conceito": conceito,
+         "aprovado": conceito != "D",
+         "descartada": descartada,
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+from boletim import fechar_boletim
+
+cases = [
+    ([9], 9.0, 'A', None), ([7], 7.0, 'B', None),
+    ([5], 5.0, 'C', None), ([4], 4.0, 'D', None),
+    ([1.005], 1.01, 'D', None), ([4.999], 5.0, 'C', None),
+    ([1.0, 1.01], 1.01, 'D', None), ([1, 2, 3, 4], 3.0, 'D', 1.0),
+    ([10, 0, 10, 10], 10.0, 'A', 0.0), ([None, 8, 8], 8.0, 'B', None),
+    ([0.015], 0.02, 'D', None), ([8.995], 9.0, 'A', None),
+    ([9.995], 10.0, 'A', None), ([1.005, 1.004], 1.0, 'D', None),
+    ([5, 1, 1, 9], 5.0, 'C', 1.0), ([7, 7, 7, 7], 7.0, 'B', 7.0),
+    ([0], 0.0, 'D', None), ([None, 1, 2, 3], 2.0, 'D', None),
+]
+for provas, media, conceito, descartada in cases:
+    original = provas.copy()
+    result = fechar_boletim(provas)
+    assert result == dict(media=media, conceito=conceito,
+                          aprovado=conceito "'!= '"'D', descartada=descartada), result
+    assert type(result['media']) is float
+    assert result['descartada'] is None or type(result['descartada']) is float
+    assert provas == original
+
+invalid = [([], ValueError), ([None, None], ValueError),
+           ([1] * 5, ValueError), ([True], TypeError), ([False], TypeError),
+           ([float('nan')], ValueError), ([float('inf')], ValueError),
+           ([float('-inf')], ValueError), ([-0.01], ValueError),
+           ([10.01], ValueError), ([10**1000], ValueError),
+           (['7'], TypeError), ([object()], TypeError),
+           ((7,), TypeError), (None, TypeError)]
+for provas, error in invalid:
+    original = provas.copy() if isinstance(provas, list) else provas
+    try:
+        fechar_boletim(provas)
+    except error:
+        pass
+    else:
+        raise AssertionError((provas, error))
+    if isinstance(provas, list):
+        assert provas == original
+print(f'{len(cases)} casos válidos e {len(invalid)} casos inválidos passaram; listas preservadas.')
+PY" in /tmp/bench-s8b1_hpo
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from boletim import fechar_boletim
+
+cases = [
+    ([9], 9.0, 'A', None), ([7], 7.0, 'B', None),
+    ([5], 5.0, 'C', None), ([4], 4.0, 'D', None),
+    ([1.005], 1.01, 'D', None), ([4.999], 5.0, 'C', None),
+    ([1.0, 1.01], 1.01, 'D', None), ([1, 2, 3, 4], 3.0, 'D', 1.0),
+    ([10, 0, 10, 10], 10.0, 'A', 0.0), ([None, 8, 8], 8.0, 'B', None),
+    ([0.015], 0.02, 'D', None), ([8.995], 9.0, 'A', None),
+    ([9.995], 10.0, 'A', None), ([1.005, 1.004], 1.0, 'D', None),
+    ([5, 1, 1, 9], 5.0, 'C', 1.0), ([7, 7, 7, 7], 7.0, 'B', 7.0),
+    ([0], 0.0, 'D', None), ([None, 1, 2, 3], 2.0, 'D', None),
+]
+for provas, media, conceito, descartada in cases:
+    original = provas.copy()
+    result = fechar_boletim(provas)
+    assert result == dict(media=media, conceito=conceito,
+                          aprovado=conceito "'!= '"'D', descartada=descartada), result
+    assert type(result['media']) is float
+    assert result['descartada'] is None or type(result['descartada']) is float
+    assert provas == original
+
+invalid = [([], ValueError), ([None, None], ValueError),
+           ([1] * 5, ValueError), ([True], TypeError), ([False], TypeError),
+           ([float('nan')], ValueError), ([float('inf')], ValueError),
+           ([float('-inf')], ValueError), ([-0.01], ValueError),
+           ([10.01], ValueError), ([10**1000], ValueError),
+           (['7'], TypeError), ([object()], TypeError),
+           ((7,), TypeError), (None, TypeError)]
+for provas, error in invalid:
+    original = provas.copy() if isinstance(provas, list) else provas
+    try:
+        fechar_boletim(provas)
+    except error:
+        pass
+    else:
+        raise AssertionError((provas, error))
+    if isinstance(provas, list):
+        assert provas == original
+print(f'{len(cases)} casos válidos e {len(invalid)} casos inválidos passaram; listas preservadas.')
+PY" in /tmp/bench-s8b1_hpo
+ succeeded in 0ms:
+18 casos válidos e 15 casos inválidos passaram; listas preservadas.
+
+codex
+Corrigido apenas [boletim.py](/tmp/bench-s8b1_hpo/boletim.py), conforme o contrato: validação, ausências, descarte, arredondamento com `Decimal`, conceitos e preservação da lista original.
+
+Verificação concluída: 18 casos válidos e 15 inválidos passaram.
+tokens used
+18,113

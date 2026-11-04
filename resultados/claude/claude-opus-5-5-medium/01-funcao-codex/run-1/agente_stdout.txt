@@ -1,10 +1,19 @@
-Criei o `solucao.py` com a função `unir_intervalos`. Rodei alguns casos rápidos e todos deram o resultado esperado:
+Criei o `solucao.py` com `unir_intervalos(intervalos, *, limites=None)`. Testei com alguns casos rápidos à mão, e todos deram o resultado esperado; não há uma suíte de testes formal.
 
-- **Exemplo do enunciado:** `[(5, 8), (1, 3), (3, 6), (10, 10)]` retorna `[(1, 8), (10, 10)]`.
-- **Separados por uma unidade:** `(1, 2)` e `(3, 4)` continuam separados.
-- **Entrada vazia:** retorna `[]`.
-- **Gerador com duplicatas:** gerador com `(2, 2)`, `(2, 2)` e `(0, 5)` retorna `[(0, 5)]`.
-- **Lista recebida:** não é modificada.
-- **Início maior que o fim:** `(2, 1)` lança `ValueError`.
+**Como funciona:**
+1. Se `limites` for informado e estiver invertido, lança `ValueError` antes de tudo, inclusive com entrada vazia.
+2. Lê a entrada uma única vez, então geradores funcionam. Copia os pares para uma lista nova e lança `ValueError` em qualquer par com início maior que o fim, mesmo nos que ficariam fora do recorte.
+3. Com `limites`, recorta cada intervalo e descarta os que ficam vazios. Um ponto exatamente na borda do recorte é mantido.
+4. Ordena e percorre uma vez, fundindo os intervalos que se sobrepõem ou se tocam (`inicio <= fim_anterior`). Isso dá tempo O(n log n) e memória O(n).
 
-A função lê a entrada uma única vez, copiando os pares para uma lista nova; por isso aceita geradores e não altera a lista original. Em seguida ordena essa cópia e funde os intervalos que se sobrepõem ou compartilham uma extremidade. Se houver um par inválido, o `ValueError` é lançado antes de qualquer resultado ser montado.
+Nem a lista de entrada nem os `limites` são modificados, e as coordenadas ficam sempre como inteiros, sem passar por ponto flutuante.
+
+**Casos testados:**
+- O exemplo do enunciado retorna `[(1, 8), (10, 10)]`.
+- `(1, 2)` e `(3, 4)` continuam separados.
+- Entrada vazia retorna `[]`.
+- Gerador como entrada funciona.
+- Recorte com pontos nas bordas: `[(0, 10), (20, 30)]` com `limites=(10, 20)` retorna `[(10, 10), (20, 20)]`.
+- Limites invertidos com entrada vazia lançam `ValueError`.
+- Um par inválido fora do recorte também lança `ValueError`.
+- Inteiros enormes (na casa de 10³⁰) saem exatos.

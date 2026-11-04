@@ -1,0 +1,1 @@
+Implementei `contar_subarrays_soma` em [solucao.py](/tmp/bench-dds7rfu1/solucao.py). A solução usa somas de prefixo e uma janela de frequências, com complexidade O(n) e suporte a inteiros negativos e grandes.

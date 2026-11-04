@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/grok/grok-4.7-medium/10-ambigua-gemini/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "medium",
+ "tarefa": "10-ambigua-gemini",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 157.995,
+ "testes_passados": 17,
+ "testes_total": 17,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código claro, cobre casos vazios e arredondamento, separa categorias e documenta bem as ambiguidades; não usa dict.get com padrões.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Score de compras, fidelidade e categoria bem separados; sem dict.get, então campos ausentes geram KeyError; faixas e pesos fixos no código; SUPOSICOES.md completo com exemplos conferidos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.5,
+ "nota_final_10": 9.55,
+ "reexecucao_testes": {
+  "total": 17,
+  "passados": 17,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

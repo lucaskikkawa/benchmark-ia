@@ -1,0 +1,16 @@
+
+==================================== ERRORS ====================================
+________________ ERROR collecting testes_ocultos/test_vendas.py ________________
+ImportError while importing test module '/tmp/bench-2vglt_3b/testes_ocultos/test_vendas.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_vendas.py:6: in <module>
+    from solucao import resumir_vendas
+E   ModuleNotFoundError: No module named 'solucao'
+=========================== short test summary info ============================
+ERROR testes_ocultos/test_vendas.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.08s

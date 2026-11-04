@@ -1,0 +1,8 @@
+A suíte de testes foi criada em [test_carrinho.py](file:///tmp/bench-es7ux5el/tests/test_carrinho.py) para validar [`calcular_total`](file:///tmp/bench-es7ux5el/carrinho.py#L1-L17) conforme especificado em [enunciado.md](file:///tmp/bench-es7ux5el/enunciado.md).
+
+### Cobertura implementada
+- **Cálculo básico e argumentos padrão**: validação de chamadas posicionais, nomeadas e valores padrão (`desconto=0`, `frete=0`), incluindo carrinho vazio.
+- **Regras de frete**: cobrança integral sem desconto apenas quando a soma das quantidades é positiva (cobrindo itens gratuitos com quantidade `> 0`, desconto de `100%` e múltiplas linhas com quantidade `0`).
+- **Truncamento e precisão**: aplicação única do desconto sobre o total bruto com truncamento para baixo (`// 100`), casos de truncamento agregado entre linhas e aritmética exata com inteiros acima de $2^{53}$.
+- **Validações e bordas (`ValueError`)**: limites de `desconto` (`0` e `100` válidos; `< 0` e `> 100` inválidos), `frete < 0`, quantidades e preços negativos mesmo em carrinho vazio, linhas de quantidade zero ou linhas posteriores a uma linha de quantidade zero.
+- **Imutabilidade e independência**: verificação de que a lista `itens` permanece intacta após execuções normais ou com `ValueError`, e que chamadas subsequentes não herdam estado anterior.

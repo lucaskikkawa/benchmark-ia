@@ -1,0 +1,3 @@
+Atualizei [carrinho.py](/tmp/bench-9vryfxwy/carrinho.py) para validar os dados, manter cópias isoladas dos itens, remover quantidades corretamente, calcular subtotal, desconto e total com arredondamento e listar os itens em ordem lexicográfica.
+
+Não executei testes.

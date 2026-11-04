@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-high/01-funcao-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "high",
+ "tarefa": "01-funcao-codex",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 49.628,
+ "testes_passados": 25,
+ "testes_total": 25,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes distinguem processados, atual e resultado; bordas, invertidos, duplicatas e geradores tratados sem mutação. Falta docstring sobre intervalos fechados; validação duplicada nos dois ramos.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes distinguem lista ordenada, intervalo corrente e resultado. Trata vazio, invertidos, duplicatas e geradores sem mutar a entrada. Ordenação nativa e uma fusão só. Falta docstring da regra de extremidades.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 25,
+  "passados": 25,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+ ],
+ "nota_antiga_avaliacao_json": 9.1,
+ "nota_antiga_com_penalidade": 9.1
+}

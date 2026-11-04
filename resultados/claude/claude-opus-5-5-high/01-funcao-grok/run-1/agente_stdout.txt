@@ -1,0 +1,11 @@
+Criei o `solucao.py` com a função `horas_livres`, usando só a biblioteca padrão. Rodei os seis exemplos do enunciado e todos deram o resultado esperado. Também testei à parte os erros descritos: formato inválido, `24:99`, dígitos e dois-pontos de largura cheia, `²`, janela invertida ou vazia, `ini > fim` e tipos errados. Todos levantaram a exceção pedida.
+
+Como a função trabalha:
+- **Validação dos horários:** só aceita exatamente 5 caracteres no formato `HH:MM`, com dígitos ASCII e `:` na posição 2. As horas vão até 23, e `24:00` é o único valor extra aceito. Qualquer valor que não seja `str` gera `TypeError`.
+- **Ordem das verificações:** primeiro valida a janela e depois `ocupados`. Cada intervalo tem o formato e a ordem conferidos antes de ser descartado (duração zero) ou recortado.
+- **Cálculo:** recorta os intervalos para a janela, ordena e une os que se sobrepõem ou se encostam (`a <= fim_anterior`), depois devolve as folgas. 1440 minutos sai como `"24:00"`.
+- **Entrada preservada:** a lista recebida e os pares dentro dela não são alterados.
+
+O enunciado não definia dois pontos, e escolhi assim:
+- Uma subclasse de `list` é aceita como `ocupados`.
+- Se a janela e os ocupados tiverem erros ao mesmo tempo, o erro da janela aparece primeiro.

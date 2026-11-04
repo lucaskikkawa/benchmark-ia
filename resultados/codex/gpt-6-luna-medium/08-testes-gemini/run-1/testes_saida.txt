@@ -1,0 +1,82 @@
+F............                                                            [100%]
+=================================== FAILURES ===================================
+_____________________ test_suite_passa_no_modulo_original ______________________
+
+    def test_suite_passa_no_modulo_original():
+        tests_dir = ROOT_DIR / "tests"
+        assert tests_dir.is_dir(), "Diretório 'tests/' não encontrado no diretório raiz da solução."
+        res = executar_suite_isolada(ROOT_DIR / "validador.py")
+>       assert res.returncode == 0, (
+            f"A suíte de testes do candidato falhou ao rodar contra o módulo original correto!\n"
+            f"Stdout:\n{res.stdout}\nStderr:\n{res.stderr}"
+        )
+E       AssertionError: A suíte de testes do candidato falhou ao rodar contra o módulo original correto!
+E         Stdout:
+E         ...F.........F............                                               [100%]
+E         =================================== FAILURES ===================================
+E         ____________________ test_limite_maximo_padrao_e_inclusivo _____________________
+E         
+E             def test_limite_maximo_padrao_e_inclusivo():
+E                 validador = ValidadorSenha()
+E         >       assert_valida(validador, "A" + "b" * 61 + "1!")
+E         
+E         tests/test_validador.py:32: 
+E         _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+E         
+E         validador = <validador.ValidadorSenha object at 0x7fd02dc19b20>
+E         senha = 'Abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb1!'
+E         
+E             def assert_valida(validador, senha):
+E                 valida, erros = validador.validar(senha)
+E         >       assert valida is True
+E         E       assert False is True
+E         
+E         tests/test_validador.py:8: AssertionError
+E         __________________ test_rejeita_cada_regra_violada[Aaa1!xyz] ___________________
+E         
+E         senha = 'Aaa1!xyz'
+E         
+E             @pytest.mark.parametrize(
+E                 "senha",
+E                 [
+E                     "abcdef1!",  # falta maiúscula
+E                     "ABCDEFG1!",  # falta minúscula
+E                     "Abcdefg!!",  # falta dígito
+E                     "Abcdefg1x",  # falta especial permitido
+E                     "Abcdef1 !",  # espaço comum
+E                     "Abcdef1\t!",  # tabulação
+E                     "Abcdef1\n!",  # quebra de linha
+E                     "Abcdef111!",  # repetição no final
+E                     "Aaa1!xyz",  # repetição no início
+E                     "Abc111!x",  # repetição no meio
+E                 ],
+E             )
+E             def test_rejeita_cada_regra_violada(senha):
+E         >       assert_invalida(ValidadorSenha(), senha)
+E         
+E         tests/test_validador.py:60: 
+E         _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+E         
+E         validador = <validador.ValidadorSenha object at 0x7fd02da74080>
+E         senha = 'Aaa1!xyz'
+E         
+E             def assert_invalida(validador, senha):
+E                 valida, erros = validador.validar(senha)
+E         >       assert valida is False
+E         E       assert True is False
+E         
+E         tests/test_validador.py:14: AssertionError
+E         =========================== short test summary info ============================
+E         FAILED tests/test_validador.py::test_limite_maximo_padrao_e_inclusivo - asser...
+E         FAILED tests/test_validador.py::test_rejeita_cada_regra_violada[Aaa1!xyz] - a...
+E         2 failed, 24 passed in 0.03s
+E         
+E         Stderr:
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '-m', 'pytest', '-q', 'tests'], returncode=1, s... tests/test_validador.py::test_rejeita_cada_regra_violada[Aaa1!xyz] - a...\n2 failed, 24 passed in 0.03s\n', stderr='').returncode
+
+testes_ocultos/test_runner.py:38: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_runner.py::test_suite_passa_no_modulo_original - A...
+1 failed, 12 passed in 2.38s

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/04-dados-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 19.077,
+ "testes_passados": 31,
+ "testes_total": 32,
+ "pct_testes": 96.88,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Pipeline robusto para erros de borda, mas concentrado em bloco único, sem DictReader, com constantes locais e docstring sucinta sem detalhar o contrato.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Validação e agregação no mesmo laço. Erros e inválidas corretos. csv, json, pathlib e defaultdict. Status e métricas pouco extensíveis. Docstring breve; saída e retorno corretos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.0,
+ "nota_final_10": 8.88,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 31,
+  "pct": 96.88
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.43,
+ "nota_antiga_com_penalidade": 8.43
+}

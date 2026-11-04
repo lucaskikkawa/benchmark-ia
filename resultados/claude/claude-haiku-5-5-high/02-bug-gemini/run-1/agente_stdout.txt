@@ -1,0 +1,11 @@
+Reescrevi `carrinho.py` no diretório de trabalho para cumprir o enunciado. Não há arquivos de teste aqui, então verifiquei o comportamento com um script ad hoc (sem criar arquivos no diretório) e todas as checagens passaram.
+
+Principais mudanças:
+
+- **Isolamento:** `__init__` usa `None` como padrão e faz `copy.deepcopy` dos itens recebidos, então instâncias não compartilham estado e alterações externas não afetam o carrinho.
+- **Validações:** `adicionar_item`, `remover_item` e `aplicar_cupom` levantam `TypeError`/`ValueError` conforme a especificação, rejeitando `bool` onde o enunciado pede.
+- **`remover_item`:** a checagem de `KeyError` vem primeiro; depois a quantidade é validada e o item é removido por completo quando `quantidade` é `None` ou maior/igual ao estoque.
+- **Totais:** `calcular_subtotal` e `calcular_desconto` arredondam para 2 casas; `calcular_total` nunca retorna menos que `0.0`.
+- **`listar_itens`:** retorna dicionários novos ordenados com `sorted` puro, sem locale. Por isso `"Água"` aparece depois de `"Caderno"`, já que `Á` tem código maior que `C`.
+
+Mantive os nomes de atributos (`itens`, `cupom_desconto`) e removi os comentários `BUG n`, já que os bugs foram corrigidos.

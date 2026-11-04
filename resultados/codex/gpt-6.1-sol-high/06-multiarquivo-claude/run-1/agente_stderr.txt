@@ -1,0 +1,686 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-oheuyp1k
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189f1-c2c7-73c0-9f4e-f71def8a3653
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+codex
+Vou ler o enunciado e os arquivos do diretório, implementar a solução e verificar o resultado.
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'enunciado.md' -g '*'" in /tmp/bench-oheuyp1k
+ succeeded in 0ms:
+/tmp/bench-oheuyp1k
+.gitkeep
+enunciado.md
+
+2026-10-29T23:14:50.278806Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-oheuyp1k
+ succeeded in 0ms:
+# Tarefa: pacote `biblioteca` (acervo + empréstimos)
+
+Crie no diretório de trabalho o pacote `biblioteca/` com **exatamente estes 4 arquivos**, usando
+imports relativos entre os módulos (`from .modelos import ...`) e apenas a biblioteca padrão:
+
+```
+biblioteca/
+├── __init__.py      # reexporta a API pública abaixo
+├── modelos.py       # dataclasses Livro, Emprestimo e as exceções
+├── acervo.py        # classe Acervo
+└── emprestimos.py   # classe ServicoEmprestimos
+```
+
+## `modelos.py`
+
+```python
+@dataclass(frozen=True)
+class Livro:
+    isbn: str
+    titulo: str
+    autor: str
+
+@dataclass(frozen=True)
+class Emprestimo:
+    isbn: str
+    usuario: str
+    data_emprestimo: datetime.date
+    data_prevista: datetime.date
+    renovacoes: int = 0
+```
+
+`Livro` valida os campos ao ser criado (`__post_init__`): `isbn`, `titulo` e `autor` devem ser `str`
+(senão `TypeError`) e não podem ser vazios nem só espaços (senão `ValueError`).
+
+Exceções (todas herdam de `BibliotecaErro(Exception)`): `LivroNaoEncontrado`, `LivroIndisponivel`,
+`LimiteEmprestimos`, `EmprestimoNaoEncontrado`, `RenovacaoNegada`.
+
+## `acervo.py` — `class Acervo`
+
+- `adicionar(livro: Livro) -> None` — `TypeError` se não for `Livro`; `ValueError` se já existir livro
+  com o mesmo `isbn`.
+- `obter(isbn: str) -> Livro` — `LivroNaoEncontrado` se não existir.
+- `buscar_por_autor(trecho: str) -> list[Livro]` — livros cujo `autor` contém `trecho`, sem diferenciar
+  maiúsculas/minúsculas (compare com `str.casefold()`; `"STRAUSS"` encontra `"Strauß"`), ordenados por
+  `titulo` e depois `isbn` (comparação simples de `str`, sem locale). Trecho vazio encontra todos.
+- `__len__()` — quantidade de livros; `__contains__(isbn)` — `isbn in acervo`.
+
+## `emprestimos.py` — `class ServicoEmprestimos`
+
+```python
+ServicoEmprestimos(acervo: Acervo, limite_por_usuario: int = 3, prazo_dias: int = 14,
+                   multa_diaria: float = 1.0, max_renovacoes: int = 2)
+```
+
+- `ValueError` no construtor se `limite_por_usuario < 1`, `prazo_dias < 1`, `multa_diaria < 0`
+  ou `max_renovacoes < 0`.
+
+- `emprestar(isbn: str, usuario: str, data: datetime.date) -> Emprestimo`
+  - `LivroNaoEncontrado` se o isbn não está no acervo;
+  - `LivroIndisponivel` se o livro já está emprestado;
+  - `LimiteEmprestimos` se o usuário já tem `limite_por_usuario` empréstimos ativos;
+  - (verificações nesta ordem) `data_prevista = data + prazo_dias`.
+  - O serviço usa o **mesmo** objeto `Acervo` recebido: livros adicionados ao acervo depois da criação
+    do serviço podem ser emprestados.
+- `devolver(isbn: str, data: datetime.date) -> float` — encerra o empréstimo e retorna a multa:
+  `dias_de_atraso * multa_diaria` (atraso = dias após `data_prevista`; devolver até a data prevista → `0.0`),
+  arredondada a 2 casas.
+  - `LivroNaoEncontrado` se o isbn não está no acervo; `EmprestimoNaoEncontrado` se não está emprestado;
+  - `ValueError` se `data` for anterior a `data_emprestimo` (o empréstimo continua ativo).
+- `disponivel(isbn: str) -> bool` — `LivroNaoEncontrado` se o isbn não está no acervo.
+- `emprestimos_de(usuario: str) -> list[Emprestimo]` — ativos do usuário, ordenados por `data_prevista` e depois `isbn`.
+- `renovar(isbn: str, data: datetime.date) -> Emprestimo` — substitui o empréstimo ativo por um novo com
+  `renovacoes + 1` e `data_prevista = max(data_prevista atual, data + prazo_dias)` (os demais campos não
+  mudam) e o retorna. Verificações nesta ordem:
+  - `LivroNaoEncontrado` se o isbn não está no acervo; `EmprestimoNaoEncontrado` se não está emprestado;
+  - `ValueError` se `data` for anterior a `data_emprestimo`;
+  - `RenovacaoNegada` se o empréstimo está atrasado (`data > data_prevista`) ou se já foi renovado
+    `max_renovacoes` vezes. Em qualquer erro o empréstimo continua como estava.
+- `atrasados(data: datetime.date) -> list[Emprestimo]` — empréstimos ativos (de todos os usuários) com
+  `data_prevista < data`, ordenados por `data_prevista` e depois `isbn`.
+- `devolver` usa a `data_prevista` vigente (após renovações).
+
+`biblioteca/__init__.py` deve permitir `from biblioteca import Livro, Emprestimo, Acervo, ServicoEmprestimos,
+BibliotecaErro, LivroNaoEncontrado, LivroIndisponivel, LimiteEmprestimos, EmprestimoNaoEncontrado,
+RenovacaoNegada` e definir `__all__` com exatamente esses 10 nomes.
+
+apply patch
+patch: completed
+/tmp/bench-oheuyp1k/biblioteca/__init__.py
+/tmp/bench-oheuyp1k/biblioteca/acervo.py
+/tmp/bench-oheuyp1k/biblioteca/emprestimos.py
+/tmp/bench-oheuyp1k/biblioteca/modelos.py
+diff --git a/biblioteca/__init__.py b/biblioteca/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..75b27d237a48b89717c95dc0754118c758350fbf
+--- /dev/null
++++ b/biblioteca/__init__.py
+@@ -0,0 +1,27 @@
++"""API pública do pacote biblioteca."""
++
++from .acervo import Acervo
++from .emprestimos import ServicoEmprestimos
++from .modelos import (
++    BibliotecaErro,
++    Emprestimo,
++    EmprestimoNaoEncontrado,
++    LimiteEmprestimos,
++    Livro,
++    LivroIndisponivel,
++    LivroNaoEncontrado,
++    RenovacaoNegada,
++)
++
++__all__ = [
++    "Livro",
++    "Emprestimo",
++    "Acervo",
++    "ServicoEmprestimos",
++    "BibliotecaErro",
++    "LivroNaoEncontrado",
++    "LivroIndisponivel",
++    "LimiteEmprestimos",
++    "EmprestimoNaoEncontrado",
++    "RenovacaoNegada",
++]
+diff --git a/biblioteca/acervo.py b/biblioteca/acervo.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..c4572022c00fcfdde29ae8cda3d34ab8f3f9fafc
+--- /dev/null
++++ b/biblioteca/acervo.py
+@@ -0,0 +1,34 @@
++"""Cadastro e consulta dos livros."""
++
++from .modelos import Livro, LivroNaoEncontrado
++
++
++class Acervo:
++    def __init__(self) -> None:
++        self._livros: dict[str, Livro] = {}
++
++    def adicionar(self, livro: Livro) -> None:
++        if not isinstance(livro, Livro):
++            raise TypeError("livro deve ser Livro")
++        if livro.isbn in self._livros:
++            raise ValueError(f"ISBN já cadastrado: {livro.isbn}")
++        self._livros[livro.isbn] = livro
++
++    def obter(self, isbn: str) -> Livro:
++        try:
++            return self._livros[isbn]
++        except KeyError:
++            raise LivroNaoEncontrado(isbn) from None
++
++    def buscar_por_autor(self, trecho: str) -> list[Livro]:
++        trecho = trecho.casefold()
++        return sorted(
++            (livro for livro in self._livros.values() if trecho in livro.autor.casefold()),
++            key=lambda livro: (livro.titulo, livro.isbn),
++        )
++
++    def __len__(self) -> int:
++        return len(self._livros)
++
++    def __contains__(self, isbn: str) -> bool:
++        return isbn in self._livros
+diff --git a/biblioteca/emprestimos.py b/biblioteca/emprestimos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..956d4576135747baf4a50d271f83da6dd0514324
+--- /dev/null
++++ b/biblioteca/emprestimos.py
+@@ -0,0 +1,98 @@
++"""Empréstimos, devoluções e renovações de livros do acervo."""
++
++from dataclasses import replace
++from datetime import date, timedelta
++
++from .acervo import Acervo
++from .modelos import (
++    Emprestimo,
++    EmprestimoNaoEncontrado,
++    LimiteEmprestimos,
++    LivroIndisponivel,
++    RenovacaoNegada,
++)
++
++
++class ServicoEmprestimos:
++    def __init__(
++        self,
++        acervo: Acervo,
++        limite_por_usuario: int = 3,
++        prazo_dias: int = 14,
++        multa_diaria: float = 1.0,
++        max_renovacoes: int = 2,
++    ) -> None:
++        if limite_por_usuario < 1:
++            raise ValueError("limite_por_usuario deve ser pelo menos 1")
++        if prazo_dias < 1:
++            raise ValueError("prazo_dias deve ser pelo menos 1")
++        if multa_diaria < 0:
++            raise ValueError("multa_diaria não pode ser negativa")
++        if max_renovacoes < 0:
++            raise ValueError("max_renovacoes não pode ser negativo")
++        self._acervo = acervo
++        self._limite_por_usuario = limite_por_usuario
++        self._prazo = timedelta(days=prazo_dias)
++        self._multa_diaria = multa_diaria
++        self._max_renovacoes = max_renovacoes
++        self._ativos: dict[str, Emprestimo] = {}
++
++    def emprestar(self, isbn: str, usuario: str, data: date) -> Emprestimo:
++        self._acervo.obter(isbn)
++        if isbn in self._ativos:
++            raise LivroIndisponivel(isbn)
++        quantidade = sum(emp.usuario == usuario for emp in self._ativos.values())
++        if quantidade >= self._limite_por_usuario:
++            raise LimiteEmprestimos(usuario)
++        emprestimo = Emprestimo(isbn, usuario, data, data + self._prazo)
++        self._ativos[isbn] = emprestimo
++        return emprestimo
++
++    def _obter_emprestimo(self, isbn: str) -> Emprestimo:
++        self._acervo.obter(isbn)
++        try:
++            return self._ativos[isbn]
++        except KeyError:
++            raise EmprestimoNaoEncontrado(isbn) from None
++
++    def devolver(self, isbn: str, data: date) -> float:
++        emprestimo = self._obter_emprestimo(isbn)
++        if data < emprestimo.data_emprestimo:
++            raise ValueError("devolução anterior ao empréstimo")
++        dias_de_atraso = max(0, (data - emprestimo.data_prevista).days)
++        multa = round(float(dias_de_atraso * self._multa_diaria), 2)
++        del self._ativos[isbn]
++        return multa
++
++    def disponivel(self, isbn: str) -> bool:
++        self._acervo.obter(isbn)
++        return isbn not in self._ativos
++
++    def emprestimos_de(self, usuario: str) -> list[Emprestimo]:
++        return sorted(
++            (emp for emp in self._ativos.values() if emp.usuario == usuario),
++            key=lambda emp: (emp.data_prevista, emp.isbn),
++        )
++
++    def renovar(self, isbn: str, data: date) -> Emprestimo:
++        emprestimo = self._obter_emprestimo(isbn)
++        if data < emprestimo.data_emprestimo:
++            raise ValueError("renovação anterior ao empréstimo")
++        if (
++            data > emprestimo.data_prevista
++            or emprestimo.renovacoes >= self._max_renovacoes
++        ):
++            raise RenovacaoNegada(isbn)
++        renovado = replace(
++            emprestimo,
++            renovacoes=emprestimo.renovacoes + 1,
++            data_prevista=max(emprestimo.data_prevista, data + self._prazo),
++        )
++        self._ativos[isbn] = renovado
++        return renovado
++
++    def atrasados(self, data: date) -> list[Emprestimo]:
++        return sorted(
++            (emp for emp in self._ativos.values() if emp.data_prevista < data),
++            key=lambda emp: (emp.data_prevista, emp.isbn),
++        )
+diff --git a/biblioteca/modelos.py b/biblioteca/modelos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f67cc52c5d88396c6d15a8fed451f90543b9e652
+--- /dev/null
++++ b/biblioteca/modelos.py
+@@ -0,0 +1,52 @@
++"""Modelos imutáveis e exceções da biblioteca."""
++
++from dataclasses import dataclass
++from datetime import date
++
++
++class BibliotecaErro(Exception):
++    """Erro de domínio da biblioteca."""
++
++
++class LivroNaoEncontrado(BibliotecaErro):
++    """O livro não pertence ao acervo."""
++
++
++class LivroIndisponivel(BibliotecaErro):
++    """O livro já está emprestado."""
++
++
++class LimiteEmprestimos(BibliotecaErro):
++    """O usuário atingiu o limite de empréstimos ativos."""
++
++
++class EmprestimoNaoEncontrado(BibliotecaErro):
++    """O livro não possui empréstimo ativo."""
++
++
++class RenovacaoNegada(BibliotecaErro):
++    """O empréstimo não pode ser renovado."""
++
++
++@dataclass(frozen=True)
++class Livro:
++    isbn: str
++    titulo: str
++    autor: str
++
++    def __post_init__(self) -> None:
++        for nome in ("isbn", "titulo", "autor"):
++            valor = getattr(self, nome)
++            if not isinstance(valor, str):
++                raise TypeError(f"{nome} deve ser str")
++            if not valor.strip():
++                raise ValueError(f"{nome} não pode ser vazio ou conter só espaços")
++
++
++@dataclass(frozen=True)
++class Emprestimo:
++    isbn: str
++    usuario: str
++    data_emprestimo: date
++    data_prevista: date
++    renovacoes: int = 0
+
+codex
+Os quatro módulos estão implementados. Vou verificar a ordem das exceções, as renovações, o cálculo das multas e a preservação dos empréstimos quando uma operação falha.
+exec
+/bin/bash -lc "python -B - <<'PY'
+import unittest
+from dataclasses import FrozenInstanceError, fields
+from datetime import date, timedelta
+from pathlib import Path
+import biblioteca
+from biblioteca import (
+    Livro, Emprestimo, Acervo, ServicoEmprestimos, BibliotecaErro,
+    LivroNaoEncontrado, LivroIndisponivel, LimiteEmprestimos,
+    EmprestimoNaoEncontrado, RenovacaoNegada,
+)
+
+D = date(2026, 1, 1)
+
+class BibliotecaTest(unittest.TestCase):
+    def setUp(self):
+        self.acervo = Acervo()
+        for isbn, titulo in [('2', 'B'), ('3', 'A'), ('1', 'A')]:
+            self.acervo.adicionar(Livro(isbn, titulo, 'Strauß'))
+        self.servico = ServicoEmprestimos(self.acervo, limite_por_usuario=2)
+
+    def test_api_e_estrutura(self):
+        self.assertEqual(set(biblioteca.__all__), {
+            'Livro', 'Emprestimo', 'Acervo', 'ServicoEmprestimos', 'BibliotecaErro',
+            'LivroNaoEncontrado', 'LivroIndisponivel', 'LimiteEmprestimos',
+            'EmprestimoNaoEncontrado', 'RenovacaoNegada',
+        })
+        self.assertEqual(len(biblioteca.__all__), 10)
+        self.assertEqual({p.name for p in Path('biblioteca').iterdir()}, {
+            '__init__.py', 'modelos.py', 'acervo.py', 'emprestimos.py',
+        })
+        for cls in [LivroNaoEncontrado, LivroIndisponivel, LimiteEmprestimos,
+                    EmprestimoNaoEncontrado, RenovacaoNegada]:
+            self.assertTrue(issubclass(cls, BibliotecaErro))
+        self.assertEqual([f.name for f in fields(Emprestimo)],
+                         ['isbn', 'usuario', 'data_emprestimo', 'data_prevista', 'renovacoes'])
+
+    def test_modelos(self):
+        for campo in ['isbn', 'titulo', 'autor']:
+            for invalido, erro in [(None, TypeError), (123, TypeError),
+                                   ('', ValueError), (' \\t\\n', ValueError)]:
+                dados = dict(isbn='1', titulo='Título', autor='Autor')
+                dados[campo] = invalido
+                with self.subTest(campo=campo, invalido=invalido):
+                    with self.assertRaises(erro):
+                        Livro(**dados)
+        livro = Livro(' 1 ', ' Título ', ' Autor ')
+        self.assertEqual(livro.isbn, ' 1 ')
+        with self.assertRaises(FrozenInstanceError):
+            livro.titulo = 'Outro'
+        emp = Emprestimo('1', 'u', D, D)
+        self.assertEqual(emp.renovacoes, 0)
+        with self.assertRaises(FrozenInstanceError):
+            emp.renovacoes = 1
+
+    def test_acervo(self):
+        self.assertEqual(len(self.acervo), 3)
+        self.assertIn('1', self.acervo)
+        self.assertNotIn('x', self.acervo)
+        self.assertIs(self.acervo.obter('1'), self.acervo.obter('1'))
+        with self.assertRaises(TypeError):
+            self.acervo.adicionar('livro')
+        with self.assertRaises(ValueError):
+            self.acervo.adicionar(Livro('1', 'Outro', 'Autor'))
+        with self.assertRaises(LivroNaoEncontrado):
+            self.acervo.obter('x')
+        for trecho in ['STRAUSS', '']:
+            self.assertEqual([l.isbn for l in self.acervo.buscar_por_autor(trecho)], ['1', '3', '2'])
+        self.assertEqual(self.acervo.buscar_por_autor('ausente'), [])
+        self.acervo.buscar_por_autor('').clear()
+        self.assertEqual(len(self.acervo), 3)
+
+    def test_parametros(self):
+        for campo, valor in [('limite_por_usuario', 0), ('prazo_dias', 0),
+                             ('multa_diaria', -0.1), ('max_renovacoes', -1)]:
+            with self.subTest(campo=campo):
+                with self.assertRaises(ValueError):
+                    ServicoEmprestimos(self.acervo, **{campo: valor})
+        ServicoEmprestimos(self.acervo, 1, 1, 0, 0)
+
+    def test_emprestar_e_precedencia(self):
+        self.assertTrue(self.servico.disponivel('1'))
+        emp = self.servico.emprestar('1', 'u', D)
+        self.assertEqual(emp, Emprestimo('1', 'u', D, D + timedelta(days=14)))
+        self.assertFalse(self.servico.disponivel('1'))
+        self.servico.emprestar('2', 'u', D)
+        with self.assertRaises(LivroNaoEncontrado):
+            self.servico.emprestar('x', 'u', D)
+        with self.assertRaises(LivroIndisponivel):
+            self.servico.emprestar('1', 'u', D)
+        with self.assertRaises(LimiteEmprestimos):
+            self.servico.emprestar('3', 'u', D)
+        self.servico.emprestar('3', 'v', D)
+        self.assertEqual(len(self.servico.emprestimos_de('u')), 2)
+        with self.assertRaises(LivroNaoEncontrado):
+            self.servico.disponivel('x')
+        vazio = Acervo()
+        servico = ServicoEmprestimos(vazio)
+        vazio.adicionar(Livro('novo', 'Título', 'Autor'))
+        self.assertEqual(servico.emprestar('novo', 'u', D).isbn, 'novo')
+
+    def test_listas(self):
+        e2 = self.servico.emprestar('2', 'u', D)
+        e1 = self.servico.emprestar('1', 'u', D)
+        e3 = self.servico.emprestar('3', 'v', D - timedelta(days=1))
+        self.assertEqual(self.servico.emprestimos_de('u'), [e1, e2])
+        self.assertEqual(self.servico.emprestimos_de('v'), [e3])
+        self.assertEqual(self.servico.emprestimos_de('ausente'), [])
+        self.assertEqual(self.servico.atrasados(D + timedelta(days=13)), [])
+        self.assertEqual(self.servico.atrasados(D + timedelta(days=14)), [e3])
+        self.assertEqual(self.servico.atrasados(D + timedelta(days=15)), [e3, e1, e2])
+        self.servico.emprestimos_de('u').clear()
+        self.assertEqual(len(self.servico.emprestimos_de('u')), 2)
+
+    def test_devolver(self):
+        for data, esperado in [(D, 0.0), (D + timedelta(days=14), 0.0),
+                               (D + timedelta(days=17), 3.7)]:
+            servico = ServicoEmprestimos(self.acervo, multa_diaria=1.234)
+            emp = servico.emprestar('1', 'u', D)
+            with self.assertRaises(ValueError):
+                servico.devolver('1', D - timedelta(days=1))
+            self.assertEqual(servico.emprestimos_de('u'), [emp])
+            multa = servico.devolver('1', data)
+            self.assertEqual(multa, esperado)
+            self.assertIsInstance(multa, float)
+            self.assertTrue(servico.disponivel('1'))
+            self.assertEqual(servico.emprestimos_de('u'), [])
+        for metodo in [self.servico.devolver, self.servico.renovar]:
+            with self.assertRaises(LivroNaoEncontrado):
+                metodo('x', D)
+            with self.assertRaises(EmprestimoNaoEncontrado):
+                metodo('1', D)
+
+    def test_renovacoes(self):
+        original = self.servico.emprestar('1', 'u', D)
+        primeira = self.servico.renovar('1', D)
+        self.assertIsNot(original, primeira)
+        self.assertEqual(original.renovacoes, 0)
+        self.assertEqual(primeira.data_prevista, original.data_prevista)
+        segunda = self.servico.renovar('1', D + timedelta(days=14))
+        self.assertEqual(segunda, Emprestimo('1', 'u', D, D + timedelta(days=28), 2))
+        with self.assertRaises(ValueError):
+            self.servico.renovar('1', D - timedelta(days=1))
+        with self.assertRaises(RenovacaoNegada):
+            self.servico.renovar('1', D + timedelta(days=15))
+        self.assertIs(self.servico.emprestimos_de('u')[0], segunda)
+        self.assertEqual(self.servico.devolver('1', D + timedelta(days=29)), 1.0)
+        self.assertTrue(self.servico.disponivel('1'))
+
+    def test_renovacao_negada_sem_mutacao(self):
+        for max_renovacoes, dia in [(0, 0), (2, 15)]:
+            servico = ServicoEmprestimos(self.acervo, max_renovacoes=max_renovacoes)
+            original = servico.emprestar('1', 'u', D)
+            with self.assertRaises(RenovacaoNegada):
+                servico.renovar('1', D + timedelta(days=dia))
+            self.assertIs(servico.emprestimos_de('u')[0], original)
+
+unittest.main(verbosity=2)
+PY" in /tmp/bench-oheuyp1k
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+import unittest
+from dataclasses import FrozenInstanceError, fields
+from datetime import date, timedelta
+from pathlib import Path
+import biblioteca as b
+
+D = date(2026, 1, 1)
+
+class BibliotecaTest(unittest.TestCase):
+    def setUp(self):
+        self.a = b.Acervo()
+        for isbn, titulo in [('2', 'B'), ('3', 'A'), ('1', 'A')]:
+            self.a.adicionar(b.Livro(isbn, titulo, 'Strauß'))
+        self.s = b.ServicoEmprestimos(self.a, limite_por_usuario=2)
+
+    def test_api_e_estrutura(self):
+        self.assertEqual(set(b.__all__), {'Livro', 'Emprestimo', 'Acervo', 'ServicoEmprestimos',
+            'BibliotecaErro', 'LivroNaoEncontrado', 'LivroIndisponivel', 'LimiteEmprestimos',
+            'EmprestimoNaoEncontrado', 'RenovacaoNegada'})
+        self.assertEqual(len(b.__all__), 10)
+        self.assertEqual({p.name for p in Path('biblioteca').iterdir()},
+            {'__init__.py', 'modelos.py', 'acervo.py', 'emprestimos.py'})
+        for cls in [b.LivroNaoEncontrado, b.LivroIndisponivel, b.LimiteEmprestimos,
+                    b.EmprestimoNaoEncontrado, b.RenovacaoNegada]:
+            self.assertTrue(issubclass(cls, b.BibliotecaErro))
+        self.assertEqual([f.name for f in fields(b.Emprestimo)],
+            ['isbn', 'usuario', 'data_emprestimo', 'data_prevista', 'renovacoes'])
+
+    def test_modelos(self):
+        for campo in ['isbn', 'titulo', 'autor']:
+            for invalido, erro in [(None, TypeError), (123, TypeError), ('', ValueError), (' \\t\\n', ValueError)]:
+                dados = dict(isbn='1', titulo='Título', autor='Autor')
+                dados[campo] = invalido
+                with self.subTest(campo=campo, invalido=invalido), self.assertRaises(erro):
+                    b.Livro(**dados)
+        livro = b.Livro(' 1 ', ' Título ', ' Autor ')
+        self.assertEqual(livro.isbn, ' 1 ')
+        with self.assertRaises(FrozenInstanceError):
+            livro.titulo = 'Outro'
+        emp = b.Emprestimo('1', 'u', D, D)
+        self.assertEqual(emp.renovacoes, 0)
+        with self.assertRaises(FrozenInstanceError):
+            emp.renovacoes = 1
+
+    def test_acervo(self):
+        self.assertEqual(len(self.a), 3)
+        self.assertIn('1', self.a)
+        self.assertNotIn('x', self.a)
+        self.assertIs(self.a.obter('1'), self.a.obter('1'))
+        with self.assertRaises(TypeError):
+            self.a.adicionar('livro')
+        with self.assertRaises(ValueError):
+            self.a.adicionar(b.Livro('1', 'Outro', 'Autor'))
+        with self.assertRaises(b.LivroNaoEncontrado):
+            self.a.obter('x')
+        for trecho in ['STRAUSS', '']:
+            self.assertEqual([l.isbn for l in self.a.buscar_por_autor(trecho)], ['1', '3', '2'])
+        self.assertEqual(self.a.buscar_por_autor('ausente'), [])
+        self.a.buscar_por_autor('').clear()
+        self.assertEqual(len(self.a), 3)
+
+    def test_parametros(self):
+        for campo, valor in [('limite_por_usuario', 0), ('prazo_dias', 0),
+                             ('multa_diaria', -0.1), ('max_renovacoes', -1)]:
+            with self.subTest(campo=campo), self.assertRaises(ValueError):
+                b.ServicoEmprestimos(self.a, **{campo: valor})
+        b.ServicoEmprestimos(self.a, 1, 1, 0, 0)
+
+    def test_emprestar_e_precedencia(self):
+        self.assertTrue(self.s.disponivel('1'))
+        self.assertEqual(self.s.emprestar('1', 'u', D), b.Emprestimo('1', 'u', D, D + timedelta(days=14)))
+        self.assertFalse(self.s.disponivel('1'))
+        self.s.emprestar('2', 'u', D)
+        for isbn, erro in [('x', b.LivroNaoEncontrado), ('1', b.LivroIndisponivel), ('3', b.LimiteEmprestimos)]:
+            with self.assertRaises(erro):
+                self.s.emprestar(isbn, 'u', D)
+        self.s.emprestar('3', 'v', D)
+        self.assertEqual(len(self.s.emprestimos_de('u')), 2)
+        with self.assertRaises(b.LivroNaoEncontrado):
+            self.s.disponivel('x')
+        vazio = b.Acervo()
+        servico = b.ServicoEmprestimos(vazio)
+        vazio.adicionar(b.Livro('novo', 'Título', 'Autor'))
+        self.assertEqual(servico.emprestar('novo', 'u', D).isbn, 'novo')
+
+    def test_listas(self):
+        e2 = self.s.emprestar('2', 'u', D)
+        e1 = self.s.emprestar('1', 'u', D)
+        e3 = self.s.emprestar('3', 'v', D - timedelta(days=1))
+        self.assertEqual(self.s.emprestimos_de('u'), [e1, e2])
+        self.assertEqual(self.s.emprestimos_de('v'), [e3])
+        self.assertEqual(self.s.emprestimos_de('ausente'), [])
+        self.assertEqual(self.s.atrasados(D + timedelta(days=13)), [])
+        self.assertEqual(self.s.atrasados(D + timedelta(days=14)), [e3])
+        self.assertEqual(self.s.atrasados(D + timedelta(days=15)), [e3, e1, e2])
+        self.s.emprestimos_de('u').clear()
+        self.assertEqual(len(self.s.emprestimos_de('u')), 2)
+
+    def test_devolver(self):
+        for data, esperado in [(D, 0.0), (D + timedelta(days=14), 0.0), (D + timedelta(days=17), 3.7)]:
+            servico = b.ServicoEmprestimos(self.a, multa_diaria=1.234)
+            emp = servico.emprestar('1', 'u', D)
+            with self.assertRaises(ValueError):
+                servico.devolver('1', D - timedelta(days=1))
+            self.assertEqual(servico.emprestimos_de('u'), [emp])
+            multa = servico.devolver('1', data)
+            self.assertEqual(multa, esperado)
+            self.assertIsInstance(multa, float)
+            self.assertTrue(servico.disponivel('1'))
+            self.assertEqual(servico.emprestimos_de('u'), [])
+        for metodo in [self.s.devolver, self.s.renovar]:
+            with self.assertRaises(b.LivroNaoEncontrado):
+                metodo('x', D)
+            with self.assertRaises(b.EmprestimoNaoEncontrado):
+                metodo('1', D)
+
+    def test_renovacoes(self):
+        original = self.s.emprestar('1', 'u', D)
+        primeira = self.s.renovar('1', D)
+        self.assertIsNot(original, primeira)
+        self.assertEqual(original.renovacoes, 0)
+        self.assertEqual(primeira.data_prevista, original.data_prevista)
+        segunda = self.s.renovar('1', D + timedelta(days=14))
+        self.assertEqual(segunda, b.Emprestimo('1', 'u', D, D + timedelta(days=28), 2))
+        with self.assertRaises(ValueError):
+            self.s.renovar('1', D - timedelta(days=1))
+        with self.assertRaises(b.RenovacaoNegada):
+            self.s.renovar('1', D + timedelta(days=15))
+        self.assertIs(self.s.emprestimos_de('u')[0], segunda)
+        self.assertEqual(self.s.devolver('1', D + timedelta(days=29)), 1.0)
+        self.assertTrue(self.s.disponivel('1'))
+
+    def test_renovacao_negada_sem_mutacao(self):
+        for max_renovacoes, dia in [(0, 0), (2, 15)]:
+            servico = b.ServicoEmprestimos(self.a, max_renovacoes=max_renovacoes)
+            original = servico.emprestar('1', 'u', D)
+            with self.assertRaises(b.RenovacaoNegada):
+                servico.renovar('1', D + timedelta(days=dia))
+            self.assertIs(servico.emprestimos_de('u')[0], original)
+
+unittest.main(verbosity=2)
+PY" in /tmp/bench-oheuyp1k
+ succeeded in 0ms:
+test_acervo (__main__.BibliotecaTest.test_acervo) ... ok
+test_api_e_estrutura (__main__.BibliotecaTest.test_api_e_estrutura) ... ok
+test_devolver (__main__.BibliotecaTest.test_devolver) ... ok
+test_emprestar_e_precedencia (__main__.BibliotecaTest.test_emprestar_e_precedencia) ... ok
+test_listas (__main__.BibliotecaTest.test_listas) ... ok
+test_modelos (__main__.BibliotecaTest.test_modelos) ... ok
+test_parametros (__main__.BibliotecaTest.test_parametros) ... ok
+test_renovacao_negada_sem_mutacao (__main__.BibliotecaTest.test_renovacao_negada_sem_mutacao) ... ok
+test_renovacoes (__main__.BibliotecaTest.test_renovacoes) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.001s
+
+OK
+
+codex
+Pacote `biblioteca/` criado com exatamente os quatro arquivos solicitados, imports relativos e apenas a biblioteca padrão.
+
+Implementação validada com 9 testes, todos aprovados.
+tokens used
+13,549

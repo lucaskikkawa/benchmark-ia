@@ -1,0 +1,14 @@
+Refatorei `pedidos.py`, e `resumo_pedidos` continua dando os mesmos resultados de antes. Testei com um script rápido e não deixei arquivo de testes no diretório.
+
+**O que mudou:**
+- **Nova função pública `subtotal`:** calcula `quantidade * preco_centavos * (100 - desconto_percentual) // 100`, truncando por linha. Usa só inteiros, então não há perda de centavos por conversão para float.
+- **Delegação:** `resumo_pedidos` chama `subtotal` uma vez por pedido, na ordem, inclusive quando a quantidade é zero. Passa os três argumentos por posição, com o desconto padrão 0 quando ele não vem no pedido. O valor devolvido alimenta tanto `total_centavos` quanto `por_categoria`.
+- **Substituição em tempo de execução:** a função busca `subtotal` no módulo a cada chamada, então uma troca feita no teste (por exemplo `pedidos.subtotal = ...`) é respeitada.
+- **Nomes:** `a`, `b`, `c`, `x`, `y` viraram `total_itens`, `total_centavos`, `por_categoria`, `pedido`, `valor_linha`.
+- **Dados:** o código passa pelos pedidos uma única vez, não altera a entrada e mantém as categorias exatamente como vieram. Os acumuladores são criados a cada chamada, então nada é compartilhado entre chamadas.
+
+**O que testei:**
+- uma entrada de passagem única (`iter(...)`) com inteiros bem acima de 64 bits;
+- uma categoria com espaço no início (`' a'`) que soma zero, que foi mantida como está;
+- a entrada vazia, que devolve `{'itens': 0, 'total_centavos': 0, 'por_categoria': {}}`;
+- a troca de `subtotal` por uma versão falsa: ela foi chamada três vezes, na ordem dos pedidos, e o valor dela apareceu nas duas somas.

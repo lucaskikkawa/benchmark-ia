@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-yr44edyu/solucao.py) com tempo linear esperado O(n), validação dos limites e sem modificar `nums`.
+
+Verifiquei 93.210 casos contra força bruta. Os seis testes com 300.000 elementos terminaram em menos de 0,1 segundo cada neste ambiente.

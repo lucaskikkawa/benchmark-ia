@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-haiku-5-5-medium/02-bug-grok/run-1",
+ "empresa": "claude",
+ "modelo": "claude-haiku-5-5",
+ "esforco": "medium",
+ "tarefa": "02-bug-grok",
+ "tipo": "02-bug",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 18.556,
+ "testes_passados": 16,
+ "testes_total": 16,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Valida tipos e limites, ignora ausências, descarta só com quatro notas e usa Decimal com HALF_UP. Limiares não estão concentrados e a docstring não descreve o contrato.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Código correto, idiomático e bem estruturado, mas mantém limiares hardcoded na lógica e docstring genérica sem detalhar as regras.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 9.4,
+ "reexecucao_testes": {
+  "total": 16,
+  "passados": 16,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.4,
+ "nota_antiga_com_penalidade": 9.4
+}

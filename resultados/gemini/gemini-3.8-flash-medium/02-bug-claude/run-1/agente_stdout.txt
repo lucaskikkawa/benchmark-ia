@@ -1,0 +1,13 @@
+Os bugs em [intervalos.py](file:///tmp/bench-7etgog5t/intervalos.py) foram corrigidos de acordo com as especificações das docstrings e do [enunciado.md](file:///tmp/bench-7etgog5t/enunciado.md):
+
+1. **Tratamento de entrada vazia**: [`mesclar_intervalos`](file:///tmp/bench-7etgog5t/intervalos.py#L4-L46) agora retorna `[]` (em vez de levantar `IndexError`) e [`total_coberto`](file:///tmp/bench-7etgog5t/intervalos.py#L49-L55) retorna `0`.
+2. **Suporte a qualquer iterável e preservação da entrada**: Não altera a coleção de entrada no lugar (removido `intervalos.sort()`), suportando geradores, tuplas, conjuntos e listas.
+3. **Validação completa prévia**:
+   - Cada elemento deve ser tupla ou lista de 2 elementos (`TypeError` se o tipo for incorreto, `ValueError` se o tamanho for diferente de 2).
+   - Início e fim devem ser estritamente `int` (`bool` rejeitado com `TypeError`).
+   - Início deve ser menor ou igual ao fim (`ValueError` se `inicio > fim`).
+   - Todos os elementos são validados antes da produção do resultado.
+4. **Lógica de mesclagem corrigida**:
+   - Intervalos adjacentes/que se tocam (`inicio <= curr_fim`) são unidos corretamente.
+   - Intervalos contidos dentro de outros preservam o limite máximo (`curr_fim = max(curr_fim, fim)`).
+   - O resultado retornado é ordenado por início e composto por tuplas.

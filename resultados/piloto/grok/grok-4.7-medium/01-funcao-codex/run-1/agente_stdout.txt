@@ -1,0 +1,7 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede unir intervalos fechados em `solucao.py`. Vou implementar a função e testar os casos do enunciado.`solucao.py` define `unir_intervalos`, que devolve a união dos intervalos fechados ordenada pelo início.
+
+- Intervalos que se sobrepõem ou compartilham uma extremidade são fundidos. Os separados por uma unidade permanecem distintos: `(1, 2)` e `(3, 4)` não se unem.
+- A entrada vazia devolve `[]`. Um par com início maior que o fim levanta `ValueError`.
+- A lista recebida não é alterada, e um gerador é consumido uma única vez.
+
+O exemplo do enunciado retorna `[(1, 8), (10, 10)]`.

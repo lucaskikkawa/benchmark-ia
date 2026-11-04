@@ -1,0 +1,1 @@
+agy -p "$(cat prompt_qa.txt)" --model gemini-3.8-flash --effort medium --dangerously-skip-permissions --add-dir /workspace/benchmark-ia --output-format json --log-file /workspace/benchmark-ia/site/qa/agy_qa.log

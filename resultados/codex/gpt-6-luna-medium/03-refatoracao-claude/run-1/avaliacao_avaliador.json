@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/03-refatoracao-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "03-refatoracao-claude",
+ "tipo": "03-refatoracao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 22.369,
+ "testes_passados": 31,
+ "testes_total": 32,
+ "pct_testes": 96.88,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Código claro e correto nas bordas e estrutura, mas mantém concatenação em laço, operador % e if/else para acumular, além de if/elif para despacho de desconto.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "If/elif de tipos é redundante e o total geral soma em ordem alfabética, com risco em floats. Seguem concatenação, % e if/else, apesar de dict.get. Taxas centralizadas, mas novo tipo exige mudar o if. Docstrings e composição ok.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.73,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 31,
+  "pct": 96.88
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.18,
+ "nota_antiga_com_penalidade": 9.18
+}

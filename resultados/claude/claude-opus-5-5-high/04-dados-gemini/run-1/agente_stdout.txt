@@ -1,0 +1,15 @@
+Criei o `analisador_vendas.py` com a função `processar_vendas`, seguindo o enunciado. Fiz um teste rápido com um CSV de exemplo e os resultados vieram como esperado; não deixei arquivos de teste no diretório.
+
+**O que o teste cobriu:**
+- **Leitura do CSV:** BOM no início, espaços nos nomes das colunas e nos campos `cliente`/`categoria`, e status como `"Concluido "` e `"CONCLUIDO"` reconhecidos como `"concluido"`.
+- **Linhas descartadas:** linhas vazias, valores inválidos e valores negativos.
+- **Ordenação:** categorias em ordem alfabética, e no `top_clientes` o empate de total é decidido pelo nome.
+- **Arquivo vazio (0 bytes):** retorna todas as métricas zeradas.
+- **Erros:** `FileNotFoundError` para arquivo inexistente, `TypeError` quando `top_n` é `True` ou `1.0`, e `ValueError` quando `top_n` é 0.
+- **Saída JSON:** gravada com `indent=2` e acentos preservados, criando as pastas que faltam.
+
+**Decisões onde o enunciado não era explícito:**
+- **Ordem das validações:** o arquivo é verificado antes do `top_n`. Se os dois estiverem errados, o erro levantado é `FileNotFoundError`.
+- **`nan` e `inf`:** o Python converte esses valores para float, mas eu os trato como inválidos e descarto a linha, para não estragar a soma.
+- **Linhas com colunas faltando:** se faltar `cliente`, `categoria`, `valor` ou `status`, a linha é ignorada.
+- **Ticket médio:** é calculado a partir da receita total já arredondada, como diz a fórmula do enunciado.

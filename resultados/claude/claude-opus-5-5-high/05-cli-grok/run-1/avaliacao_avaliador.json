@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-high/05-cli-grok/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "high",
+ "tarefa": "05-cli-grok",
+ "tipo": "05-cli",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 166.898,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Funções separam validação, arquivo e comandos; mensagens e códigos estão corretos, com argparse, validação de datas e JSON no formato pedido.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código robusto e modular, mas as prioridades e a ordem de listagem foram definidas em estruturas separadas (tupla e dict), não derivando de uma estrutura única.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85,
+ "reexecucao_testes": {
+  "total": 15,
+  "passados": 15,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

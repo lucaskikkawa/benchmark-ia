@@ -1,0 +1,3 @@
+Refatorei [relatorio.py](/tmp/bench-fyjwyoof/relatorio.py) e incluí as três funções públicas e as constantes de taxas exigidas. `gerar_relatorio` usa essas funções e mantém a ordem de processamento dos pedidos.
+
+Não rodei testes. O comando `python` não está disponível no ambiente.

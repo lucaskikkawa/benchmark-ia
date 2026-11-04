@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede um organizador de tarefas pendentes e um registro das decisões em aberto. Vou ver o que já existe no diretório e implementar isso.Vou conferir o núcleo: filtro de pendentes, ordem, cópia rasa e a lista original intacta.`organizador.py` devolve só as tarefas pendentes, da prioridade 5 até 0, cada uma numa cópia rasa nova. `SUPOSICOES.md` registra as decisões que o enunciado deixou em aberto.
+
+- Empate de prioridade mantém a ordem original da entrada.
+- Item sem `titulo` (string não vazia), `prioridade` (int de 0 a 5) ou `concluida` (bool) é ignorado.
+- `bool` não vale como prioridade. Título não é normalizado. A lista e os dicionários recebidos não são alterados.

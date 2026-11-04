@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O módulo fica como está. Vou criar uma suíte pytest que cubra o contrato público, inclusive bordas, exceções e os casos que os mutantes costumam quebrar.

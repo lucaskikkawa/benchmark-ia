@@ -1,0 +1,10 @@
+Refatorei o `frete.py`, e o `cotar` devolve exatamente os mesmos resultados de antes.
+
+**O que mudou:**
+- A tabela agora fica num lugar só, `TabelaFrete.FAIXAS`, com as quatro faixas na ordem e com os números do enunciado. Os quatro ramos copiados viraram uma busca nessa tabela.
+- `TabelaFrete().cotar(...)` faz o cálculo. A função `cotar` só chama esse método, então as duas devolvem o mesmo dict.
+- `faixa_de_peso(peso_g)` confere só o peso: o tipo (`int`, sem `bool`) e o intervalo `1..30000`. Depois devolve o nome da faixa.
+- As três funções leem `TabelaFrete.FAIXAS` a cada chamada. Se a tabela for trocada, elas passam a usar a nova. Os limites gerais (peso `1..30000`, distância `0..3000`, `bool` inválido) não dependem da tabela. Um peso válido que não cai em nenhuma faixa dá `ValueError`.
+- Mantive a ordem das validações e as mensagens de erro do código antigo: primeiro os tipos, depois o intervalo do peso, depois o da distância. O acréscimo do expresso continua `(valor * 3) // 2`, só com inteiros.
+
+**Como verifiquei:** comparei a versão nova com uma cópia da antiga. Usei todas as combinações de pesos nos limites das faixas, distâncias e valores de `expresso`, incluindo `bool`, `float`, `str` e `None`. O resultado ou o erro (tipo e mensagem) bate em todas, tanto pela função `cotar` quanto por `TabelaFrete().cotar`. Os cinco exemplos do enunciado dão os valores esperados, como `2253` e `3757`. Também troquei `FAIXAS` por outra tabela e as três funções passaram a usá-la. Os arquivos temporários desse teste ficaram fora do diretório e já foram apagados.

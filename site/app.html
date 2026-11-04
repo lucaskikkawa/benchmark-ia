@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rodada 1 — benchmark de agentes de código</title>
+<style>
+/*__FONTES__*/
+:root{--bg:#FFF8EC;--card:#fff;--ink:#2B2340;--ink2:#6B6280;--sun:#FFD23F;--orange:#FF9F1C;--up:#2FB86B;--down:#E5484D;--cota:#8A8FA3;
+  --claude:#E06A1E;--codex:#C3C8D0;--gemini:#3B6FE0;--grok:#1C1B22;--line:#E7E0F0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);background-image:radial-gradient(rgba(43,35,64,.07) 1.5px,transparent 1.6px);background-size:18px 18px;
+  color:var(--ink);font-family:Nunito,ui-rounded,"Comic Relief",system-ui,sans-serif;font-variant-numeric:tabular-nums;min-height:100vh;padding-bottom:84px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.f{font-family:Fredoka,Nunito,ui-rounded,sans-serif}
+.box{background:var(--card);border:3px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink)}
+.wrap{max-width:1100px;margin:0 auto}
+header{padding:14px 16px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bubble{position:relative;background:var(--sun);border:3px solid var(--ink);border-radius:18px;padding:6px 14px 4px;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink)}
+.bubble h1{font-family:Fredoka,sans-serif;font-weight:700;font-size:30px;line-height:1}
+.bubble:after{content:"";position:absolute;right:-12px;bottom:6px;width:16px;height:16px;background:var(--sun);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(-45deg)}
+body:not(.em-ranking) .bubble{padding:3px 10px 2px;border-radius:14px}body:not(.em-ranking) .bubble h1{font-size:20px}
+body:not(.em-ranking) .bubble:after{width:12px;height:12px;right:-9px;bottom:4px}
+.crew{display:flex;gap:2px;margin-left:auto}.crew svg{width:34px;height:34px}
+.sub{font-size:12px;color:var(--ink2);font-weight:700;line-height:1.25;width:100%}
+.pill{margin-left:auto;font-size:11px;font-weight:800;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:3px 8px;box-shadow:2px 2px 0 var(--ink);white-space:nowrap;min-height:28px}
+.pill:active{box-shadow:0 0 0;transform:translate(2px,2px)}
+body.em-ranking .pill,body:not(.em-ranking) .crew,body:not(.em-ranking) .sub{display:none}
+h2{font-family:Fredoka,sans-serif;font-size:20px;margin:14px 16px 6px;display:flex;align-items:center;gap:8px;line-height:1.1;flex-wrap:wrap}
+h2 .tag{font-family:Nunito;font-size:11px;font-weight:800;background:var(--sun);border:2px solid var(--ink);border-radius:10px;padding:1px 7px;transform:rotate(2deg)}
+h3{font-family:Fredoka,sans-serif;font-size:15px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:4px}
+h3 small{font-family:Nunito;font-size:11px;font-weight:800;color:var(--ink2)}
+.card{margin:10px 20px 0 16px;padding:10px 12px}
+.chip{display:inline-block;font-size:10px;font-weight:800;border:2px solid var(--ink);border-radius:8px;padding:0 5px;margin-left:4px;vertical-align:1px;background:#fff;line-height:1.35}
+.chip.high{background:repeating-linear-gradient(45deg,#fff 0 3px,#E7E0F0 3px 6px)}
+.leg{display:flex;gap:12px;font-size:11px;font-weight:800;color:var(--ink2);align-items:center;flex-wrap:wrap;margin-top:6px}
+.leg i{display:inline-block;width:12px;height:12px;border:2px solid var(--ink);border-radius:50%;vertical-align:-2px;margin-right:3px}
+.tip{margin:12px 20px 0 16px;padding:8px 10px;line-height:1.25;display:flex;gap:8px;align-items:center;font-size:12.5px;font-weight:700;background:#FFF3C4;border-radius:16px}
+.tip svg{flex:none}
+.seg{display:flex;margin:0 20px 0 16px;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.seg button{flex:1;text-align:center;font-size:11.5px;font-weight:800;padding:6px 2px;line-height:1.15;min-height:44px}
+.seg button+button{border-left:2px solid var(--ink)}.seg button[aria-pressed=true]{background:var(--sun)}
+/* switch */
+.tg{display:flex;align-items:center;gap:8px;border:3px solid var(--ink);border-radius:14px;padding:6px 8px;background:#fff;box-shadow:2px 2px 0 var(--ink);font-size:12px;font-weight:800;line-height:1.1;text-align:left;min-height:48px}
+.tg:active{box-shadow:0 0;transform:translate(2px,2px)}
+.sw{flex:none;display:inline-block;width:38px;height:22px;border-radius:12px;border:3px solid var(--ink);background:#EDE6F5;position:relative;transition:background .2s}
+.sw:after{content:"";position:absolute;top:1px;left:1px;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--ink);transition:left .2s}
+[aria-checked=true] .sw{background:var(--up)}[aria-checked=true] .sw:after{left:17px}
+/* nav */
+nav{position:fixed;left:10px;right:10px;bottom:8px;height:60px;display:flex;justify-content:space-around;align-items:center;border-radius:22px;background:var(--ink);box-shadow:0 4px 0 #0E0B18;z-index:20;max-width:600px;margin:0 auto}
+nav button{color:#fff;font-size:10px;font-weight:800;text-align:center;line-height:1.2;width:64px;min-height:50px;border:2px solid transparent;padding:3px 0;border-radius:14px}
+nav button span{display:block;font-size:20px}
+nav button[aria-current=page]{background:var(--sun);color:var(--ink);border-color:#fff}
+.aba{display:none}.aba.on{display:block;animation:entra .25s ease-out}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}}
+svg text{font-family:Nunito,sans-serif;font-weight:800;fill:var(--ink)}
+/* contadores */
+.cont{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 20px 0 16px}
+.cont div{text-align:center;padding:8px 2px 6px}.cont b{display:block;font-family:Fredoka;font-size:24px;line-height:1.05}
+.cont span{font-size:11px;font-weight:800;color:var(--ink2)}
+/* controles */
+#controles{padding:12px}
+.peso{display:flex;justify-content:space-between;font-size:13px;font-weight:800;align-items:baseline}
+.peso b{font-family:Fredoka;font-weight:600}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;margin:2px 0;--v:70%}
+input[type=range]::-webkit-slider-runnable-track{height:14px;border:3px solid var(--ink);border-radius:10px;background:linear-gradient(90deg,var(--sun) var(--v),#fff var(--v))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;margin-top:-13px;border-radius:50%;border:3px solid var(--ink);background:var(--orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4a6 6 0 0 0-3.5 10.9V17h7v-2.1A6 6 0 0 0 12 4z' fill='%23FFD23F' stroke='%232B2340' stroke-width='1.8'/%3E%3Cpath d='M9.5 19.5h5' stroke='%232B2340' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/22px no-repeat;box-shadow:2px 2px 0 var(--ink)}
+input[type=range]::-moz-range-track{height:10px;border:3px solid var(--ink);border-radius:10px;background:#fff}
+input[type=range]::-moz-range-progress{height:10px;background:var(--sun);border-radius:10px}
+input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;border:3px solid var(--ink);background:var(--orange)}
+input[type=range]:focus-visible{outline:3px dashed var(--orange);outline-offset:2px}
+.ext{display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--ink2);margin-top:-6px}
+.tgs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.mais{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{border:2px solid var(--ink);border-radius:12px;background:#fff;padding:6px 10px;font-size:12px;font-weight:800;box-shadow:2px 2px 0 var(--ink);min-height:40px}
+.btn:active{box-shadow:0 0;transform:translate(2px,2px)}
+.btn[aria-pressed=true]{background:var(--orange)}
+.emps{display:flex;gap:6px}
+.emps button{border:2px solid var(--ink);border-radius:12px;padding:2px;background:#fff;box-shadow:2px 2px 0 var(--ink);width:44px;height:44px}
+.emps button[aria-pressed=false]{opacity:.35;box-shadow:none;transform:translate(2px,2px)}
+.emps svg{width:34px;height:34px;display:block}
+/* ranking */
+#lista{padding:4px 10px;position:relative}
+.lr{display:grid;grid-template-columns:22px 38px 1fr 58px;align-items:center;gap:6px;width:100%;text-align:left;padding:6px 2px;border-bottom:2px dashed var(--line);position:relative;background:#fff;min-height:52px}
+.lr:last-child{border-bottom:0}
+.lr .pos{font-family:Fredoka;font-weight:700;font-size:20px;text-align:center}
+.lr .rb{position:relative;width:38px;height:38px}.lr .rb svg{width:38px;height:38px}
+.lr .nm b{font-size:14px;font-weight:800}
+.bar{display:block;height:13px;border:2px solid var(--ink);border-radius:7px;background:#F3EEF8;margin-top:3px;overflow:hidden}
+.bar i{display:block;height:100%;border-right:2px solid var(--ink);transition:width .45s cubic-bezier(.34,1.56,.64,1)}
+.lr .sc{text-align:right;line-height:1.1}.lr .sc b{font-family:Fredoka;font-size:19px;font-weight:600;display:block}
+.lr .sc small{font-size:11px;font-weight:800;display:block}
+.up{color:var(--up)}.dn{color:var(--down)}.eq{color:var(--ink2)}
+.lr .sc .tt{color:var(--down);font-size:10px}
+.lr.top{background:#FFFBEA}
+.selo{display:inline-block;font-size:10px;font-weight:800;border:2px solid var(--ink);border-radius:8px;padding:0 5px;margin-left:4px;background:var(--sun);transform:rotate(-3deg);vertical-align:1px;line-height:1.35}
+.selo.off{background:#E9F8EF}
+.bar{position:relative}.bar .fant{position:absolute;top:0;bottom:0;width:0;border-left:3px dashed var(--ink);background:none;transition:left .45s}
+.lr .sc .an{color:var(--ink2);font-size:10px}
+.grokinfo{width:calc(100% - 36px);text-align:left;cursor:pointer}
+.au{display:grid;grid-template-columns:26px 1fr 64px;gap:6px;align-items:center;min-height:36px;width:100%;text-align:left;font-size:12px;font-weight:700;border-bottom:2px dashed var(--line);line-height:1.25}
+.au:last-child{border-bottom:0}.au>b{font-family:Fredoka;font-size:16px;text-align:right}.au>span:first-child{font-size:17px;text-align:center}
+.df{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;min-height:34px;width:100%;text-align:left;font-size:11.5px;font-weight:800;border-bottom:2px dashed var(--line)}
+.df:last-child{border-bottom:0}.df em{font-style:normal;white-space:nowrap}
+#rodape table{margin-top:6px}
+.lr:focus-visible{outline:3px dashed var(--orange);z-index:2}
+.coroa{position:absolute;left:9px;top:-9px;font-size:16px;animation:coroa 1.8s ease-in-out infinite}
+@keyframes coroa{50%{transform:translateY(-2px) rotate(-8deg)}}
+.pula{animation:pula .5s}
+@keyframes pula{40%{transform:translateY(-6px) scale(1.08)}}
+.c-claude{background:var(--claude)}.c-codex{background:var(--codex)}.c-gemini{background:var(--gemini)}.c-grok{background:var(--grok)}
+.h-claude{background:repeating-linear-gradient(45deg,var(--claude) 0 4px,rgba(255,255,255,.7) 4px 7px) var(--claude)}
+.h-codex{background:repeating-linear-gradient(45deg,var(--codex) 0 4px,#fff 4px 7px)}
+.h-gemini{background:repeating-linear-gradient(45deg,var(--gemini) 0 4px,rgba(255,255,255,.6) 4px 7px)}
+.h-grok{background:repeating-linear-gradient(45deg,var(--grok) 0 4px,rgba(255,255,255,.5) 4px 7px)}
+.oculto{display:none!important}
+/* seletor de ranking A/B */
+.cen{display:grid;grid-template-columns:1fr 1fr;margin:10px 20px 0 16px;border:3px solid var(--ink);border-radius:16px;overflow:hidden;background:#fff;box-shadow:4px 4px 0 var(--ink)}
+.cen button{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;min-height:54px;line-height:1.15;text-align:center}
+.cen button+button{border-left:3px solid var(--ink)}
+.cen button b{font-family:Fredoka;font-size:16px;font-weight:700}.cen button small{font-size:10.5px;font-weight:800;color:var(--ink2)}
+.cen button[aria-pressed=true]{background:var(--sun)}.cen button[aria-pressed=true] small{color:var(--ink)}
+.cen button:active{background:#FFF3C4}
+.cenTxt{margin:8px 20px 0 16px;font-size:12px;font-weight:700;line-height:1.3;color:var(--ink2)}
+.cenTxt b{color:var(--ink)}
+.nv{margin:10px 0 0;box-shadow:2px 2px 0 var(--ink)}
+.tg[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.expl{font-size:11px;font-weight:700;color:var(--ink2);line-height:1.3;margin-top:8px}
+.emps button[aria-disabled=true]{opacity:.15;box-shadow:none;cursor:not-allowed}
+.ab{display:block;width:100%}.ab .lin{cursor:pointer}.ab .lin:hover rect.hit{fill:#FFF3C4}
+.marca{display:inline-block;font-size:10px;font-weight:800;border:2px solid var(--ink);border-radius:8px;padding:0 5px;background:#FFF3C4;line-height:1.35;white-space:normal}
+.amb-l{display:grid;grid-template-columns:26px 1fr auto;gap:6px;align-items:center;min-height:30px;font-size:12px;font-weight:800;border-bottom:2px dashed var(--line)}
+.amb-l:last-child{border-bottom:0}.amb-l svg{width:24px;height:24px}.amb-l em{font-style:normal;color:var(--ink2);text-align:right}
+/* robôs */
+.blink{animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+.balanca{animation:balanca 3s ease-in-out infinite;transform-origin:50% 90%}
+@keyframes balanca{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+/* comparar */
+.duelo{display:grid;grid-template-columns:1fr 18px 1fr;gap:4px;align-items:center;margin:4px 20px 0 16px}
+.duelo>b{text-align:center;font-family:Fredoka;font-size:18px}
+.carta{position:relative;padding:6px 8px;display:flex;gap:6px;align-items:center;min-height:60px}
+.carta svg{flex:none;width:32px;height:32px}
+.carta div{font-size:12.5px;font-weight:800;line-height:1.2;min-width:0;overflow-wrap:anywhere}
+.carta small{display:block;font-size:11px;color:var(--ink2)}
+.carta select{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px}
+.carta:focus-within{outline:3px dashed var(--orange);outline-offset:2px}
+.carta.b{border-style:dashed}
+#radar{display:block;width:100%;max-width:360px;margin:0 auto;touch-action:manipulation}
+#radar .ax{cursor:pointer}
+.readout{min-height:34px;font-size:12px;font-weight:800;text-align:center;background:#FFF3C4;border-radius:10px;padding:4px 6px;line-height:1.3}
+.esp{display:grid;grid-template-columns:52px 1fr 80px 1fr 40px;align-items:center;gap:4px;width:100%;min-height:30px;font-size:12px;font-weight:800}
+.esp:active{background:#FFF3C4}
+.esp .va{text-align:right;white-space:nowrap}.esp .lb{text-align:center;color:var(--ink2);font-size:11px;white-space:nowrap}
+.esp .ba,.esp .bb{height:14px;display:flex}.esp .ba{justify-content:flex-end}
+.esp .ba i,.esp .bb i{display:block;height:100%;border:2px solid var(--ink);border-radius:5px;transition:width .4s}
+.esp .bb i{border-style:dashed}
+.placar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 20px 0 16px}
+.placar div{padding:6px 10px}.placar span{font-size:12px;font-weight:800;display:block}.placar b{font-family:Fredoka;font-size:20px}
+/* esforço */
+.dumb,.tempo{display:block;width:100%}
+.dumb .lin,.tempo .lin{cursor:pointer}
+.dumb .lin:hover rect.hit,.tempo .lin:hover rect.hit{fill:#FFF3C4}
+.veredito{display:flex;gap:10px;align-items:center;margin:14px 20px 0 16px;padding:10px 12px;background:var(--sun);transform:rotate(-1deg)}
+.veredito>div>b{font-family:Fredoka;font-size:18px;display:block;line-height:1.1}
+.veredito span{font-size:12px;font-weight:700}
+/* heatmap */
+.hm{display:grid;gap:4px;align-items:center}
+.hm .rl{font-size:12px;font-weight:800;white-space:nowrap;padding:2px 4px;border-radius:8px}
+.hm .rl.dest{background:#FFF3C4}
+.hm .ch{text-align:center;font-size:10px;font-weight:800;line-height:1.05;color:var(--ink2)}
+.hm .ch svg{width:24px;height:24px;display:block;margin:0 auto}
+.hm .cel{height:34px;border:2px solid var(--ink);border-radius:8px;font-family:Fredoka;font-weight:600;font-size:15px;position:relative;min-width:0}
+.hm .cel sup{position:absolute;right:3px;top:0;font-size:10px}
+.hm .cel:active{transform:scale(.94)}
+.hmw{overflow-x:auto;padding-bottom:4px}
+.hm.largo .cel{font-size:12.5px;width:40px}.hm.largo .ch{writing-mode:vertical-rl;transform:rotate(180deg);height:118px;display:flex;align-items:center;gap:3px;white-space:nowrap}
+.hm.largo .ch svg{width:20px;height:20px}
+.rampa{display:flex;gap:6px;align-items:center;font-size:11px;font-weight:800;margin-top:8px}
+.rampa i{flex:1;height:12px;border:2px solid var(--ink);border-radius:8px;background:linear-gradient(90deg,#FFF3C4,#FFD23F,#3B9C9C,#2B2340)}
+.tag2{display:inline-block;border:2px solid var(--ink);border-radius:10px;padding:1px 6px;font-size:11px;font-weight:800;background:#E9F8EF;margin:2px 2px 0 0}
+.cons{display:grid;grid-template-columns:1fr auto 42px;gap:6px;align-items:center;font-size:12px;font-weight:800;min-height:34px;border-bottom:2px dashed var(--line);width:100%;text-align:left}
+.cons:last-child{border-bottom:0}
+.cons .dots{display:flex;gap:4px}
+.cons .dots span{width:30px;height:30px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-size:10.5px;font-family:Fredoka;font-weight:600}
+.cons em{font-style:normal;text-align:right;color:var(--ink2)}
+/* juízes */
+.trib{display:flex;justify-content:space-between;margin:10px 20px 0 16px;padding:14px 6px 8px}
+.jz{width:25%;display:flex;flex-direction:column;align-items:center;line-height:1.1;position:relative}
+.jz svg{width:54px;height:70px}
+.jz b{font-family:Fredoka;font-size:20px}.jz>span{font-size:10px;font-weight:800;color:var(--ink2)}
+.jz .sl{position:absolute;top:-12px;background:var(--sun);border:2px solid var(--ink);border-radius:8px;font-size:9px;font-weight:800;color:var(--ink);padding:0 4px;white-space:nowrap;transform:rotate(-4deg);z-index:1}
+.martelo{animation:martelo .6s ease-in 2}
+@keyframes martelo{50%{transform:translateY(-4px) rotate(-6deg)}}
+.fb{display:grid;grid-template-columns:26px 1fr 34px;align-items:center;gap:6px;min-height:30px;width:100%;text-align:left}
+.fb svg{width:24px;height:24px}
+.fb .tr{display:flex;gap:2px;height:15px}.fb i{display:block;height:100%;border:2px solid var(--ink);border-radius:4px;transition:width .4s}
+.fb .js{background:#6B6280}.fb .to{background:repeating-linear-gradient(45deg,#fff 0 3px,#6B6280 3px 6px)}
+.fb em{font-size:11px;font-weight:800;color:var(--ink2);font-style:normal}.fb>span{font-family:Fredoka;font-weight:600;font-size:14px;text-align:right}
+#disp{display:block;width:100%;max-width:340px;margin:0 auto}
+#disp circle.bo{cursor:pointer}
+.vies{margin-top:8px;width:100%}
+/* tabela e folha */
+details.vt{margin-top:8px;font-size:12px}
+details.vt summary{font-weight:800;color:var(--ink2);cursor:pointer;min-height:30px;display:flex;align-items:center}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;font-size:11.5px;width:100%}
+th,td{padding:3px 5px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:800;background:#FFF3C4}
+#folha{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+#folha[hidden]{display:none}
+#folha .fundo{position:absolute;inset:0;background:rgba(43,35,64,.45);animation:fade .2s}
+#folha .cx{position:relative;width:100%;max-width:560px;max-height:82vh;overflow:auto;margin:0 6px 6px;padding:14px 14px 16px;border-radius:22px;animation:sobe .25s cubic-bezier(.34,1.3,.64,1)}
+#folha .x{position:absolute;right:8px;top:6px;width:40px;height:40px;font-size:20px;font-weight:800}
+#folha h4{font-family:Fredoka;font-size:17px;margin:0 40px 8px 0;line-height:1.2}
+@keyframes fade{from{opacity:0}}@keyframes sobe{from{transform:translateY(60%)}}
+.st-ok{color:var(--up)}.st-timeout{color:var(--down)}.st-erro{color:var(--cota)}
+.rod{margin:16px 20px 0 16px;padding:12px;font-size:12.5px;line-height:1.4}
+.rod li{margin:4px 0 0 18px}.rod p+p{margin-top:6px}
+.rod code{font-size:11px;background:#F3EEF8;border-radius:4px;padding:0 3px}
+.ok-ref{font-weight:800;color:var(--up)}
+#confete{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+#confete i{position:absolute;top:-12px;width:8px;height:12px;border:1.5px solid var(--ink);border-radius:2px;animation:cai 1.4s ease-in forwards}
+@keyframes cai{to{transform:translateY(105vh) rotate(540deg)}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+@media (min-width:768px){
+  body{padding-bottom:20px;padding-top:76px}
+  nav{top:8px;bottom:auto}
+  #aba-ranking .grade{display:grid;grid-template-columns:360px 1fr;gap:4px;align-items:start}
+  #aba-ranking .grade>.lado{position:sticky;top:84px}
+  #aba-comparar .grade,#aba-esforco .grade,#aba-tarefas .grade,#aba-juizes .grade{display:grid;grid-template-columns:1fr 1fr;align-items:start}
+}
+</style></head>
+<body class="em-ranking">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="defs"></defs></svg>
+<div class="wrap">
+<header>
+  <div class="bubble"><h1>Rodada 1</h1></div>
+  <div class="crew" id="crew"></div>
+  <button class="pill" id="pill" aria-label="ajustes da nota"></button>
+  <p class="sub" id="sub"></p>
+</header>
+<div class="cen" id="cen" role="group" aria-label="escolha o ranking oficial">
+  <button data-cen="A" id="cenA" aria-pressed="true"><b>🅰️ Ranking A</b><small>limite 3/5 min · 16 combinações</small></button>
+  <button data-cen="B" id="cenB" aria-pressed="false"><b>🅱️ Ranking B</b><small>limite 7 min · 12, sem Grok</small></button>
+</div>
+<p class="cenTxt" id="cenTxt" aria-live="polite"></p>
+<main>
+<!-- ============ RANKING ============ -->
+<section class="aba on" id="aba-ranking" aria-labelledby="t-rank">
+  <div class="cont">
+    <div class="box"><b data-n="exec">0</b><span>execuções na nota</span></div>
+    <div class="box"><b data-n="to" style="color:var(--down)">0</b><span>⏱ timeouts</span></div>
+    <div class="box"><b data-n="cons">0</b><span id="consTit">🔁 consistência (fora)</span></div>
+  </div>
+  <div class="grade">
+  <div class="lado"><div id="casa-controles">
+  <section class="card box" id="controles" aria-label="controles da nota">
+    <div class="peso"><span>⚖️ Peso da nota</span><b id="pesoTxt">70% testes · 30% rubrica</b></div>
+    <input type="range" id="slider" min="0" max="100" step="5" value="70" aria-label="peso dos testes (%)">
+    <div class="ext"><span>🧑‍⚖️ só rubrica</span><span>só testes 🧪</span></div>
+    <div class="seg nv oculto" role="group" aria-label="versão da nota do Ranking B" id="nvSeg">
+      <button data-nv="i" aria-pressed="true">nota_i<br><small>timeout = 0</small></button><button data-nv="ii" aria-pressed="false">nota_ii<br><small>entrega parcial julgada</small></button>
+    </div>
+    <div class="tgs">
+      <button class="tg" role="switch" id="tgGrok" aria-checked="true"><span class="sw"></span><span id="tgGrokTxt">Penalidades do grok-4.7-high (×0,7 / ×0,5)</span></button>
+      <button class="tg" role="switch" id="tgAnt" aria-checked="false"><span class="sw"></span><span id="tgAntTxt">👻 Mostrar nota antiga</span></button>
+    </div>
+    <p class="expl oculto" id="ctlB"></p>
+    <div class="mais">
+      <button class="btn" id="btVies" aria-pressed="false" title="experimento, não é o critério oficial">🧪 Corrigir viés dos juízes</button>
+      <button class="btn" id="btReset">↺ padrão do relatório</button>
+    </div>
+  </section></div></div>
+  <div>
+  <h2 id="t-rank">🏆 Ranking ao vivo <span class="tag" id="tagPadrao">padrão do relatório</span></h2>
+  <div class="emps" style="margin:0 20px 6px 16px" id="emps" aria-label="filtrar empresas"></div>
+  <section class="card box" style="padding:2px 0"><div id="lista"></div></section>
+  <button class="tip box grokinfo" id="grokInfo"></button>
+  <div class="tip box" id="curio"></div>
+  <section class="card box"><h3>🏢 Média por empresa <small id="empTit"></small></h3><div id="empMed"></div></section>
+  <section class="card box"><h3>Tabela completa <small>com o estado atual</small></h3>
+    <details class="vt"><summary>ver como tabela</summary><div class="tw" id="tabRank"></div></details></section>
+  </div></div>
+  <section class="rod box" id="rodape"></section>
+</section>
+<!-- ============ COMPARAR ============ -->
+<section class="aba" id="aba-comparar">
+  <h2>⚖️ Duelo de modelos</h2>
+  <div class="duelo">
+    <label class="carta box" id="cartaA"><span class="sr">Modelo A</span><select id="selA"></select><span class="ci"></span></label>
+    <b>×</b>
+    <label class="carta box b" id="cartaB"><span class="sr">Modelo B</span><select id="selB"></select><span class="ci"></span></label>
+  </div>
+  <div class="grade">
+  <section class="card box"><h3>Rubrica, testes e pontualidade <small>0–100%</small></h3>
+    <svg id="radar" viewBox="0 0 340 270" role="img" aria-label="radar A × B"></svg>
+    <div class="readout" id="readout" aria-live="polite">Toque num eixo para ver os valores</div>
+    <div class="leg"><span><i id="legA"></i>A — linha cheia</span><span><i id="legB" style="border-style:dashed"></i>B — tracejada</span>
+      <button class="btn" id="btExtras" aria-pressed="true" style="margin-left:auto;min-height:32px;padding:2px 8px">+ testes e pontual</button></div>
+  </section>
+  <div>
+  <section class="card box"><h3>Nota por tipo de tarefa <small>◀ A · B ▶ · toque = execuções</small></h3><div id="esp"></div>
+    <details class="vt"><summary>ver como tabela</summary><div class="tw" id="tabEsp"></div></details></section>
+  <div class="placar"><div class="box"><span>🏅 A vence em</span><b id="vence"></b></div><div class="box"><span>⏱ tempo médio</span><b id="tempoAB"></b></div></div>
+  </div></div>
+</section>
+<!-- ============ ESFORÇO ============ -->
+<section class="aba" id="aba-esforco">
+  <h2>🔥 Mais esforço ajuda? <span class="tag">medium → high</span></h2>
+  <div class="grade">
+  <section class="card box"><h3>Nota medium × high <small>0–10 · toque = detalhes</small></h3><svg class="dumb" id="dumb"></svg>
+    <div class="leg"><span><i class="c-codex" style="background:#6B6280"></i>medium (cor cheia)</span><span><i class="h-grok" style="background:repeating-linear-gradient(45deg,#fff 0 2px,#6B6280 2px 4px)"></i>high (hachurada)</span><span><b class="up">▲</b> melhorou <b class="dn">▼</b> piorou</span></div>
+    <details class="vt"><summary>ver como tabela</summary><div class="tw" id="tabDumb"></div></details></section>
+  <div>
+  <section class="card box"><h3>Tempo médio medium → high <small>segundos</small></h3><svg class="tempo" id="tempo"></svg></section>
+  <div class="veredito box" id="veredito"></div>
+  </div></div>
+  <h2>⚖️ Ranking A × Ranking B <span class="tag">high − medium lado a lado</span></h2>
+  <div class="grade">
+  <section class="card box"><h3>high − medium por modelo <small>pontos · toque = detalhes</small></h3><svg class="ab" id="hmAB"></svg>
+    <div class="leg"><span><i style="background:#6B6280;border-radius:3px"></i>A (3/5 min)</span><span><i style="background:var(--sun);border-radius:3px"></i>B nota_i</span><span><i style="background:repeating-linear-gradient(45deg,var(--sun) 0 3px,#fff 3px 5px);border-radius:3px"></i>B nota_ii</span></div>
+    <details class="vt"><summary>ver como tabela</summary><div class="tw" id="tabAB"></div></details></section>
+  <div class="veredito box" id="conclusao"></div>
+  </div>
+</section>
+<!-- ============ TAREFAS ============ -->
+<section class="aba" id="aba-tarefas">
+  <h2>🧩 Mapa de tarefas <span class="tag" id="tagModo">tipo × empresa</span></h2>
+  <div class="seg" role="group" aria-label="agrupar colunas por" id="modos">
+    <button data-m="emp" aria-pressed="true">empresa resolvedora</button><button data-m="me" aria-pressed="false">modelo × esforço</button><button data-m="aut" aria-pressed="false">empresa autora</button>
+  </div>
+  <div class="grade">
+  <section class="card box"><h3><span id="hmTit">Nota média</span> <small>★ = melhor da linha · toque = execuções</small></h3>
+    <div class="hmw"><div class="hm" id="hm"></div></div>
+    <div class="rampa"><span>0</span><i></i><span>10 · claro = pior</span></div>
+    <details class="vt"><summary>ver como tabela</summary><div class="tw" id="tabHm"></div></details></section>
+  <div>
+  <div class="tip box" id="hmTip"></div>
+  <section class="card box" id="amb"></section>
+  <section class="card box" id="gabarito"></section>
+  <section class="card box"><h3>Consistência: 4 runs da mesma tarefa <small>ordem: mais instável primeiro</small></h3>
+    <p class="marca oculto" id="consB" style="margin-bottom:4px">Ranking A: o cenário de 7 min só refez run-1, então as runs 2–4 vêm do limite original.</p>
+    <p style="font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:4px">04-dados-claude (o Claude resolve 04-dados-grok). Runs 2–4 não entram no ranking. ⏱ = timeout (vale 0) · ⚖️ = regra especial do grok-4.7-high</p>
+    <div id="cons"></div></section>
+  </div></div>
+</section>
+<!-- ============ JUÍZES ============ -->
+<section class="aba" id="aba-juizes">
+  <h2>🧑‍⚖️ O Avaliador <span class="tag">reavaliação independente</span></h2>
+  <div class="tip box oculto" id="jzB"></div>
+  <div class="tip box" id="troca"></div>
+  <section class="trib box" id="trib"></section>
+  <div class="grade">
+  <div>
+  <section class="card box"><h3>Nota antiga × nota do Avaliador <small>mesmas 30 execuções · toque = execuções</small></h3>
+    <svg class="dumb" id="antNova"></svg>
+    <div class="leg"><span><i style="background:#fff;border-style:dashed"></i>antiga (juízes da rodada)</span><span><i style="background:#6B6280"></i>Avaliador</span></div>
+    <p style="font-size:12px;font-weight:700;color:var(--ink2);line-height:1.35;margin-top:6px" id="antTxt"></p>
+    <details class="vt"><summary>ver como tabela</summary><div class="tw" id="tabAnt"></div></details></section>
+  <section class="card box"><h3>Maiores mudanças por execução <small>toque = detalhes</small></h3><div id="difs"></div></section>
+  </div>
+  <div>
+  <section class="card box"><h3>Juiz 1 × juiz 2 <small id="nPares"></small></h3>
+    <svg id="disp" viewBox="0 0 300 300" role="img" aria-label="dispersão juiz 1 × juiz 2"></svg>
+    <p style="font-size:12px;font-weight:700;color:var(--ink2);line-height:1.35" id="dispTxt"></p>
+    <button class="tg vies" role="switch" id="tgVies" aria-checked="false"><span class="sw"></span>Corrigir viés dos juízes (experimento, não é o critério oficial) — muda as notas</button>
+  </section>
+  <section class="card box"><h3>🔍 Auditoria <small>toque = execuções</small></h3><div id="audit"></div></section>
+  </div>
+  </div>
+</section>
+</main>
+</div>
+<nav aria-label="abas" id="nav">
+  <button data-aba="ranking"><span>🏆</span>Ranking</button><button data-aba="comparar"><span>⚖️</span>Comparar</button><button data-aba="esforco"><span>🔥</span>Esforço</button><button data-aba="tarefas"><span>🧩</span>Tarefas</button><button data-aba="juizes"><span>🧑‍⚖️</span>Avaliador</button>
+</nav>
+<div id="folha" hidden><div class="fundo"></div><div class="cx box" role="dialog" aria-modal="true" aria-labelledby="folhaT"><button class="x" aria-label="fechar">✕</button><h4 id="folhaT"></h4><div id="folhaC"></div></div></div>
+<div id="confete" aria-hidden="true"></div>
+<div class="sr" aria-live="polite" id="aviso"></div>
+<script id="dados" type="application/json">__DADOS__</script>
+<script>
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const D=JSON.parse($('#dados').textContent);
+// Ranking A (3/5 min, 528 execuções, N=30 só run-1) e Ranking B (7 min / 420 s, 360 execuções run-1, sem Grok)
+const RA=D.runs,RB=D.runsB;RB.forEach(r=>r.B=1);
+let RUNS=RA;
+const EMP=['claude','codex','gemini','grok'];
+const COR={claude:'#E06A1E',codex:'#C3C8D0',gemini:'#3B6FE0',grok:'#1C1B22'};
+const INK='#2B2340';
+const TIPOS={'01':'01 função','02':'02 bug','03':'03 refatoração','04':'04 dados','05':'05 cli','06':'06 multiarquivo','07':'07 performance','08':'08 testes','09':'09 api','10':'10 ambígua'};
+const TIPOS_C={'01':'01 função','02':'02 bug','03':'03 refator.','04':'04 dados','05':'05 cli','06':'06 multiarq.','07':'07 perf.','08':'08 testes','09':'09 api','10':'10 ambígua'};
+const TK=['01','02','03','04','05','06','07','08','09','10']; // ordem explícita: '10' seria reordenada como índice inteiro
+const reduz=matchMedia('(prefers-reduced-motion: reduce)').matches;
+for(const r of RA.concat(RB)){r.me=r.m+'-'+r.x;r.tipo=r.t.slice(0,2);r.aut=r.t.split('-').pop()}
+const EMP_DE={};RA.forEach(r=>EMP_DE[r.me]=r.e);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const f2=v=>r2(v).toFixed(2), f1=v=>v.toFixed(1);
+// média exata como statistics.mean do Python: soma exata dos doubles (BigInt, escala 2^60) e o double
+// mais próximo de soma/n. Sem isso, empates de arredondamento (ex.: 3.865 × 3.8649999…) dão outra 2ª casa.
+const K60=2**60,DV=new DataView(new ArrayBuffer(8));
+const bi=v=>BigInt(Math.round(v*K60));
+const vizinho=(v,dir)=>{DV.setFloat64(0,v);DV.setBigUint64(0,DV.getBigUint64(0)+BigInt(dir));return DV.getFloat64(0)};
+function mean(a){
+  if(!a.length)return 0;const n=BigInt(a.length);let S=0n;for(const x of a)S+=bi(x);
+  if(S<=0n)return Number(S)/K60/a.length;
+  let d=Number(S)/K60/a.length;const err=v=>{const e=bi(v)*n-S;return e<0n?-e:e};
+  for(;;){const lo=vizinho(d,-1),hi=vizinho(d,1);if(err(lo)<err(d))d=lo;else if(err(hi)<err(d))d=hi;else return d}
+}
+const sd=a=>{const m=mean(a);return Math.sqrt(mean(a.map(x=>(x-m)**2)))};
+
+// ---------- cenários e viés dos juízes (média de cada juiz em todas as execuções do ranking: 528 no A, como na
+// seção "Juízes" do relatório do Avaliador; 360 no B)
+const CEN={A:{runs:RA},B:{runs:RB}};
+for(const c of Object.values(CEN)){
+  c.mes=[...new Set(c.runs.map(r=>r.me))];c.princ=c.runs.filter(r=>r.r===1);c.emp=EMP.filter(e=>c.mes.some(me=>EMP_DE[me]===e));
+  c.JV={};c.runs.forEach(r=>{for(const[k,v]of Object.entries(r.j))(c.JV[k]=c.JV[k]||[]).push(v)});
+  c.MU={};for(const k in c.JV)c.MU[k]=mean(c.JV[k]);c.MU0=mean(Object.values(c.JV).flat());
+}
+const{JV,MU,MU0}=CEN.A;
+
+// ---------- estado e fórmula (idêntica a scripts/avaliador.py)
+// nota = 0,7×%testes/10 + 0,3×rubrica, arredondada em 2 casas; timeout = 0 (rubrica nem é julgada);
+// grok-4.7-high: 13 execuções refeitas com regra própria (nota base × fator 1 / 0,7 / 0,5 / 0).
+const DEF={wp:70,pg:true,vies:false};
+const S=Object.assign({},DEF,{cen:'A',nv:'i',emp:new Set(EMP),a:'claude-haiku-5-5-high',b:'gpt-6-luna-medium',modo:'emp',aba:'ranking',extras:true,ant:false});
+// round(x, 2) do Python: pelo valor binário exato e, em empate exato (ex.: 9.625), para o par
+function r2(v){
+  const s=Math.abs(v).toFixed(70),i=s.indexOf('.');
+  if(!/^50*$/.test(s.slice(i+3)))return +v.toFixed(2);
+  let k=BigInt(s.slice(0,i)+s.slice(i+1,i+3));if(k%2n)k+=1n;return Math.sign(v)*Number(k)/100;
+}
+function rub(r,st){
+  if(r.rb===null)return null;
+  if(!st.vies)return r.rb;
+  const c=CEN[r.B?'B':'A'],v=Object.entries(r.j).map(([k,x])=>Math.min(10,Math.max(0,x-c.MU[k]+c.MU0)));
+  return v.length?mean(v):r.rb;
+}
+// nota base (sem fator do grok): sem rubrica (timeout não julgado) = 0
+const base=(r,st)=>{const b=rub(r,st);return b===null?0:r2(st.wp/100*r.p/10+(100-st.wp)/100*b)};
+// fator efetivo: 1ª tentativa = 1; 2ª tentativa = 0,7 ou 0,5 (desligável); sem entrega = 0 (não é atraso, fica 0 sempre)
+const fator=(r,st)=>r.g?(r.g[1]===0?0:st.pg?r.g[1]:1):1;
+// Ranking B: nota_i = timeout vale 0 (como no A); nota_ii = a entrega parcial do timeout é julgada (%testes + rubrica)
+function nota(r,st){
+  if(r.g)return r2(base(r,st)*fator(r,st));
+  return r.s==='timeout'&&!(r.B&&st.nv==='ii')?0:base(r,st);
+}
+const incl=r=>r.r===1; // ranking: N=30, só as execuções principais
+function stats(rs,st){
+  const jul=rs.filter(r=>r.rb!==null);
+  return {n:rs.length,nota:mean(rs.map(r=>nota(r,st))),pct:mean(rs.map(r=>r.p)),ant:mean(rs.map(r=>r.na)),
+    rub:jul.length?mean(jul.map(r=>rub(r,st))):0,tempo:mean(rs.map(r=>r.d)),to:rs.filter(r=>r.s==='timeout').length,
+    gk:rs.filter(r=>r.g).length,rs};
+}
+let MES=CEN.A.mes,PRINC=CEN.A.princ;
+const split=me=>{const i=me.lastIndexOf('-');return [me.slice(0,i),me.slice(i+1)]};
+function porMe(st,cen){const c=CEN[cen||st.cen||'A'],o={};for(const me of c.mes)o[me]=stats(c.runs.filter(r=>r.me===me&&incl(r)),st);return o}
+let PM0=null;
+// A: empate na 2ª casa desempata pelo padrão (como na v1); B: pela média sem arredondar (como resumo_7min.json)
+function ordem(pm,lista){const B=pm[(lista||MES)[0]]&&pm[(lista||MES)[0]].rs[0].B;
+  return (lista||MES).slice().sort((a,b)=>r2(pm[b].nota)-r2(pm[a].nota)||(B?pm[b].nota-pm[a].nota:0)||(PM0&&PM0[a]&&PM0[b]?PM0[b].nota-PM0[a].nota:0)||a.localeCompare(b))}
+const chip=x=>`<span class="chip${x==='high'?' high':''}">${x}</span>`;
+const nomeChip=me=>{const[m,x]=split(me);return `${esc(m)}${chip(x)}`};
+const GK='grok-4.7-high';
+
+// ---------- conferência com RELATORIO_AVALIADOR.md (ranking N=30, nota antiga nas mesmas 30, médias por empresa)
+PM0=porMe(DEF,'A');
+let confere=true;
+for(const r of RA){const ok=Math.abs(nota(r,DEF)-r.n)<1e-9;if(!ok){console.assert(ok,'nota por execução diverge',r.me,r.t,r.r,nota(r,DEF),r.n);confere=false}}
+for(const me of MES){
+  const ok=f2(PM0[me].nota)===f2(D.ref[me][0])&&f2(PM0[me].ant)===f2(D.ref[me][1]);
+  console.assert(ok,'diverge do relatório do Avaliador',me,PM0[me].nota,D.ref[me]);confere=confere&&ok;
+}
+const mediaEmp=(pm,e)=>mean(Object.keys(pm).filter(me=>EMP_DE[me]===e).map(me=>r2(pm[me].nota)));
+for(const e of EMP){const ok=f2(mediaEmp(PM0,e))===f2(D.refEmp[e][0]);console.assert(ok,'empresa diverge',e);confere=confere&&ok}
+const RANK0=ordem(PM0);
+// ---------- conferência do Ranking B com resumo_7min.json (via build): notas por execução, médias, posições,
+// empresas (média sem arredondar das combinações) e high − medium; tolerância 0,005
+const PMB={},DEFB={i:Object.assign({},DEF,{nv:'i'}),ii:Object.assign({},DEF,{nv:'ii'})};
+let confereB=true;
+const okB=(c,...m)=>{if(!c){console.assert(c,...m);confereB=false}};
+for(const r of RB){okB(Math.abs(nota(r,DEFB.i)-r.ni)<1e-9,'B nota_i diverge',r.me,r.t);okB(Math.abs(nota(r,DEFB.ii)-r.nii)<1e-9,'B nota_ii diverge',r.me,r.t)}
+const mediaEmpB=(pm,e)=>mean(Object.keys(pm).filter(me=>EMP_DE[me]===e).map(me=>pm[me].nota));
+const BASES_DE=mes=>[...new Set(mes.map(me=>split(me)[0]))].filter(m=>mes.includes(m+'-medium')&&mes.includes(m+'-high'));
+for(const v of['i','ii']){
+  const pm=PMB[v]=porMe(DEFB[v],'B'),ref=D.refB,k='nota_'+v;
+  ordem(pm,CEN.B.mes).forEach((me,i)=>{okB(Math.abs(pm[me].nota-ref[me][k][0])<=.005&&ref[me][k][1]===i+1,'B diverge',k,me)});
+  for(const e of CEN.B.emp)okB(Math.abs(mediaEmpB(pm,e)-D.refBEmp[e][k])<=.005,'B empresa diverge',k,e);
+  for(const m of BASES_DE(CEN.B.mes))okB(Math.abs(pm[m+'-high'].nota-pm[m+'-medium'].nota-D.refBhm[m][k])<=.005,'B high−medium diverge',k,m);
+}
+const PMA0=PM0;
+const RANKB={i:ordem(PMB.i,CEN.B.mes),ii:ordem(PMB.ii,CEN.B.mes)};
+function usar(){const c=CEN[S.cen];RUNS=c.runs;MES=c.mes;PRINC=c.princ;PM0=S.cen==='A'?PMA0:PMB[S.nv];
+  if(!MES.includes(S.a))S.a='claude-haiku-5-5-high';if(!MES.includes(S.b)||S.b===S.a)S.b=MES.find(me=>me!==S.a&&me==='gpt-6-luna-medium')||MES.find(me=>me!==S.a)}
+const padraoDe=()=>S.cen==='A'?Object.assign({},DEF):Object.assign({},DEFB[S.nv]);
+
+// ---------- robôs >_
+const EXTRA={
+ claude:'<line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><path d="M20 0.5 l1.3 2.9 2.9 1.3 -2.9 1.3 -1.3 2.9 -1.3 -2.9 -2.9 -1.3 2.9 -1.3z" fill="#FFD23F" stroke="#2B2340" stroke-width="1.1" stroke-linejoin="round"/>',
+ codex:'<line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="20" cy="4.5" r="2.8" fill="#FFD23F" stroke="#2B2340" stroke-width="1.5"/><rect x="1.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/><rect x="34.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/>',
+ gemini:'<line x1="13" y1="4" x2="13" y2="10" stroke="#2B2340" stroke-width="2.5"/><line x1="27" y1="4" x2="27" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="13" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/><circle cx="27" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/>',
+ grok:'<rect x="10" y="5.5" width="20" height="5" rx="2.5" fill="#6B6280" stroke="#2B2340" stroke-width="1.8"/><circle cx="3.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/><circle cx="36.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/>'};
+const ROSTO={claude:INK,codex:INK,gemini:'#fff',grok:'#fff'};
+const NOME={claude:'Clô',codex:'Códi',gemini:'Gêmi',grok:'Gróqui'};
+function robo(e,o={}){
+  const mood=o.mood||'neutro',f=ROSTO[e],sw=`stroke="${f}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"`;
+  let olho=`<path d="M12 18 l5.5 4 -5.5 4" ${sw}/>`,boca=`<line x1="20.5" y1="28" x2="28" y2="28" ${sw}${mood==='feliz'?' class="blink"':''}/>`,mais='';
+  if(mood==='triste'){olho=`<path d="M12 18 l5.5 4 -5.5 4" ${sw} transform="rotate(15 14.7 22)"/>`;boca=[21,24.2,27.4].map(x=>`<circle cx="${x}" cy="28.5" r="1.3" fill="${f}"/>`).join('')}
+  if(mood==='timeout')boca=`<path d="M21 25 h6 l-6 6 h6z" fill="none" stroke="${f}" stroke-width="1.8" stroke-linejoin="round" class="blink"/>`;
+  if(mood==='erro'){olho=`<line x1="12" y1="22" x2="18" y2="22" ${sw}/>`;mais='<text x="31" y="9" font-size="8" style="fill:#2B2340">z</text><text x="35" y="5" font-size="6" style="fill:#2B2340">z</text>'}
+  const brilho=mood==='feliz'?'#fff':'#fff" stroke-opacity=".55';
+  const coroa=o.coroa?'<path d="M11 9 l2-7 4 4 3-5 3 5 4-4 2 7z" fill="#FFD23F" stroke="#2B2340" stroke-width="1.4" stroke-linejoin="round"/>':'';
+  const toga=o.toga?'<path d="M7 36 h26 l5 20 h-36z" fill="#2B2340"/><path d="M14 36 l6 8 6-8" fill="#fff" stroke="#2B2340" stroke-width="1.5" stroke-linejoin="round"/>':'';
+  const vb=o.toga?'0 0 40 56':'0 0 40 40';
+  return `<svg viewBox="${vb}" ${o.s?`width="${o.s}" height="${o.s*(o.toga?1.4:1)}"`:''} aria-hidden="true" overflow="visible"><g${o.anim===false||reduz?'':' class="balanca"'}>${toga}${o.coroa?'':EXTRA[e]}
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="${COR[e]}" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="${brilho}" stroke-width="2" stroke-linecap="round"/>${olho}${boca}${mais}${coroa}</g></svg>`;
+}
+const humor=v=>v>=8?'feliz':v>=5?'neutro':'triste';
+// hachuras SVG para "high"
+$('#defs').innerHTML=EMP.map(e=>`<pattern id="hp-${e}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="${COR[e]}"/><rect width="2" height="5" fill="${e==='codex'?'#fff':'#fff'}" fill-opacity="${e==='codex'?1:.6}"/></pattern>`).join('')
+  +'<pattern id="hp-sun" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#FFD23F"/><rect width="2" height="5" fill="#fff"/></pattern>'
+  +'<pattern id="hp-n" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#fff"/><rect width="2.2" height="5" fill="#6B6280"/></pattern>';
+
+// ---------- folha de detalhes (toque)
+let casaFolha=null;
+function abrir(titulo,html){
+  fecharFolha(true);
+  $('#folhaT').textContent=titulo;$('#folhaC').innerHTML=html;$('#folha').hidden=false;$('#folha .x').focus();
+}
+function fecharFolha(silencioso){
+  if(casaFolha){casaFolha.appendChild($('#controles'));casaFolha=null}
+  $('#folha').hidden=true;
+}
+$('#folha .fundo').onclick=()=>fecharFolha();$('#folha .x').onclick=()=>fecharFolha();
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#folha').hidden)fecharFolha()});
+const ST_IC={ok:'✅',timeout:'⏱'};
+const regraTxt=r=>r.g?`<br><small class="selo" style="transform:none">⚖️ ${esc(r.g[2])}</small>`:'';
+// 10-ambigua-claude: o 0% continua; marcação da análise do Avaliador (_avaliador/analise_10_ambigua_claude.md)
+const AMB='10-ambigua-claude',MARCA_AMB='⏱ timeout sem entrega (Gemini e Grok); tarefa validada';
+const ambTxt=r=>r.t===AMB&&r.s==='timeout'&&r.p===0?`<br><small class="marca">${MARCA_AMB}</small>`:'';
+const refTxt=r=>r.B&&r.rf?' <small title="refeita com 420 s">🔁 420 s</small>':'';
+function listaRuns(rs,col='t'){
+  const linhas=rs.slice().sort((a,b)=>a[col].localeCompare(b[col])||a.r-b.r).map(r=>{
+    const jz=Object.entries(r.j).map(([k,v])=>`${k} ${f1(v)}`).join(' · ')||'<span class="st-erro">não julgado</span>';
+    return `<tr><td>${col==='t'?esc(r.t):nomeChip(r.me)}${r.r>1?` <small>run ${r.r}</small>`:''}${refTxt(r)}${regraTxt(r)}${ambTxt(r)}</td><td class="st-${r.s}">${ST_IC[r.s]} ${r.s}</td><td>${r.tp}/${r.tt}</td><td>${Math.round(r.d)} s</td><td style="text-align:left">${jz}</td><td><b>${f2(nota(r,S))}</b></td><td style="color:var(--ink2)">${f2(r.na)}</td></tr>`}).join('');
+  return `<div class="tw"><table><thead><tr><th>${col==='t'?'tarefa':'modelo'}</th><th>status</th><th>testes</th><th>tempo</th><th style="text-align:left">juízes (Avaliador)</th><th>nota${rs.length&&rs[0].B?' (B '+S.nv+')':''}</th><th>${rs.length&&rs[0].B?'Ranking A':'antiga'}</th></tr></thead><tbody>${linhas}</tbody></table></div>`;
+}
+function tabela(cab,linhas){return `<table><thead><tr>${cab.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${linhas.map(l=>`<tr>${l.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`}
+
+// ---------- cabeçalho
+$('#crew').innerHTML=EMP.map(e=>robo(e,{s:34})).join('');
+const TOTS={A:{exec:CEN.A.princ.length,to:CEN.A.princ.filter(r=>r.s==='timeout').length,cons:RA.length-CEN.A.princ.length},
+  B:{exec:RB.length,to:RB.filter(r=>r.s==='timeout').length,cons:RB.filter(r=>r.rf).length}};
+const CEN_TXT={A:`<b>A · limite original</b> (3 min em 31 tarefas, 5 min em 9): ${CEN.A.mes.length} combinações, com Grok. As penalidades ⚖️ do grok-4.7-high só existem aqui.`,
+  B:`<b>B · limite de 7 min (420 s)</b>: os ${TOTS.B.cons} timeouts de Claude, Codex e Gemini foram refeitos; o resto é igual ao A. ${CEN.B.mes.length} combinações, sem Grok.`};
+function sincCen(){
+  $$('#cen button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.cen===S.cen));
+  $('#cenTxt').innerHTML=CEN_TXT[S.cen]+(S.cen==='B'?` Versão: <b>${S.nv==='i'?'nota_i (timeout = 0)':'nota_ii (entrega parcial julgada)'}</b>.`:'');
+  const c=CEN[S.cen];
+  $('#sub').textContent=`Ranking ${S.cen} · ${c.mes.length} modelos × esforço · ${new Set(c.runs.map(r=>r.t)).size} tarefas · ${c.emp.length} empresas · notas do Avaliador independente · N = 30 por modelo`;
+  $('#consTit').textContent=S.cen==='A'?'🔁 consistência (fora)':'🔁 refeitas com 420 s';
+}
+function contar(){const TOT=TOTS[S.cen];for(const el of $$('[data-n]')){const alvo=TOT[el.dataset.n];if(reduz){el.textContent=alvo;continue}
+  const t0=performance.now();const passo=t=>{const k=Math.min(1,(t-t0)/900);el.textContent=Math.round(alvo*(1-(1-k)**3));if(k<1)requestAnimationFrame(passo)};requestAnimationFrame(passo)}}
+
+// ---------- controles
+const sl=$('#slider');
+// no B as penalidades do grok não existem (sem Grok): só peso e viés contam para o "padrão"
+const padrao=()=>(S.cen==='A'?['wp','pg','vies']:['wp','vies']).every(k=>S[k]===DEF[k]);
+function sincControles(){
+  const B=S.cen==='B';
+  sl.value=S.wp;sl.style.setProperty('--v',S.wp+'%');
+  $('#pesoTxt').textContent=`${S.wp}% testes · ${100-S.wp}% rubrica`;
+  $('#tgGrok').setAttribute('aria-checked',B?false:S.pg);$('#tgAnt').setAttribute('aria-checked',S.ant);
+  $('#tgGrok').disabled=B;$('#tgGrok').setAttribute('aria-disabled',B);
+  $('#tgGrokTxt').textContent=B?'Penalidades do grok-4.7-high: não há Grok no Ranking B':'Penalidades do grok-4.7-high (×0,7 / ×0,5)';
+  $('#tgAntTxt').textContent=B?'👻 Mostrar nota do Ranking A':'👻 Mostrar nota antiga';
+  $('#nvSeg').classList.toggle('oculto',!B);
+  $$('#nvSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.nv===S.nv));
+  $('#ctlB').classList.toggle('oculto',!B);
+  $('#ctlB').innerHTML=`<b>nota_i</b>: timeout = 0 (regra padrão, vale mesmo mexendo no peso). <b>nota_ii</b>: os ${TOTS.B.to} timeouts de novo são julgados pelo que ficou em <code>codigo/</code>. O peso testes × rubrica funciona no B: as 360 execuções têm %testes e rubrica do Avaliador. ⚖️ Penalidades do grok: desligado, o B não tem Grok. 👻 Nota antiga dos juízes da rodada não existe para as 70 refeitas; no lugar, o fantasma mostra a nota do Ranking A.`;
+  $$('#emps button').forEach(b=>{const fora=!CEN[S.cen].emp.includes(b.dataset.e);b.setAttribute('aria-disabled',fora);b.title=fora?`${b.dataset.e}: não está no Ranking ${S.cen}`:b.dataset.e});
+  $('#pill').textContent=`⚙️ ${B?`B ${S.nv==='i'?'nota_i':'nota_ii'}`:'A'} · ${S.wp}% testes${B?'':` · grok-high ${S.pg?'c/ pen.':'sem pen.'}`}${S.vies?' · viés corrigido':''}`;
+  const pad=padrao();
+  $('#tagPadrao').textContent=pad?'padrão do Avaliador':'seu ranking';
+  $('#tagPadrao').style.background=pad?'':'var(--orange)';
+}
+let agendado=false;
+function mudou(){if(agendado)return;agendado=true;requestAnimationFrame(()=>{agendado=false;sincControles();renderTudo();salvarHash()})}
+sl.addEventListener('input',()=>{S.wp=+sl.value;mudou()});
+$('#tgGrok').onclick=()=>{if(S.cen==='B')return;S.pg=!S.pg;mudou()};
+function trocaCen(c){if(!CEN[c]||c===S.cen)return;S.cen=c;usar();lider=null;sincCen();contar();mudou()}
+$$('#cen button').forEach(b=>b.onclick=()=>trocaCen(b.dataset.cen));
+$$('#nvSeg button').forEach(b=>b.onclick=()=>{if(S.nv===b.dataset.nv)return;S.nv=b.dataset.nv;usar();sincCen();mudou()});
+$('#tgAnt').onclick=()=>{S.ant=!S.ant;mudou()};
+$('#btVies').onclick=$('#tgVies').onclick=()=>{S.vies=!S.vies;mudou()};
+$('#btReset').onclick=()=>{Object.assign(S,DEF);S.emp=new Set(EMP);S.ant=false;mudou()};
+$('#pill').onclick=()=>{abrir('Ajustes da nota','');casaFolha=$('#casa-controles');$('#folhaC').appendChild($('#controles'))};
+$('#emps').innerHTML=EMP.map(e=>`<button data-e="${e}" aria-pressed="true" aria-label="mostrar ${e}" title="${e}">${robo(e,{anim:false})}</button>`).join('');
+$$('#emps button').forEach(b=>b.onclick=()=>{const e=b.dataset.e,ce=CEN[S.cen].emp;if(!ce.includes(e))return;
+  if(S.emp.has(e)){if(ce.filter(x=>S.emp.has(x)).length>1)S.emp.delete(e)}else S.emp.add(e);mudou()});
+
+// ---------- 1. ranking
+const lista=$('#lista'),LINHA={};
+for(const me of RANK0){
+  const[m,x]=split(me),e=EMP_DE[me],el=document.createElement('button');
+  el.className='lr';el.dataset.me=me;
+  el.innerHTML=`<span class="pos"></span><span class="rb"></span><span class="nm"><b>${esc(m)}</b>${chip(x)}${me===GK?'<span class="selo" id="seloGrok"></span>':''}<span class="bar"><i class="${x==='high'?'h-':'c-'}${e}" style="width:0"></i><s class="fant oculto"></s></span></span><span class="sc"><b></b><small class="dl"></small><small class="an oculto"></small><small class="tt"></small></span>`;
+  el.onclick=()=>{S.a=me;if(S.b===me)S.b=RANK0.find(z=>z!==me);ir('comparar')};
+  el._v=0;LINHA[me]=el;lista.appendChild(el);
+}
+let lider=null,primeira=true;
+function tween(el,de,para){
+  if(reduz||primeira){el.textContent=f2(para);return}
+  const t0=performance.now();cancelAnimationFrame(el._raf);
+  const p=t=>{const k=Math.min(1,(t-t0)/400);el.textContent=f2(de+(para-de)*(1-(1-k)**3));if(k<1)el._raf=requestAnimationFrame(p)};el._raf=requestAnimationFrame(p);
+}
+function confete(){
+  if(reduz)return;const c=$('#confete');c.innerHTML='';
+  const cores=['#FFD23F','#FF9F1C','#E06A1E','#3B6FE0','#2FB86B','#C3C8D0'];
+  for(let i=0;i<46;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.background=cores[i%cores.length];
+    s.style.animationDelay=Math.random()*.35+'s';s.style.animationDuration=1+Math.random()*.7+'s';c.appendChild(s)}
+  setTimeout(()=>c.innerHTML='',2200);
+}
+function renderRanking(pm){
+  const vis=MES.filter(me=>S.emp.has(EMP_DE[me]));
+  const ord=ordem(pm,vis),ord0=ordem(PM0,vis);
+  const visivel=S.aba==='ranking';
+  const antes=new Map();if(visivel&&!primeira)for(const me of MES)antes.set(me,LINHA[me].getBoundingClientRect().top);
+  for(const me in LINHA)LINHA[me].classList.toggle('oculto',!vis.includes(me));
+  ord.forEach((me,i)=>{
+    const el=LINHA[me],s=pm[me],e=EMP_DE[me],pos=i+1,d=ord0.indexOf(me)-i;
+    el.querySelector('.pos').textContent=pos;
+    el.classList.toggle('top',pos===1);
+    const md=humor(s.nota);
+    el.querySelector('.rb').innerHTML=(pos===1?'<span class="coroa" aria-hidden="true">👑</span>':'')+robo(e,{mood:md});
+    el.querySelector('.bar i').style.width=(s.nota*10)+'%';
+    tween(el.querySelector('.sc b'),el._v,s.nota);el._v=s.nota;
+    const dl=el.querySelector('.dl');dl.className='dl '+(d>0?'up':d<0?'dn':'eq');dl.textContent=d>0?`▲${d}`:d<0?`▼${-d}`:'–';
+    el.querySelector('.tt').innerHTML=s.to?`⏱${s.to}`:'';
+    const fa=el.querySelector('.fant'),an=el.querySelector('.an');fa.classList.toggle('oculto',!S.ant);an.classList.toggle('oculto',!S.ant);
+    fa.style.left=(s.ant*10)+'%';an.textContent=`${S.cen==='A'?'antes':'A'} ${f2(s.ant)}`;
+    if(me===GK){const sg=$('#seloGrok');sg.textContent=S.pg?'⚖️ ×0,7/×0,5':'⚖️ sem pen.';sg.classList.toggle('off',!S.pg)}
+    el.setAttribute('aria-label',`${pos}º ${me}, nota ${f2(s.nota)} no Ranking ${S.cen}${me===GK?(S.pg?', com penalidades de atraso da regra especial':', sem as penalidades de atraso'):''}${d?`, ${d>0?'subiu':'desceu'} ${Math.abs(d)} em relação ao relatório`:''}. Toque para comparar.`);
+    lista.appendChild(el);
+  });
+  if(visivel&&!primeira&&!reduz){
+    const mov=[];
+    for(const me of ord){const el=LINHA[me],dy=antes.get(me)-el.getBoundingClientRect().top;
+      if(Math.abs(dy)>1){el.style.transition='none';el.style.transform=`translateY(${dy}px)`;el.style.zIndex=dy>0?3:1;mov.push([el,dy])}}
+    lista.offsetHeight;
+    for(const[el,dy]of mov){el.style.transition='transform 400ms cubic-bezier(.34,1.45,.64,1)';el.style.transform='';
+      if(dy>0){const r=el.querySelector('.rb');r.classList.remove('pula');void r.offsetWidth;r.classList.add('pula')}
+      setTimeout(()=>{el.style.zIndex='';el.style.transition=''},420)}
+  }
+  if(lider!==null&&ord[0]!==lider&&visivel)confete();
+  if(lider!==null&&ord[0]!==lider)$('#aviso').textContent=`Novo líder: ${ord[0]}`;
+  else if(lider!==null)$('#aviso').textContent=`${ord[0]} continua em 1º`;
+  lider=ord[0];
+  // média por empresa (A: das médias arredondadas, como RELATORIO_AVALIADOR.md; B: sem arredondar, como resumo_7min.json)
+  const ce=CEN[S.cen].emp,me_=e=>S.cen==='A'?mediaEmp(pm,e):mediaEmpB(pm,e),eo=ce.slice().sort((a,b)=>me_(b)-me_(a));
+  $('#empTit').textContent=`Ranking ${S.cen}${S.cen==='B'?' '+S.nv:''} · média das combinações`;
+  $('#empMed').innerHTML=eo.map(e=>`<div class="df" data-e="${e}"><span style="display:flex;gap:6px;align-items:center">${robo(e,{s:24,anim:false})}${e}</span><em><b class="f" style="font-size:16px">${f2(me_(e))}</b></em></div>`).join('');
+  // curiosidade
+  $('#curio').innerHTML=robo(EMP_DE[ord[0]],{s:38})+`<span>${curiosidade(pm,ord,ord0,vis)}</span>`;
+  $('#tabRank').innerHTML=tabela(['#','modelo','nota',S.cen==='A'?'antiga':'Ranking A','%testes','rubrica*','tempo','⏱','N'],
+    ord.map((me,i)=>{const s=pm[me];return [i+1,me+(me===GK?' ⚖️':''),f2(s.nota),f2(s.ant),f2(s.pct),f2(s.rub),Math.round(s.tempo)+' s',s.to,s.n]}))
+    +'<p style="font-size:11px;color:var(--ink2);margin-top:4px">* rubrica média só das execuções julgadas (timeout não é julgado). ⚖️ = regra especial do grok-4.7-high.</p>';
+  // aviso do grok-4.7-high (sempre visível no A; o B não tem Grok)
+  $('#grokInfo').classList.toggle('oculto',!pm[GK]);if(!pm[GK])return;
+  const gk=pm[GK],alt=porMe(Object.assign({},S,{pg:!S.pg}))[GK],com=S.pg?gk:alt,sem=S.pg?alt:gk;
+  $('#grokInfo').innerHTML=robo('grok',{s:38,mood:'neutro'})+`<span>⚖️ <b>grok-4.7-high tem regra especial</b>: ${RUNS.filter(r=>r.g).length} execuções refeitas (${gk.gk} delas no ranking) com limite maior; as entregues na 2ª tentativa valem ×0,7 ou ×0,5 por atraso. Com penalidades <b>${f2(com.nota)}</b>, sem <b>${f2(sem.nota)}</b>. As outras 15 combinações não têm essa regra (lá, timeout = 0). <u>Letras miúdas ↓</u></span>`;
+}
+function curiosidade(pm,ord,ord0,vis){
+  if(S.cen==='B'&&padrao()){
+    const ov=S.nv==='i'?'ii':'i',alt=porMe(Object.assign({},S,{nv:ov})),oa=ordem(alt,vis);
+    const dp=me=>ord.indexOf(me)-oa.indexOf(me),dn=me=>Math.abs(alt[me].nota-pm[me].nota);
+    let best=vis[0];for(const me of vis)if(Math.abs(dp(me))>Math.abs(dp(best))||(Math.abs(dp(me))===Math.abs(dp(best))&&dn(me)>dn(best)))best=me;
+    const ag=vis.filter(me=>RA.some(r=>r.me===me)).map(me=>[me,ordem(PMA0,vis).indexOf(me)+1,ord.indexOf(me)+1]).sort((a,b)=>(a[2]-a[1])-(b[2]-b[1]))[0];
+    return `Com 7 min, <b>${ag[0]}</b> sai do ${ag[1]}º (entre estas ${vis.length}) do Ranking A para o <b>${ag[2]}º</b>. Troque para <b>${ov==='ii'?'nota_ii':'nota_i'}</b>: ${best} vai de ${f2(pm[best].nota)} para <b>${f2(alt[best].nota)}</b> (${ord.indexOf(best)+1}º → ${oa.indexOf(best)+1}º).`;
+  }
+  if(padrao()&&vis.includes(GK)){
+    const alt=porMe(Object.assign({},S,{pg:false})),oa=ordem(alt,vis);
+    return `Desligue <b>“Penalidades do grok-4.7-high”</b>: ele vai de ${f2(pm[GK].nota)} para <b>${f2(alt[GK].nota)}</b> (${ord.indexOf(GK)+1}º → ${oa.indexOf(GK)+1}º)${oa.indexOf(GK)<ord.indexOf(GK)?` e passa <b>${ord[oa.indexOf(GK)]}</b>`:''}!`;
+  }
+  if(padrao())return `Arraste o slider para <b>100% testes</b>: ${ord[1]} empata com ${ord[0]}.`;
+  if(ord[0]!==ord0[0])return `Novo líder: <b>${ord[0]}</b> (${f2(pm[ord[0]].nota)}) passou <b>${ord0[0]}</b>. 👑`;
+  let best=null,g=0;for(const me of vis){const d=ord0.indexOf(me)-ord.indexOf(me);if(d>g||(d===g&&best&&pm[me].nota-PM0[me].nota>pm[best].nota-PM0[best].nota)){g=d;best=me}}
+  if(best&&g>0)return `<b>${best}</b> sobe de ${ord0.indexOf(best)+1}º para <b>${ord.indexOf(best)+1}º</b> (${f2(PM0[best].nota)} → <b>${f2(pm[best].nota)}</b>).`;
+  let mx=vis[0];for(const me of vis)if(Math.abs(pm[me].nota-PM0[me].nota)>Math.abs(pm[mx].nota-PM0[mx].nota))mx=me;
+  return `Ninguém trocou de lugar, mas <b>${mx}</b> foi de ${f2(PM0[mx].nota)} para <b>${f2(pm[mx].nota)}</b>.`;
+}
+$('#grokInfo').onclick=()=>{$('#rodape').scrollIntoView({behavior:reduz?'auto':'smooth'});$('#regrasGrok').open=true};
+
+// ---------- 2. comparar
+const EIXOS=[['Legível',0],['Bordas',1],['Idiomático',2],['Manutenção',3],['Docs',4]];
+function perfil(me){
+  const rs=RUNS.filter(r=>r.me===me&&incl(r,S));
+  const it=[0,1,2,3,4].map(i=>mean(rs.map(r=>{const v=Object.values(r.ji);return v.length?mean(v.map(a=>a[i])):0}))/2);
+  return {it,testes:mean(rs.map(r=>r.p))/100,pont:rs.length?1-rs.filter(r=>r.s==='timeout').length/rs.length:0,rs};
+}
+function renderSel(pm){
+  const ord=ordem(pm);
+  for(const[k,id]of[['a','#selA'],['b','#selB']]){
+    $(id).innerHTML=ord.map((me,i)=>`<option value="${me}"${S[k]===me?' selected':''}>${i+1}. ${me} (${f2(pm[me].nota)})</option>`).join('');
+    const me=S[k],[m,x]=split(me);
+    $(id).nextElementSibling.outerHTML=`<span class="ci" style="display:contents">${robo(EMP_DE[me],{mood:humor(pm[me].nota)})}<div>${esc(m)}<br>${chip(x)}<small>${k.toUpperCase()} · ${f2(pm[me].nota)} · ${ord.indexOf(me)+1}º</small></div></span>`;
+  }
+}
+$('#selA').onchange=e=>{S.a=e.target.value;mudou()};$('#selB').onchange=e=>{S.b=e.target.value;mudou()};
+$('#btExtras').onclick=()=>{S.extras=!S.extras;$('#btExtras').setAttribute('aria-pressed',S.extras);mudou()};
+let eixoSel=null;
+function renderComparar(pm){
+  renderSel(pm);
+  const A=perfil(S.a),B=perfil(S.b),ca=COR[EMP_DE[S.a]],cb=COR[EMP_DE[S.b]];
+  const eixos=EIXOS.map(([n,i])=>[n,A.it[i],B.it[i]]);
+  if(S.extras)eixos.push(['Testes',A.testes,B.testes],['Pontual',A.pont,B.pont]);
+  const cx=170,cy=135,R=86,n=eixos.length,ang=i=>-Math.PI/2+i*2*Math.PI/n,pt=(i,v)=>[cx+Math.cos(ang(i))*R*v,cy+Math.sin(ang(i))*R*v];
+  let g='';
+  for(const lv of[.25,.5,.75,1])g+=`<polygon points="${eixos.map((_,i)=>pt(i,lv).join(',')).join(' ')}" fill="${lv===1?'#FFFBEA':'none'}" stroke="#E7E0F0" stroke-width="${lv===1?2:1.5}"/>`;
+  g+=`<text x="${cx+3}" y="${cy-R*.5+3}" font-size="9" fill="#6B6280">50%</text>`;
+  eixos.forEach((e,i)=>{const[x,y]=pt(i,1);g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E7E0F0" stroke-width="1.5"/>`});
+  const poly=(k,c,dash)=>{const p=eixos.map((e,i)=>pt(i,e[k]).join(',')).join(' ');
+    return dash?`<polygon points="${p}" fill="${c}" fill-opacity=".14" stroke="${INK}" stroke-width="2.5" stroke-dasharray="6 4"/>`
+      :`<polygon points="${p}" fill="${c}" fill-opacity=".35" stroke="${c}" stroke-width="4"/><polygon points="${p}" fill="none" stroke="${INK}" stroke-width="1"/>`};
+  g+=poly(1,ca,false)+poly(2,cb,true);
+  eixos.forEach((e,i)=>{const[xa,ya]=pt(i,e[1]),[xb,yb]=pt(i,e[2]);
+    g+=`<circle cx="${xb}" cy="${yb}" r="4" fill="#fff" stroke="${INK}" stroke-width="2"/><circle cx="${xa}" cy="${ya}" r="5" fill="${ca}" stroke="${INK}" stroke-width="2"/>`});
+  eixos.forEach((e,i)=>{const[x,y]=pt(i,1.17),a=Math.cos(ang(i)),ta=Math.abs(a)<.2?'middle':a>0?'start':'end';
+    g+=`<g class="ax" data-i="${i}" tabindex="0" role="button" aria-label="${e[0]}"><circle cx="${x}" cy="${y}" r="22" fill="transparent"/><text x="${x}" y="${y+4}" font-size="12" text-anchor="${ta}"${eixoSel===i?' style="fill:#E06A1E"':''}>${e[0]}</text></g>`});
+  const svg=$('#radar');svg.innerHTML=g;
+  const mostra=i=>{eixoSel=i;const e=eixos[i];$('#readout').innerHTML=`<b>${e[0]}</b>: A ${Math.round(e[1]*100)}% · B ${Math.round(e[2]*100)}% ${e[1]>e[2]?'→ A na frente':e[2]>e[1]?'→ B na frente':'→ empate'}`;
+    $$('#radar .ax text').forEach((t,j)=>t.style.fill=j===i?'#E06A1E':'')};
+  $$('#radar .ax').forEach(el=>{el.onclick=()=>mostra(+el.dataset.i);el.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' ')mostra(+el.dataset.i)}});
+  if(eixoSel!==null&&eixoSel<eixos.length)mostra(eixoSel);else{eixoSel=null;$('#readout').textContent='Toque num eixo para ver os valores'}
+  $('#legA').style.background=ca;$('#legB').style.background=cb;
+  // barras espelhadas
+  let va=0,linhas=[],html='';
+  const ea=EMP_DE[S.a],eb=EMP_DE[S.b],xa=split(S.a)[1],xb=split(S.b)[1];
+  for(const t of TK){
+    const ra=A.rs.filter(r=>r.tipo===t),rb=B.rs.filter(r=>r.tipo===t);
+    const a=mean(ra.map(r=>nota(r,S))),b=mean(rb.map(r=>nota(r,S)));if(a>b)va++;
+    linhas.push([TIPOS[t],f2(a),f2(b)]);
+    html+=`<button class="esp" data-t="${t}" aria-label="${TIPOS[t]}: A ${f2(a)}, B ${f2(b)}"><span class="va">${a>b?'★ ':''}${f2(a)}</span><span class="ba"><i class="${xa==='high'?'h-':'c-'}${ea}" style="width:${a*10}%"></i></span><span class="lb">${TIPOS_C[t]}</span><span class="bb"><i class="${xb==='high'?'h-':'c-'}${eb}" style="width:${b*10}%"></i></span><span>${f2(b)}${b>a?' ★':''}</span></button>`;
+  }
+  $('#esp').innerHTML=html;
+  $$('#esp .esp').forEach(b=>b.onclick=()=>{const t=b.dataset.t;
+    abrir(`${TIPOS[t]}: A × B`,`<p style="font-weight:800;margin-bottom:4px">A · ${nomeChip(S.a)}</p>${listaRuns(A.rs.filter(r=>r.tipo===t))}<p style="font-weight:800;margin:10px 0 4px">B · ${nomeChip(S.b)}</p>${listaRuns(B.rs.filter(r=>r.tipo===t))}`)});
+  $('#tabEsp').innerHTML=tabela(['tipo','A','B'],linhas);
+  $('#vence').textContent=`${va} de ${TK.length} tipos`;
+  $('#tempoAB').textContent=`${Math.round(pm[S.a].tempo)} s × ${Math.round(pm[S.b].tempo)} s`;
+}
+
+// ---------- 3. esforço
+// Δ high − medium: no A como na v1 (diferença das médias arredondadas); no B como resumo_7min.json (sem arredondar)
+const dHM=(a,b,B)=>B?b.nota-a.nota:r2(b.nota)-r2(a.nota);
+function renderEsforco(pm){
+  const BASES=BASES_DE(MES),B=S.cen==='B';
+  const rows=BASES.map(m=>({m,e:EMP_DE[m+'-medium'],a:pm[m+'-medium'],b:pm[m+'-high']})).map(o=>Object.assign(o,{d:dHM(o.a,o.b,B)})).sort((x,y)=>y.d-x.d);
+  const W=340,L=128,Rt=290,H=26,top=24,X=v=>L+(Rt-L)*v/10,curto=m=>m.replace('build-fast','b-fast');
+  let g=`<rect x="0" y="0" width="${W}" height="${top+rows.length*H+4}" fill="none"/>`;
+  for(const v of[0,2.5,5,7.5,10])g+=`<line x1="${X(v)}" y1="${top-6}" x2="${X(v)}" y2="${top+rows.length*H}" stroke="#E7E0F0" stroke-width="1.5"/><text x="${X(v)}" y="${top-10}" font-size="10" text-anchor="middle" fill="#6B6280">${v}</text>`;
+  rows.forEach((o,i)=>{const y=top+i*H+H/2,c=o.d>0?'#2FB86B':'#E5484D';
+    g+=`<g class="lin" data-m="${o.m}" role="button" tabindex="0" aria-label="${o.m}: medium ${f2(o.a.nota)}, high ${f2(o.b.nota)}"><rect class="hit" x="0" y="${y-H/2}" width="${W}" height="${H}" fill="transparent" rx="6"/>
+    <svg x="0" y="${y-11}" width="22" height="22">${robo(o.e,{anim:false}).replace('<svg ','<svg width="22" height="22" ')}</svg>
+    <text x="26" y="${y+4}" font-size="11">${curto(o.m)}</text>
+    <line x1="${X(o.a.nota)}" y1="${y}" x2="${X(o.b.nota)}" y2="${y}" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="${X(o.b.nota)}" cy="${y}" r="7" fill="url(#hp-${o.e})" stroke="${INK}" stroke-width="2.5"/>
+    <circle cx="${X(o.a.nota)}" cy="${y}" r="7" fill="${COR[o.e]}" stroke="${INK}" stroke-width="2.5"/>
+    <text x="${W-2}" y="${y+4}" font-size="11" text-anchor="end" style="fill:${c}">${o.d>0?'▲ +':'▼ −'}${f2(Math.abs(o.d))}</text></g>`});
+  const sv=$('#dumb');sv.setAttribute('viewBox',`0 0 ${W} ${top+rows.length*H+4}`);sv.innerHTML=g;
+  const det=m=>{const a=pm[m+'-medium'],b=pm[m+'-high'];
+    abrir(`${m}: medium × high`,tabela(['','medium','high'],[[`nota (Ranking ${S.cen}${B?' '+S.nv:''})`,f2(a.nota),f2(b.nota)],[B?'nota no Ranking A':'nota antiga',f2(a.ant),f2(b.ant)],['% testes',f2(a.pct),f2(b.pct)],['rubrica (julgadas)',f2(a.rub),f2(b.rub)],['tempo médio',Math.round(a.tempo)+' s',Math.round(b.tempo)+' s'],['timeouts',a.to,b.to],['regra especial',a.gk,b.gk],['N',a.n,b.n]])+
+      `<p style="font-size:12px;margin-top:8px;color:var(--ink2);font-weight:700">${m==='grok-4.7'?'O high tem a regra especial de tempo (limite de até 900 s na 2ª tentativa, nota ×0,7 ou ×0,5): veja Letras miúdas. ':''}Toque fora para fechar.</p>`)};
+  $$('#dumb .lin').forEach(el=>{el.onclick=()=>det(el.dataset.m);el.onkeydown=ev=>{if(ev.key==='Enter')det(el.dataset.m)}});
+  $('#tabDumb').innerHTML=tabela(['modelo','medium','high','Δ','tempo med/high'],rows.map(o=>[o.m,f2(o.a.nota),f2(o.b.nota),(o.d>=0?'+':'')+f2(o.d),`${Math.round(o.a.tempo)}/${Math.round(o.b.tempo)} s`]));
+  // tempo
+  const tr=rows.slice().sort((x,y)=>x.a.tempo-y.a.tempo),mx=Math.ceil(Math.max(...tr.flatMap(o=>[o.a.tempo,o.b.tempo]))/60)*60;
+  const T=v=>L+(Rt-L)*v/mx;let h=`<rect width="${W}" height="1" fill="none"/>`;
+  for(let v=0;v<=mx;v+=60)h+=`<line x1="${T(v)}" y1="${top-6}" x2="${T(v)}" y2="${top+tr.length*H}" stroke="#E7E0F0" stroke-width="1.5"/><text x="${T(v)}" y="${top-10}" font-size="10" text-anchor="middle" fill="#6B6280">${v}s</text>`;
+  tr.forEach((o,i)=>{const y=top+i*H+H/2,a=T(o.a.tempo),b=T(o.b.tempo),dir=b>=a?1:-1;
+    h+=`<g class="lin" data-m="${o.m}" role="button" tabindex="0" aria-label="${o.m}: ${Math.round(o.a.tempo)} s para ${Math.round(o.b.tempo)} s"><rect class="hit" x="0" y="${y-H/2}" width="${W}" height="${H}" fill="transparent" rx="6"/><text x="2" y="${y+4}" font-size="11">${curto(o.m)}</text>
+    ${Math.abs(b-a)>8?`<line x1="${a}" y1="${y}" x2="${b-dir*6}" y2="${y}" stroke="${INK}" stroke-width="2.5"/><path d="M${b} ${y} l${-dir*8} -5 v10z" fill="${INK}"/>`:''}
+    <circle cx="${a}" cy="${y}" r="6" fill="${COR[o.e]}" stroke="${INK}" stroke-width="2"/>
+    <text x="${W-2}" y="${y+4}" font-size="11" text-anchor="end">${Math.round(o.a.tempo)}→${Math.round(o.b.tempo)}</text></g>`});
+  const st=$('#tempo');st.setAttribute('viewBox',`0 0 ${W} ${top+tr.length*H+4}`);st.innerHTML=h;
+  $$('#tempo .lin').forEach(el=>{el.onclick=()=>det(el.dataset.m)});
+  const pior=rows.filter(o=>o.d<0).length,w=rows[rows.length-1];
+  let dica=`Maior queda: <b>${w.m}</b>, de ${f2(w.a.nota)} para <b>${f2(w.b.nota)}</b> (▼ −${f2(Math.abs(w.d))}).`;
+  const gq=rows.find(o=>o.m==='grok-4.7');
+  if(gq&&S.pg){const alt=porMe(Object.assign({},S,{pg:false}))[GK];dica+=` Sem as penalidades do grok-4.7-high, o high dele iria a ${f2(alt.nota)} (ainda ▼ −${f2(gq.a.nota-alt.nota)}).`}
+  if(B){const gan=rows.filter(o=>o.d>=.05).length,emp=rows.filter(o=>Math.abs(o.d)<.05).length;
+    $('#veredito').innerHTML=robo('claude',{s:44,mood:pior-emp>BASES.length/2?'triste':'feliz'})+`<div><b>Ranking B (${S.nv==='i'?'nota_i':'nota_ii'}): high ganha em ${gan}, empata (|Δ| &lt; 0,05) em ${emp} e piora em ${rows.length-gan-emp} de ${BASES.length}</b><span>${dica}</span></div>`;
+  }else $('#veredito').innerHTML=robo('claude',{s:44,mood:pior>4?'triste':'feliz'})+`<div><b>${pior>BASES.length/2?`High piorou em ${pior} de ${BASES.length} modelos 😬`:`High ajudou em ${BASES.length-pior} de ${BASES.length} modelos 🙂`}</b><span>${dica}</span></div>`;
+  renderAB();
+}
+// high − medium dos dois rankings lado a lado (A, B nota_i, B nota_ii), com o peso e o viés atuais
+const SER=[['A','A (3/5 min)','#6B6280'],['i','B nota_i','#FFD23F'],['ii','B nota_ii','url(#hp-sun)']];
+function renderAB(){
+  const st=Object.assign({},S),pa=porMe(st,'A'),pb={i:porMe(Object.assign({},st,{nv:'i'}),'B'),ii:porMe(Object.assign({},st,{nv:'ii'}),'B')};
+  const rows=BASES_DE(CEN.A.mes).map(m=>{const v={A:dHM(pa[m+'-medium'],pa[m+'-high'],false)};
+    for(const k of['i','ii'])v[k]=pb[k][m+'-high']?dHM(pb[k][m+'-medium'],pb[k][m+'-high'],true):null;return {m,e:EMP_DE[m+'-medium'],v}});
+  rows.sort((x,y)=>(y.v.i??-99)-(x.v.i??-99)||y.v.A-x.v.A);
+  const all=rows.flatMap(o=>Object.values(o.v).filter(x=>x!==null)),lo=Math.min(-1,Math.floor(Math.min(...all))),hi=Math.max(1,Math.ceil(Math.max(...all)));
+  const W=340,L=44,Rt=290,bh=10,gap=2,H=20+3*(bh+gap)+8,top=22,X=v=>L+(Rt-L)*(v-lo)/(hi-lo),curto=m=>m.replace('build-fast','b-fast');
+  let g='';
+  for(let v=lo;v<=hi;v++)g+=`<line x1="${X(v)}" y1="${top-6}" x2="${X(v)}" y2="${top+rows.length*H}" stroke="${v===0?INK:'#E7E0F0'}" stroke-width="${v===0?2:1.5}"/><text x="${X(v)}" y="${top-10}" font-size="10" text-anchor="middle" fill="#6B6280">${v>0?'+':''}${v}</text>`;
+  rows.forEach((o,i)=>{const y0=top+i*H+6;
+    g+=`<g class="lin" data-m="${o.m}" role="button" tabindex="0" aria-label="${o.m}: A ${f2(o.v.A)}, B nota_i ${o.v.i===null?'sem dado':f2(o.v.i)}, B nota_ii ${o.v.ii===null?'sem dado':f2(o.v.ii)}"><rect class="hit" x="0" y="${y0-5}" width="${W}" height="${H}" fill="transparent" rx="6"/>
+    <svg x="0" y="${y0-2}" width="18" height="18">${robo(o.e,{anim:false}).replace('<svg ','<svg width="18" height="18" ')}</svg><text x="22" y="${y0+11}" font-size="11">${curto(o.m)}</text>`;
+    SER.forEach(([k,nm,c],j)=>{const y=y0+20+j*(bh+gap),v=o.v[k];
+      g+=`<text x="${L-4}" y="${y+bh-1}" font-size="8.5" text-anchor="end" fill="#6B6280">${k==='A'?'A':'B '+k}</text>`;
+      if(v===null){g+=`<text x="${X(0)+4}" y="${y+bh-1}" font-size="8.5" fill="#6B6280">sem Grok no B</text>`;return}
+      const x0=X(Math.min(0,v)),w=Math.max(2,Math.abs(X(v)-X(0)));
+      g+=`<rect x="${x0}" y="${y}" width="${w}" height="${bh}" rx="3" fill="${c}" stroke="${INK}" stroke-width="1.5"/>`+
+        `<text x="${v>=0?X(v)+3:X(0)+4}" y="${y+bh-1}" font-size="9" style="fill:${v>=.005?'#2FB86B':v<=-.005?'#E5484D':'#6B6280'}">${v>=.005?'▲':v<=-.005?'▼':'='}${v>=0?'+':'−'}${f2(Math.abs(v))}</text>`});
+    g+='</g>'});
+  const sv=$('#hmAB');sv.setAttribute('viewBox',`0 0 ${W} ${top+rows.length*H+4}`);sv.innerHTML=g;
+  const fm=v=>v===null?'—':(v>=0?'+':'−')+f2(Math.abs(v));
+  const det=m=>{const lin=[['A (3/5 min)',pa]].concat([['B nota_i',pb.i],['B nota_ii',pb.ii]]).filter(x=>x[1][m+'-high']).map(([n,p])=>[n,f2(p[m+'-medium'].nota),f2(p[m+'-high'].nota),fm(dHM(p[m+'-medium'],p[m+'-high'],p!==pa)),`${p[m+'-medium'].to}/${p[m+'-high'].to}`]);
+    abrir(`${m}: high − medium nos dois rankings`,tabela(['','medium','high','Δ','⏱ med/high'],lin)+`<p style="font-size:12px;margin-top:8px;color:var(--ink2);font-weight:700">${m.startsWith('grok')?'O Grok não entrou no cenário de 7 min (Ranking B). ':''}Δ do A como no relatório do Avaliador (médias arredondadas); Δ do B como no resumo_7min.json.</p>`)};
+  $$('#hmAB .lin').forEach(el=>{el.onclick=()=>det(el.dataset.m);el.onkeydown=ev=>{if(ev.key==='Enter')det(el.dataset.m)}});
+  $('#tabAB').innerHTML=tabela(['modelo','A','B nota_i','B nota_ii'],rows.map(o=>[o.m,fm(o.v.A),fm(o.v.i),fm(o.v.ii)]));
+  // conclusão (plano.md V2.2) com os números oficiais do resumo_7min.json (não mudam com os controles)
+  const CURTO={'claude-haiku-5-5':'haiku','claude-opus-5-5':'opus','gpt-6-luna':'luna','gpt-6.1-sol':'sol'},BA=BASES_DE(CEN.A.mes),pioraA=BA.filter(m=>dHM(PMA0[m+'-medium'],PMA0[m+'-high'],false)<0).length;
+  const h=D.refBhm,q=(m,k)=>fm(h[m]['nota_'+k]),cl=['claude-haiku-5-5','claude-opus-5-5','gpt-6-luna','gpt-6.1-sol'];
+  $('#conclusao').innerHTML=robo('gemini',{s:44,mood:'neutro'})+`<div><b>Conclusão: com 7 min, o high empata ou ganha no Claude e no Codex; no argon só ganha julgando a entrega; o flash-high continua pior.</b>`+
+    `<span>Ranking B, nota_i: ${cl.map(m=>`${CURTO[m]} ${q(m,'i')}`).join(' · ')} ${cl.every(m=>q(m,'i')===q(m,'ii'))?'(igual na nota_ii)':'· nota_ii: '+cl.map(m=>`${CURTO[m]} ${q(m,'ii')}`).join(' · ')}. argon ${q('gemini-4-argon','i')} na nota_i e ${q('gemini-4-argon','ii')} na nota_ii. flash ${q('gemini-3.8-flash','i')} na nota_i e ${q('gemini-3.8-flash','ii')} na nota_ii. No Ranking A o high piorava em ${pioraA} de ${BA.length}.</span></div>`;
+}
+
+// ---------- 4. tarefas
+const RAMPA=[[0,[255,243,196]],[3.33,[255,210,63]],[6.67,[59,156,156]],[10,[43,35,64]]];
+function cor(v){for(let i=1;i<RAMPA.length;i++)if(v<=RAMPA[i][0]){const[a,ca]=RAMPA[i-1],[b,cb]=RAMPA[i],k=(v-a)/(b-a);return `rgb(${ca.map((c,j)=>Math.round(c+(cb[j]-c)*k)).join(',')})`}return 'rgb(43,35,64)'}
+$$('#modos button').forEach(b=>b.onclick=()=>{S.modo=b.dataset.m;mudou()});
+function renderTarefas(pm){
+  $$('#modos button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===S.modo));
+  const modo=S.modo,cols=modo==='me'?ordem(pm):modo==='emp'?CEN[S.cen].emp:EMP,campo=modo==='me'?'me':modo==='aut'?'aut':'e';
+  $('#tagModo').textContent=modo==='me'?'tipo × modelo':modo==='aut'?'tipo × autora':'tipo × empresa';
+  $('#hmTit').textContent=`Nota média · Ranking ${S.cen}${S.cen==='B'?' '+S.nv:''} (N=30 por modelo${S.cen==='A'&&!S.pg?', grok-high sem pen.':''})`;
+  const base=RUNS.filter(r=>incl(r,S));
+  const M={};for(const t of TK){M[t]={};for(const c of cols){const rs=base.filter(r=>r.tipo===t&&r[campo]===c);M[t][c]={v:rs.length?mean(rs.map(r=>nota(r,S))):null,rs}}}
+  const spread=t=>{const v=cols.map(c=>M[t][c].v).filter(x=>x!==null);return Math.max(...v)-Math.min(...v)};
+  const dest=TK.slice().sort((a,b)=>spread(b)-spread(a)).slice(0,2);
+  const hm=$('#hm');hm.className='hm'+(modo==='me'?' largo':'');
+  hm.style.gridTemplateColumns=modo==='me'?`104px repeat(${cols.length},40px)`:`104px repeat(${cols.length},1fr)`;
+  let h='<span></span>'+cols.map(c=>{const e=modo==='me'?EMP_DE[c]:c;return `<span class="ch">${robo(e,{anim:false})}${modo==='me'?esc(c.replace('build-fast','bf').replace('-medium',' med')):c}</span>`}).join('');
+  for(const t of TK){
+    const vs=cols.map(c=>M[t][c].v??-1),mx=Math.max(...vs);
+    h+=`<span class="rl${dest.includes(t)?' dest':''}">${TIPOS[t]}</span>`;
+    for(const c of cols){const v=M[t][c].v;
+      h+=v===null?'<span class="cel" style="background:#eee;display:grid;place-items:center">–</span>':`<button class="cel" data-t="${t}" data-c="${c}" style="background:${cor(v)};color:${v>=5.5?'#fff':INK}" aria-label="${TIPOS[t]} · ${c}: ${f2(v)}">${f1(v)}${v===mx?'<sup>★</sup>':''}</button>`}
+  }
+  hm.innerHTML=h;
+  $$('#hm .cel[data-t]').forEach(b=>b.onclick=()=>{const{t,c}=b.dataset,x=M[t][c];
+    abrir(`${TIPOS[t]} · ${modo==='aut'?'tarefas escritas por ':''}${c} — ${f2(x.v)}`,listaRuns(x.rs,modo==='me'?'t':'me'))});
+  $('#tabHm').innerHTML=tabela(['tipo',...cols],TK.map(t=>[TIPOS[t],...cols.map(c=>M[t][c].v===null?'–':f2(M[t][c].v))]));
+  // dica
+  const lider={};let txt='';
+  if(modo==='me'){txt=`Role para o lado: ${cols.length} colunas, na ordem do ranking atual. Linhas destacadas: <b>${TIPOS[dest[0]]}</b> e <b>${TIPOS[dest[1]]}</b> (maior distância entre o melhor e o pior).`}
+  else{
+    const geral={};for(const c of cols)geral[c]=mean(base.filter(r=>r[campo]===c).map(r=>nota(r,S)));
+    const top=cols.slice().sort((a,b)=>geral[b]-geral[a])[0];
+    const exc=TK.filter(t=>{const v=M[t];return cols.some(c=>c!==top&&v[c].v>v[top].v)});
+    const d=dest[0],v=M[d],ord=cols.slice().sort((a,b)=>v[b].v-v[a].v);
+    if(modo==='aut')txt=`Tarefas escritas por <b>${cols.slice().sort((a,b)=>geral[a]-geral[b])[0]}</b> foram as mais difíceis (média ${f2(Math.min(...cols.map(c=>geral[c])))}); as de <b>${top}</b>, as mais fáceis (${f2(geral[top])}).`;
+    else txt=(exc.length?`<b>${exc.map(t=>TIPOS[t]).join(', ')}</b>: ${exc.length===1?'único tipo':'tipos'} em que alguém passa o <b>${top}</b>. `:`<b>${top}</b> lidera todos os tipos. `)+`Em <b>${TIPOS[d]}</b>, ${ord[0]} tem ${f1(v[ord[0]].v)} e ${ord[ord.length-1]} só ${f1(v[ord[ord.length-1]].v)}.`;
+  }
+  $('#hmTip').innerHTML=robo('codex',{s:38})+`<span>${txt}</span>`;
+  // gabarito (independe dos controles): %testes do Avaliador nas execuções principais
+  const bt={};for(const r of PRINC)(bt[r.t]=bt[r.t]||[]).push(r.p);
+  const tod=Object.keys(bt).sort().filter(t=>bt[t].every(p=>p===100));
+  const quase=Object.keys(bt).sort().filter(t=>!tod.includes(t)&&bt[t].filter(p=>p===100).length/bt[t].length>=.9);
+  $('#gabarito').innerHTML=`<h3>✅ Todo mundo gabaritou <small>100% dos testes</small></h3>${tod.map(t=>`<span class="tag2">${t}</span>`).join('')}
+    <details class="vt"><summary>e mais ${quase.length} quase (≥90% das execuções com 100%)</summary>${quase.map(t=>`<span class="tag2" style="background:#FFF3C4">${t} (${bt[t].filter(p=>p===100).length}/${bt[t].length})</span>`).join('')}</details>`;
+  // 10-ambigua-claude: o 0% continua; marcação e resumo da análise do Avaliador
+  const am=PRINC.filter(r=>r.t===AMB).sort((a,b)=>EMP.indexOf(a.e)-EMP.indexOf(b.e)||a.me.localeCompare(b.me)),cx=am.filter(r=>r.e==='codex');
+  const sem=am.filter(r=>r.s==='timeout'&&r.p===0),tpc=cx.map(r=>r.tp);
+  $('#amb').innerHTML=`<h3>🧩 ${AMB} <small>0% continua na nota</small></h3><p><span class="marca">${MARCA_AMB}</span></p>
+    <p style="font-size:12px;font-weight:700;line-height:1.35;margin:6px 0">Os ${sem.length} ${[...new Set(sem.map(r=>r.e))].map(e=>e==='gemini'?'Gemini':'Grok').join(' e ')} deram timeout${S.cen==='B'?' (420 s)':''} sem gravar nenhum arquivo, por isso 0%. Os <b>${cx.length} Codex resolvem com ${Math.min(...tpc)} a ${Math.max(...tpc)} de ${cx[0].tt} testes</b>. O Avaliador conferiu enunciado, conftest e testes ocultos: sem defeito na tarefa (<code>_avaliador/analise_10_ambigua_claude.md</code>). O Claude é a autora e não a resolve.</p>
+    <div>${am.map(r=>`<button class="amb-l" data-me="${r.me}">${robo(r.e,{anim:false,mood:r.s==='timeout'?'timeout':'feliz'})}<span>${nomeChip(r.me)}</span><em>${r.s==='timeout'?`⏱ ${Math.round(r.d)} s · ${r.tp}/${r.tt}`:`✅ ${r.tp}/${r.tt}`} · <b>${f2(nota(r,S))}</b></em></button>`).join('')}</div>`;
+  $$('#amb .amb-l').forEach(b=>b.onclick=()=>abrir(`${AMB} · ${b.dataset.me}`,listaRuns(am.filter(r=>r.me===b.dataset.me))));
+  // consistência (sempre do Ranking A: o cenário de 7 min só refez run-1)
+  $('#consB').classList.toggle('oculto',S.cen==='A');
+  const cs=CEN.A.mes.map(me=>{const e=EMP_DE[me],t=e==='claude'?'04-dados-grok':'04-dados-claude';
+    const rs=RA.filter(r=>r.me===me&&r.t===t).sort((a,b)=>a.r-b.r),n=rs.map(r=>nota(r,S));return {me,e,rs,n,m:mean(n),d:sd(n)}}).sort((a,b)=>b.d-a.d||a.m-b.m);
+  $('#cons').innerHTML=cs.map(o=>`<button class="cons" data-me="${o.me}"><span>${nomeChip(o.me)}</span><span class="dots">${o.rs.map((r,i)=>{
+      const v=o.n[i];if(r.s==='timeout'&&!r.g)return `<span title="timeout" style="background:#fff">⏱</span>`;
+      return `<span title="${r.g?esc(r.g[2]):''}" style="background:${cor(v)};color:${v>=5.5?'#fff':INK}${r.g?';border-style:dashed':''}">${f1(v)}</span>`}).join('')}</span><em>σ ${f2(o.d)}</em></button>`).join('');
+  $$('#cons .cons').forEach(b=>b.onclick=()=>{const o=cs.find(x=>x.me===b.dataset.me);abrir(`Consistência · ${o.me} (média ${f2(o.m)}, σ ${f2(o.d)})`,listaRuns(o.rs))});
+}
+
+// ---------- 5. Avaliador
+const CATS=[['reexec','🧪','Testes reexecutados deram contagem diferente do resultado.json (o Avaliador usa a reexecução)'],
+  ['parcial','⏱','Timeout com entrega parcial que passa testes: nota 0 pela regra geral'],
+  ['piloto','📁','resultado.json da rodada sobrescreveu o do piloto no mesmo caminho (benigno)'],
+  ['refeita','🔁','Execução refeita por erro de cota (claude-opus-5-5-high, documentado em commit)'],
+  ['commits','📝','resultado.json alterado em 2 commits (grok-4.7-high refeito)'],
+  ['naocommit','✏️','Arquivos com mudanças não commitadas (grok-4.7-high refeito)'],
+  ['semantiga','👻','Sem avaliação antiga: a nota antiga conta 0']];
+function renderJuizes(pmAtivo){
+  // esta aba descreve o Avaliador do Ranking A (528 execuções); o B só acrescenta as 70 refeitas
+  const RUNS=RA,PRINC=CEN.A.princ,MES=CEN.A.mes,pm=S.cen==='A'?pmAtivo:porMe(S,'A');
+  const rb=RB.filter(r=>r.rf),rbTo=rb.filter(r=>r.s==='timeout').length;
+  $('#jzB').classList.toggle('oculto',S.cen==='A');
+  $('#jzB').innerHTML=robo('codex',{s:38,toga:true,anim:false})+`<span><b>Você está no Ranking B.</b> Esta aba mostra o Avaliador do Ranking A (528 execuções). No B, as ${rb.length} refeitas com 420 s foram julgadas pelo mesmo Avaliador (2 juízes neutros, código anonimizado) e auditadas sem divergência; ${rbTo} delas deram timeout de novo. O “corrigir viés” vale nos dois rankings (no B, com a média de cada juiz nas 360 execuções).</span>`;
+  const J=Object.keys(JV).sort(),n=Object.fromEntries(J.map(k=>[k,JV[k].length]));
+  const mn=J.reduce((a,b)=>MU[a]<MU[b]?a:b),mxj=J.reduce((a,b)=>MU[a]>MU[b]?a:b);
+  const mod=D.juiz_modelo,fal=RUNS.flatMap(r=>r.f),jul=RUNS.filter(r=>Object.keys(r.j).length).length;
+  $('#troca').innerHTML=robo('claude',{s:38,toga:true,anim:false})+`<span><b>Por que “Avaliador”?</b> As notas da rodada vinham dos juízes do <code>julgar.py</code>, com falhas: execuções sem juiz válido entravam com rubrica 0 e o ranking antigo usava N=33. O <b>Avaliador independente</b> rejulgou tudo com código anonimizado, 2 juízes neutros por solução (nem a empresa resolvedora nem a autora da tarefa), reexecutou os testes ocultos e auditou cada execução. Esta aba mostra os juízes dele e o que mudou.</span>`;
+  $('#trib').innerHTML=J.map(k=>`<button class="jz" data-j="${k}" aria-label="juiz ${k}: média ${f2(MU[k])}">${k===mn?'<span class="sl">mais severo</span>':k===mxj?'<span class="sl">mais bonzinho</span>':''}${robo(k,{toga:true,mood:MU[k]>=8?'feliz':'neutro'})}<b>${f2(S.vies?MU0:MU[k])}</b><span>${k} · n=${n[k]}</span></button>`).join('');
+  $$('#trib .jz').forEach(b=>b.onclick=()=>{const k=b.dataset.j,v=JV[k],hist=[0,1,2,3,4,5,6,7,8,9,10].map(x=>v.filter(y=>Math.round(y)===x).length),fk=fal.filter(f=>f[0]===k);
+    abrir(`Juiz ${k} (${mod[k]||'?'}, esforço medium)`,`<p style="font-size:13px;font-weight:700">Rubrica média dada: <b>${f2(MU[k])}</b> em ${v.length} avaliações (média geral ${f2(MU0)}). Tentativas que falharam: ${fk.length}${fk.length?' ('+fk.map(f=>esc(f[1])).join('; ')+')':''}; falhas definitivas: 0. Com “corrigir viés”, cada nota dele vira nota − ${f2(MU[k])} + ${f2(MU0)}.</p>`+
+      `<p style="font-size:12px;font-weight:800;margin-top:8px">Histograma das notas (arredondadas)</p>`+tabela(['nota',...hist.map((_,i)=>i)],[['qtd',...hist]]))});
+  // antiga × nova por modelo (mesmas 30 execuções; a antiga não muda com os controles)
+  const rows=ordem(pm,MES).map(me=>({me,e:EMP_DE[me],a:pm[me].ant,b:pm[me].nota})).map(o=>Object.assign(o,{d:r2(o.b)-r2(o.a)}));
+  const W=340,L=150,Rt=290,H=24,top=22,X=v=>L+(Rt-L)*v/10,curto=me=>me.replace('build-fast','bf');
+  let g='';
+  for(const v of[0,2.5,5,7.5,10])g+=`<line x1="${X(v)}" y1="${top-6}" x2="${X(v)}" y2="${top+rows.length*H}" stroke="#E7E0F0" stroke-width="1.5"/><text x="${X(v)}" y="${top-10}" font-size="10" text-anchor="middle" fill="#6B6280">${v}</text>`;
+  rows.forEach((o,i)=>{const y=top+i*H+H/2,c=Math.abs(o.d)<.005?'#6B6280':o.d>0?'#2FB86B':'#E5484D',[m,x]=split(o.me);
+    g+=`<g class="lin" data-me="${o.me}" role="button" tabindex="0" aria-label="${o.me}: antiga ${f2(o.a)}, Avaliador ${f2(o.b)}"><rect class="hit" x="0" y="${y-H/2}" width="${W}" height="${H}" fill="transparent" rx="6"/>
+    <svg x="0" y="${y-10}" width="20" height="20">${robo(o.e,{anim:false}).replace('<svg ','<svg width="20" height="20" ')}</svg>
+    <text x="23" y="${y+4}" font-size="10.5">${curto(m)} ${x==='high'?'H':'M'}${o.me===GK?' ⚖️':''}</text>
+    ${Math.abs(X(o.b)-X(o.a))>2?`<line x1="${X(o.a)}" y1="${y}" x2="${X(o.b)}" y2="${y}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`:''}
+    <circle cx="${X(o.a)}" cy="${y}" r="5.5" fill="#fff" stroke="${INK}" stroke-width="2" stroke-dasharray="3 2"/>
+    <circle cx="${X(o.b)}" cy="${y}" r="6" fill="${x==='high'?`url(#hp-${o.e})`:COR[o.e]}" stroke="${INK}" stroke-width="2.5"/>
+    <text x="${W-2}" y="${y+4}" font-size="10.5" text-anchor="end" style="fill:${c}">${o.d>=0?'+':'−'}${f2(Math.abs(o.d))}</text></g>`});
+  const sv=$('#antNova');sv.setAttribute('viewBox',`0 0 ${W} ${top+rows.length*H+4}`);sv.innerHTML=g;
+  const det=me=>{const rs=pm[me].rs.filter(r=>Math.abs(nota(r,S)-r.na)>=.005);
+    abrir(`${me}: antiga ${f2(pm[me].ant)} → Avaliador ${f2(pm[me].nota)}`,`<p style="font-size:12px;font-weight:700;margin-bottom:6px">${rs.length} de ${pm[me].n} execuções mudaram de nota.</p>`+(rs.length?listaRuns(rs):''))};
+  $$('#antNova .lin').forEach(el=>{el.onclick=()=>det(el.dataset.me);el.onkeydown=ev=>{if(ev.key==='Enter')det(el.dataset.me)}});
+  const big=rows.slice().sort((a,b)=>Math.abs(b.d)-Math.abs(a.d))[0];
+  const ea={},ena={};for(const e of EMP){ea[e]=mean(MES.filter(me=>EMP_DE[me]===e).map(me=>r2(pm[me].ant)));ena[e]=mediaEmp(pm,e)}
+  $('#antTxt').innerHTML=`Maior mudança: <b>${big.me}</b> (${f2(big.a)} → ${f2(big.b)})${big.me===GK?`: ${pm[GK].rs.filter(r=>r.g&&r.na===0&&r.n>0).length} execuções refeitas dele contavam 0 na nota antiga e agora valem pela regra especial`:''}. Por empresa: `+
+    EMP.slice().sort((a,b)=>ena[b]-ena[a]).map(e=>`${e} ${f2(ea[e])} → <b>${f2(ena[e])}</b>`).join(' · ')+'.';
+  $('#tabAnt').innerHTML=tabela(['modelo','antiga','Avaliador','Δ'],rows.map(o=>[o.me,f2(o.a),f2(o.b),(o.d>=0?'+':'')+f2(o.d)]));
+  // maiores mudanças por execução
+  const dif=PRINC.map(r=>({r,d:nota(r,S)-r.na})).sort((a,b)=>Math.abs(b.d)-Math.abs(a.d)||a.r.me.localeCompare(b.r.me)).slice(0,8);
+  $('#difs').innerHTML=dif.map((o,i)=>`<button class="df" data-i="${i}"><span>${nomeChip(o.r.me)} <small style="color:var(--ink2)">${esc(o.r.t)}</small></span><em>${f2(o.r.na)} → <b class="${o.d>0?'up':'dn'}">${f2(nota(o.r,S))}</b></em></button>`).join('');
+  $$('#difs .df').forEach(b=>b.onclick=()=>{const r=dif[+b.dataset.i].r;abrir(`${r.me} · ${r.t}`,listaRuns([r])+(r.g?`<p style="font-size:12px;font-weight:700;margin-top:6px">Regra especial: nota base ${f2(r.g[0])} × ${String(r.g[1]).replace('.',',')} → ${f2(r.n)}.</p>`:'')+(r.na===0&&r.inc.includes('semantiga')?'<p style="font-size:12px;font-weight:700;margin-top:6px">Sem avaliação antiga: a nota antiga conta 0.</p>':''))});
+  // dispersão juiz 1 × juiz 2
+  const pares=RUNS.filter(r=>Object.keys(r.j).length===2).map(r=>{const k=Object.keys(r.j).sort();return {r,x:r.j[k[0]],y:r.j[k[1]],k}});
+  const B={};pares.forEach(p=>{const id=p.x+'|'+p.y;(B[id]=B[id]||[]).push(p)});
+  const Lx=34,T=14,Wd=250,P=v=>Lx+Wd*v/10,Q=v=>T+Wd-Wd*v/10;
+  let h=`<rect x="${Lx}" y="${T}" width="${Wd}" height="${Wd}" fill="#FFFBEA" stroke="#E7E0F0" stroke-width="1.5" rx="6"/>`;
+  for(const v of[0,5,10])h+=`<text x="${P(v)}" y="${T+Wd+14}" font-size="10" text-anchor="middle">${v}</text><text x="${Lx-6}" y="${Q(v)+4}" font-size="10" text-anchor="end">${v}</text>`;
+  h+=`<line x1="${P(0)}" y1="${Q(0)}" x2="${P(10)}" y2="${Q(10)}" stroke="#2FB86B" stroke-width="2.5" stroke-dasharray="6 4"/>`;
+  h+=`<text x="${Lx+Wd/2}" y="${T+Wd+28}" font-size="10" text-anchor="middle" fill="#6B6280">juiz 1 (ordem alfabética)</text><text transform="translate(10 ${T+Wd/2}) rotate(-90)" font-size="10" text-anchor="middle" fill="#6B6280">juiz 2</text>`;
+  const ids=Object.keys(B).sort((a,b)=>B[b].length-B[a].length);
+  for(const id of ids){const ps=B[id],{x,y}=ps[0],fora=Math.abs(x-y)>3,r=Math.max(4.5,Math.min(13,3+Math.sqrt(ps.length)*1.6));
+    h+=`<circle class="bo" data-id="${id}" cx="${P(x)}" cy="${Q(y)}" r="${r}" fill="${fora?'#fff':'#7FC8C8'}" fill-opacity="${fora?1:.75}" stroke="${fora?'#E5484D':INK}" stroke-width="${fora?3:1.5}" tabindex="0" role="button" aria-label="${ps.length} execuções: juiz 1 ${x}, juiz 2 ${y}"/>`;
+    if(fora)h+=`<text x="${P(x)}" y="${Q(y)+4}" font-size="11" text-anchor="middle" style="fill:#E5484D;pointer-events:none">!</text>`}
+  $('#disp').innerHTML=h;
+  $$('#disp .bo').forEach(c=>{const f=()=>{const ps=B[c.dataset.id];abrir(`Juiz 1 = ${ps[0].x} · juiz 2 = ${ps[0].y} (${ps.length} execuções)`,
+    `<p style="font-size:12px;font-weight:700;margin-bottom:6px">Pares de juízes: ${[...new Set(ps.map(p=>p.k.join(' × ')))].join(', ')}</p>`+listaRuns(ps.map(p=>p.r),'me'))};c.onclick=f;c.onkeydown=e=>{if(e.key==='Enter')f()}});
+  const dv=pares.map(p=>Math.abs(p.x-p.y)).sort((a,b)=>a-b),med=dv.length%2?dv[(dv.length-1)/2]:(dv[dv.length/2-1]+dv[dv.length/2])/2;
+  $('#nPares').textContent=`${pares.length} execuções`;
+  $('#dispTxt').innerHTML=`Todas as ${jul} execuções julgadas tiveram os 2 juízes válidos (${fal.length} tentativa${fal.length===1?'':'s'} com falha, refeita${fal.length===1?'':'s'}). Bolha = nº de execuções com o mesmo par de notas; na <b style="color:#2FB86B">linha verde</b> os juízes concordam. |diferença| média <b>${f2(mean(dv))}</b> pt · mediana <b>${f2(med)}</b>. <b style="color:#E5484D">○ !</b> ${dv.filter(d=>d>3).length} casos com mais de 3 pts de briga.`;
+  // auditoria (dados de avaliacao_avaliador.json: reexecução dos testes e incoerências)
+  const rx=RUNS.filter(r=>r.rx),rxOk=rx.filter(r=>r.rx[0]===r.tp&&r.rx[1]===r.tt).length;
+  const AU=CATS.map(([k,ic,txt])=>({k,ic,txt,rs:RUNS.filter(r=>r.inc.includes(k))})).filter(o=>o.rs.length);
+  $('#audit').innerHTML=`<div class="au"><span>✅</span><span>Testes ocultos reexecutados sobre o código entregue; contagem igual à usada na nota</span><b>${rxOk}/${RUNS.length}</b></div>`+
+    `<div class="au"><span>🔒</span><span>Testes ocultos idênticos ao git; nenhum indício de edição manual de nota/resultado (relatório do Avaliador)</span><b>✔</b></div>`+
+    AU.map((o,i)=>`<button class="au" data-i="${i}"><span>${o.ic}</span><span>${o.txt}</span><b>${o.rs.length}</b></button>`).join('');
+  $$('#audit button.au').forEach(b=>b.onclick=()=>{const o=AU[+b.dataset.i];abrir(`${o.ic} ${o.txt}`,listaRuns(o.rs,'me'))});
+}
+
+// ---------- rodapé
+const regras=RUNS.filter(r=>r.g).sort((a,b)=>a.t.localeCompare(b.t)||a.r-b.r);
+$('#rodape').innerHTML=`<h3>📜 Letras miúdas</h3>
+<p><b>Fonte:</b> só as notas do <b>Avaliador independente</b> (<code>_avaliador/notas_avaliador.csv</code> e <code>avaliacao_avaliador.json</code> de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna <code>nota_antiga</code> do CSV do Avaliador.</p>
+<p><b>Nota</b> = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. <b>Timeout = 0</b> e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das <b>30 execuções principais</b> (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.</p>
+<p class="ok-ref">${confere?'✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.':'✖ ATENÇÃO: o cálculo não bate com RELATORIO_AVALIADOR.md.'}</p>
+<p><b>Ranking B — limite de 7 min (420 s):</b> fonte <code>_avaliador/cenario_7min/</code> (<code>notas_7min.csv</code>, <code>matriz_7min.csv</code>, <code>resumo_7min.json</code>) e <code>avaliacao_avaliador_7min.json</code> das ${TOTS.B.cons} refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras ${RB.length-TOTS.B.cons} execuções são as do Ranking A. ${CEN.B.mes.length} combinações, N=30, sem Grok (não foi refeito) e sem consistência. <b>nota_i</b> (padrão): timeout = 0. <b>nota_ii</b>: a entrega parcial dos ${TOTS.B.to} timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o <code>resumo_7min.json</code>.</p>
+<p class="ok-ref">${confereB?'✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.':'✖ ATENÇÃO: o Ranking B não bate com resumo_7min.json.'}</p>
+<p><b>${AMB}</b>: o 0% continua na nota, com a marcação “${MARCA_AMB}”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em <code>_avaliador/analise_10_ambigua_claude.md</code>.</p>
+<details class="vt" id="regrasGrok"><summary>⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (${regras.length} execuções)</summary>
+<p style="margin-top:4px">As penalidades por atraso valem <b>somente para o grok-4.7-high</b>. ${regras.length} execuções dele foram refeitas com limite de tempo maior (decisão do Lucas), e a nota delas é a nota normal × um fator: <b>1ª tentativa</b> (limite 300 s) concluída em até 300 s = nota cheia; <b>2ª tentativa</b> (limite 900 s) = no máximo <b>70%</b>: até 600 s <b>×0,7</b>; de 600 a 900 s <b>×0,5</b>; acima de 900 s com entrega parcial <b>×0,5</b>; sem entrega = 0. As demais execuções dele e as das outras 15 combinações seguem a regra geral (timeout = 0, sem fator).</p>
+<p>O botão <b>“Penalidades do grok-4.7-high”</b> desligado troca ×0,7/×0,5 por ×1 (nota cheia). “Sem entrega” continua 0, porque não é penalidade de atraso.</p>
+<div class="tw">${tabela(['execução','status','tempo','nota base','fator','final'],regras.map(r=>[esc(r.t)+(r.r>1?` <small>run ${r.r} (fora do ranking)</small>`:''),r.s,Math.round(r.d)+' s',f2(r.g[0]),'×'+String(r.g[1]).replace('.',','),'<b>'+f2(r.n)+'</b>']))}</div>
+<p style="font-size:11px;color:var(--ink2)">Regras copiadas de RODADA.md:</p><ul>${D.regras.map(x=>`<li>${x}</li>`).join('')}</ul></details>
+<details class="vt"><summary>Metodologia do Avaliador (de RELATORIO_AVALIADOR.md)</summary><ul>${D.metodo.map(x=>`<li>${x}</li>`).join('')}</ul></details>
+<p style="margin-top:6px"><button class="btn" id="baixar">⬇ baixar os dados (JSON, ${RA.length} + ${RB.length} execuções)</button></p>`;
+$('#baixar').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([$('#dados').textContent],{type:'application/json'}));a.download='rodada1-avaliador.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+
+// ---------- abas, hash e render
+function renderTudo(){
+  const pm=porMe(S);
+  $$('#emps button').forEach(b=>b.setAttribute('aria-pressed',S.emp.has(b.dataset.e)));
+  renderRanking(pm);renderComparar(pm);renderEsforco(pm);renderTarefas(pm);renderJuizes(pm);
+  primeira=false;
+}
+function ir(aba,semRolar){
+  if($('#aba-'+aba)===null)aba='ranking';
+  const mudouAba=S.aba!==aba;S.aba=aba;
+  $$('.aba').forEach(s=>s.classList.toggle('on',s.id==='aba-'+aba));
+  $$('#nav button').forEach(b=>b.dataset.aba===aba?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  document.body.className='em-'+aba;
+  if(aba==='juizes'&&!reduz)$$('#trib svg').forEach(s=>{s.classList.remove('martelo');void s.getBoundingClientRect();s.classList.add('martelo')});
+  if(mudouAba){renderTudo();if(!semRolar)scrollTo(0,0)}
+  salvarHash();
+}
+$$('#nav button').forEach(b=>b.onclick=()=>ir(b.dataset.aba));
+function salvarHash(){
+  const p=new URLSearchParams({r:S.cen,nv:S.nv,w:S.wp,pg:+S.pg,ant:+S.ant,vies:+S.vies,a:S.a,b:S.b,modo:S.modo});
+  if(S.emp.size<4)p.set('emp',[...S.emp].join(','));
+  history.replaceState(null,'','#'+S.aba+'&'+p.toString());
+}
+function lerHash(){
+  const[aba,...resto]=location.hash.slice(1).split('&');const p=new URLSearchParams(resto.join('&'));
+  if(p.has('w'))S.wp=Math.max(0,Math.min(100,Math.round(+p.get('w')/5)*5))||0;
+  for(const k of['pg','ant','vies'])if(p.has(k))S[k]=p.get(k)==='1';
+  if(CEN[p.get('r')])S.cen=p.get('r');
+  if(['i','ii'].includes(p.get('nv')))S.nv=p.get('nv');
+  for(const k of['a','b'])if(CEN[S.cen].mes.includes(p.get(k)))S[k]=p.get(k);
+  if(['emp','me','aut'].includes(p.get('modo')))S.modo=p.get('modo');
+  if(p.get('emp')){const s=p.get('emp').split(',').filter(e=>EMP.includes(e));if(s.length)S.emp=new Set(s)}
+  return aba||'ranking';
+}
+const abaIni=lerHash();
+usar();sincCen();
+sincControles();
+S.aba=null;ir(abaIni,true);
+contar();
+</script>
+</body></html>

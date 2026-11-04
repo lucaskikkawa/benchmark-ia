@@ -1,0 +1,12 @@
+Criei o pacote `biblioteca` com os quatro arquivos pedidos em `/tmp/bench-sornoqsk/biblioteca/`. Usei imports relativos e só a biblioteca padrão. Não criei testes no diretório: rodei os checks com um script inline usando `python3 -B`, que não grava `__pycache__`. Os cerca de 50 checks cobriram o exemplo do enunciado, validações de `Livro`, datas, usuários, estoque, atomicidade dos erros e a ordenação de `ativos()`, e passaram todos.
+
+- **`models.py`**: `ErroBiblioteca` e `Livro` (frozen). A validação do `__post_init__` segue o enunciado, e o título é guardado já com `strip` via `object.__setattr__`.
+- **`catalogo.py`**: `Catalogo` com um dict por ISBN. `listar()` devolve uma lista nova ordenada por ISBN.
+- **`emprestimos.py`**: `ServicoEmprestimos` guarda os empréstimos ativos por `(isbn, usuario)`, então cada serviço tem estoque próprio. Todas as validações rodam antes de qualquer mutação, o que garante que um erro não deixa estado pela metade.
+- **`__init__.py`**: exporta as quatro classes com `__all__`.
+
+Escolhas que tomei onde o enunciado deixava margem:
+
+- **Tipo de erro para argumentos de tipo errado** (ex.: `adicionar` com algo que não é `Livro`, ou `usuario` não-string): levanto `ErroBiblioteca`, seguindo a regra "erros de regra são sempre `ErroBiblioteca`". Se preferir `TypeError` nesses casos, é uma troca pontual.
+- **Cálculo do atraso por ordinal**: `devolver` usa `toordinal()` em vez de somar 14 dias a uma `date`. Assim, um empréstimo perto de `9999-12-31` não estoura o calendário.
+- **Parse de `dia`**: uma regex `[0-9]{4}-[0-9]{2}-[0-9]{2}` com `fullmatch` antes de `date.fromisoformat`. Isso rejeita formatos que o `fromisoformat` aceitaria em versões mais novas do Python (como `20240101`) e dígitos não-ASCII.

@@ -1,0 +1,13 @@
+{
+ "juiz_empresa": "gemini",
+ "juiz_modelo": "gemini-3.8-flash",
+ "itens": {
+  "legibilidade": 0,
+  "erros_bordas": 1,
+  "idiomatico": 0,
+  "manutenibilidade": 1,
+  "documentacao_instrucoes": 1
+ },
+ "rubrica_10": 3.0,
+ "nota_final_10": 7.9
+}

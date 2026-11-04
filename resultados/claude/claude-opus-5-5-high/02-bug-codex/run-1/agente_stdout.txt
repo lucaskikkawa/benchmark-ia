@@ -1,0 +1,9 @@
+Corrigi o bug em `janelas.py:9`. O laço era `range(tamanho, len(valores) - 1)` e por isso descartava sempre a última janela. Por exemplo, `[1, 2, 3, 4]` com tamanho 2 devolvia `[3, 5]` em vez de `[3, 5, 7]`. Agora é `range(tamanho, len(valores))`. O resto do código continua igual.
+
+Rodei um teste rápido e tudo passou:
+- **Exemplo do enunciado:** `[1, 2, 3, 4]` com tamanho 2 dá `[3, 5, 7]`.
+- **Casos de borda:** tamanho igual ao comprimento da lista, lista de um elemento, tamanho maior que a lista (devolve `[]`) e lista vazia.
+- **Tamanho zero ou negativo:** lança `ValueError`.
+- **Inteiros grandes:** 300 listas aleatórias com valores de até cerca de 2⁸⁰ deram exatamente o mesmo resultado que somar cada janela diretamente, e a lista de entrada não foi alterada.
+- **Listas independentes:** duas chamadas seguidas devolvem objetos diferentes.
+- **Desempenho:** 200.000 valores de até cerca de 2¹⁰⁰ com janela de 100.000 rodaram em cerca de 0,01 s, sem perder a complexidade O(n).

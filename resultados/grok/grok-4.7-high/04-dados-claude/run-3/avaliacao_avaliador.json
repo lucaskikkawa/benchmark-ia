@@ -1,0 +1,69 @@
+{
+ "pasta": "resultados/grok/grok-4.7-high/04-dados-claude/run-3",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "high",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 3,
+ "consistencia_extra": true,
+ "autora_tarefa": "claude",
+ "status": "timeout",
+ "duracao_agente_s": 900.07,
+ "testes_passados": 32,
+ "testes_total": 32,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Pipeline dividido em funções e validações cobrem as regras. Usa csv/json, pathlib e with, mas acumula dados com dicionários manuais; faltam constantes para status e campos na agregação.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Excelente tratamento de bordas e boa separação de funções, mas não usa DictReader/defaultdict e mantém status hardcoded, exigindo ajustes em vários locais para novas métricas.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 4.7,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 32,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/04-dados-claude/run-3/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/04-dados-claude/run-3/avaliacao.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/junit.xml', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/resultado.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/testes_saida.txt']",
+  "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+  "sem avaliacao.json antiga",
+  "timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+ ],
+ "nota_antiga_avaliacao_json": null,
+ "nota_antiga_com_penalidade": 0.0,
+ "regra_excepcional_grok_4_7_high": {
+  "nota_base": 9.4,
+  "fator": 0.5,
+  "regra": "estourou 900 s (900 s): entrega incompleta avaliada, ×0,5"
+ }
+}

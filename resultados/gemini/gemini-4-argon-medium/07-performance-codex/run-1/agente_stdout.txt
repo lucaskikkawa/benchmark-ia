@@ -1,0 +1,4 @@
+O arquivo [pares.py](file:///tmp/bench-z6kakb4y/pares.py) foi criado com a implementação de [`contar_pares`](file:///tmp/bench-z6kakb4y/pares.py#L5-L17).
+
+- **Complexidade de tempo e espaço:** Utiliza `Counter(iter(valores))` para contabilizar as frequências em uma única passagem em tempo esperado $O(n)$ e memória $O(k)$ (onde $k$ é o número de valores distintos), sem materializar geradores.
+- **Contagem exata:** Soma `freq * freq_comp` para pares com `valor < alvo - valor` e `freq * (freq - 1) // 2` quando `valor == alvo - valor`, preservando precisão arbitrária para inteiros acima de 64 bits.

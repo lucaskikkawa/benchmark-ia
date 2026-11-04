@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-medium/03-refatoracao-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "medium",
+ "tarefa": "03-refatoracao-codex",
+ "tipo": "03-refatoracao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 50.07,
+ "testes_passados": 19,
+ "testes_total": 19,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes descritivos e aritmética inteira com truncamento por linha; subtotal centraliza a fórmula e é delegado uma vez por pedido. Sem docstrings: truncamento e resumo não são documentados.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes descritivos, inteiros, uma chamada a subtotal por pedido e bordas corretas. Não há docstring do truncamento por linha nem do resumo.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 19,
+  "passados": 19,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

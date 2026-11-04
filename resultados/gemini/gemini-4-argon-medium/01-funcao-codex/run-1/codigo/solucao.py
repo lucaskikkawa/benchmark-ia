@@ -1,22 +1,36 @@
-def unir_intervalos(intervalos) -> list[tuple[int, int]]:
-    pares: list[tuple[int, int]] = []
+def unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]:
+    if limites is not None:
+        minimo, maximo = limites
+        if minimo > maximo:
+            raise ValueError("Limites invertidos: minimo > maximo")
+
+    processados: list[tuple[int, int]] = []
     for inicio, fim in intervalos:
         if inicio > fim:
-            raise ValueError(f"Intervalo inválido: ({inicio}, {fim})")
-        pares.append((inicio, fim))
+            raise ValueError("Intervalo invertido: inicio > fim")
+        if limites is not None:
+            rec_inicio = inicio if inicio > minimo else minimo
+            rec_fim = fim if fim < maximo else maximo
+            if rec_inicio <= rec_fim:
+                processados.append((rec_inicio, rec_fim))
+        else:
+            processados.append((inicio, fim))
 
-    if not pares:
+    if not processados:
         return []
 
-    pares.sort()
-    resultado: list[tuple[int, int]] = [pares[0]]
+    processados.sort()
 
-    for inicio, fim in pares[1:]:
-        ultimo_inicio, ultimo_fim = resultado[-1]
-        if inicio <= ultimo_fim:
-            if fim > ultimo_fim:
-                resultado[-1] = (ultimo_inicio, fim)
+    resultado: list[tuple[int, int]] = []
+    atual_inicio, atual_fim = processados[0]
+
+    for inicio, fim in processados[1:]:
+        if inicio <= atual_fim:
+            if fim > atual_fim:
+                atual_fim = fim
         else:
-            resultado.append((inicio, fim))
+            resultado.append((atual_inicio, atual_fim))
+            atual_inicio, atual_fim = inicio, fim
 
+    resultado.append((atual_inicio, atual_fim))
     return resultado

@@ -1,0 +1,3 @@
+Criados `solucao.py` e `SUPOSICOES.md`, com a função e as decisões de classificação documentadas.
+
+Verificação com Python 3 concluída: 16 casos válidos e 7 entradas de tipos inválidos passaram, incluindo Unicode e texto longo.

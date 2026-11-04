@@ -1,0 +1,422 @@
+{
+ "res": {
+  "claude-haiku-5-5-high": {
+   "nota_oficial": 9.754999999999999,
+   "nota_i": 9.754999999999999,
+   "nota_ii": 9.754999999999999
+  },
+  "claude-haiku-5-5-medium": {
+   "nota_oficial": 9.657,
+   "nota_i": 9.657,
+   "nota_ii": 9.657
+  },
+  "claude-opus-5-5-high": {
+   "nota_oficial": 9.386666666666667,
+   "nota_i": 9.709999999999999,
+   "nota_ii": 9.709999999999999
+  },
+  "claude-opus-5-5-medium": {
+   "nota_oficial": 9.7,
+   "nota_i": 9.7,
+   "nota_ii": 9.7
+  },
+  "gemini-3.8-flash-high": {
+   "nota_oficial": 1.3133333333333332,
+   "nota_i": 5.048333333333333,
+   "nota_ii": 7.088333333333333
+  },
+  "gemini-3.8-flash-medium": {
+   "nota_oficial": 2.85,
+   "nota_i": 7.848333333333334,
+   "nota_ii": 8.802
+  },
+  "gemini-4-argon-high": {
+   "nota_oficial": 6.963333333333333,
+   "nota_i": 8.52,
+   "nota_ii": 9.176666666666666
+  },
+  "gemini-4-argon-medium": {
+   "nota_oficial": 7.216666666666667,
+   "nota_i": 9.091666666666667,
+   "nota_ii": 9.091666666666667
+  },
+  "gpt-6-luna-high": {
+   "nota_oficial": 8.999,
+   "nota_i": 9.287333333333333,
+   "nota_ii": 9.287333333333333
+  },
+  "gpt-6-luna-medium": {
+   "nota_oficial": 9.092666666666666,
+   "nota_i": 9.092666666666666,
+   "nota_ii": 9.092666666666666
+  },
+  "gpt-6.1-sol-high": {
+   "nota_oficial": 8.156666666666666,
+   "nota_i": 9.39,
+   "nota_ii": 9.39
+  },
+  "gpt-6.1-sol-medium": {
+   "nota_oficial": 8.788333333333334,
+   "nota_i": 9.415,
+   "nota_ii": 9.415
+  }
+ },
+ "hm": {
+  "haiku": {
+   "nota_oficial": 0.09799999999999898,
+   "nota_i": 0.09799999999999898,
+   "nota_ii": 0.09799999999999898
+  },
+  "opus": {
+   "nota_oficial": -0.3133333333333326,
+   "nota_i": 0.009999999999999787,
+   "nota_ii": 0.009999999999999787
+  },
+  "luna": {
+   "nota_oficial": -0.09366666666666568,
+   "nota_i": 0.19466666666666654,
+   "nota_ii": 0.19466666666666654
+  },
+  "sol": {
+   "nota_oficial": -0.6316666666666677,
+   "nota_i": -0.02499999999999858,
+   "nota_ii": -0.02499999999999858
+  },
+  "argon": {
+   "nota_oficial": -0.25333333333333385,
+   "nota_i": -0.5716666666666672,
+   "nota_ii": 0.08499999999999908
+  },
+  "flash": {
+   "nota_oficial": -1.5366666666666668,
+   "nota_i": -2.8000000000000007,
+   "nota_ii": -1.7136666666666667
+  }
+ },
+ "pos": {
+  "nota_oficial": {
+   "claude-haiku-5-5-high": 1,
+   "claude-opus-5-5-medium": 2,
+   "claude-haiku-5-5-medium": 3,
+   "claude-opus-5-5-high": 4,
+   "gpt-6-luna-medium": 5,
+   "gpt-6-luna-high": 6,
+   "gpt-6.1-sol-medium": 7,
+   "gpt-6.1-sol-high": 8,
+   "gemini-4-argon-medium": 9,
+   "gemini-4-argon-high": 10,
+   "gemini-3.8-flash-medium": 11,
+   "gemini-3.8-flash-high": 12
+  },
+  "nota_i": {
+   "claude-haiku-5-5-high": 1,
+   "claude-opus-5-5-high": 2,
+   "claude-opus-5-5-medium": 3,
+   "claude-haiku-5-5-medium": 4,
+   "gpt-6.1-sol-medium": 5,
+   "gpt-6.1-sol-high": 6,
+   "gpt-6-luna-high": 7,
+   "gpt-6-luna-medium": 8,
+   "gemini-4-argon-medium": 9,
+   "gemini-4-argon-high": 10,
+   "gemini-3.8-flash-medium": 11,
+   "gemini-3.8-flash-high": 12
+  },
+  "nota_ii": {
+   "claude-haiku-5-5-high": 1,
+   "claude-opus-5-5-high": 2,
+   "claude-opus-5-5-medium": 3,
+   "claude-haiku-5-5-medium": 4,
+   "gpt-6.1-sol-medium": 5,
+   "gpt-6.1-sol-high": 6,
+   "gpt-6-luna-high": 7,
+   "gemini-4-argon-high": 8,
+   "gpt-6-luna-medium": 9,
+   "gemini-4-argon-medium": 10,
+   "gemini-3.8-flash-medium": 11,
+   "gemini-3.8-flash-high": 12
+  }
+ },
+ "inc": [
+  [
+   "resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/codex/gpt-6-luna-high/07-performance-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1",
+   "sem avaliacao.json antiga"
+  ],
+  [
+   "resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1",
+   "sem avaliacao.json antiga"
+  ]
+ ]
+}

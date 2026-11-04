@@ -1,0 +1,35 @@
+{
+ "pasta": "resultados/grok/grok-4.7-build-fast-high/08-testes-gemini/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7-build-fast",
+ "esforco": "high",
+ "tarefa": "08-testes-gemini",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "timeout",
+ "duracao_agente_s": 180.147,
+ "testes_passados": 0,
+ "testes_total": 13,
+ "pct_testes": 0.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {},
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)",
+  "timeout: nota 0 (rubrica não julgada)"
+ ],
+ "rubrica_media_10": null,
+ "nota_final_10": 0.0,
+ "reexecucao_testes": {
+  "total": 13,
+  "passados": 0,
+  "pct": 0.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 0.0,
+ "nota_antiga_com_penalidade": 0.0
+}

@@ -1,0 +1,270 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-5zx9sgf9
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189bc-12a9-7152-a501-a3e4cb79c375
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:16:08.467680Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para entender a tarefa e fazer a alteração aqui mesmo.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"'" in /tmp/bench-5zx9sgf9
+ succeeded in 0ms:
+/tmp/bench-5zx9sgf9
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-5zx9sgf9
+ succeeded in 0ms:
+# 06 - Barramento de Eventos em Memória (Pacote Multi-arquivo)
+
+Implemente o pacote Python `eventhub` estruturado exatamente nos seguintes 4 arquivos:
+- `eventhub/__init__.py`
+- `eventhub/models.py`
+- `eventhub/handlers.py`
+- `eventhub/bus.py`
+
+## Especificação dos Módulos
+
+### 1. `eventhub/models.py`
+- `Priority(IntEnum)`:
+  - `LOW = 1`
+  - `NORMAL = 2`
+  - `HIGH = 3`
+- `Event` (dataclass):
+  - `id: str`
+  - `topic: str`
+  - `payload: dict`
+  - `priority: Priority = Priority.NORMAL`
+  - `timestamp: float` (default gerado via `time.time`)
+  - `retry_count: int = 0`
+
+### 2. `eventhub/handlers.py`
+- `EventHandler(ABC)`:
+  - Método abstrato `@abstractmethod def handle(self, event: Event) -> None:`
+- `DeadLetterQueue`:
+  - `__init__(self) -> None`: inicializa lista de eventos com falha.
+  - `add(self, event: Event, error: str) -> None`: armazena tupla `(event, str(error))`.
+  - `get_failed_events(self) -> list[tuple[Event, str]]`: retorna cópia da lista de falhas.
+  - `clear(self) -> None`: limpa a lista.
+
+### 3. `eventhub/bus.py`
+- `EventBus`:
+  - `__init__(self, dlq: DeadLetterQueue | None = None) -> None`:
+    - Aceita opcionalmente uma instância de `DeadLetterQueue`.
+  - `subscribe(self, topic: str, handler: EventHandler | Callable[[Event], None]) -> None`:
+    - Registra um handler (instância de `EventHandler` ou callable) para um tópico. Não deve duplicar inscrições idênticas.
+  - `unsubscribe(self, topic: str, handler: EventHandler | Callable[[Event], None]) -> None`:
+    - Remove o handler do tópico especificado, se registrado.
+  - `publish(self, topic: str, payload: dict, priority: Priority = Priority.NORMAL) -> Event`:
+    - Cria uma nova instância de `Event`, armazena na fila de pendências e no histórico, e retorna o `Event`.
+  - `dispatch_next(self) -> bool`:
+    - Retira e despacha o próximo evento pendente. Se nenhum handler estiver registrado para o tópico do evento retirado, o evento é consumido e o método retorna `True`.
+    - Ordem de atendimento: maior prioridade primeiro (`HIGH > NORMAL > LOW`); para mesma prioridade, ordem cronológica (`timestamp` menor / FIFO).
+    - Para o evento retirado, chama todos os handlers registrados no seu tópico. Se o handler for `EventHandler`, chama `handler.handle(event)`; caso contrário, chama `handler(event)`.
+    - Se algum handler lançar exceção:
+      - Caso haja `dlq` configurada no barramento, encaminha o evento e a mensagem de erro para `dlq.add(event, str(e))` sem interromper a execução dos demais handlers nem propagar a exceção.
+      - Caso **não** haja `dlq` configurada (`dlq is None`), a exceção deve ser propagada para o chamador.
+    - Se um handler publicar novos eventos no barramento durante seu processamento, esses novos eventos devem ingressar na fila e ser atendidos nos despachos subsequentes respeitando as prioridades.
+    - Retorna `True` se um evento foi processado, ou `False` se a fila estava vazia.
+  - `dispatch_all(self) -> int`:
+    - Processa todos os eventos pendentes chamando `dispatch_next()` repetidamente e retorna o número total de eventos despachados.
+  - `get_history(self, topic: str | None = None) -> list[Event]`:
+    - Retorna uma nova lista (cópia) contendo os eventos em ordem de publicação. Se `topic` for fornecido, filtra apenas os eventos daquele tópico, preservando essa ordem. Modificações na lista retornada não devem impactar o histórico interno.
+
+### 4. `eventhub/__init__.py`
+Deve exportar os símbolos principais na raiz do pacote via imports relativos:
+`Event`, `Priority`, `EventHandler`, `DeadLetterQueue`, `EventBus`.
+
+codex
+O enunciado pede um pacote pequeno, sem arquivos auxiliares. Vou criar exatamente os quatro módulos especificados: eventos com prioridade e timestamp, fila de pendências ordenada, handlers e DLQ, além das exportações na raiz.
+apply patch
+patch: completed
+/tmp/bench-5zx9sgf9/eventhub/__init__.py
+/tmp/bench-5zx9sgf9/eventhub/bus.py
+/tmp/bench-5zx9sgf9/eventhub/handlers.py
+/tmp/bench-5zx9sgf9/eventhub/models.py
+diff --git a/eventhub/__init__.py b/eventhub/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f5a70f9a0181d632eeb856909afccf7395509bfc
+--- /dev/null
++++ b/eventhub/__init__.py
+@@ -0,0 +1,7 @@
++"""Public interface for the eventhub package."""
++
++from .bus import EventBus
++from .handlers import DeadLetterQueue, EventHandler
++from .models import Event, Priority
++
++__all__ = ["Event", "Priority", "EventHandler", "DeadLetterQueue", "EventBus"]
+diff --git a/eventhub/bus.py b/eventhub/bus.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..8e59cd3d466675648b4f53602d1f62e57b501eb6
+--- /dev/null
++++ b/eventhub/bus.py
+@@ -0,0 +1,83 @@
++"""In-memory event bus with priority-based dispatch."""
++
++import heapq
++from collections import defaultdict
++from collections.abc import Callable
++from itertools import count
++from uuid import uuid4
++
++from .handlers import DeadLetterQueue, EventHandler
++from .models import Event, Priority
++
++
++class EventBus:
++    def __init__(self, dlq: DeadLetterQueue | None = None) -> None:
++        self.dlq = dlq
++        self._handlers: dict[str, list[EventHandler | Callable[[Event], None]]] = defaultdict(list)
++        self._pending: list[tuple[int, float, int, Event]] = []
++        self._sequence = count()
++        self._history: list[Event] = []
++
++    def subscribe(
++        self, topic: str, handler: EventHandler | Callable[[Event], None]
++    ) -> None:
++        handlers = self._handlers[topic]
++        if handler not in handlers:
++            handlers.append(handler)
++
++    def unsubscribe(
++        self, topic: str, handler: EventHandler | Callable[[Event], None]
++    ) -> None:
++        handlers = self._handlers.get(topic)
++        if handlers is None:
++            return
++        try:
++            handlers.remove(handler)
++        except ValueError:
++            return
++        if not handlers:
++            del self._handlers[topic]
++
++    def publish(
++        self, topic: str, payload: dict, priority: Priority = Priority.NORMAL
++    ) -> Event:
++        event = Event(
++            id=str(uuid4()),
++            topic=topic,
++            payload=payload,
++            priority=priority,
++        )
++        heapq.heappush(
++            self._pending,
++            (-int(event.priority), event.timestamp, next(self._sequence), event),
++        )
++        self._history.append(event)
++        return event
++
++    def dispatch_next(self) -> bool:
++        if not self._pending:
++            return False
++
++        _, _, _, event = heapq.heappop(self._pending)
++        for handler in tuple(self._handlers.get(event.topic, ())):
++            try:
++                if isinstance(handler, EventHandler):
++                    handler.handle(event)
++                else:
++                    handler(event)
++            except Exception as error:
++                if self.dlq is None:
++                    raise
++                self.dlq.add(event, str(error))
++        return True
++
++    def dispatch_all(self) -> int:
++        dispatched = 0
++        while self.dispatch_next():
++            dispatched += 1
++        return dispatched
++
++    def get_history(self, topic: str | None = None) -> list[Event]:
++        if topic is None:
++            return self._history.copy()
++        return [event for event in self._history if event.topic == topic]
+diff --git a/eventhub/handlers.py b/eventhub/handlers.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..34443a0ec32c02b58d2fd65bc71d3bfc47ec3614
+--- /dev/null
++++ b/eventhub/handlers.py
+@@ -0,0 +1,25 @@
++"""Event handler interfaces and dead-letter storage."""
++
++from abc import ABC, abstractmethod
++
++from .models import Event
++
++
++class EventHandler(ABC):
++    @abstractmethod
++    def handle(self, event: Event) -> None:
++        """Handle an event."""
++
++
++class DeadLetterQueue:
++    def __init__(self) -> None:
++        self._failed_events: list[tuple[Event, str]] = []
++
++    def add(self, event: Event, error: str) -> None:
++        self._failed_events.append((event, str(error)))
++
++    def get_failed_events(self) -> list[tuple[Event, str]]:
++        return self._failed_events.copy()
++
++    def clear(self) -> None:
++        self._failed_events.clear()
+diff --git a/eventhub/models.py b/eventhub/models.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b94d0bc2be7f7ee8ae42b7daba06cc66ecac349
+--- /dev/null
++++ b/eventhub/models.py
+@@ -0,0 +1,21 @@
++"""Data models used by the in-memory event hub."""
++
++from dataclasses import dataclass, field
++from enum import IntEnum
++import time
++
++
++class Priority(IntEnum):
++    LOW = 1
++    NORMAL = 2
++    HIGH = 3
++
++
++@dataclass
++class Event:
++    id: str
++    topic: str
++    payload: dict
++    priority: Priority = Priority.NORMAL
++    timestamp: float = field(default_factory=time.time)
++    retry_count: int = 0
+
+exec
+/bin/bash -lc 'rg --files' in /tmp/bench-5zx9sgf9
+ succeeded in 0ms:
+enunciado.md
+eventhub/handlers.py
+eventhub/models.py
+eventhub/__init__.py
+eventhub/bus.py
+
+codex
+Implementei o pacote `eventhub` nos quatro arquivos especificados. O barramento ordena eventos por prioridade e, em caso de empate, por timestamp e ordem de publicação; também oferece inscrições, histórico e encaminhamento de falhas à DLQ.
+
+Não executei testes.
+tokens used
+6,938

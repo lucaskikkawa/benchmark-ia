@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/grok/grok-4.7-medium/08-testes-codex/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "medium",
+ "tarefa": "08-testes-codex",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 149.618,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes descrevem cálculo, frete, desconto e mutação; cobre limites, negativos, vazio e zero. Há asserts idênticos repetidos em alguns testes, o que reduz a manutenibilidade.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Suíte exemplar com cobertura completa de bordas, testes idiomáticos com parametrização e pytest.raises, nomes descritivos e verificação rigorosa de imutabilidade.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85,
+ "reexecucao_testes": {
+  "total": 15,
+  "passados": 15,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

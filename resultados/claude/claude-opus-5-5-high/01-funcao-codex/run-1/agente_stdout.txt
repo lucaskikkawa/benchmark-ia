@@ -1,12 +1,11 @@
-Criei o `solucao.py` com a função `unir_intervalos`, e todos os testes rápidos que rodei passaram.
+Criei `solucao.py` com `unir_intervalos(intervalos, *, limites=None)`. Funciona assim: valida os limites, lê e valida todos os pares numa lista nova e aplica o recorte, se houver. Depois ordena e faz uma única varredura que funde intervalos sobrepostos ou que se tocam na extremidade. O custo é O(n log n) de tempo e O(n) de memória, e as coordenadas ficam sempre como inteiros, sem conversão para ponto flutuante.
 
-A função lê a entrada uma única vez, então aceita geradores, e lança `ValueError` se algum par tiver início maior que o fim. Os pares são copiados para uma lista própria antes de ordenar, então a lista recebida não é modificada. Depois de ordenar, ela funde um intervalo com o anterior quando ele começa antes ou exatamente no fim do anterior. Assim, intervalos que se sobrepõem ou se tocam viram um só, e `(1, 2)` e `(3, 4)` continuam separados.
+Rodei uma série de verificações manuais (não há testes no diretório) e todas deram o resultado esperado:
+- O exemplo do enunciado retorna `[(1, 8), (10, 10)]`.
+- `(1, 2)` e `(3, 4)` continuam separados; a entrada vazia dá `[]`; um gerador funciona e duplicatas não mudam o resultado.
+- Com recorte, pontos na extremidade são mantidos: `[(1,3),(5,9),(-5,0)]` com `limites=(3,5)` retorna `[(3, 3), (5, 5)]`.
+- Inteiros de 31 dígitos funcionam sem perder precisão.
+- Lança `ValueError` para par invertido, para limites invertidos com entrada vazia e para par invertido que ficaria fora do recorte.
+- 100.000 intervalos aleatórios rodaram em cerca de 0,04 s.
 
-Os testes cobriram:
-- o exemplo do enunciado, que retorna `[(1, 8), (10, 10)]`;
-- `(1, 2)` com `(3, 4)`, que continuam separados;
-- entrada vazia, que retorna `[]`;
-- um gerador com duplicatas;
-- que a lista de entrada não foi alterada;
-- intervalos com números negativos;
-- o `ValueError` para um par com início maior que o fim.
+Se a entrada tiver, ao mesmo tempo, limites invertidos e um par invertido, o erro dos limites é lançado primeiro, antes de ler o iterável. O enunciado não define essa ordem.

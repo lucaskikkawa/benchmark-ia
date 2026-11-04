@@ -1,0 +1,11 @@
+Implementei `resumir_intervalos` em `solucao.py` e escrevi testes em `test_solucao.py`. Os 7 testes passam, incluindo todos os exemplos do enunciado.
+
+Como funciona:
+- **Validação:** levanta `TypeError` se `numeros` não for uma `list` ou se algum elemento não for `type(x) is int`, o que rejeita `bool` e subclasses de `int`.
+- **Dedup e ordenação:** `sorted(set(numeros))` gera uma nova lista, então a entrada do chamador não é alterada.
+- **Agrupamento:** uma única passada sobre os valores ordenados junta sequências consecutivas em `"inicio-fim"` e deixa valores isolados como `"n"`. A complexidade é O(n log n), por causa da ordenação.
+- **Vazio:** retorna `""`.
+
+Decisões minhas que o enunciado não fixava: a mensagem das exceções está em português, e os testes extras cobrem inteiros muito grandes, 200 mil elementos e a imutabilidade da lista de entrada.
+
+Na primeira tentativa usei `python3 -I`, que removeu o diretório atual do `sys.path` e impediu a importação. Rodei de novo sem `-I`, porque são arquivos que eu mesmo criei aqui.

@@ -1,0 +1,32 @@
+...................................F..F...                               [100%]
+=================================== FAILURES ===================================
+____________ test_extrair_separados_por_quebra_de_linha_e_pontuacao ____________
+
+    def test_extrair_separados_por_quebra_de_linha_e_pontuacao():
+        texto = "11 98765-4321\n21 3456-7890\n(31) 99876-5432;41 3222-1111/51 99999-0000, 61 3333-4444"
+>       assert extrair_telefones(texto) == [
+            "+5511987654321", "+552134567890", "+5531998765432", "+554132221111", "+5551999990000", "+556133334444",
+        ]
+E       AssertionError: assert ['+5511987654...8765432', ...] == ['+5511987654...556133334444']
+E         
+E         At index 1 diff: '+554321213456' != '+552134567890'
+E         Left contains 3 more items, first extra item: '+554132221111'
+E         Use -v to get more diff
+
+testes_ocultos/test_telefones.py:119: AssertionError
+_____________ test_extrair_nao_recorta_sequencia_maior_de_digitos ______________
+
+    def test_extrair_nao_recorta_sequencia_maior_de_digitos():
+        assert extrair_telefones("Protocolo 001198765432100 aberto") == []
+        assert extrair_telefones("Pedido 5511987654321999") == []
+>       assert extrair_telefones("ID 11987654321-0") == []
+E       AssertionError: assert ['+5511987654321'] == []
+E         
+E         Left contains one more item: '+5511987654321'
+E         Use -v to get more diff
+
+testes_ocultos/test_telefones.py:140: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_telefones.py::test_extrair_separados_por_quebra_de_linha_e_pontuacao
+FAILED testes_ocultos/test_telefones.py::test_extrair_nao_recorta_sequencia_maior_de_digitos
+2 failed, 40 passed in 0.13s

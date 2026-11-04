@@ -1,0 +1,22 @@
+Criei `vendas.py` com `resumir_vendas(entrada, saida, minimo_centavos=0)` seguindo o enunciado, mais um `test_vendas.py` com 10 testes unitários. Todos passam (`python3 -m unittest -v test_vendas`, Python 3.13 local; o enunciado pede 3.11, e as APIs usadas existem nas duas versões).
+
+**O que a solução faz**
+- Lê UTF-8 com `utf-8-sig` (aceita BOM) e `csv.DictReader`, com colunas em qualquer ordem e extras ignoradas.
+- Só valida produto e números nas linhas com `status.strip().lower() == "pago"`. Linhas não pagas com campos faltando são ignoradas.
+- Números: regex `[+-]?[0-9]+` com `fullmatch` (só dígitos ASCII), depois `int()` e rejeição de negativos.
+- Agregação por produto (case-sensitive), mantendo quantidade zero. O filtro `minimo_centavos` é aplicado depois da agregação.
+- Saída: `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`, gravada só depois de tudo validado, então um `ValueError` deixa o arquivo anterior intacto.
+- Aritmética exata: a conversão de strings longas tem o limite de 4300 dígitos do Python. Eu o desligo temporariamente durante a leitura e a serialização, e restauro no `finally`.
+
+**Escolhas que tomei onde o enunciado não diz**
+- `entrada` e `saida` iguais (após `resolve()`) lançam `ValueError`, para não sobrescrever a entrada.
+- Nomes de cabeçalho são comparados exatamente, sem `strip()` nem normalização de caixa.
+- Linha paga com campo obrigatório ausente (inclusive produto vazio) lança `ValueError`.
+- Coluna `status` ausente numa linha é tratada como não paga e ignorada.
+- Erros de arquivo (inexistente, permissão) propagam como `OSError`.
+
+**Arquivos**
+- `vendas.py`: solução.
+- `test_vendas.py`: testes cobrindo agregação, filtro de mínimo, BOM, acentos, aspas, números aceitos e rejeitados, inteiros grandes, preservação da saída em erro, cabeçalho vazio e parâmetros inválidos. Pode apagar se não quiser o arquivo extra.
+
+Não testei com o CSV de 30.000 linhas citado no enunciado, só com casos pequenos e um inteiro de 5000 dígitos.

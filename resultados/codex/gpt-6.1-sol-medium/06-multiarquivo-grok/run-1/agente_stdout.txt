@@ -1,0 +1,3 @@
+Pacote `biblioteca` criado com exatamente os quatro arquivos solicitados, imports relativos e apenas biblioteca padrão.
+
+Validações executadas com sucesso: entradas inválidas, datas, atrasos, estoque, ordenação e preservação do estado em erros.

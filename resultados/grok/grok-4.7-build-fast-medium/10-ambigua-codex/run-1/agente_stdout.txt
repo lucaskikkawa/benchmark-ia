@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O núcleo é filtrar pendentes e ordenar por prioridade, com cópia rasa. Vou registrar as políticas de empate e de entrada inválida e implementar isso.A função `organizar_tarefas` está em `organizador.py` e as políticas em aberto estão em `SUPOSICOES.md`.
+
+Para entradas válidas, a função devolve só tarefas com `concluida == False`, ordenadas da maior `prioridade` para a menor. Cada item do resultado é uma cópia rasa nova, então a lista e os dicionários originais não mudam. Campos extras e objetos aninhados, como uma lista em `etiquetas`, permanecem como estão.
+
+Empates ficam na ordem original da entrada. Itens inválidos (campos ausentes, tipos errados ou prioridade fora de 0–5) são ignorados.

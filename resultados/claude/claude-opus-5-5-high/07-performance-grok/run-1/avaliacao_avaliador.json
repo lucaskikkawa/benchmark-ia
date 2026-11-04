@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-high/07-performance-grok/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "high",
+ "tarefa": "07-performance-grok",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 16.513,
+ "testes_passados": 12,
+ "testes_total": 12,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Contagem linear por frequências, valida tipos incluindo bool e preserva a lista; a validação está na função principal e a docstring não explica tipos nem duplicatas.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Passagem única correta para tipos e bordas, mas sem Counter, sem isolar o caso repetido com combinatória, com validação na mesma função e docstring básica.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.0,
+ "nota_final_10": 9.1,
+ "reexecucao_testes": {
+  "total": 12,
+  "passados": 12,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.1,
+ "nota_antiga_com_penalidade": 9.1
+}

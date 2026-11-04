@@ -1,0 +1,7 @@
+A refatoração do arquivo [`frete.py`](file:///tmp/bench-zsdtfsrz/frete.py) foi concluída de acordo com as instruções de [enunciado.md](file:///tmp/bench-zsdtfsrz/enunciado.md):
+
+- Implementada a classe [`TabelaFrete`](file:///tmp/bench-zsdtfsrz/frete.py#L4-L34) com o atributo de classe `FAIXAS` contendo a sequência de tuplas `(nome, peso_min, peso_max, base_centavos, centavos_por_km)`.
+- Implementado o método de instância [`TabelaFrete.cotar`](file:///tmp/bench-zsdtfsrz/frete.py#L12-L34), mantendo as mesmas regras de validação e cálculo (incluindo divisão inteira para frete expresso).
+- Mantida a função [`cotar`](file:///tmp/bench-zsdtfsrz/frete.py#L37-L38), delegando diretamente para `TabelaFrete().cotar(...)`.
+- Implementada a função [`faixa_de_peso`](file:///tmp/bench-zsdtfsrz/frete.py#L41-L53), consultando dinamicamente `TabelaFrete.FAIXAS` e aplicando as mesmas validações de peso.
+- As chamadas leem `TabelaFrete.FAIXAS` dinamicamente a cada execução, permitindo a substituição em tempo de execução sem alterar as validações globais.

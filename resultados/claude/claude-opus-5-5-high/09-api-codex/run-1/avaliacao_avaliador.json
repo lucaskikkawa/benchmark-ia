@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-high/09-api-codex/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "high",
+ "tarefa": "09-api-codex",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 29.153,
+ "testes_passados": 38,
+ "testes_total": 38,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código robusto, correto e idiomático com validação prévia impecável; a docstring é sucinta e não detalha o timeout por chamada nem o cálculo do backoff.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Laço limitado, índice e raise preservam o fluxo. Valida antes, retenta só transitórios e dorme só entre falhas, com dormir injetável. Docstring omite timeout por chamada e o backoff.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 38,
+  "passados": 38,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

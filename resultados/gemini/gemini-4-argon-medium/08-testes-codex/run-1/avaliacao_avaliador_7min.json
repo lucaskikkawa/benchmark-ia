@@ -1,0 +1,53 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "medium",
+ "tarefa": "08-testes-codex",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 183.88,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Nomes descrevem frete, truncamento, validação e não mutação. Cobre limites de desconto, negativos, vazio, quantidade e preço zero. Usa pytest.raises(ValueError) e parametrize. Testes independentes, sem alterar carrinho.py.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Suíte pytest nomeia cálculo, frete, validação e preservação da lista; cobre bordas, ValueError parametrizado e truncamento agregado com comentários. Testes independentes e só asserts públicos.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0
+}

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/grok/grok-4.7-medium/04-dados-claude/run-4",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "medium",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 4,
+ "consistencia_extra": true,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 166.535,
+ "testes_passados": 32,
+ "testes_total": 32,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Valida cabeçalho e linhas, trata BOM e erros, e grava o JSON conforme pedido. Porém, validação e agregação ficam misturadas; faltam funções de etapa e constantes para status.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Borda e validações corretas, mas faltou csv.DictReader, docstring de contrato na função e modularização das etapas de validação e agregação, além de manter status como valor mágico.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.95,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 32,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.8,
+ "nota_antiga_com_penalidade": 8.8
+}

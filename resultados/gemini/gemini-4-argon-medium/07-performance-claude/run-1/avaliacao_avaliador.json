@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-medium/07-performance-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "medium",
+ "tarefa": "07-performance-claude",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 51.481,
+ "testes_passados": 36,
+ "testes_total": 36,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 3.0,
+   "justificativa": "A janela de prefixos remove a ocorrência errada: após o limite, subarrays do comprimento máximo são excluídos antes da consulta. Também cria lista redundante de prefixos e não documenta a complexidade.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Prefixos com janela de frequências: correto em vazia, zeros, negativos e inteiros grandes, O(n), sem mudar nums. Faltam laço único, comentário, docstring e há lista de prefixos extra.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 5.0,
+ "nota_final_10": 8.5,
+ "reexecucao_testes": {
+  "total": 36,
+  "passados": 36,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.8,
+ "nota_antiga_com_penalidade": 8.8
+}

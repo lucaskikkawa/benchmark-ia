@@ -1,0 +1,6 @@
+A tarefa foi resolvida criando o arquivo [`solucao.py`](file:///tmp/bench-6rrtkzr_/solucao.py).
+
+### Detalhes da implementação
+- **Validação de tipos**: Valida se `nums` é estritamente uma `list` e se `alvo` e todos os elementos de `nums` são `int` (rejeitando `bool` e outros tipos com `TypeError`).
+- **Complexidade**: Execução em tempo linear $\mathcal{O}(n)$ e espaço $\mathcal{O}(u)$ usando contagem incremental de frequências em dicionário, processando $200\,000$ elementos em frações de segundo.
+- **Integridade**: A lista original `nums` não é alterada e os pares não são materializados.

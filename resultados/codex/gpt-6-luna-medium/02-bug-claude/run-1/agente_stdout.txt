@@ -1,0 +1,3 @@
+Atualizei [intervalos.py](/tmp/bench-82wn1ub2/intervalos.py) para validar cada par e seus limites, manter a entrada intacta, ordenar uma cópia e unir intervalos que se sobrepõem ou se tocam. A lista vazia agora retorna `[]`, e `total_coberto` herda essas correções.
+
+Não executei testes.

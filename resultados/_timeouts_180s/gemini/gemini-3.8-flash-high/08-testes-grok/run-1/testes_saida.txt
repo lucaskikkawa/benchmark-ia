@@ -1,0 +1,14 @@
+F..............                                                          [100%]
+=================================== FAILURES ===================================
+______________________ test_suite_passa_no_modulo_correto ______________________
+
+    def test_suite_passa_no_modulo_correto():
+        codigo, saida = _executar(MODULO_CORRETO)
+>       assert codigo == 0, saida
+E       AssertionError: nenhum tests/test_*.py
+E       assert 5 == 0
+
+testes_ocultos/test_mutantes.py:77: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_mutantes.py::test_suite_passa_no_modulo_correto - ...
+1 failed, 14 passed in 0.02s

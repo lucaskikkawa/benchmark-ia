@@ -1,0 +1,1 @@
+O arquivo [solucao.py](file:///tmp/bench-0a_6c7kj/solucao.py) foi criado com a implementação de [`horas_livres`](file:///tmp/bench-0a_6c7kj/solucao.py#L31-L82) seguindo todas as regras de validação, recorte, fusão e formatação especificadas em [enunciado.md](file:///tmp/bench-0a_6c7kj/enunciado.md).

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-medium/10-ambigua-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "medium",
+ "tarefa": "10-ambigua-codex",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 73.734,
+ "testes_passados": 14,
+ "testes_total": 14,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Núcleo correto: filtra pendentes, copia cada ocorrência, ordena estavelmente por prioridade decrescente. Desempate e entradas inválidas batem com SUPOSICOES.md.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Filtra pendentes, copia cada dict e ordena por prioridade decrescente sem alterar a entrada; empates estáveis e inválidos seguem SUPOSICOES.md.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0,
+ "reexecucao_testes": {
+  "total": 14,
+  "passados": 14,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

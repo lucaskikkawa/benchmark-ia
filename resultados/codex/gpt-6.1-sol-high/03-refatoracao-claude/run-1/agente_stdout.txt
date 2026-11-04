@@ -1,0 +1,3 @@
+Refatorei [relatorio.py](/tmp/bench-n68rwur7/relatorio.py) com as três funções públicas exigidas e as constantes de desconto consultadas dinamicamente.
+
+Validação: 14.420 comparações com a versão original passaram, preservando strings, tipos de exceção e entradas sem alterações. Também verifiquei a substituição das funções e constantes no módulo.

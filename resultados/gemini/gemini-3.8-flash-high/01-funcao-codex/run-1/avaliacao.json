@@ -1,13 +1,29 @@
 {
- "juiz_empresa": "claude",
- "juiz_modelo": "claude-haiku-5-5",
- "itens": {
-  "legibilidade": 1,
-  "erros_bordas": 2,
-  "idiomatico": 2,
-  "manutenibilidade": 2,
-  "documentacao_instrucoes": 2
+ "autora": "codex",
+ "resolvedora": "gemini",
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": null,
+   "rubrica_10": null
+  }
  },
- "rubrica_10": 9.0,
- "nota_final_10": 9.7
+ "obs": [
+  "grok tentativa 1 falhou: JSON inválido",
+  "grok tentativa 2 falhou: JSON inválido",
+  "só 1 juiz válido; usada só a nota dele"
+ ],
+ "rubrica_10": 10.0,
+ "nota_final_10": 10.0
 }

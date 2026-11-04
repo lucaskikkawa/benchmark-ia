@@ -1,0 +1,13 @@
+Reescrevi `carrinho.py` na raiz do diretório, seguindo o `enunciado.md`. Não há arquivo de testes no diretório, então validei com um script rápido de sanidade, que passou.
+
+**Correções principais:**
+- **Estado compartilhado:** o padrão `itens={}` mutável foi trocado por `None`, e o dicionário recebido é copiado com `copy.deepcopy`, incluindo os dicionários internos.
+- **Validações:** `adicionar_item`, `remover_item` e `aplicar_cupom` validam nome, preço, quantidade e porcentagem na ordem e com os tipos de exceção definidos (`bool` rejeitado onde o enunciado pede).
+- **`remover_item`:** remove o item por completo quando `quantidade` é `None` ou maior/igual à quantidade atual; caso contrário, subtrai.
+- **Desconto:** agora é `subtotal * (porcentagem / 100)`, arredondado. Antes, a porcentagem era multiplicada direto, sem dividir por 100.
+- **Arredondamento:** subtotal, desconto e total são arredondados para 2 casas; o total não fica abaixo de 0.0.
+- **`listar_itens`:** retorna novos dicionários ordenados com `sorted`, sem locale.
+
+**Escolhas que fiz onde o enunciado não detalha:**
+- O dicionário `itens` passado ao construtor não é validado (só copiado).
+- `calcular_desconto` usa o subtotal já arredondado como base.

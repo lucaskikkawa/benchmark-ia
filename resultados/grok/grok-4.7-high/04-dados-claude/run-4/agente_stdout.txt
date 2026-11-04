@@ -1,0 +1,8 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui.O enunciado pede um `solucao.py` que agrega o CSV de vendas e grava o resumo em JSON. Vou implementar a função e conferir com o exemplo e os casos da especificação.`solucao.py` está no diretório e implementa `resumir_vendas`. A função lê o CSV, agrega as vendas concluídas e grava o mesmo resumo em JSON (UTF-8, `ensure_ascii=False`, `indent=2`).
+
+Para `vendas_exemplo.csv` o resultado é:
+
+- **Norte:** 7 unidades, R$ 8,40, produto Lápis
+- **Sul:** 12 unidades, R$ 55,00, produto Caneta
+- **Total geral:** R$ 63,40
+- **Linhas inválidas:** 2

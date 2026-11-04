@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "high",
+ "tarefa": "03-refatoracao-grok",
+ "tipo": "03-refatoracao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 281.803,
+ "testes_passados": 12,
+ "testes_total": 12,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "A busca e o cálculo estão centralizados no método e a função delega. Porém, faixa_de_peso duplica validação e busca; type(...) is int também não segue o critério de isinstance que exclui bool.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "A busca de faixa se repete em cotar e faixa_de_peso; bordas, expresso e exceções estão corretos; usa type() em vez de isinstance; cotar do módulo não tem docstring.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.25
+}

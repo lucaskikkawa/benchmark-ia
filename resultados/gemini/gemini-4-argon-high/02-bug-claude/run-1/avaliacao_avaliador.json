@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-high/02-bug-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "high",
+ "tarefa": "02-bug-claude",
+ "tipo": "02-bug",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 87.559,
+ "testes_passados": 26,
+ "testes_total": 26,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "A lógica cobre vazio, ordenação, contato e intervalos contidos, mas pares.sort() muta apenas a lista interna e a rubric exige sorted(); a validação de pares malformados não segue necessariamente as exceções da docstring.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Cobre vazio, ordem em cópia, contato com <=, extensão com max e ValueError. If extra para lista vazia, assinatura sem anotações e sem comentário do max.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.0,
+ "nota_final_10": 9.1,
+ "reexecucao_testes": {
+  "total": 26,
+  "passados": 26,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.5,
+ "nota_antiga_com_penalidade": 8.5
+}

@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-pvp_kye7/solucao.py) com a função `consolidar`, usando apenas a biblioteca padrão.
+
+As 41 verificações passaram, cobrindo validações, cálculos de SLA, ordenação, desempates e formato exato do JSON.

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-high/09-api-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "high",
+ "tarefa": "09-api-claude",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 222.593,
+ "testes_passados": 42,
+ "testes_total": 42,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Laço único e organizado; trata validação, classificação, orçamento, Retry-After e encadeamento corretamente. Usa constantes, auxiliares, tipos e docstrings conforme solicitado.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Laço único com espera e classificação em funções; retry, Retry-After, orçamento, causa e validação corretos. Docstrings não descrevem a política nem as exceções dos métodos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85,
+ "reexecucao_testes": {
+  "total": 42,
+  "passados": 42,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

@@ -1,0 +1,12 @@
+Criei `tests/test_carrinho.py` com 41 testes pytest. Todos passam contra `carrinho.py`, que não foi editado, em cerca de 0,05 s.
+
+**Conflito no enunciado:** a frase "Qualquer violação lança `ValueError`, inclusive em carrinho vazio ou quantidade zero" pede erro para carrinho vazio, mas `calcular_total([])` retorna `0` no módulo, que o enunciado diz estar correto. Como a suíte precisa passar nele, não testei o erro para carrinho vazio. Também interpretei "quantidade zero" como linha válida, o que é coerente com as outras regras do enunciado. Se o erro para carrinho vazio for de fato exigido, o módulo precisa mudar, e a suíte deve ganhar esse teste.
+
+**Cobertura:**
+- **Validação:** quantidade, preço, desconto (fora de 0–100, com bordas 0 e 100) e frete negativos levantam `ValueError`. Linhas inválidas depois de uma linha de quantidade zero também são validadas.
+- **Desconto e truncamento:** o desconto é aplicado uma vez sobre o bruto agregado. Há casos em que truncar por linha daria resultado diferente.
+- **Frete:** não recebe desconto, é cobrado para item grátis com quantidade positiva e não é cobrado quando a soma de quantidades é zero.
+- **Precisão:** valores acima de 2**53 e totais com 10**50 são exatos.
+- **Imutabilidade e independência:** a lista não muda, nem em caso de erro. Chamadas sucessivas e depois de um erro dão resultados corretos.
+
+Não rodei mutantes, porque isso exigiria escrever implementações alternativas, o que o enunciado proíbe. O `sys.path` está configurado no próprio arquivo de teste, então a suíte roda tanto a partir da raiz quanto de outro diretório.

@@ -1,0 +1,3 @@
+Refatorei [relatorio.py](/tmp/bench-_gztmq5t/relatorio.py) com as três funções públicas e as constantes exigidas.
+
+Validei 10.005 casos contra a versão original, comparando retornos e tipos de exceção, além de verificar a preservação das entradas e a consulta dinâmica às constantes e funções. Todos passaram.

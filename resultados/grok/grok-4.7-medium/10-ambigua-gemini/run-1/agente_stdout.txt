@@ -1,0 +1,10 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede `classificar_cliente` em `solucao.py` e as decisões em aberto em `SUPOSICOES.md`. Vou implementar o núcleo explícito e documentar as premissas.A função `classificar_cliente` está em `solucao.py` e as decisões em aberto estão em `SUPOSICOES.md`.
+
+O score segue a regra fechada: 10% da soma das compras mais 5 pontos por ano ativo, arredondado com `round(..., 2)` para duas casas. A entrada não é alterada. `id` e `nome` voltam iguais, inclusive com Unicode.
+
+As premissas adotadas:
+
+- Valores negativos em `compras` entram na soma, como estorno.
+- `anos_ativo` negativo também entra na fórmula, sem corte para zero.
+- A categoria sai do score já arredondado: `Crítico` (&lt; 0), `Bronze` (0–50), `Prata` (50–200), `Ouro` (200–1000) e `Platina` (≥ 1000).
+- Campos extras são ignorados. O retorno traz só `id`, `nome`, `score` e `categoria`.

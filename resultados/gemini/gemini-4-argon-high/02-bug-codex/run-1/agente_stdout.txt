@@ -1,0 +1,1 @@
+Corrigi o limite superior do laço em [`somas_janelas`](file:///tmp/bench-_1ca666i/janelas.py#L1-L12) no arquivo [janelas.py](file:///tmp/bench-_1ca666i/janelas.py#L9) de `range(tamanho, len(valores) - 1)` para `range(tamanho, len(valores))`, garantindo que a última janela contígua também seja incluída no resultado em tempo $O(n)$.

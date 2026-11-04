@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-high/08-testes-codex/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "high",
+ "tarefa": "08-testes-codex",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 77.241,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Suíte exemplar e completa, cobrindo todas as bordas, truncamento e imutabilidade com pytest idiomático, testes desacoplados e comentários esclarecedores.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Suíte pytest independente com nomes claros de cálculo, frete, validação e imutabilidade; pytest.raises(ValueError) e parametrização; cobre desconto 0-100, negativos, vazio, qty/preço zero, truncamento agregado e lista intacta após erro.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0,
+ "reexecucao_testes": {
+  "total": 15,
+  "passados": 15,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

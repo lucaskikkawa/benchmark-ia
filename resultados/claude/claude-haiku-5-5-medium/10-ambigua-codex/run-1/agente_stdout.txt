@@ -1,0 +1,18 @@
+Criei `organizador.py` e `SUPOSICOES.md` neste diretório. A função `organizar_tarefas` passou nas verificações rápidas que fiz; não existe suíte de testes no diretório, então não rodei nenhum teste formal.
+
+**O que a função faz**
+- Devolve só as tarefas com `concluida == False`, ordenadas por `prioridade` decrescente.
+- Não altera a lista nem os dicionários recebidos.
+- Cada ocorrência vira um `dict(...)` novo, inclusive quando o mesmo dicionário aparece várias vezes. Campos extras são preservados, e objetos aninhados como `etiquetas` são compartilhados com a entrada, como numa cópia rasa.
+
+**Políticas escolhidas (detalhadas em `SUPOSICOES.md`)**
+- **Desempate:** ordenação estável, então prioridades iguais mantêm a ordem original da entrada.
+- **Entradas inválidas:** são descartadas em silêncio. Uma entrada é válida somente se for `dict` com `titulo` string não vazia (espaços não contam), `prioridade` inteira de 0 a 5 (booleanos são rejeitados) e `concluida` booleano.
+- **Entrada que não é lista:** devolve `[]`.
+
+**Verificação**
+- Duplicatas geram cópias independentes, e `etiquetas` mantém a mesma identidade de objeto.
+- Entradas inválidas e concluídas são descartadas, e entrada vazia ou só com concluídas retorna `[]`.
+- 30.000 itens rodam em cerca de 0,015 s.
+
+Não criei nenhum documento no Claude Docs, porque você não pediu.

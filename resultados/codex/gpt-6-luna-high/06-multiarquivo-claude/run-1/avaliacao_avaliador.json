@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/06-multiarquivo-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "06-multiarquivo-claude",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 23.573,
+ "testes_passados": 40,
+ "testes_total": 40,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Excelente estrutura e tipagem idiomática, mas omite o campo autor em Livro gerando AttributeError e não inclui docstrings nas classes principais.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Falta o campo autor em Livro: __post_init__ acessa atributo inexistente e estoura AttributeError. Empréstimos seguem ordem, multa e estado. Docstrings ausentes nas classes principais.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 9.4,
+ "reexecucao_testes": {
+  "total": 40,
+  "passados": 40,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

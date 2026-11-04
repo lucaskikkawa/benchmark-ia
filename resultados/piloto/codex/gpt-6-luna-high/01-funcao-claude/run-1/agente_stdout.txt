@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-j67adbph/solucao.py) com `parse_duracao`, incluindo validação do formato, ordem e repetição das unidades, e suporte a componentes numéricos de qualquer tamanho.

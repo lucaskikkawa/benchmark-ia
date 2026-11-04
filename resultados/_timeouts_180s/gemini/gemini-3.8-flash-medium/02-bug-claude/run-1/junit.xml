@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="19" skipped="0" tests="26" time="0.510" timestamp="2026-10-29T19:13:14.182492-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_intervalos" name="test_lista_vazia" time="0.000"><failure message="IndexError: list index out of range">def test_lista_vazia():
+&gt;       assert mesclar_intervalos([]) == []
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_intervalos.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+intervalos = []
+
+    def mesclar_intervalos(intervalos):
+        """Une intervalos fechados [inicio, fim] que se sobrepõem ou se tocam.
+    
+        - ``intervalos`` pode ser qualquer iterável (lista, tupla, gerador...) de
+          pares (inicio, fim); cada par pode ser tupla ou lista de 2 elementos.
+        - inicio e fim devem ser ``int`` (bool NÃO é aceito); caso contrário,
+          levanta TypeError.
+        - Cada intervalo deve ter inicio &lt;= fim; caso contrário, levanta ValueError.
+        - Todos os intervalos são validados antes de qualquer resultado ser produzido.
+        - Intervalos que se sobrepõem ou se tocam (fim de um == inicio do outro)
+          viram um só.
+        - A entrada pode estar em qualquer ordem e NÃO deve ser modificada.
+        - Retorna uma nova lista de tuplas, ordenada por inicio, sem sobreposições.
+        - Lista vazia retorna lista vazia.
+        """
+        for inicio, fim in intervalos:
+            if inicio &gt; fim:
+                raise ValueError(f"intervalo inválido: ({inicio}, {fim})")
+    
+        intervalos.sort()
+&gt;       resultado = [list(intervalos[0])]
+                          ^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+intervalos.py:24: IndexError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_casos_basicos" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_entrada_fora_de_ordem" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_intervalos_que_se_tocam" time="0.000"><failure message="assert [(1, 3), (3, 6)] == [(1, 6)]&#10;  &#10;  At index 0 diff: (1, 3) != (1, 6)&#10;  Left contains one more item: (3, 6)&#10;  Use -v to get more diff">def test_intervalos_que_se_tocam():
+&gt;       assert mesclar_intervalos([(1, 3), (3, 6)]) == [(1, 6)]
+E       assert [(1, 3), (3, 6)] == [(1, 6)]
+E         
+E         At index 0 diff: (1, 3) != (1, 6)
+E         Left contains one more item: (3, 6)
+E         Use -v to get more diff
+
+testes_ocultos/test_intervalos.py:38: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_intervalo_contido_nao_encolhe" time="0.000"><failure message="assert [(1, 3), (4, 5)] == [(1, 10)]&#10;  &#10;  At index 0 diff: (1, 3) != (1, 10)&#10;  Left contains one more item: (4, 5)&#10;  Use -v to get more diff">def test_intervalo_contido_nao_encolhe():
+&gt;       assert mesclar_intervalos([(1, 10), (2, 3), (4, 5)]) == [(1, 10)]
+E       assert [(1, 3), (4, 5)] == [(1, 10)]
+E         
+E         At index 0 diff: (1, 3) != (1, 10)
+E         Left contains one more item: (4, 5)
+E         Use -v to get more diff
+
+testes_ocultos/test_intervalos.py:43: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_intervalos_degenerados_iguais_e_negativos" time="0.000"><failure message="assert [(3, 3), (3, 3)] == [(3, 3)]&#10;  &#10;  Left contains one more item: (3, 3)&#10;  Use -v to get more diff">def test_intervalos_degenerados_iguais_e_negativos():
+&gt;       assert mesclar_intervalos([(3, 3), (3, 3)]) == [(3, 3)]
+E       assert [(3, 3), (3, 3)] == [(3, 3)]
+E         
+E         Left contains one more item: (3, 3)
+E         Use -v to get more diff
+
+testes_ocultos/test_intervalos.py:48: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_inteiros_grandes" time="0.000"><failure message="assert [(-1000000000...000000000005)] == [(-1000000000...000000000005)]&#10;  &#10;  At index 0 diff: (-1000000000000000000000000000000, 1000000000000000000000000000000) != (-1000000000000000000000000000000, 1000000000000000000000000000005)&#10;  Left contains one more item: (1000000000000000000000000000000, 1000000000000000000000000000005)&#10;  Use -v to get more diff">def test_inteiros_grandes():
+        g = 10**30
+&gt;       assert mesclar_intervalos([(g, g + 5), (-g, g)]) == [(-g, g + 5)]
+E       assert [(-1000000000...000000000005)] == [(-1000000000...000000000005)]
+E         
+E         At index 0 diff: (-1000000000000000000000000000000, 1000000000000000000000000000000) != (-1000000000000000000000000000000, 1000000000000000000000000000005)
+E         Left contains one more item: (1000000000000000000000000000000, 1000000000000000000000000000005)
+E         Use -v to get more diff
+
+testes_ocultos/test_intervalos.py:55: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_nao_modifica_lista_de_entrada" time="0.000"><failure message="assert [(1, 3), (2, 4), (5, 7)] == [(5, 7), (1, 3), (2, 4)]&#10;  &#10;  At index 0 diff: (1, 3) != (5, 7)&#10;  Use -v to get more diff">def test_nao_modifica_lista_de_entrada():
+        entrada = [(5, 7), (1, 3), (2, 4)]
+        original = copy.deepcopy(entrada)
+        mesclar_intervalos(entrada)
+&gt;       assert entrada == original
+E       assert [(1, 3), (2, 4), (5, 7)] == [(5, 7), (1, 3), (2, 4)]
+E         
+E         At index 0 diff: (1, 3) != (5, 7)
+E         Use -v to get more diff
+
+testes_ocultos/test_intervalos.py:63: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_nao_modifica_pares_em_lista" time="0.000"><failure message="assert [[1, 3], [2, ...5, 7], [6, 9]] == [[5, 7], [1, ...2, 4], [6, 9]]&#10;  &#10;  At index 0 diff: [1, 3] != [5, 7]&#10;  Use -v to get more diff">def test_nao_modifica_pares_em_lista():
+        entrada = [[5, 7], [1, 3], [2, 4], [6, 9]]
+        original = copy.deepcopy(entrada)
+        assert mesclar_intervalos(entrada) == [(1, 4), (5, 9)]
+&gt;       assert entrada == original
+E       assert [[1, 3], [2, ...5, 7], [6, 9]] == [[5, 7], [1, ...2, 4], [6, 9]]
+E         
+E         At index 0 diff: [1, 3] != [5, 7]
+E         Use -v to get more diff
+
+testes_ocultos/test_intervalos.py:72: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_retorna_nova_lista_de_tuplas" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_aceita_tupla_de_intervalos" time="0.000"><failure message="AttributeError: 'tuple' object has no attribute 'sort'">def test_aceita_tupla_de_intervalos():
+&gt;       assert mesclar_intervalos(((5, 7), (1, 3), (3, 4))) == [(1, 4), (5, 7)]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_intervalos.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+intervalos = ((5, 7), (1, 3), (3, 4))
+
+    def mesclar_intervalos(intervalos):
+        """Une intervalos fechados [inicio, fim] que se sobrepõem ou se tocam.
+    
+        - ``intervalos`` pode ser qualquer iterável (lista, tupla, gerador...) de
+          pares (inicio, fim); cada par pode ser tupla ou lista de 2 elementos.
+        - inicio e fim devem ser ``int`` (bool NÃO é aceito); caso contrário,
+          levanta TypeError.
+        - Cada intervalo deve ter inicio &lt;= fim; caso contrário, levanta ValueError.
+        - Todos os intervalos são validados antes de qualquer resultado ser produzido.
+        - Intervalos que se sobrepõem ou se tocam (fim de um == inicio do outro)
+          viram um só.
+        - A entrada pode estar em qualquer ordem e NÃO deve ser modificada.
+        - Retorna uma nova lista de tuplas, ordenada por inicio, sem sobreposições.
+        - Lista vazia retorna lista vazia.
+        """
+        for inicio, fim in intervalos:
+            if inicio &gt; fim:
+                raise ValueError(f"intervalo inválido: ({inicio}, {fim})")
+    
+&gt;       intervalos.sort()
+        ^^^^^^^^^^^^^^^
+E       AttributeError: 'tuple' object has no attribute 'sort'
+
+intervalos.py:23: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_aceita_gerador" time="0.000"><failure message="AttributeError: 'generator' object has no attribute 'sort'">def test_aceita_gerador():
+        gerador = ((i, i + 2) for i in (10, 0, 1, 20))
+&gt;       assert mesclar_intervalos(gerador) == [(0, 3), (10, 12), (20, 22)]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_intervalos.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+intervalos = &lt;generator object test_aceita_gerador.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f2ae5d73920&gt;
+
+    def mesclar_intervalos(intervalos):
+        """Une intervalos fechados [inicio, fim] que se sobrepõem ou se tocam.
+    
+        - ``intervalos`` pode ser qualquer iterável (lista, tupla, gerador...) de
+          pares (inicio, fim); cada par pode ser tupla ou lista de 2 elementos.
+        - inicio e fim devem ser ``int`` (bool NÃO é aceito); caso contrário,
+          levanta TypeError.
+        - Cada intervalo deve ter inicio &lt;= fim; caso contrário, levanta ValueError.
+        - Todos os intervalos são validados antes de qualquer resultado ser produzido.
+        - Intervalos que se sobrepõem ou se tocam (fim de um == inicio do outro)
+          viram um só.
+        - A entrada pode estar em qualquer ordem e NÃO deve ser modificada.
+        - Retorna uma nova lista de tuplas, ordenada por inicio, sem sobreposições.
+        - Lista vazia retorna lista vazia.
+        """
+        for inicio, fim in intervalos:
+            if inicio &gt; fim:
+                raise ValueError(f"intervalo inválido: ({inicio}, {fim})")
+    
+&gt;       intervalos.sort()
+        ^^^^^^^^^^^^^^^
+E       AttributeError: 'generator' object has no attribute 'sort'
+
+intervalos.py:23: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_total_coberto_aceita_gerador" time="0.000"><failure message="AttributeError: 'generator' object has no attribute 'sort'">def test_total_coberto_aceita_gerador():
+&gt;       assert total_coberto((i, i + 1) for i in range(0, 10, 3)) == 4
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_intervalos.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+intervalos.py:40: in total_coberto
+    return sum(fim - inicio for inicio, fim in mesclar_intervalos(intervalos))
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+intervalos = &lt;generator object test_total_coberto_aceita_gerador.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f2ae5d72b50&gt;
+
+    def mesclar_intervalos(intervalos):
+        """Une intervalos fechados [inicio, fim] que se sobrepõem ou se tocam.
+    
+        - ``intervalos`` pode ser qualquer iterável (lista, tupla, gerador...) de
+          pares (inicio, fim); cada par pode ser tupla ou lista de 2 elementos.
+        - inicio e fim devem ser ``int`` (bool NÃO é aceito); caso contrário,
+          levanta TypeError.
+        - Cada intervalo deve ter inicio &lt;= fim; caso contrário, levanta ValueError.
+        - Todos os intervalos são validados antes de qualquer resultado ser produzido.
+        - Intervalos que se sobrepõem ou se tocam (fim de um == inicio do outro)
+          viram um só.
+        - A entrada pode estar em qualquer ordem e NÃO deve ser modificada.
+        - Retorna uma nova lista de tuplas, ordenada por inicio, sem sobreposições.
+        - Lista vazia retorna lista vazia.
+        """
+        for inicio, fim in intervalos:
+            if inicio &gt; fim:
+                raise ValueError(f"intervalo inválido: ({inicio}, {fim})")
+    
+&gt;       intervalos.sort()
+        ^^^^^^^^^^^^^^^
+E       AttributeError: 'generator' object has no attribute 'sort'
+
+intervalos.py:23: AttributeError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_gerador_com_intervalo_invalido" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_intervalo_invalido" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_intervalo_invalido_mesmo_se_contido_em_outro" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_tipos_invalidos_levantam_type_error[float_inicio]" time="0.000"><failure message="Failed: DID NOT RAISE TypeError">intervalos = [(1, 2), (1.0, 3)]
+
+    @pytest.mark.parametrize(
+        "intervalos",
+        [
+            [(1, 2), (1.0, 3)],
+            [(1, 2.5)],
+            [("1", "3")],
+            [(None, 3)],
+            [(True, 3)],
+            [(0, False)],
+        ],
+        ids=["float_inicio", "float_fim", "str", "none", "bool_inicio", "bool_fim"],
+    )
+    def test_tipos_invalidos_levantam_type_error(intervalos):
+&gt;       with pytest.raises(TypeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE TypeError
+
+testes_ocultos/test_intervalos.py:128: Failed</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_tipos_invalidos_levantam_type_error[float_fim]" time="0.000"><failure message="Failed: DID NOT RAISE TypeError">intervalos = [(1, 2.5)]
+
+    @pytest.mark.parametrize(
+        "intervalos",
+        [
+            [(1, 2), (1.0, 3)],
+            [(1, 2.5)],
+            [("1", "3")],
+            [(None, 3)],
+            [(True, 3)],
+            [(0, False)],
+        ],
+        ids=["float_inicio", "float_fim", "str", "none", "bool_inicio", "bool_fim"],
+    )
+    def test_tipos_invalidos_levantam_type_error(intervalos):
+&gt;       with pytest.raises(TypeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE TypeError
+
+testes_ocultos/test_intervalos.py:128: Failed</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_tipos_invalidos_levantam_type_error[str]" time="0.000"><failure message="Failed: DID NOT RAISE TypeError">intervalos = [('1', '3')]
+
+    @pytest.mark.parametrize(
+        "intervalos",
+        [
+            [(1, 2), (1.0, 3)],
+            [(1, 2.5)],
+            [("1", "3")],
+            [(None, 3)],
+            [(True, 3)],
+            [(0, False)],
+        ],
+        ids=["float_inicio", "float_fim", "str", "none", "bool_inicio", "bool_fim"],
+    )
+    def test_tipos_invalidos_levantam_type_error(intervalos):
+&gt;       with pytest.raises(TypeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE TypeError
+
+testes_ocultos/test_intervalos.py:128: Failed</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_tipos_invalidos_levantam_type_error[none]" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_tipos_invalidos_levantam_type_error[bool_inicio]" time="0.000"><failure message="Failed: DID NOT RAISE TypeError">intervalos = [(True, 3)]
+
+    @pytest.mark.parametrize(
+        "intervalos",
+        [
+            [(1, 2), (1.0, 3)],
+            [(1, 2.5)],
+            [("1", "3")],
+            [(None, 3)],
+            [(True, 3)],
+            [(0, False)],
+        ],
+        ids=["float_inicio", "float_fim", "str", "none", "bool_inicio", "bool_fim"],
+    )
+    def test_tipos_invalidos_levantam_type_error(intervalos):
+&gt;       with pytest.raises(TypeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE TypeError
+
+testes_ocultos/test_intervalos.py:128: Failed</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_tipos_invalidos_levantam_type_error[bool_fim]" time="0.000"><failure message="Failed: DID NOT RAISE TypeError">intervalos = [(0, False)]
+
+    @pytest.mark.parametrize(
+        "intervalos",
+        [
+            [(1, 2), (1.0, 3)],
+            [(1, 2.5)],
+            [("1", "3")],
+            [(None, 3)],
+            [(True, 3)],
+            [(0, False)],
+        ],
+        ids=["float_inicio", "float_fim", "str", "none", "bool_inicio", "bool_fim"],
+    )
+    def test_tipos_invalidos_levantam_type_error(intervalos):
+&gt;       with pytest.raises(TypeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE TypeError
+
+testes_ocultos/test_intervalos.py:128: Failed</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_total_coberto_tipo_invalido" time="0.000"><failure message="Failed: DID NOT RAISE TypeError">def test_total_coberto_tipo_invalido():
+&gt;       with pytest.raises(TypeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE TypeError
+
+testes_ocultos/test_intervalos.py:133: Failed</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_total_coberto_com_sobreposicao_e_contido" time="0.000"><failure message="assert 6 == 11&#10; +  where 6 = total_coberto([(0, 10), (4, 5), (12, 13)])">def test_total_coberto_com_sobreposicao_e_contido():
+        assert total_coberto([(1, 3), (2, 6), (8, 9)]) == 6
+&gt;       assert total_coberto([(4, 5), (0, 10), (12, 13)]) == 11
+E       assert 6 == 11
+E        +  where 6 = total_coberto([(0, 10), (4, 5), (12, 13)])
+
+testes_ocultos/test_intervalos.py:139: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_aleatorio_contra_oraculo" time="0.000"><failure message="AssertionError: [(-18, -18), (-15, -12), (-15, -9), (-14, -6), (-13, -13), (-6, -4), ...]&#10;assert [(-18, -18), ...18), (18, 18)] == [(-18, -18), ... 2), (15, 18)]&#10;  &#10;  At index 1 diff: (-15, -13) != (-15, 2)&#10;  Left contains 2 more items, first extra item: (15, 18)&#10;  Use -v to get more diff">def test_aleatorio_contra_oraculo():
+        rng = random.Random(42)
+        for _ in range(500):
+            n = rng.randint(0, 12)
+            intervalos = []
+            for _ in range(n):
+                a = rng.randint(-20, 20)
+                intervalos.append((a, a + rng.randint(0, 8)))
+            esperado = forca_bruta(intervalos)
+&gt;           assert mesclar_intervalos(intervalos) == esperado, intervalos
+E           AssertionError: [(-18, -18), (-15, -12), (-15, -9), (-14, -6), (-13, -13), (-6, -4), ...]
+E           assert [(-18, -18), ...18), (18, 18)] == [(-18, -18), ... 2), (15, 18)]
+E             
+E             At index 1 diff: (-15, -13) != (-15, 2)
+E             Left contains 2 more items, first extra item: (15, 18)
+E             Use -v to get more diff
+
+testes_ocultos/test_intervalos.py:152: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_intervalos" name="test_entrada_grande" time="0.419"><failure message="Failed: a entrada foi modificada">def test_entrada_grande():
+        rng = random.Random(7)
+        intervalos = []
+        for _ in range(200_000):
+            a = rng.randint(-10**9, 10**9)
+            intervalos.append((a, a + rng.randint(0, 5_000)))
+        copia = list(intervalos)
+        obtido = mesclar_intervalos(intervalos)
+        esperado = forca_bruta(copia)
+        # Fora do assert: o diff do pytest em ~1e5 tuplas trava a suíte por minutos.
+        if intervalos != copia:
+&gt;           pytest.fail("a entrada foi modificada")
+E           Failed: a entrada foi modificada
+
+testes_ocultos/test_intervalos.py:167: Failed</failure></testcase></testsuite></testsuites>

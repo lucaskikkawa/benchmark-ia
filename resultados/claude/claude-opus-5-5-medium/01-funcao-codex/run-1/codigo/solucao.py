@@ -1,12 +1,27 @@
-def unir_intervalos(intervalos) -> list[tuple[int, int]]:
+def unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]:
+    """Une intervalos fechados de inteiros, opcionalmente recortados por `limites`."""
+    if limites is not None:
+        minimo, maximo = limites
+        if minimo > maximo:
+            raise ValueError("limites invertidos")
+
     pares = []
     for inicio, fim in intervalos:
         if inicio > fim:
-            raise ValueError(f"intervalo inválido: ({inicio!r}, {fim!r})")
+            raise ValueError(f"intervalo invalido: ({inicio!r}, {fim!r})")
         pares.append((inicio, fim))
-    pares.sort()
 
-    resultado: list[tuple[int, int]] = []
+    if limites is not None:
+        recortados = []
+        for inicio, fim in pares:
+            inicio = max(inicio, minimo)
+            fim = min(fim, maximo)
+            if inicio <= fim:
+                recortados.append((inicio, fim))
+        pares = recortados
+
+    pares.sort()
+    resultado = []
     for inicio, fim in pares:
         if resultado and inicio <= resultado[-1][1]:
             if fim > resultado[-1][1]:

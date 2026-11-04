@@ -1,0 +1,109 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-ii22qdns
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189bc-bec3-7ef3-a8b0-09d6e7c09073
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:16:52.290101Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para entender o que precisa ser implementado. Depois faço a alteração aqui e verifico o resultado conforme a tarefa pedir.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' | head -80" in /tmp/bench-ii22qdns
+ succeeded in 0ms:
+/tmp/bench-ii22qdns
+enunciado.md
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-ii22qdns
+ succeeded in 0ms:
+# 07 - Maior Subarray com Soma Alvo (Algoritmo de Alta Performance)
+
+Implemente a função `maior_subarray_soma` no arquivo `otimizador.py` na raiz do seu diretório de trabalho.
+
+## Assinatura
+
+```python
+def maior_subarray_soma(numeros: list[int], alvo: int) -> int:
+    ...
+```
+
+## Especificação
+
+A função recebe:
+- `numeros`: lista de inteiros (podendo conter números positivos, negativos e zeros).
+- `alvo`: inteiro representando a soma desejada.
+
+Ela deve retornar o **comprimento máximo** (quantidade de elementos) de um subarray contíguo cuja soma seja exatamente igual a `alvo`.
+
+### Regras:
+1. Se nenhum subarray contíguo somar `alvo`, ou se a lista for vazia, retorne `0`.
+2. Um subarray é uma sequência contígua de elementos da lista (isto é, `numeros[i:j]`).
+3. Em caso de múltiplos subarrays que somem `alvo`, deve ser retornado o comprimento do maior deles.
+4. **Validação de tipos**:
+   - Se `numeros` não for uma lista (`list`), levanta `TypeError`.
+   - Se qualquer elemento de `numeros` não for estritamente um inteiro primitivo (`type(x) is int`, rejeitando `bool`), levanta `TypeError`.
+   - Se `alvo` não for estritamente um inteiro primitivo (`type(alvo) is int`, rejeitando `bool`), levanta `TypeError`.
+
+### Requisito de Desempenho:
+- O benchmark executa testes com listas contendo **centenas de milhares de elementos** ($N \ge 350.000$).
+- Cada chamada com 350.000 elementos tem limite de **5 segundos** para o cálculo, excluindo geração dos dados e inicialização do processo. Há margem para variações de máquina; soluções quadráticas $O(N^2)$ não atendem a esse limite. Execuções que não retornam são interrompidas após 15 segundos, incluindo a inicialização do processo.
+- Sua solução deve operar em complexidade linear $O(N)$ de tempo e espaço.
+
+### Exemplos:
+- `maior_subarray_soma([1, -1, 5, -2, 3], 3)` -> `4` (o subarray `[1, -1, 5, -2]` soma 3 e tem tamanho 4)
+- `maior_subarray_soma([-2, -1, 2, 1], 1)` -> `2` (o subarray `[-1, 2]` tem tamanho 2)
+- `maior_subarray_soma([1, 2, 3], 10)` -> `0` (nenhum subarray soma 10)
+- `maior_subarray_soma([], 0)` -> `0`
+
+exec
+/bin/bash -lc "cat > otimizador.py <<'PY'
+def maior_subarray_soma(numeros: list[int], alvo: int) -> int:
+    \"\"\"Retorna o maior comprimento de subarray contíguo com soma igual a alvo.
+
+    Usa somas prefixadas e guarda a primeira posição de cada soma, permitindo
+    encontrar o maior intervalo em uma única passagem pela lista.
+    \"\"\"
+    if not isinstance(numeros, list):
+        raise TypeError(\"numeros deve ser uma lista\")
+    if type(alvo) is not int:
+        raise TypeError(\"alvo deve ser um inteiro primitivo\")
+    for numero in numeros:
+        if type(numero) is not int:
+            raise TypeError(\"todos os elementos de numeros devem ser inteiros primitivos\")
+
+    primeira_posicao = {0: -1}
+    soma_prefixada = 0
+    maior_comprimento = 0
+
+    for indice, numero in enumerate(numeros):
+        soma_prefixada += numero
+        posicao_inicial = primeira_posicao.get(soma_prefixada - alvo)
+        if posicao_inicial is not None:
+            comprimento = indice - posicao_inicial
+            if comprimento > maior_comprimento:
+                maior_comprimento = comprimento
+
+        if soma_prefixada not in primeira_posicao:
+            primeira_posicao[soma_prefixada] = indice
+
+    return maior_comprimento
+PY
+ls -l" in /tmp/bench-ii22qdns
+ succeeded in 0ms:
+total 8
+-rw-r--r-- 1 box box 2132 Oct 29 19:07 enunciado.md
+-rw-r--r-- 1 box box 1191 Oct 29 19:16 otimizador.py
+
+codex
+Implementei `maior_subarray_soma` em [otimizador.py](/tmp/bench-ii22qdns/otimizador.py). A solução valida os tipos e usa somas prefixadas para encontrar o maior subarray em tempo e espaço O(N). Não executei testes.
+tokens used
+7,292

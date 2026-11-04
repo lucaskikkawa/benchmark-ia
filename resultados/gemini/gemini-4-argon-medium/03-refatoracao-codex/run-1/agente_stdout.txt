@@ -1,0 +1,4 @@
+A refatoração de [pedidos.py](file:///tmp/bench-ihipmepr/pedidos.py) foi concluída conforme especificado em [enunciado.md](file:///tmp/bench-ihipmepr/enunciado.md):
+
+- Extraída a função pública [`subtotal`](file:///tmp/bench-ihipmepr/pedidos.py#L4-L5) com cálculo inteiro exato `quantidade * preco_centavos * (100 - desconto_percentual) // 100`.
+- Atualizada [`resumo_pedidos`](file:///tmp/bench-ihipmepr/pedidos.py#L8-L29) para delegar o cálculo de cada item a [`subtotal`](file:///tmp/bench-ihipmepr/pedidos.py#L4-L5) em passagem única, utilizando nomes de variáveis descritivos e preservando todas as categorias.

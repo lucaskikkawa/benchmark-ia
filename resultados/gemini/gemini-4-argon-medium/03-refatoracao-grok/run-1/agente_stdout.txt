@@ -1,0 +1,5 @@
+O arquivo [frete.py](file:///tmp/bench-w5pe9b2a/frete.py) foi refatorado conforme especificado em [enunciado.md](file:///tmp/bench-w5pe9b2a/enunciado.md):
+
+- Adicionada a classe [`TabelaFrete`](file:///tmp/bench-w5pe9b2a/frete.py#L13-L38) com o atributo de classe `FAIXAS` e o método [`TabelaFrete.cotar`](file:///tmp/bench-w5pe9b2a/frete.py#L21-L38).
+- Adicionada a função [`faixa_de_peso`](file:///tmp/bench-w5pe9b2a/frete.py#L41-L44) que valida tipo/intervalo do peso e consulta `TabelaFrete.FAIXAS` dinamicamente a cada chamada.
+- Mantida a função [`cotar`](file:///tmp/bench-w5pe9b2a/frete.py#L47-L48) delegando para `TabelaFrete().cotar(...)`, preservando o comportamento para todas as entradas válidas e inválidas.

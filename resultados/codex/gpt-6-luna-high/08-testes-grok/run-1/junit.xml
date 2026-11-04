@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="15" time="3.223" timestamp="2026-10-29T19:23:48.763592-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_mutantes" name="test_suite_passa_no_modulo_correto" time="0.221"><failure message="AssertionError: &#10;  ==================================== ERRORS ====================================&#10;  ___________________ ERROR collecting tests/test_descontos.py ___________________&#10;  ImportError while importing test module '/tmp/tmp9x38mhl6/tests/test_descontos.py'.&#10;  Hint: make sure your test modules/packages have valid Python names.&#10;  Traceback:&#10;  /home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module&#10;[+11 more lines; full report in element text]">def test_suite_passa_no_modulo_correto():
+        codigo, saida = _executar(MODULO_CORRETO)
+&gt;       assert codigo == 0, saida
+E       AssertionError: 
+E         ==================================== ERRORS ====================================
+E         ___________________ ERROR collecting tests/test_descontos.py ___________________
+E         ImportError while importing test module '/tmp/tmp9x38mhl6/tests/test_descontos.py'.
+E         Hint: make sure your test modules/packages have valid Python names.
+E         Traceback:
+E         /home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+E             return _bootstrap._gcd_import(name[level:], package, level)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         tests/test_descontos.py:3: in &lt;module&gt;
+E             from descuentos import aplicar_desconto
+E         E   ModuleNotFoundError: No module named 'descuentos'
+E         =========================== short test summary info ============================
+E         ERROR tests/test_descontos.py
+E         !!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+E         1 error in 0.07s
+E         
+E       assert 2 == 0
+
+testes_ocultos/test_mutantes.py:77: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m01_off10.py]" time="0.217" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m02_off5.py]" time="0.213" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m03_fixo_sem_piso.py]" time="0.202" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m04_bemvindo_fim.py]" time="0.222" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m05_bemvindo_inicio.py]" time="0.216" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m06_natal_dia24.py]" time="0.210" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m07_cupom_desconhecido.py]" time="0.202" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m08_cupom_vazio.py]" time="0.205" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m09_cupom_fora_da_janela.py]" time="0.206" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m10_preco_negativo.py]" time="0.216" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m11_natal_por_subtracao.py]" time="0.221" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m12_espacos_viram_vazio.py]" time="0.212" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m13_1900_bissexto.py]" time="0.214" /><testcase classname="testes_ocultos.test_mutantes" name="test_mutante_morto[m14_rejeita_ano_1.py]" time="0.213" /></testsuite></testsuites>

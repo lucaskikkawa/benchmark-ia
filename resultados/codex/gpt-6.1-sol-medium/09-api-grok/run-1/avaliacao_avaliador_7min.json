@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6.1-sol",
+ "esforco": "medium",
+ "tarefa": "09-api-grok",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 74.545,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Timeout isolado em função própria, mas laço de retry, backoff 2**(i-1) e tupla de exceções ficam inline em baixar_pedidos. Erros e prazos corretos. Docstring não diz o que é retentado.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Tratamento correto de timeout e erros com thread daemon, mas o laco de retry de cada id e a formula de backoff poderiam estar desacoplados em funcoes dedicadas.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.25
+}

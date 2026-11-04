@@ -1,0 +1,6 @@
+A função [`fechar_boletim`](file:///tmp/bench-6b8l84ld/boletim.py#L7-L48) em [boletim.py](file:///tmp/bench-6b8l84ld/boletim.py) foi atualizada para atender ao contrato especificado em [enunciado.md](file:///tmp/bench-6b8l84ld/enunciado.md):
+
+- **Validação e imutabilidade**: valida o tipo e tamanho da lista `provas` (1 a 4 elementos), rejeita `bool` ou outros tipos inválidos com `TypeError`, verifica notas finitas no intervalo fechado `[0, 10]` com `ValueError`, ignora `None` sem tratá-lo como zero e preserva a lista recebida sem mutação.
+- **Descarte**: remove a primeira ocorrência do menor valor apenas quando há exatamente 4 notas válidas, retornando seu valor como `float` em `descartada` (ou `None` caso contrário).
+- **Cálculo e arredondamento**: converte cada nota válida restante via `Decimal(str(nota))`, soma e divide pela quantidade de notas antes de arredondar uma única vez com `ROUND_HALF_UP` para duas casas decimais.
+- **Conceito e aprovação**: aplica os limites inclusivos (`>= 9` → `"A"`, `>= 7` → `"B"`, `>= 5` → `"C"`, `< 5` → `"D"`) sobre a média arredondada e define `aprovado` como `conceito != "D"`.

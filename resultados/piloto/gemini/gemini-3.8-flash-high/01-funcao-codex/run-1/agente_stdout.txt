@@ -1,0 +1,1 @@
+A tarefa foi concluída. O arquivo [`solucao.py`](file:///tmp/bench-n5x2_496/solucao.py) foi criado implementando a função [`unir_intervalos`](file:///tmp/bench-n5x2_496/solucao.py#L1-L31) conforme os requisitos especificados em [`enunciado.md`](file:///tmp/bench-n5x2_496/enunciado.md).

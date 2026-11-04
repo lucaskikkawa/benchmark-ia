@@ -1,0 +1,71 @@
+{
+ "pasta": "resultados/grok/grok-4.7-high/08-testes-claude/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "high",
+ "tarefa": "08-testes-claude",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "timeout",
+ "duracao_agente_s": 900.097,
+ "testes_passados": 1,
+ "testes_total": 17,
+ "pct_testes": 5.88,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 0.0,
+   "justificativa": "A solução mostra apenas senhas.py; não há suíte de testes em tests/test_senhas.py para avaliar.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 0.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 0.0,
+   "justificativa": "Nenhum teste foi entregue; foi enviado apenas o arquivo senhas.py, desatendendo a todos os critérios da avaliação.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 0.0,
+ "nota_final_10": 0.0,
+ "reexecucao_testes": {
+  "total": 17,
+  "passados": 1,
+  "pct": 5.88
+ },
+ "incoerencias": [
+  "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/08-testes-claude/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/08-testes-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/testes_saida.txt']",
+  "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+  "sem avaliacao.json antiga",
+  "timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+ ],
+ "nota_antiga_avaliacao_json": null,
+ "nota_antiga_com_penalidade": 0.0,
+ "regra_excepcional_grok_4_7_high": {
+  "nota_base": 0.41,
+  "fator": 0.0,
+  "regra": "sem entrega (codigo/ igual ao inicial): zero"
+ }
+}

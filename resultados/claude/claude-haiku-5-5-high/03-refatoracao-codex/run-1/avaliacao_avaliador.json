@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-haiku-5-5-high/03-refatoracao-codex/run-1",
+ "empresa": "claude",
+ "modelo": "claude-haiku-5-5",
+ "esforco": "high",
+ "tarefa": "03-refatoracao-codex",
+ "tipo": "03-refatoracao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 111.693,
+ "testes_passados": 19,
+ "testes_total": 19,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Excelente implementação estrutural e tratamento de bordas com delegação correta, mas faltou documentar as funções e a regra de truncamento.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes descritivos, fórmula inteira só em subtotal, uma chamada por pedido e bordas (vazio, zero, truncamento) preservadas. Falta documentar truncamento por linha e o resumo.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 19,
+  "passados": 19,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

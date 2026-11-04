@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-40pl31oh/solucao.py) e [SUPOSICOES.md](/tmp/bench-40pl31oh/SUPOSICOES.md). A função valida o tipo, calcula o tamanho com `len()` e detecta `URGENTE` pela substring literal. As regras de categoria e as decisões assumidas estão registradas no documento.

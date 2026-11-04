@@ -1,2 +1,27 @@
-............                                                             [100%]
-12 passed in 0.01s
+
+==================================== ERRORS ====================================
+____________ ERROR collecting testes_ocultos/test_endurecimento.py _____________
+ImportError while importing test module '/tmp/bench-0dybamsa/testes_ocultos/test_endurecimento.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_endurecimento.py:5: in <module>
+    from solucao import unir_intervalos
+E   ModuleNotFoundError: No module named 'solucao'
+______________ ERROR collecting testes_ocultos/test_intervalos.py ______________
+ImportError while importing test module '/tmp/bench-0dybamsa/testes_ocultos/test_intervalos.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_intervalos.py:2: in <module>
+    from solucao import unir_intervalos
+E   ModuleNotFoundError: No module named 'solucao'
+=========================== short test summary info ============================
+ERROR testes_ocultos/test_endurecimento.py
+ERROR testes_ocultos/test_intervalos.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!
+2 errors in 0.07s

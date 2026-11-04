@@ -1,1 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="12" time="0.017" timestamp="2026-10-29T16:09:07.565264-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_intervalos" name="test_vazio" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_ponto" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_exemplo" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_adjacentes_sem_extremidade_comum" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_contidos_e_duplicados" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_negativos_e_pontos" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_cadeia_e_mesmo_inicio" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_gerador" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_nao_altera_listas" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_invertido[dados0]" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_invertido[dados1]" time="0.000" /><testcase classname="testes_ocultos.test_intervalos" name="test_invertido[dados2]" time="0.000" /></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="0.073" timestamp="2026-10-30T01:11:57.224693-03:00" hostname="grok-bot-vm-197759088"><testcase classname="" name="testes_ocultos.test_endurecimento" time="0.000"><error message="collection failure">ImportError while importing test module '/tmp/bench-0dybamsa/testes_ocultos/test_endurecimento.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_endurecimento.py:5: in &lt;module&gt;
+    from solucao import unir_intervalos
+E   ModuleNotFoundError: No module named 'solucao'</error></testcase><testcase classname="" name="testes_ocultos.test_intervalos" time="0.000"><error message="collection failure">ImportError while importing test module '/tmp/bench-0dybamsa/testes_ocultos/test_intervalos.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testes_ocultos/test_intervalos.py:2: in &lt;module&gt;
+    from solucao import unir_intervalos
+E   ModuleNotFoundError: No module named 'solucao'</error></testcase></testsuite></testsuites>

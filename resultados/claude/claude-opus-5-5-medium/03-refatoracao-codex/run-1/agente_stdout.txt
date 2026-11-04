@@ -1,0 +1,14 @@
+I refatorei o `pedidos.py` e o comportamento de `resumo_pedidos` continua o mesmo.
+
+- **Nova função `subtotal(quantidade, preco_centavos, desconto_percentual=0)`:** faz o cálculo com inteiros e trunca por linha (`// 100`), sem usar float.
+- **`resumo_pedidos`:** passa os pedidos uma única vez, na ordem, e chama `subtotal` uma vez por pedido, inclusive quando a quantidade é zero. A busca de `subtotal` acontece no momento da chamada, então substituir a função nos testes funciona. O valor que ela devolve vai tanto para `total_centavos` quanto para `por_categoria`.
+- **Nomes:** troquei `a`, `b`, `c`, `x` e `y` por `total_itens`, `total_centavos`, `por_categoria`, `pedido` e `valor_linha`.
+
+Testei rapidamente e tudo saiu como esperado:
+- Um iterador de passagem única funcionou.
+- A categoria `'a '` ficou separada de `'a'` (nenhum espaço removido) e manteve o total zero.
+- Valores bem acima de 64 bits deram o resultado exato.
+- Com `subtotal` substituído, as chamadas vieram na ordem dos pedidos e os dois totais usaram o valor devolvido pelo substituto.
+- Entrada vazia devolveu `{'itens': 0, 'total_centavos': 0, 'por_categoria': {}}`.
+
+Uma escolha minha: `resumo_pedidos` passa sempre os três argumentos por posição, com desconto 0 quando o pedido não tem `desconto_percentual`. Assim, um substituto com nomes de parâmetros diferentes também funciona. Já um substituto que aceite só dois argumentos daria erro.

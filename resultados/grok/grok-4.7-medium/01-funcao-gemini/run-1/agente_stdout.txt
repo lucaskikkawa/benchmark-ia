@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui.O enunciado pede `resumir_intervalos` em `solucao.py`: deduplicar, ordenar e agrupar consecutivos, com validação estrita de tipos. Vou implementar isso.A função `resumir_intervalos` está em `solucao.py`.
+
+Ela rejeita o que não for `list` e qualquer elemento cujo tipo não seja exatamente `int` (`bool` e subclasses incluídos), sem alterar a lista original. Duplicatas são removidas, os valores são ordenados e sequências de dois ou mais consecutivos viram `inicio-fim`. O restante permanece isolado, tudo unido por `", "`. Uma lista vazia devolve `""`.
+
+Exemplos conferidos: `[1, 2, 3, 5, 7, 8, 9]` → `"1-3, 5, 7-9"` e `[-3, -2, -1, 1, 2]` → `"-3--1, 1-2"`.

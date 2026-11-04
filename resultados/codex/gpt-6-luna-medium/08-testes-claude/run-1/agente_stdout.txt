@@ -1,0 +1,1 @@
+Criei [tests/test_senhas.py](/tmp/bench-sjm3ovlw/tests/test_senhas.py) com casos para a constante, validação, Unicode, espaços, limites de pontuação, trincas sobrepostas e classificação. Não alterei `senhas.py` e não executei a suíte.

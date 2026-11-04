@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-x4zon5uf/solucao.py) com a função `resumir_vendas`.
+
+Validado com o exemplo e casos de BOM, campos multilinha, linhas inválidas, desempate e preservação da saída em caso de erro.

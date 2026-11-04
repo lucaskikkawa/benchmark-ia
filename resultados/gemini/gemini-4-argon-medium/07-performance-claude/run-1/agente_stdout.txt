@@ -1,0 +1,1 @@
+A função [`contar_subarrays_soma`](file:///tmp/bench-iy6jvgbk/solucao.py#L5-L42) foi implementada em [solucao.py](file:///tmp/bench-iy6jvgbk/solucao.py) utilizando somas de prefixo (`itertools.accumulate`) combinadas com uma janela deslizante de frequências em tempo $O(n)$ e espaço $O(n)$.

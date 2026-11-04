@@ -1,5 +1,9 @@
-Criei `solucao.py` neste diretório com `unir_intervalos`, e os testes que rodei passaram.
+Criei `solucao.py` no diretório com `unir_intervalos(intervalos, *, limites=None)`, seguindo o enunciado.
 
-A implementação lê o iterável uma única vez, valida cada par (lança `ValueError` se início > fim), ordena uma cópia e funde os intervalos quando `inicio <= fim` do último intervalo acumulado. Assim intervalos que se tocam em uma extremidade se fundem, e `(1, 2)` e `(3, 4)` continuam separados. A entrada original não é alterada.
+- **Validação:** todos os pares são checados antes de qualquer recorte, então um par invertido lança `ValueError` mesmo se ficar fora dos limites. Limites invertidos também lançam `ValueError`, inclusive com entrada vazia.
+- **Entrada:** a entrada é convertida em lista uma única vez, o que aceita geradores e evita modificar a lista recebida. Os limites são lidos sem alteração.
+- **Recorte:** cada intervalo vira `(max(inicio, minimo), min(fim, maximo))`, descartando os vazios. As extremidades são mantidas.
+- **União:** ordenação seguida de varredura. Intervalos se fundem quando `inicio <= fim_atual`, então `(1, 2)` e `(3, 4)` ficam separados.
+- **Complexidade e tipos:** O(n log n) de tempo e O(n) de memória, sem conversão para float.
 
-Verifiquei com `python3 -I`: o exemplo do enunciado (`[(1, 8), (10, 10)]`), entrada vazia, separação por uma unidade, toque em extremidade, duplicatas, intervalos negativos, gerador consumido uma vez, não-modificação da lista de entrada e o `ValueError`. Não criei um arquivo de testes separado, já que o enunciado pede só a solução.
+Testei com 9 casos cobrindo o exemplo do enunciado, entrada vazia, separação por unidade, duplicatas, contenção, gerador, não modificação das entradas, recortes nas bordas, inteiros grandes e 100.000 intervalos (o último rodou abaixo de 2 s). Todos passaram. Como o pytest não está instalado, usei asserts simples. Os arquivos de teste temporários e o `__pycache__` foram removidos, então o diretório contém só `enunciado.md`, `solucao.py` e o `.gitkeep` original.

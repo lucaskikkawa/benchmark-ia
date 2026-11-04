@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-a0cz3aby/solucao.py) com a função `resumir_vendas`. Ela lê e valida o CSV, agrega as vendas concluídas, retorna o resumo e grava o JSON em UTF-8 com os diretórios pais criados quando necessário.

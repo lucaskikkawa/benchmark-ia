@@ -1,0 +1,494 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-ampgt2e4
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189b5-94ee-7c52-b42f-b032c5700372
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:09:02.666983Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório para identificar o que precisa ser implementado; vou manter todas as alterações dentro de `/tmp/bench-ampgt2e4`.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' && cat enunciado.md" in /tmp/bench-ampgt2e4
+ succeeded in 0ms:
+/tmp/bench-ampgt2e4
+enunciado.md
+# Tarefa: consolidar chamados e SLA
+
+Crie `solucao.py` no diretório de trabalho com a função abaixo. Só a biblioteca padrão. Os arquivos de entrada são passados por caminho; não deixe amostra obrigatória no repositório.
+
+```python
+def consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict:
+    """Lê os chamados e o SLA, grava o resumo em JSON e devolve o mesmo dict."""
+```
+
+## `chamados` CSV
+
+Codificação UTF-8. Cabeçalho **exato**, nesta ordem:
+
+```text
+id,equipe,aberto_em,fechado_em,prioridade
+```
+
+- Codificação UTF-8 **sem BOM**. Um `U+FEFF` no início torna o cabeçalho diferente e é `ValueError` (não use `utf-8-sig`).
+- Aceite fim de linha `\n` e `\r\n`. Campos com vírgula ou aspas seguem o `csv` padrão (`"São, Paulo"` é um campo).
+- Linhas em branco, ou em que **todos** os campos ficam vazios depois do `strip` (por exemplo `,,,,`), são ignoradas.
+- Os cinco campos são lidos com `csv` e depois cada um sofre `strip`. O cabeçalho é comparado **antes** do strip e tem de ser exato.
+- `id` e `equipe` não podem ficar vazios depois do strip. Espaço no meio permanece: `"a b"` é um id válido.
+- `id` é único **depois** do strip (`"a"` e `" a "` são duplicata → `ValueError`).
+- Equipes também se agrupam pelo nome já com strip: `" n1 "` e `"n1"` são a mesma equipe.
+- `aberto_em` e `fechado_em` usam o formato `YYYY-MM-DDTHH:MM` (16 caracteres). Data inexistente ou formato diferente → `ValueError`. A duração pode cruzar dias, meses e anos.
+- `fechado_em` anterior a `aberto_em` → `ValueError`. Iguais são válidos (duração 0).
+- A duração em minutos é um inteiro: diferença exata entre os dois instantes, sem segundos.
+- `prioridade` é exatamente `baixa`, `media` ou `alta` **depois** do strip. `" alta "` é válida. `"Alta"` não é.
+- Cabeçalho diferente, número de colunas diferente, arquivo vazio ou sem cabeçalho → `ValueError`. JSON de SLA inválido ou vazio também é `ValueError`.
+- Arquivo ausente → `FileNotFoundError` (o de `open`).
+
+## `sla` JSON
+
+```json
+{"limites_minutos": {"baixa": 480, "media": 240, "alta": 60}}
+```
+
+- Objeto com exatamente a chave `limites_minutos`.
+- Esse objeto tem exatamente as três prioridades.
+- Cada limite é `int` ≥ 1. `bool` e `float` não servem.
+- Qualquer desvio → `ValueError`.
+
+Um chamado **estoura** quando `duracao_minutos > limite` da prioridade. Igual ao limite não estoura.
+
+## Saída
+
+Grave `caminho_saida` em UTF-8, `json` com `ensure_ascii=False`, `indent=2` e uma quebra de linha no final. Devolva o mesmo conteúdo do arquivo.
+
+```python
+{
+    "equipes": [
+        {
+            "equipe": "n1",
+            "chamados": 2,
+            "estourados": 1,
+            "tempo_medio_minutos": 45,
+            "pior_id": "a1",
+        }
+    ]
+}
+```
+
+- Entre no resumo apenas equipes que tiveram pelo menos um chamado válido.
+- `equipes` ordenada pelo nome com `sorted` padrão (code point, sem locale): `"A"` vem antes de `"a"`, `"São Paulo"` vem antes de `"alfa"`.
+- As chaves de cada equipe, nesta ordem, são `equipe`, `chamados`, `estourados`, `tempo_medio_minutos`, `pior_id`. A raiz tem só `equipes`. O arquivo é exatamente `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`.
+- `chamados` é a quantidade.
+- `estourados` é quantos estouraram o SLA.
+- `tempo_medio_minutos` é a divisão inteira `soma das durações // chamados` (piso, para números ≥ 0).
+- `pior_id` é o `id` de maior duração. Empate: menor `id` na ordem lexicográfica de `str` (`"a10" < "a2"` é verdadeiro; não é ordem numérica).
+
+CSV só com cabeçalho (e linhas em branco) produz `{"equipes": []}`.
+
+## Exemplo
+
+SLA com `alta` = 60. CSV:
+
+```text
+id,equipe,aberto_em,fechado_em,prioridade
+a1,n1,2024-03-01T10:00,2024-03-01T11:01,alta
+b2,n1,2024-03-01T10:00,2024-03-01T10:30,alta
+```
+
+`a1` dura 61 minutos (estoura), `b2` dura 30 (não estoura). Média `(61 + 30) // 2 = 45`. Pior id: `a1`.
+
+Dois chamados da mesma equipe com a mesma duração e ids `a10` e `a2`: `pior_id` é `a10`.
+
+exec
+/bin/bash -lc 'rg --files' in /tmp/bench-ampgt2e4
+ succeeded in 0ms:
+enunciado.md
+
+codex
+O diretório contém apenas o enunciado. Vou criar `solucao.py` com validação estrita do cabeçalho, dos registros e do SLA, e gerar o JSON no formato especificado.
+apply patch
+patch: completed
+/tmp/bench-ampgt2e4/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..0400b5ecf044974e96b8ef4017a46f7cb687665f
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,117 @@
++import csv
++import json
++import re
++from datetime import datetime
++
++
++_CABECALHO = ["id", "equipe", "aberto_em", "fechado_em", "prioridade"]
++_PRIORIDADES = ("baixa", "media", "alta")
++_FORMATO_DATA = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}\Z")
++
++
++def _objeto_sem_chaves_duplicadas(pares):
++    resultado = {}
++    for chave, valor in pares:
++        if chave in resultado:
++            raise ValueError("Chave JSON duplicada")
++        resultado[chave] = valor
++    return resultado
++
++
++def _ler_sla(caminho_sla):
++    with open(caminho_sla, "r", encoding="utf-8") as arquivo:
++        dados = json.load(arquivo, object_pairs_hook=_objeto_sem_chaves_duplicadas)
++
++    if not isinstance(dados, dict) or set(dados) != {"limites_minutos"}:
++        raise ValueError("Estrutura de SLA inválida")
++    limites = dados["limites_minutos"]
++    if not isinstance(limites, dict) or set(limites) != set(_PRIORIDADES):
++        raise ValueError("Limites de SLA inválidos")
++    for prioridade in _PRIORIDADES:
++        limite = limites[prioridade]
++        if isinstance(limite, bool) or not isinstance(limite, int) or limite < 1:
++            raise ValueError("Limite de SLA inválido")
++    return limites
++
++
++def _ler_data(valor):
++    if len(valor) != 16 or _FORMATO_DATA.fullmatch(valor) is None:
++        raise ValueError("Data em formato inválido")
++    try:
++        return datetime.strptime(valor, "%Y-%m-%dT%H:%M")
++    except ValueError as erro:
++        raise ValueError("Data inválida") from erro
++
++
++def consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict:
++    """Lê os chamados e o SLA, grava o resumo em JSON e devolve o mesmo dict."""
++    limites = _ler_sla(caminho_sla)
++    equipes = {}
++
++    with open(caminho_csv, "r", encoding="utf-8", newline="") as arquivo:
++        leitor = csv.reader(arquivo)
++        try:
++            cabecalho = next(leitor)
++        except StopIteration:
++            raise ValueError("CSV vazio ou sem cabeçalho")
++        if cabecalho != _CABECALHO:
++            raise ValueError("Cabeçalho CSV inválido")
++
++        for linha in leitor:
++            if not linha or all(campo.strip() == "" for campo in linha):
++                continue
++            if len(linha) != len(_CABECALHO):
++                raise ValueError("Número de colunas inválido")
++            identificador, equipe, aberto, fechado, prioridade = (
++                campo.strip() for campo in linha
++            )
++            if not identificador or not equipe:
++                raise ValueError("id e equipe não podem ser vazios")
++            if prioridade not in _PRIORIDADES:
++                raise ValueError("Prioridade inválida")
++
++            inicio = _ler_data(aberto)
++            fim = _ler_data(fechado)
++            if fim < inicio:
++                raise ValueError("fechado_em anterior a aberto_em")
++            delta = fim - inicio
++            duracao = delta.days * 1440 + delta.seconds // 60
++
++            if identificador in getattr(consolidar, "_ids", set()):
++                raise ValueError("id duplicado")
++            # O conjunto é local à chamada e evita colisões após strip.
++            ids.add(identificador)
++
++            if equipe not in equipes:
++                equipes[equipe] = {
++                    "chamados": 0,
++                    "estourados": 0,
++                    "soma": 0,
++                    "pior_duracao": -1,
++                    "pior_id": None,
++                }
++            resumo = equipes[equipe]
++            resumo["chamados"] += 1
++            resumo["soma"] += duracao
++            if duracao > limites[prioridade]:
++                resumo["estourados"] += 1
++            if (duracao > resumo["pior_duracao"] or
++                    (duracao == resumo["pior_duracao"] and identificador < resumo["pior_id"])):
++                resumo["pior_duracao"] = duracao
++                resumo["pior_id"] = identificador
++
++    resultado = {
++        "equipes": [
++            {
++                "equipe": equipe,
++                "chamados": equipes[equipe]["chamados"],
++                "estourados": equipes[equipe]["estourados"],
++                "tempo_medio_minutos": equipes[equipe]["soma"] // equipes[equipe]["chamados"],
++                "pior_id": equipes[equipe]["pior_id"],
++            }
++            for equipe in sorted(equipes)
++        ]
++    }
++    with open(caminho_saida, "w", encoding="utf-8", newline="") as arquivo:
++        arquivo.write(json.dumps(resultado, ensure_ascii=False, indent=2) + "\n")
++    return resultado
+
+apply patch
+patch: completed
+/tmp/bench-ampgt2e4/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d0bacb1be21d2e2d60d222b8c1899b6d0da2fb41
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,117 @@
++import csv
++import json
++import re
++from datetime import datetime
++
++
++_CABECALHO = ["id", "equipe", "aberto_em", "fechado_em", "prioridade"]
++_PRIORIDADES = ("baixa", "media", "alta")
++_FORMATO_DATA = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}\Z")
++
++
++def _objeto_sem_chaves_duplicadas(pares):
++    resultado = {}
++    for chave, valor in pares:
++        if chave in resultado:
++            raise ValueError("Chave JSON duplicada")
++        resultado[chave] = valor
++    return resultado
++
++
++def _ler_sla(caminho_sla):
++    with open(caminho_sla, "r", encoding="utf-8") as arquivo:
++        dados = json.load(arquivo, object_pairs_hook=_objeto_sem_chaves_duplicadas)
++
++    if not isinstance(dados, dict) or set(dados) != {"limites_minutos"}:
++        raise ValueError("Estrutura de SLA inválida")
++    limites = dados["limites_minutos"]
++    if not isinstance(limites, dict) or set(limites) != set(_PRIORIDADES):
++        raise ValueError("Limites de SLA inválidos")
++    for prioridade in _PRIORIDADES:
++        limite = limites[prioridade]
++        if isinstance(limite, bool) or not isinstance(limite, int) or limite < 1:
++            raise ValueError("Limite de SLA inválido")
++    return limites
++
++
++def _ler_data(valor):
++    if len(valor) != 16 or _FORMATO_DATA.fullmatch(valor) is None:
++        raise ValueError("Data em formato inválido")
++    try:
++        return datetime.strptime(valor, "%Y-%m-%dT%H:%M")
++    except ValueError as erro:
++        raise ValueError("Data inválida") from erro
++
++
++def consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict:
++    """Lê os chamados e o SLA, grava o resumo em JSON e devolve o mesmo dict."""
++    limites = _ler_sla(caminho_sla)
++    equipes = {}
++    ids = set()
++
++    with open(caminho_csv, "r", encoding="utf-8", newline="") as arquivo:
++        leitor = csv.reader(arquivo)
++        try:
++            cabecalho = next(leitor)
++        except StopIteration:
++            raise ValueError("CSV vazio ou sem cabeçalho")
++        if cabecalho != _CABECALHO:
++            raise ValueError("Cabeçalho CSV inválido")
++
++        for linha in leitor:
++            if not linha or all(campo.strip() == "" for campo in linha):
++                continue
++            if len(linha) != len(_CABECALHO):
++                raise ValueError("Número de colunas inválido")
++            identificador, equipe, aberto, fechado, prioridade = (
++                campo.strip() for campo in linha
++            )
++            if not identificador or not equipe:
++                raise ValueError("id e equipe não podem ser vazios")
++            if prioridade not in _PRIORIDADES:
++                raise ValueError("Prioridade inválida")
++
++            inicio = _ler_data(aberto)
++            fim = _ler_data(fechado)
++            if fim < inicio:
++                raise ValueError("fechado_em anterior a aberto_em")
++            delta = fim - inicio
++            duracao = delta.days * 1440 + delta.seconds // 60
++
++            if identificador in ids:
++                raise ValueError("id duplicado")
++            ids.add(identificador)
++
++            if equipe not in equipes:
++                equipes[equipe] = {
++                    "chamados": 0,
++                    "estourados": 0,
++                    "soma": 0,
++                    "pior_duracao": -1,
++                    "pior_id": None,
++                }
++            resumo = equipes[equipe]
++            resumo["chamados"] += 1
++            resumo["soma"] += duracao
++            if duracao > limites[prioridade]:
++                resumo["estourados"] += 1
++            if (duracao > resumo["pior_duracao"] or
++                    (duracao == resumo["pior_duracao"] and identificador < resumo["pior_id"])):
++                resumo["pior_duracao"] = duracao
++                resumo["pior_id"] = identificador
++
++    resultado = {
++        "equipes": [
++            {
++                "equipe": equipe,
++                "chamados": equipes[equipe]["chamados"],
++                "estourados": equipes[equipe]["estourados"],
++                "tempo_medio_minutos": equipes[equipe]["soma"] // equipes[equipe]["chamados"],
++                "pior_id": equipes[equipe]["pior_id"],
++            }
++            for equipe in sorted(equipes)
++        ]
++    }
++    with open(caminho_saida, "w", encoding="utf-8", newline="") as arquivo:
++        arquivo.write(json.dumps(resultado, ensure_ascii=False, indent=2) + "\n")
++    return resultado
+
+exec
+/bin/bash -lc "sed -n '1,240p' solucao.py" in /tmp/bench-ampgt2e4
+ succeeded in 0ms:
+import csv
+import json
+import re
+from datetime import datetime
+
+
+_CABECALHO = ["id", "equipe", "aberto_em", "fechado_em", "prioridade"]
+_PRIORIDADES = ("baixa", "media", "alta")
+_FORMATO_DATA = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}\Z")
+
+
+def _objeto_sem_chaves_duplicadas(pares):
+    resultado = {}
+    for chave, valor in pares:
+        if chave in resultado:
+            raise ValueError("Chave JSON duplicada")
+        resultado[chave] = valor
+    return resultado
+
+
+def _ler_sla(caminho_sla):
+    with open(caminho_sla, "r", encoding="utf-8") as arquivo:
+        dados = json.load(arquivo, object_pairs_hook=_objeto_sem_chaves_duplicadas)
+
+    if not isinstance(dados, dict) or set(dados) != {"limites_minutos"}:
+        raise ValueError("Estrutura de SLA inválida")
+    limites = dados["limites_minutos"]
+    if not isinstance(limites, dict) or set(limites) != set(_PRIORIDADES):
+        raise ValueError("Limites de SLA inválidos")
+    for prioridade in _PRIORIDADES:
+        limite = limites[prioridade]
+        if isinstance(limite, bool) or not isinstance(limite, int) or limite < 1:
+            raise ValueError("Limite de SLA inválido")
+    return limites
+
+
+def _ler_data(valor):
+    if len(valor) != 16 or _FORMATO_DATA.fullmatch(valor) is None:
+        raise ValueError("Data em formato inválido")
+    try:
+        return datetime.strptime(valor, "%Y-%m-%dT%H:%M")
+    except ValueError as erro:
+        raise ValueError("Data inválida") from erro
+
+
+def consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict:
+    """Lê os chamados e o SLA, grava o resumo em JSON e devolve o mesmo dict."""
+    limites = _ler_sla(caminho_sla)
+    equipes = {}
+    ids = set()
+
+    with open(caminho_csv, "r", encoding="utf-8", newline="") as arquivo:
+        leitor = csv.reader(arquivo)
+        try:
+            cabecalho = next(leitor)
+        except StopIteration:
+            raise ValueError("CSV vazio ou sem cabeçalho")
+        if cabecalho != _CABECALHO:
+            raise ValueError("Cabeçalho CSV inválido")
+
+        for linha in leitor:
+            if not linha or all(campo.strip() == "" for campo in linha):
+                continue
+            if len(linha) != len(_CABECALHO):
+                raise ValueError("Número de colunas inválido")
+            identificador, equipe, aberto, fechado, prioridade = (
+                campo.strip() for campo in linha
+            )
+            if not identificador or not equipe:
+                raise ValueError("id e equipe não podem ser vazios")
+            if prioridade not in _PRIORIDADES:
+                raise ValueError("Prioridade inválida")
+
+            inicio = _ler_data(aberto)
+            fim = _ler_data(fechado)
+            if fim < inicio:
+                raise ValueError("fechado_em anterior a aberto_em")
+            delta = fim - inicio
+            duracao = delta.days * 1440 + delta.seconds // 60
+
+            if identificador in ids:
+                raise ValueError("id duplicado")
+            ids.add(identificador)
+
+            if equipe not in equipes:
+                equipes[equipe] = {
+                    "chamados": 0,
+                    "estourados": 0,
+                    "soma": 0,
+                    "pior_duracao": -1,
+                    "pior_id": None,
+                }
+            resumo = equipes[equipe]
+            resumo["chamados"] += 1
+            resumo["soma"] += duracao
+            if duracao > limites[prioridade]:
+                resumo["estourados"] += 1
+            if (duracao > resumo["pior_duracao"] or
+                    (duracao == resumo["pior_duracao"] and identificador < resumo["pior_id"])):
+                resumo["pior_duracao"] = duracao
+                resumo["pior_id"] = identificador
+
+    resultado = {
+        "equipes": [
+            {
+                "equipe": equipe,
+                "chamados": equipes[equipe]["chamados"],
+                "estourados": equipes[equipe]["estourados"],
+                "tempo_medio_minutos": equipes[equipe]["soma"] // equipes[equipe]["chamados"],
+                "pior_id": equipes[equipe]["pior_id"],
+            }
+            for equipe in sorted(equipes)
+        ]
+    }
+    with open(caminho_saida, "w", encoding="utf-8", newline="") as arquivo:
+        arquivo.write(json.dumps(resultado, ensure_ascii=False, indent=2) + "\n")
+    return resultado
+
+codex
+Criei [solucao.py](/tmp/bench-ampgt2e4/solucao.py) com a função `consolidar`, incluindo validação do CSV e do SLA, consolidação por equipe e gravação do JSON no formato pedido.
+tokens used
+14,822

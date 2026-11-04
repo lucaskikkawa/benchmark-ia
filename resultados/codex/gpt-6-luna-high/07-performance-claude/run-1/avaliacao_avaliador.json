@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/07-performance-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "07-performance-claude",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 22.987,
+ "testes_passados": 36,
+ "testes_total": 36,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Correto nas bordas e usa dict.get com tipagem, mas não usa laço único, mantém lista completa de prefixos redundante e não informa a complexidade na docstring.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Correto nas bordas e O(n) com frequências de prefixos, sem mutar nums. Dois laços e o índice sai deixam a janela implícita. Docstring não explica prefixos nem a complexidade O(n).",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.25,
+ "reexecucao_testes": {
+  "total": 36,
+  "passados": 36,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.4,
+ "nota_antiga_com_penalidade": 9.4
+}

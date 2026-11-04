@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-medium/02-bug-codex/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "medium",
+ "tarefa": "02-bug-codex",
+ "tipo": "02-bug",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 21.805,
+ "testes_passados": 21,
+ "testes_total": 21,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Solução atende a todos os critérios: validações corretas, complexidade O(n) com janela deslizante idiomática, nomes claros e docstring adequada.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Soma corrente, índice e tamanho com nomes claros; range inclui o último elemento; validação, vazio, janela total e ausência de mutação preservados; uma varredura com guardas simples e docstring das janelas contíguas.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0,
+ "reexecucao_testes": {
+  "total": 21,
+  "passados": 21,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

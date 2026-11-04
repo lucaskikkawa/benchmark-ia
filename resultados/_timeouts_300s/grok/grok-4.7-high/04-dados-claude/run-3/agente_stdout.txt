@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O enunciado pede um resumo de vendas em JSON. Vou olhar o CSV de exemplo e implementar `solucao.py`.

@@ -1,0 +1,9 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O núcleo é filtrar pendentes e ordenar por prioridade, com cópia rasa. Vou registrar as políticas de desempate e de entradas inválidas e implementar isso.O teste de ordem estava errado: prioridade 1 vem antes de 0. Vou corrigir a checagem e rodar de novo.`organizador.py` devolve só as tarefas pendentes, da maior prioridade para a menor, cada uma numa cópia rasa nova. `SUPOSICOES.md` registra o desempate e o que acontece com entradas inválidas.
+
+- Entram tarefas com `titulo` string não vazia, `prioridade` inteira de 0 a 5 e `concluida is False`.
+- Empate mantém a ordem da entrada, em baldes de 0 a 5.
+- Título não é normalizado. Campos extras e objetos aninhados permanecem. O mesmo dicionário repetido na entrada gera uma cópia por ocorrência.
+- A lista e os dicionários originais não são alterados. Entrada vazia, só concluídas ou inválida devolve `[]`.
+- Item sem os campos, com tipo errado, `bool` no lugar de prioridade ou prioridade fora de 0–5 é ignorado.
+
+A checagem local cobriu ordem, cópia rasa, repetição do mesmo dicionário e 30.000 ocorrências.

@@ -1,0 +1,9 @@
+Criei `solucao.py` com a função `horas_livres`. Ela usa só a biblioteca padrão e nenhum outro arquivo foi criado.
+
+**Como funciona:**
+- **Horários:** a validação é feita caractere a caractere. Só passam strings de 5 caracteres no formato `HH:MM`, com dígitos ASCII e `:` comum. Entram de `00:00` a `23:59`, mais `24:00`, e 1440 minutos sai como `"24:00"`. Um horário que não é `str` gera `TypeError`; qualquer outro formato gera `ValueError`.
+- **Janela:** exige `inicio < fim`. Por isso `24:00` como início sempre dá `ValueError`.
+- **Ocupados:** precisa ser exatamente uma `list`. Cada item é um `tuple` ou `list` de duas `str`; qualquer outra forma é `TypeError`. Os dois horários e a ordem `ini <= fim` são validados antes de qualquer recorte, então `("24:99", "24:99")` dá erro. Itens de duração zero são ignorados.
+- **Cálculo:** cada ocupado é recortado para a janela, os pedaços são ordenados e unidos quando se sobrepõem ou se encostam (isso já depois do recorte). Os trechos livres são o que sobra entre eles. A lista recebida e os pares internos não são alterados.
+
+Rodei os seis exemplos do enunciado e todos deram o resultado esperado. Também passaram testes extras: janela de dia inteiro totalmente ocupada, e casos de `ValueError` e `TypeError` (dígitos e dois-pontos de largura cheia, espaço no fim, `ini > fim`, `ocupados` como tupla ou string, pares com forma errada).

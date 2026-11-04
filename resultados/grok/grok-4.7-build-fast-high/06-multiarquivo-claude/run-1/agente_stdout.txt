@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O enunciado pede o pacote `biblioteca` com acervo e empréstimos. Vou ver o que já existe no diretório e implementar os quatro módulos.O pacote precisa de quatro módulos com validação, acervo e regras de empréstimo. Vou criá-los e testar os casos do enunciado.

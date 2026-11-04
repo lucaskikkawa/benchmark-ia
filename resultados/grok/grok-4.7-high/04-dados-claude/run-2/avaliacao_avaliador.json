@@ -1,0 +1,68 @@
+{
+ "pasta": "resultados/grok/grok-4.7-high/04-dados-claude/run-2",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "high",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 2,
+ "consistencia_extra": true,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 648.681,
+ "testes_passados": 32,
+ "testes_total": 32,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Valida corretamente linhas, cabeçalho e arquivo; separa leitura da agregação, mas mantém validação e acúmulo juntos, repete lógica e não documenta o contrato.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Trata bem bordas e erros, mas mistura validação e agregação, usa csv.reader com índices manuais em vez de DictReader/defaultdict, tem literal mágico e não possui docstring.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.0,
+ "nota_final_10": 4.4,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 32,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/04-dados-claude/run-2/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/04-dados-claude/run-2/avaliacao.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/junit.xml', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/resultado.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/testes_saida.txt']",
+  "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+  "sem avaliacao.json antiga"
+ ],
+ "nota_antiga_avaliacao_json": null,
+ "nota_antiga_com_penalidade": 0.0,
+ "regra_excepcional_grok_4_7_high": {
+  "nota_base": 8.8,
+  "fator": 0.5,
+  "regra": "2ª tentativa, 649 s (600–900 s): ×0,5"
+ }
+}

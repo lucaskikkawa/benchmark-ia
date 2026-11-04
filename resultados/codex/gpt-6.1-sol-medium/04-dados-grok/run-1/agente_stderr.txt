@@ -1,0 +1,479 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-9fxx3rfk
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189ce-d86f-7df3-ac3c-04d1d82e595c
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:36:38.337396Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para implementar e verificar a solução.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!dist'"' -g '"'!build'"' -g '"'!*lock*'"' -g 'AGENTS.md' -g 'enunciado.md' -g '*'" in /tmp/bench-9fxx3rfk
+ succeeded in 0ms:
+/tmp/bench-9fxx3rfk
+enunciado.md
+.gitkeep
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-9fxx3rfk
+ succeeded in 0ms:
+# Tarefa: consolidar chamados e SLA
+
+Crie `solucao.py` no diretório de trabalho com a função abaixo. Só a biblioteca padrão. Os arquivos de entrada são passados por caminho; não deixe amostra obrigatória no repositório.
+
+```python
+def consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict:
+    """Lê os chamados e o SLA, grava o resumo em JSON e devolve o mesmo dict."""
+```
+
+## `chamados` CSV
+
+Codificação UTF-8. Cabeçalho **exato**, nesta ordem:
+
+```text
+id,equipe,aberto_em,fechado_em,prioridade
+```
+
+- Codificação UTF-8 **sem BOM**. Um `U+FEFF` no início torna o cabeçalho diferente e é `ValueError` (não use `utf-8-sig`).
+- Aceite fim de linha `\n` e `\r\n`. Campos com vírgula ou aspas seguem o `csv` padrão (`"São, Paulo"` é um campo).
+- Linhas em branco, ou em que **todos** os campos ficam vazios depois do `strip` (por exemplo `,,,,`), são ignoradas.
+- Os cinco campos são lidos com `csv` e depois cada um sofre `strip`. O cabeçalho é comparado **antes** do strip e tem de ser exato.
+- `id` e `equipe` não podem ficar vazios depois do strip. Espaço no meio permanece: `"a b"` é um id válido.
+- `id` é único **depois** do strip (`"a"` e `" a "` são duplicata → `ValueError`).
+- Equipes também se agrupam pelo nome já com strip: `" n1 "` e `"n1"` são a mesma equipe.
+- `aberto_em` e `fechado_em` usam o formato `YYYY-MM-DDTHH:MM` (16 caracteres). Data inexistente ou formato diferente → `ValueError`. A duração pode cruzar dias, meses e anos.
+- `fechado_em` anterior a `aberto_em` → `ValueError`. Iguais são válidos (duração 0).
+- A duração em minutos é um inteiro: diferença exata entre os dois instantes, sem segundos.
+- `prioridade` é exatamente `baixa`, `media` ou `alta` **depois** do strip. `" alta "` é válida. `"Alta"` não é.
+- Cabeçalho diferente, número de colunas diferente, arquivo vazio ou sem cabeçalho → `ValueError`. JSON de SLA inválido ou vazio também é `ValueError`.
+- Arquivo ausente → `FileNotFoundError` (o de `open`).
+
+## `sla` JSON
+
+```json
+{"limites_minutos": {"baixa": 480, "media": 240, "alta": 60}}
+```
+
+- Objeto com exatamente a chave `limites_minutos`.
+- Esse objeto tem exatamente as três prioridades.
+- Cada limite é `int` ≥ 1. `bool` e `float` não servem.
+- Qualquer desvio → `ValueError`.
+
+Um chamado **estoura** quando `duracao_minutos > limite` da prioridade. Igual ao limite não estoura.
+
+## Saída
+
+Grave `caminho_saida` em UTF-8, `json` com `ensure_ascii=False`, `indent=2` e uma quebra de linha no final. Devolva o mesmo conteúdo do arquivo.
+
+```python
+{
+    "equipes": [
+        {
+            "equipe": "n1",
+            "chamados": 2,
+            "estourados": 1,
+            "tempo_medio_minutos": 45,
+            "pior_id": "a1",
+        }
+    ]
+}
+```
+
+- Entre no resumo apenas equipes que tiveram pelo menos um chamado válido.
+- `equipes` ordenada pelo nome com `sorted` padrão (code point, sem locale): `"A"` vem antes de `"a"`, `"São Paulo"` vem antes de `"alfa"`.
+- As chaves de cada equipe, nesta ordem, são `equipe`, `chamados`, `estourados`, `tempo_medio_minutos`, `pior_id`. A raiz tem só `equipes`. O arquivo é exatamente `json.dumps(..., ensure_ascii=False, indent=2) + "\n"`.
+- `chamados` é a quantidade.
+- `estourados` é quantos estouraram o SLA.
+- `tempo_medio_minutos` é a divisão inteira `soma das durações // chamados` (piso, para números ≥ 0).
+- `pior_id` é o `id` de maior duração. Empate: menor `id` na ordem lexicográfica de `str` (`"a10" < "a2"` é verdadeiro; não é ordem numérica).
+
+CSV só com cabeçalho (e linhas em branco) produz `{"equipes": []}`.
+
+## Exemplo
+
+SLA com `alta` = 60. CSV:
+
+```text
+id,equipe,aberto_em,fechado_em,prioridade
+a1,n1,2024-03-01T10:00,2024-03-01T11:01,alta
+b2,n1,2024-03-01T10:00,2024-03-01T10:30,alta
+```
+
+`a1` dura 61 minutos (estoura), `b2` dura 30 (não estoura). Média `(61 + 30) // 2 = 45`. Pior id: `a1`.
+
+Dois chamados da mesma equipe com a mesma duração e ids `a10` e `a2`: `pior_id` é `a10`.
+
+apply patch
+patch: completed
+/tmp/bench-9fxx3rfk/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..e083036628dbde2266ea9f8ddbf2ee4c2c40a3ad
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,106 @@
++"""Consolidação de chamados por equipe e verificação de SLA."""
++
++import csv
++import json
++import re
++from datetime import datetime
++
++
++_CABECALHO = ["id", "equipe", "aberto_em", "fechado_em", "prioridade"]
++_PRIORIDADES = {"baixa", "media", "alta"}
++_FORMATO_DATA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}")
++
++
++def _objeto_json(pares):
++    objeto = {}
++    for chave, valor in pares:
++        if chave in objeto:
++            raise ValueError(f"Chave duplicada no SLA: {chave}")
++        objeto[chave] = valor
++    return objeto
++
++
++def _ler_sla(caminho):
++    with open(caminho, encoding="utf-8") as arquivo:
++        sla = json.load(arquivo, object_pairs_hook=_objeto_json)
++    if type(sla) is not dict or set(sla) != {"limites_minutos"}:
++        raise ValueError("SLA deve conter apenas limites_minutos")
++    limites = sla["limites_minutos"]
++    if type(limites) is not dict or set(limites) != _PRIORIDADES:
++        raise ValueError("Limites devem conter exatamente baixa, media e alta")
++    if any(type(limite) is not int or limite < 1 for limite in limites.values()):
++        raise ValueError("Cada limite deve ser um inteiro positivo")
++    return limites
++
++
++def _ler_data(valor):
++    if _FORMATO_DATA.fullmatch(valor) is None:
++        raise ValueError(f"Formato de data inválido: {valor!r}")
++    return datetime.strptime(valor, "%Y-%m-%dT%H:%M")
++
++
++def consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict:
++    """Lê os chamados e o SLA, grava o resumo em JSON e devolve o mesmo dict."""
++    limites = _ler_sla(caminho_sla)
++    equipes = {}
++    ids = set()
++
++    with open(caminho_csv, encoding="utf-8", newline="") as arquivo:
++        leitor = csv.reader(arquivo, strict=True)
++        try:
++            if next(leitor, None) != _CABECALHO:
++                raise ValueError("Cabeçalho CSV inválido ou ausente")
++            for linha in leitor:
++                campos = [campo.strip() for campo in linha]
++                if not any(campos):
++                    continue
++                if len(campos) != 5:
++                    raise ValueError("Cada chamado deve ter cinco campos")
++                identificador, equipe, abertura, fechamento, prioridade = campos
++                if not identificador or not equipe:
++                    raise ValueError("Id e equipe são obrigatórios")
++                if identificador in ids:
++                    raise ValueError(f"Id duplicado: {identificador!r}")
++                if prioridade not in _PRIORIDADES:
++                    raise ValueError(f"Prioridade inválida: {prioridade!r}")
++                aberto_em = _ler_data(abertura)
++                fechado_em = _ler_data(fechamento)
++                if fechado_em < aberto_em:
++                    raise ValueError("Fechamento anterior à abertura")
++                duracao = (fechado_em - aberto_em) // __import__("datetime").timedelta(minutes=1)
++                ids.add(identificador)
++
++                if equipe not in equipes:
++                    equipes[equipe] = {
++                        "chamados": 0,
++                        "estourados": 0,
++                        "soma": 0,
++                        "pior_duracao": -1,
++                        "pior_id": identificador,
++                    }
++                resumo = equipes[equipe]
++                resumo["chamados"] += 1
++                resumo["estourados"] += int(duracao > limites[prioridade])
++                resumo["soma"] += duracao
++                if duracao > resumo["pior_duracao"] or (
++                    duracao == resumo["pior_duracao"]
++                    and identificador < resumo["pior_id"]
++                ):
++                    resumo["pior_duracao"] = duracao
++                    resumo["pior_id"] = identificador
++        except csv.Error as erro:
++            raise ValueError(f"CSV inválido: {erro}") from erro
++
++    resultado = {"equipes": []}
++    for equipe in sorted(equipes):
++        resumo = equipes[equipe]
++        resultado["equipes"].append({
++            "equipe": equipe,
++            "chamados": resumo["chamados"],
++            "estourados": resumo["estourados"],
++            "tempo_medio_minutos": resumo["soma"] // resumo["chamados"],
++            "pior_id": resumo["pior_id"],
++        })
++    with open(caminho_saida, "w", encoding="utf-8", newline="\n") as arquivo:
++        arquivo.write(json.dumps(resultado, ensure_ascii=False, indent=2) + "\n")
++    return resultado
+
+apply patch
+patch: completed
+/tmp/bench-9fxx3rfk/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..95ea554a68d8b688106845e6b71c35cf26ee0b3a
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,106 @@
++"""Consolidação de chamados por equipe e verificação de SLA."""
++
++import csv
++import json
++import re
++from datetime import datetime, timedelta
++
++
++_CABECALHO = ["id", "equipe", "aberto_em", "fechado_em", "prioridade"]
++_PRIORIDADES = {"baixa", "media", "alta"}
++_FORMATO_DATA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}")
++
++
++def _objeto_json(pares):
++    objeto = {}
++    for chave, valor in pares:
++        if chave in objeto:
++            raise ValueError(f"Chave duplicada no SLA: {chave}")
++        objeto[chave] = valor
++    return objeto
++
++
++def _ler_sla(caminho):
++    with open(caminho, encoding="utf-8") as arquivo:
++        sla = json.load(arquivo, object_pairs_hook=_objeto_json)
++    if type(sla) is not dict or set(sla) != {"limites_minutos"}:
++        raise ValueError("SLA deve conter apenas limites_minutos")
++    limites = sla["limites_minutos"]
++    if type(limites) is not dict or set(limites) != _PRIORIDADES:
++        raise ValueError("Limites devem conter exatamente baixa, media e alta")
++    if any(type(limite) is not int or limite < 1 for limite in limites.values()):
++        raise ValueError("Cada limite deve ser um inteiro positivo")
++    return limites
++
++
++def _ler_data(valor):
++    if _FORMATO_DATA.fullmatch(valor) is None:
++        raise ValueError(f"Formato de data inválido: {valor!r}")
++    return datetime.strptime(valor, "%Y-%m-%dT%H:%M")
++
++
++def consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict:
++    """Lê os chamados e o SLA, grava o resumo em JSON e devolve o mesmo dict."""
++    limites = _ler_sla(caminho_sla)
++    equipes = {}
++    ids = set()
++
++    with open(caminho_csv, encoding="utf-8", newline="") as arquivo:
++        leitor = csv.reader(arquivo, strict=True)
++        try:
++            if next(leitor, None) != _CABECALHO:
++                raise ValueError("Cabeçalho CSV inválido ou ausente")
++            for linha in leitor:
++                campos = [campo.strip() for campo in linha]
++                if not any(campos):
++                    continue
++                if len(campos) != 5:
++                    raise ValueError("Cada chamado deve ter cinco campos")
++                identificador, equipe, abertura, fechamento, prioridade = campos
++                if not identificador or not equipe:
++                    raise ValueError("Id e equipe são obrigatórios")
++                if identificador in ids:
++                    raise ValueError(f"Id duplicado: {identificador!r}")
++                if prioridade not in _PRIORIDADES:
++                    raise ValueError(f"Prioridade inválida: {prioridade!r}")
++                aberto_em = _ler_data(abertura)
++                fechado_em = _ler_data(fechamento)
++                if fechado_em < aberto_em:
++                    raise ValueError("Fechamento anterior à abertura")
++                duracao = (fechado_em - aberto_em) // timedelta(minutes=1)
++                ids.add(identificador)
++
++                if equipe not in equipes:
++                    equipes[equipe] = {
++                        "chamados": 0,
++                        "estourados": 0,
++                        "soma": 0,
++                        "pior_duracao": -1,
++                        "pior_id": identificador,
++                    }
++                resumo = equipes[equipe]
++                resumo["chamados"] += 1
++                resumo["estourados"] += int(duracao > limites[prioridade])
++                resumo["soma"] += duracao
++                if duracao > resumo["pior_duracao"] or (
++                    duracao == resumo["pior_duracao"]
++                    and identificador < resumo["pior_id"]
++                ):
++                    resumo["pior_duracao"] = duracao
++                    resumo["pior_id"] = identificador
++        except csv.Error as erro:
++            raise ValueError(f"CSV inválido: {erro}") from erro
++
++    resultado = {"equipes": []}
++    for equipe in sorted(equipes):
++        resumo = equipes[equipe]
++        resultado["equipes"].append({
++            "equipe": equipe,
++            "chamados": resumo["chamados"],
++            "estourados": resumo["estourados"],
++            "tempo_medio_minutos": resumo["soma"] // resumo["chamados"],
++            "pior_id": resumo["pior_id"],
++        })
++    with open(caminho_saida, "w", encoding="utf-8", newline="\n") as arquivo:
++        arquivo.write(json.dumps(resultado, ensure_ascii=False, indent=2) + "\n")
++    return resultado
+
+exec
+/bin/bash -lc "python - <<'PY'
+import csv
+import io
+import json
+import tempfile
+from pathlib import Path
+from solucao import consolidar
+
+with tempfile.TemporaryDirectory(dir='.') as pasta:
+    base = Path(pasta)
+    entrada, sla, saida = [base / nome for nome in ('entrada.csv', 'sla.json', 'saida.json')]
+    limites = {'limites_minutos': {'baixa': 480, 'media': 240, 'alta': 60}}
+    sla.write_text(json.dumps(limites), encoding='utf-8')
+    cabecalho = 'id,equipe,aberto_em,fechado_em,prioridade\\n'
+    def executar(texto):
+        entrada.write_text(texto, encoding='utf-8')
+        resultado = consolidar(str(entrada), str(sla), str(saida))
+        assert saida.read_bytes() == (json.dumps(resultado, ensure_ascii=False, indent=2) + '\\n').encode('utf-8')
+        return resultado
+    def invalido(texto):
+        try:
+            executar(texto)
+        except ValueError:
+            return
+        raise AssertionError(repr(texto))
+    resultado = executar(cabecalho + 'a1,n1,2024-03-01T10:00,2024-03-01T11:01,alta\\nb2,n1,2024-03-01T10:00,2024-03-01T10:30,alta\\n')
+    assert resultado == {'equipes': [{'equipe': 'n1', 'chamados': 2, 'estourados': 1, 'tempo_medio_minutos': 45, 'pior_id': 'a1'}]}
+    assert executar(cabecalho + '\\n,,,,\\n , , , , \\n') == {'equipes': []}
+    texto = io.StringIO(newline='')
+    escritor = csv.writer(texto)
+    escritor.writerow(cabecalho.strip().split(','))
+    for identificador, equipe, abertura, fechamento in [
+        (' a2 ', ' São, \"Paulo\" ', '2024-02-28T23:00', '2024-02-29T00:00'),
+        ('a10', 'São, \"Paulo\"', '2024-12-31T23:30', '2025-01-01T00:30'),
+        ('a b', 'A', '2024-01-01T00:00', '2024-01-01T00:00'),
+        ('x', 'alfa', '2024-01-01T00:00', '2024-01-03T00:00'),
+    ]:
+        escritor.writerow([identificador, equipe, abertura, fechamento, ' alta '])
+    equipes = executar(texto.getvalue())['equipes']
+    assert [e['equipe'] for e in equipes] == ['A', 'São, \"Paulo\"', 'alfa']
+    assert equipes[1]['pior_id'] == 'a10' and equipes[1]['estourados'] == 0
+    assert equipes[2]['tempo_medio_minutos'] == 2880
+    for texto in ['', '\\n' + cabecalho, '\\ufeff' + cabecalho, cabecalho.replace('id,', ' id,'), cabecalho + 'x,n1,2024-01-01T00:00,2024-01-01T00:00,alta,extra\\n']:
+        invalido(texto)
+    linha = ['x', 'n1', '2024-01-01T00:00', '2024-01-01T01:00', 'alta']
+    for indice, valores in [(0, [' ', '']), (1, [' ', '']), (2, ['2024-1-01T00:00', '2023-02-29T00:00', '2024-01-01 00:00', '2024-01-01T00:00:00', '2024-01-01T24:00']), (3, ['2023-12-31T23:59']), (4, ['Alta', '', 'urgente'])]:
+        for valor in valores:
+            campos = linha.copy()
+            campos[indice] = valor
+            invalido(cabecalho + ','.join(campos) + '\\n')
+    invalido(cabecalho + ','.join(linha) + '\\n' + ','.join([' x '] + linha[1:]) + '\\n')
+    for valor in ['', '{', 'null', '[]', '{}', '{\"limites_minutos\": null}', '{\"limites_minutos\":{\"baixa\":480,\"media\":240,\"alta\":60},\"extra\":1}']:
+        sla.write_text(valor, encoding='utf-8')
+        invalido(cabecalho)
+    for valor in [True, 1.0, 0, -1, '60', None]:
+        limites['limites_minutos']['alta'] = valor
+        sla.write_text(json.dumps(limites), encoding='utf-8')
+        invalido(cabecalho)
+    sla.write_text('{\"limites_minutos\":{\"baixa\":480,\"media\":240,\"alta\":60}}', encoding='utf-8')
+    try:
+        consolidar(str(base / 'ausente.csv'), str(sla), str(saida))
+    except FileNotFoundError:
+        pass
+    else:
+        raise AssertionError('Arquivo ausente deveria falhar')
+print('Verificações concluídas com sucesso.')
+PY" in /tmp/bench-9fxx3rfk
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+import tempfile
+from pathlib import Path
+from solucao import consolidar
+
+with tempfile.TemporaryDirectory(dir='.') as pasta:
+    entrada, sla, saida = [Path(pasta) / nome for nome in ('entrada.csv', 'sla.json', 'saida.json')]
+    limites = {'limites_minutos': {'baixa': 480, 'media': 240, 'alta': 60}}
+    sla.write_text(json.dumps(limites), encoding='utf-8')
+    cabecalho = 'id,equipe,aberto_em,fechado_em,prioridade\\n'
+    def executar(texto):
+        entrada.write_text(texto, encoding='utf-8')
+        resultado = consolidar(str(entrada), str(sla), str(saida))
+        assert saida.read_bytes() == (json.dumps(resultado, ensure_ascii=False, indent=2) + '\\n').encode('utf-8')
+        return resultado
+    def invalido(texto):
+        try:
+            executar(texto)
+        except ValueError:
+            return
+        raise AssertionError(repr(texto))
+    assert executar(cabecalho + 'a1,n1,2024-03-01T10:00,2024-03-01T11:01,alta\\nb2,n1,2024-03-01T10:00,2024-03-01T10:30,alta\\n') == {'equipes': [{'equipe': 'n1', 'chamados': 2, 'estourados': 1, 'tempo_medio_minutos': 45, 'pior_id': 'a1'}]}
+    assert executar(cabecalho + '\\n,,,,\\n , , , , \\n') == {'equipes': []}
+    equipes = executar(cabecalho.replace('\\n', '\\r\\n') + ' a2 ,\" São, Paulo \",2024-02-28T23:00,2024-02-29T00:00, alta \\r\\na10,\"São, Paulo\",2024-12-31T23:30,2025-01-01T00:30,alta\\r\\na b,A,2024-01-01T00:00,2024-01-01T00:00,alta\\r\\nx,alfa,2024-01-01T00:00,2024-01-03T00:00,alta\\r\\n')['equipes']
+    assert [e['equipe'] for e in equipes] == ['A', 'São, Paulo', 'alfa']
+    assert equipes[1]['pior_id'] == 'a10' and equipes[1]['estourados'] == 0
+    assert equipes[2]['tempo_medio_minutos'] == 2880
+    for texto in ['', '\\n' + cabecalho, '\\ufeff' + cabecalho, cabecalho.replace('id,', ' id,'), cabecalho + 'x,n1,2024-01-01T00:00,2024-01-01T00:00,alta,extra\\n']:
+        invalido(texto)
+    linha = ['x', 'n1', '2024-01-01T00:00', '2024-01-01T01:00', 'alta']
+    for indice, valores in [(0, [' ', '']), (1, [' ', '']), (2, ['2024-1-01T00:00', '2023-02-29T00:00', '2024-01-01 00:00', '2024-01-01T00:00:00', '2024-01-01T24:00']), (3, ['2023-12-31T23:59']), (4, ['Alta', '', 'urgente'])]:
+        for valor in valores:
+            campos = linha.copy()
+            campos[indice] = valor
+            invalido(cabecalho + ','.join(campos) + '\\n')
+    invalido(cabecalho + ','.join(linha) + '\\n' + ','.join([' x '] + linha[1:]) + '\\n')
+    for valor in ['', '{', 'null', '[]', '{}', '{\"limites_minutos\": null}', '{\"limites_minutos\":{\"baixa\":480,\"media\":240,\"alta\":60},\"extra\":1}']:
+        sla.write_text(valor, encoding='utf-8')
+        invalido(cabecalho)
+    for valor in [True, 1.0, 0, -1, '60', None]:
+        limites['limites_minutos']['alta'] = valor
+        sla.write_text(json.dumps(limites), encoding='utf-8')
+        invalido(cabecalho)
+    sla.write_text('{\"limites_minutos\":{\"baixa\":480,\"media\":240,\"alta\":60}}', encoding='utf-8')
+    try:
+        consolidar(str(Path(pasta) / 'ausente.csv'), str(sla), str(saida))
+    except FileNotFoundError:
+        pass
+    else:
+        raise AssertionError('Arquivo ausente deveria falhar')
+print('Verificações concluídas com sucesso.')
+PY" in /tmp/bench-9fxx3rfk
+ succeeded in 0ms:
+Verificações concluídas com sucesso.
+
+codex
+Criei [solucao.py](/tmp/bench-9fxx3rfk/solucao.py) com a função `consolidar`, usando apenas a biblioteca padrão.
+
+Verifiquei o exemplo, validações, desempates, ordenação, datas e formato exato do JSON. Todos os testes passaram.
+tokens used
+16,208

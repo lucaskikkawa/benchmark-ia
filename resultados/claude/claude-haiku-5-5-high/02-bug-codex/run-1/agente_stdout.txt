@@ -1,0 +1,11 @@
+Corrigi `janelas.py`. O bug estava no `range` do loop: `range(tamanho, len(valores) - 1)` parava uma posição antes do fim, então a última janela era omitida. Troquei por `range(tamanho, len(valores))`.
+
+A assinatura e o restante da lógica ficaram como estavam. Os casos de borda já estavam corretos: tamanho maior que a lista devolve `[]`, tamanho zero ou negativo lança `ValueError`, e a lista de entrada não é alterada. A varredura continua O(n), com soma inicial em O(tamanho) e uma atualização O(1) por janela.
+
+Verifiquei com um script temporário (não salvo no diretório):
+- `somas_janelas([1, 2, 3, 4], 2) == [3, 5, 7]`, e os casos tamanho igual ao da lista, maior que a lista e lista vazia.
+- Inteiros acima de 64 bits (`10**30`) dão resultados exatos.
+- 2000 listas aleatórias comparadas com uma referência ingênua, com checagem de que a entrada não muda.
+- Lista de 200.000 valores em ~0,02 s, tanto com janela de tamanho 1 quanto de 100.000.
+
+Não criei arquivo de testes; se quiser um `test_janelas.py` no diretório, posso adicionar.

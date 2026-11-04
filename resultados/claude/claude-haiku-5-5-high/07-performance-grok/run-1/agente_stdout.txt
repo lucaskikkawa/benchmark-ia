@@ -1,0 +1,15 @@
+Criei `solucao.py` neste diretório com `pares_com_soma`, usando só a biblioteca padrão. Não criei outros arquivos.
+
+**Como funciona**
+- Valida o tipo primeiro: `nums` tem de ser `list`, e `alvo` e cada elemento têm de ser `int`. `bool` é rejeitado. Qualquer outro tipo levanta `TypeError`.
+- Conta as frequências com `Counter` numa única passagem. Para cada valor distinto `x`, com `y = alvo - x`:
+  - se `x == y`, soma `C(freq, 2)`;
+  - se `x < y`, soma `freq[x] * freq[y]`, o que evita contar o mesmo par duas vezes.
+- Não altera `nums` e não materializa pares. O resultado é um `int` Python sem limite de largura.
+
+**Verificação**
+- Todos os exemplos do enunciado passam.
+- 3000 listas aleatórias batem com uma força bruta `O(n²)`, e `nums` continua igual após cada chamada.
+- Os casos de `TypeError` (`None`, tupla, `bool` em `nums` ou em `alvo`, `float`, `str`) levantam o erro esperado.
+- Com `n = 200_000` valores iguais, roda em 0,013 s. Com valores distintos, em 0,042 s.
+- Testei com `python3 -B` para não gerar `__pycache__`, e o diretório ficou só com `.gitkeep`, `enunciado.md` e `solucao.py`.

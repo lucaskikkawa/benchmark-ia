@@ -1,0 +1,3 @@
+Implementei `processar_vendas` em [analisador_vendas.py](/tmp/bench-6hfy70ct/analisador_vendas.py), com validações, filtragem, métricas, ordenação e geração do JSON.
+
+As 16 verificações executadas passaram.

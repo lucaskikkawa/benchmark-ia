@@ -1,0 +1,16 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O núcleo do cálculo está fechado; vou implementar a função e registrar as decisões dos pontos em aberto em `SUPOSICOES.md`.A documentação recusa `NaN` e infinitos; vou alinhar o código a isso e conferir o cálculo.A função `classificar_cliente` está em `solucao.py` e as decisões dos pontos em aberto estão em `SUPOSICOES.md`.
+
+O score segue a regra fechada: `round(soma(compras) * 0.1 + anos_ativo * 5, 2)`. A entrada não é alterada. `id` e `nome` voltam iguais, inclusive com caracteres Unicode. A saída traz só `id`, `nome`, `score` e `categoria`.
+
+As faixas, aplicadas ao score já arredondado, são estas:
+
+| Categoria | Score |
+|---|---|
+| `critico` | `< 0` |
+| `bronze` | `[0, 100)` |
+| `prata` | `[100, 350)` |
+| `ouro` | `[350, 1000)` |
+| `platina` | `[1000, 3000)` |
+| `diamante` | `>= 3000` |
+
+Compras negativas entram na soma como estorno. Anos negativos seguem a fórmula, sem corte em zero. Campos extras da entrada são ignorados.

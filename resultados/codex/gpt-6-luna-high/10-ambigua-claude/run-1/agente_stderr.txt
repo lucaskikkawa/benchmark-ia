@@ -1,0 +1,667 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-qlojg4b1
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189c3-d3e2-7f31-acb2-335f7da2104d
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:24:36.821945Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para identificar o que precisa ser implementado.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' | head -100 && cat enunciado.md" in /tmp/bench-qlojg4b1
+ succeeded in 0ms:
+/tmp/bench-qlojg4b1
+enunciado.md
+# Tarefa: normalizar telefones brasileiros
+
+O time de CRM tem uma base de contatos com telefones digitados de qualquer jeito e quer padronizá-los.
+Crie `telefones.py` no diretório de trabalho com:
+
+```python
+def normalizar_telefone(texto: str) -> str: ...
+def extrair_telefones(texto: str) -> list[str]: ...
+```
+
+## O que se sabe
+
+- `normalizar_telefone` recebe **um** telefone e devolve no formato E.164 brasileiro:
+  `+55` + DDD (2 dígitos) + número, só dígitos após o `+`.
+- O telefone pode vir com ou sem o código do país `55` (com ou sem `+`), e com separadores
+  comuns: espaços, hífens, pontos e parênteses — que podem aparecer repetidos ou combinados
+  (`( 11 )  98765 - 4321` é válido).
+- O DDD é sempre informado e tem 2 dígitos, nenhum deles `0` (`11` a `99`, exceto `20`, `30`, ..., `90`).
+- Números fixos têm 8 dígitos e começam com `2`, `3`, `4` ou `5`; celulares têm 9 dígitos e começam com `9`.
+  Qualquer outro tamanho ou dígito inicial é inválido (nunca complete nem corte dígitos).
+- Se não der para interpretar o texto como telefone, levante `ValueError`.
+- `extrair_telefones` recebe um texto livre (ex.: o campo "observações" de um contato) e devolve
+  os telefones encontrados já normalizados, sem repetições, na ordem em que aparecem pela primeira vez.
+  - Trechos numéricos que não formam um telefone válido (datas, CPFs, valores, CEPs, códigos) são
+    ignorados sem erro; um telefone nunca é recortado de dentro de uma sequência maior de dígitos.
+  - Telefones podem estar separados por vírgula, ponto e vírgula, barra, quebra de linha ou palavras,
+    e podem vir seguidos de pontuação (`.`, `,`, `;`, `)`).
+
+Exemplos:
+
+```python
+normalizar_telefone("+55 (11) 98765-4321")  # "+5511987654321"
+normalizar_telefone("(21) 3456-7890")       # "+552134567890"
+normalizar_telefone("11987654321")          # "+5511987654321"
+normalizar_telefone("telefone")             # ValueError
+
+extrair_telefones("Ligar para (11) 98765-4321 ou 21 3456-7890 à tarde")
+# ["+5511987654321", "+552134567890"]
+```
+
+O resto não foi especificado pelo time. Onde houver dúvida (o que fazer com casos que o texto acima
+não cobre), decida você mesmo e **registre cada decisão em `SUPOSICOES.md`** no diretório de trabalho:
+a dúvida, a decisão tomada e o motivo. Use apenas a biblioteca padrão.
+
+codex
+O enunciado deixa algumas bordas em aberto, então vou registrar as convenções adotadas. Para a extração, vou procurar trechos numéricos completos, validar o telefone inteiro e ignorar candidatos inválidos sem aproveitar dígitos de uma sequência contígua maior.
+apply patch
+patch: completed
+/tmp/bench-qlojg4b1/telefones.py
+diff --git a/telefones.py b/telefones.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f2da53e075f25d61414a81c89543ad42bc94741c
+--- /dev/null
++++ b/telefones.py
+@@ -0,0 +1,98 @@
++"""Normalização e extração de telefones brasileiros."""
++
++import re
++
++
++_SEPARADORES = " .()-\t\n\r\v\f"
++_SEPARADORES_RE = re.compile(r"[ .()\t\n\r\v\f-]")
++
++
++def _validar_digitos(digitos: str) -> str:
++    """Valida DDD e número, aceitando prefixo nacional opcional 55."""
++    if digitos.startswith("55") and len(digitos) in (12, 13):
++        digitos = digitos[2:]
++
++    if len(digitos) not in (10, 11):
++        raise ValueError("telefone deve ter DDD e número com tamanho válido")
++
++    ddd, numero = digitos[:2], digitos[2:]
++    # DDDs vão de 11 a 99, exceto os terminados em zero.
++    if ddd[0] == "0" or ddd[1] == "0":
++        raise ValueError("DDD inválido")
++
++    if len(numero) == 8 and numero[0] in "2345":
++        return "+55" + digitos
++    if len(numero) == 9 and numero[0] == "9":
++        return "+55" + digitos
++    raise ValueError("número fixo ou celular inválido")
++
++
++def normalizar_telefone(texto: str) -> str:
++    """Converte um telefone brasileiro para o formato E.164."""
++    if not isinstance(texto, str):
++        raise ValueError("telefone deve ser texto")
++
++    valor = texto.strip()
++    if not valor:
++        raise ValueError("telefone vazio")
++
++    if valor.startswith("+"):
++        valor = valor[1:]
++    if "+" in valor:
++        raise ValueError("sinal de + só pode aparecer no início")
++
++    # O restante deve conter apenas dígitos ASCII e separadores de formatação.
++    digitos = _SEPARADORES_RE.sub("", valor)
++    if not digitos or re.fullmatch(r"[0-9]+", digitos) is None:
++        raise ValueError("texto não pode ser interpretado como telefone")
++
++    return _validar_digitos(digitos)
++
++
++def extrair_telefones(texto: str) -> list[str]:
++    """Extrai telefones válidos de texto livre, preservando a ordem."""
++    if not isinstance(texto, str) or not texto:
++        return []
++
++    encontrados: list[tuple[int, str]] = []
++    tamanho = len(texto)
++
++    # Cada candidato começa no início de um trecho numérico (ou em +55).
++    # Dentro dele só podem aparecer dígitos e separadores reconhecidos pelo
++    # normalizador. Pontuação como vírgula e barra encerra o candidato.
++    for inicio, caractere in enumerate(texto):
++        if caractere not in "+0123456789":
++            continue
++        if inicio > 0 and texto[inicio - 1].isascii() and texto[inicio - 1].isdigit():
++            continue
++        if caractere == "+" and (inicio + 1 == tamanho or texto[inicio + 1] not in "0123456789"):
++            continue
++
++        fim = inicio
++        while fim < tamanho and (texto[fim] in "0123456789" or texto[fim] in _SEPARADORES):
++            fim += 1
++        if fim < tamanho and texto[fim] == "+":
++            # Um + interno não pertence a um telefone válido.
++            continue
++
++        # Avalia cada prefixo terminado em dígito. Isso permite que um
++        # telefone venha antes de outro número separado apenas por espaços.
++        for final in range(inicio + 1, fim + 1):
++            if texto[final - 1] not in "0123456789":
++                continue
++            if final < tamanho and texto[final].isascii() and texto[final].isdigit():
++                continue
++            candidato = texto[inicio:final]
++            try:
++                telefone = normalizar_telefone(candidato)
++            except ValueError:
++                continue
++            encontrados.append((inicio, telefone))
++
++    resultado: list[str] = []
++    vistos: set[str] = set()
++    for _, telefone in sorted(encontrados, key=lambda item: item[0]):
++        if telefone not in vistos:
++            vistos.add(telefone)
++            resultado.append(telefone)
++    return resultado
+
+apply patch
+patch: completed
+/tmp/bench-qlojg4b1/telefones.py
+diff --git a/telefones.py b/telefones.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..e044b266a4c5cdca689147f4223c6b225e51f999
+--- /dev/null
++++ b/telefones.py
+@@ -0,0 +1,102 @@
++"""Normalização e extração de telefones brasileiros."""
++
++import re
++
++
++_SEPARADORES_RE = re.compile(r"[ .()\t\n\r\v\f-]")
++
++
++def _validar_digitos(digitos: str) -> str:
++    """Valida DDD e número, aceitando prefixo nacional opcional 55."""
++    if digitos.startswith("55") and len(digitos) in (12, 13):
++        digitos = digitos[2:]
++
++    if len(digitos) not in (10, 11):
++        raise ValueError("telefone deve ter DDD e número com tamanho válido")
++
++    ddd, numero = digitos[:2], digitos[2:]
++    # DDDs vão de 11 a 99, exceto os terminados em zero.
++    if ddd[0] == "0" or ddd[1] == "0":
++        raise ValueError("DDD inválido")
++
++    if len(numero) == 8 and numero[0] in "2345":
++        return "+55" + digitos
++    if len(numero) == 9 and numero[0] == "9":
++        return "+55" + digitos
++    raise ValueError("número fixo ou celular inválido")
++
++
++def normalizar_telefone(texto: str) -> str:
++    """Converte um telefone brasileiro para o formato E.164."""
++    if not isinstance(texto, str):
++        raise ValueError("telefone deve ser texto")
++
++    valor = texto.strip()
++    if not valor:
++        raise ValueError("telefone vazio")
++
++    com_mais = valor.startswith("+")
++    if com_mais:
++        valor = valor[1:]
++    if "+" in valor:
++        raise ValueError("sinal de + só pode aparecer no início")
++
++    # O restante deve conter apenas dígitos ASCII e separadores de formatação.
++    digitos = _SEPARADORES_RE.sub("", valor)
++    if not digitos or re.fullmatch(r"[0-9]+", digitos) is None:
++        raise ValueError("texto não pode ser interpretado como telefone")
++    if com_mais and not digitos.startswith("55"):
++        raise ValueError("+ deve ser seguido pelo código do Brasil 55")
++
++    return _validar_digitos(digitos)
++
++
++def extrair_telefones(texto: str) -> list[str]:
++    """Extrai telefones válidos de texto livre, preservando a ordem."""
++    if not isinstance(texto, str) or not texto:
++        return []
++
++    encontrados: list[tuple[int, str]] = []
++    tamanho = len(texto)
++
++    # Cada candidato começa no início de um trecho numérico (ou em +55).
++    # Dentro dele só podem aparecer dígitos e separadores reconhecidos pelo
++    # normalizador. Pontuação como vírgula e barra encerra o candidato.
++    for inicio, caractere in enumerate(texto):
++        if caractere not in "+0123456789":
++            continue
++        if inicio > 0 and texto[inicio - 1].isascii() and texto[inicio - 1].isdigit():
++            continue
++        if inicio > 0 and texto[inicio - 1] == "+":
++            continue
++        if caractere == "+" and (inicio + 1 == tamanho or texto[inicio + 1] not in "0123456789"):
++            continue
++
++        fim = inicio + (1 if caractere == "+" else 0)
++        while fim < tamanho and (texto[fim] in "0123456789" or _SEPARADORES_RE.fullmatch(texto[fim])):
++            fim += 1
++        if fim < tamanho and texto[fim] == "+":
++            # Um + interno não pertence a um telefone válido.
++            continue
++
++        # Avalia cada prefixo terminado em dígito. Isso permite que um
++        # telefone venha antes de outro número separado apenas por espaços.
++        for final in range(inicio + 1, fim + 1):
++            if texto[final - 1] not in "0123456789":
++                continue
++            if final < tamanho and texto[final].isascii() and texto[final].isdigit():
++                continue
++            candidato = texto[inicio:final]
++            try:
++                telefone = normalizar_telefone(candidato)
++            except ValueError:
++                continue
++            encontrados.append((inicio, telefone))
++
++    resultado: list[str] = []
++    vistos: set[str] = set()
++    for _, telefone in sorted(encontrados, key=lambda item: item[0]):
++        if telefone not in vistos:
++            vistos.add(telefone)
++            resultado.append(telefone)
++    return resultado
+
+apply patch
+patch: completed
+/tmp/bench-qlojg4b1/SUPOSICOES.md
+diff --git a/SUPOSICOES.md b/SUPOSICOES.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..6e9957a05d86c41df12e2c881893fee7de58680f
+--- /dev/null
++++ b/SUPOSICOES.md
+@@ -0,0 +1,9 @@
++# Suposições adotadas
++
++- **DDD:** interpretei “11 a 99, exceto 20, 30, ..., 90” como DDD de dois dígitos sem zero em nenhuma posição. Assim, códigos como `11`, `19`, `21` e `99` passam; `10`, `20` e `01` não. O texto explicita a exclusão dos terminados em zero e não fornece uma lista oficial mais restrita.
++- **Código do país:** `55` é removido como código do Brasil apenas quando o total é de 12 ou 13 dígitos, deixando um DDD e número de tamanho válido. Um `+` explícito exige o código `55`; sem `+`, o prefixo é opcional. Isso resolve a possível ambiguidade entre o prefixo e um DDD/número local sem adivinhar nem cortar dígitos.
++- **Caracteres permitidos na normalização:** aceitei somente dígitos ASCII, `+` inicial opcional, espaços em branco, hífen, ponto e parênteses. Os separadores são descartados mesmo quando repetidos ou combinados; não exigi parênteses balanceados, pois o enunciado enfatiza a tolerância a formatações variadas. Vírgula e barra não são separadores de um único telefone.
++- **Espaços externos:** espaços em branco antes ou depois do telefone são ignorados, como é comum em campos copiados de formulários. Outros caracteres de texto tornam a entrada inválida para `normalizar_telefone`.
++- **Extração em texto livre:** vírgulas, barras, ponto e vírgula e palavras encerram trechos numéricos; espaços, hífens, pontos e parênteses podem fazer parte da formatação do candidato. Só aceito candidatos completos com tamanho e início válidos. Sequências contíguas maiores não são cortadas em telefones menores, evitando extrair falsos telefones de CPFs, códigos ou números longos.
++- **Tipos e ausência de texto:** `normalizar_telefone` levanta `ValueError` para entrada que não seja `str`; `extrair_telefones` devolve lista vazia para entrada que não seja texto ou seja vazia, pois não há telefone a extrair.
++- **Duplicatas:** a deduplicação é pelo telefone já normalizado e preserva a primeira ocorrência, conforme o requisito de não repetir resultados.
+diff --git a/telefones.py b/telefones.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..e044b266a4c5cdca689147f4223c6b225e51f999
+--- /dev/null
++++ b/telefones.py
+@@ -0,0 +1,102 @@
++"""Normalização e extração de telefones brasileiros."""
++
++import re
++
++
++_SEPARADORES_RE = re.compile(r"[ .()\t\n\r\v\f-]")
++
++
++def _validar_digitos(digitos: str) -> str:
++    """Valida DDD e número, aceitando prefixo nacional opcional 55."""
++    if digitos.startswith("55") and len(digitos) in (12, 13):
++        digitos = digitos[2:]
++
++    if len(digitos) not in (10, 11):
++        raise ValueError("telefone deve ter DDD e número com tamanho válido")
++
++    ddd, numero = digitos[:2], digitos[2:]
++    # DDDs vão de 11 a 99, exceto os terminados em zero.
++    if ddd[0] == "0" or ddd[1] == "0":
++        raise ValueError("DDD inválido")
++
++    if len(numero) == 8 and numero[0] in "2345":
++        return "+55" + digitos
++    if len(numero) == 9 and numero[0] == "9":
++        return "+55" + digitos
++    raise ValueError("número fixo ou celular inválido")
++
++
++def normalizar_telefone(texto: str) -> str:
++    """Converte um telefone brasileiro para o formato E.164."""
++    if not isinstance(texto, str):
++        raise ValueError("telefone deve ser texto")
++
++    valor = texto.strip()
++    if not valor:
++        raise ValueError("telefone vazio")
++
++    com_mais = valor.startswith("+")
++    if com_mais:
++        valor = valor[1:]
++    if "+" in valor:
++        raise ValueError("sinal de + só pode aparecer no início")
++
++    # O restante deve conter apenas dígitos ASCII e separadores de formatação.
++    digitos = _SEPARADORES_RE.sub("", valor)
++    if not digitos or re.fullmatch(r"[0-9]+", digitos) is None:
++        raise ValueError("texto não pode ser interpretado como telefone")
++    if com_mais and not digitos.startswith("55"):
++        raise ValueError("+ deve ser seguido pelo código do Brasil 55")
++
++    return _validar_digitos(digitos)
++
++
++def extrair_telefones(texto: str) -> list[str]:
++    """Extrai telefones válidos de texto livre, preservando a ordem."""
++    if not isinstance(texto, str) or not texto:
++        return []
++
++    encontrados: list[tuple[int, str]] = []
++    tamanho = len(texto)
++
++    # Cada candidato começa no início de um trecho numérico (ou em +55).
++    # Dentro dele só podem aparecer dígitos e separadores reconhecidos pelo
++    # normalizador. Pontuação como vírgula e barra encerra o candidato.
++    for inicio, caractere in enumerate(texto):
++        if caractere not in "+0123456789":
++            continue
++        if inicio > 0 and texto[inicio - 1].isascii() and texto[inicio - 1].isdigit():
++            continue
++        if inicio > 0 and texto[inicio - 1] == "+":
++            continue
++        if caractere == "+" and (inicio + 1 == tamanho or texto[inicio + 1] not in "0123456789"):
++            continue
++
++        fim = inicio + (1 if caractere == "+" else 0)
++        while fim < tamanho and (texto[fim] in "0123456789" or _SEPARADORES_RE.fullmatch(texto[fim])):
++            fim += 1
++        if fim < tamanho and texto[fim] == "+":
++            # Um + interno não pertence a um telefone válido.
++            continue
++
++        # Avalia cada prefixo terminado em dígito. Isso permite que um
++        # telefone venha antes de outro número separado apenas por espaços.
++        for final in range(inicio + 1, fim + 1):
++            if texto[final - 1] not in "0123456789":
++                continue
++            if final < tamanho and texto[final].isascii() and texto[final].isdigit():
++                continue
++            candidato = texto[inicio:final]
++            try:
++                telefone = normalizar_telefone(candidato)
++            except ValueError:
++                continue
++            encontrados.append((inicio, telefone))
++
++    resultado: list[str] = []
++    vistos: set[str] = set()
++    for _, telefone in sorted(encontrados, key=lambda item: item[0]):
++        if telefone not in vistos:
++            vistos.add(telefone)
++            resultado.append(telefone)
++    return resultado
+
+codex
+Implementei a normalização e a extração, e documentei as escolhas de interpretação em `SUPOSICOES.md`. Estou revisando agora os arquivos criados e os limites do parser.
+exec
+/bin/bash -lc "sed -n '1,240p' telefones.py && sed -n '1,200p' SUPOSICOES.md && git status --short" in /tmp/bench-qlojg4b1
+ exited 128 in 0ms:
+"""Normalização e extração de telefones brasileiros."""
+
+import re
+
+
+_SEPARADORES_RE = re.compile(r"[ .()\t\n\r\v\f-]")
+
+
+def _validar_digitos(digitos: str) -> str:
+    """Valida DDD e número, aceitando prefixo nacional opcional 55."""
+    if digitos.startswith("55") and len(digitos) in (12, 13):
+        digitos = digitos[2:]
+
+    if len(digitos) not in (10, 11):
+        raise ValueError("telefone deve ter DDD e número com tamanho válido")
+
+    ddd, numero = digitos[:2], digitos[2:]
+    # DDDs vão de 11 a 99, exceto os terminados em zero.
+    if ddd[0] == "0" or ddd[1] == "0":
+        raise ValueError("DDD inválido")
+
+    if len(numero) == 8 and numero[0] in "2345":
+        return "+55" + digitos
+    if len(numero) == 9 and numero[0] == "9":
+        return "+55" + digitos
+    raise ValueError("número fixo ou celular inválido")
+
+
+def normalizar_telefone(texto: str) -> str:
+    """Converte um telefone brasileiro para o formato E.164."""
+    if not isinstance(texto, str):
+        raise ValueError("telefone deve ser texto")
+
+    valor = texto.strip()
+    if not valor:
+        raise ValueError("telefone vazio")
+
+    com_mais = valor.startswith("+")
+    if com_mais:
+        valor = valor[1:]
+    if "+" in valor:
+        raise ValueError("sinal de + só pode aparecer no início")
+
+    # O restante deve conter apenas dígitos ASCII e separadores de formatação.
+    digitos = _SEPARADORES_RE.sub("", valor)
+    if not digitos or re.fullmatch(r"[0-9]+", digitos) is None:
+        raise ValueError("texto não pode ser interpretado como telefone")
+    if com_mais and not digitos.startswith("55"):
+        raise ValueError("+ deve ser seguido pelo código do Brasil 55")
+
+    return _validar_digitos(digitos)
+
+
+def extrair_telefones(texto: str) -> list[str]:
+    """Extrai telefones válidos de texto livre, preservando a ordem."""
+    if not isinstance(texto, str) or not texto:
+        return []
+
+    encontrados: list[tuple[int, str]] = []
+    tamanho = len(texto)
+
+    # Cada candidato começa no início de um trecho numérico (ou em +55).
+    # Dentro dele só podem aparecer dígitos e separadores reconhecidos pelo
+    # normalizador. Pontuação como vírgula e barra encerra o candidato.
+    for inicio, caractere in enumerate(texto):
+        if caractere not in "+0123456789":
+            continue
+        if inicio > 0 and texto[inicio - 1].isascii() and texto[inicio - 1].isdigit():
+            continue
+        if inicio > 0 and texto[inicio - 1] == "+":
+            continue
+        if caractere == "+" and (inicio + 1 == tamanho or texto[inicio + 1] not in "0123456789"):
+            continue
+
+        fim = inicio + (1 if caractere == "+" else 0)
+        while fim < tamanho and (texto[fim] in "0123456789" or _SEPARADORES_RE.fullmatch(texto[fim])):
+            fim += 1
+        if fim < tamanho and texto[fim] == "+":
+            # Um + interno não pertence a um telefone válido.
+            continue
+
+        # Avalia cada prefixo terminado em dígito. Isso permite que um
+        # telefone venha antes de outro número separado apenas por espaços.
+        for final in range(inicio + 1, fim + 1):
+            if texto[final - 1] not in "0123456789":
+                continue
+            if final < tamanho and texto[final].isascii() and texto[final].isdigit():
+                continue
+            candidato = texto[inicio:final]
+            try:
+                telefone = normalizar_telefone(candidato)
+            except ValueError:
+                continue
+            encontrados.append((inicio, telefone))
+
+    resultado: list[str] = []
+    vistos: set[str] = set()
+    for _, telefone in sorted(encontrados, key=lambda item: item[0]):
+        if telefone not in vistos:
+            vistos.add(telefone)
+            resultado.append(telefone)
+    return resultado
+# Suposições adotadas
+
+- **DDD:** interpretei “11 a 99, exceto 20, 30, ..., 90” como DDD de dois dígitos sem zero em nenhuma posição. Assim, códigos como `11`, `19`, `21` e `99` passam; `10`, `20` e `01` não. O texto explicita a exclusão dos terminados em zero e não fornece uma lista oficial mais restrita.
+- **Código do país:** `55` é removido como código do Brasil apenas quando o total é de 12 ou 13 dígitos, deixando um DDD e número de tamanho válido. Um `+` explícito exige o código `55`; sem `+`, o prefixo é opcional. Isso resolve a possível ambiguidade entre o prefixo e um DDD/número local sem adivinhar nem cortar dígitos.
+- **Caracteres permitidos na normalização:** aceitei somente dígitos ASCII, `+` inicial opcional, espaços em branco, hífen, ponto e parênteses. Os separadores são descartados mesmo quando repetidos ou combinados; não exigi parênteses balanceados, pois o enunciado enfatiza a tolerância a formatações variadas. Vírgula e barra não são separadores de um único telefone.
+- **Espaços externos:** espaços em branco antes ou depois do telefone são ignorados, como é comum em campos copiados de formulários. Outros caracteres de texto tornam a entrada inválida para `normalizar_telefone`.
+- **Extração em texto livre:** vírgulas, barras, ponto e vírgula e palavras encerram trechos numéricos; espaços, hífens, pontos e parênteses podem fazer parte da formatação do candidato. Só aceito candidatos completos com tamanho e início válidos. Sequências contíguas maiores não são cortadas em telefones menores, evitando extrair falsos telefones de CPFs, códigos ou números longos.
+- **Tipos e ausência de texto:** `normalizar_telefone` levanta `ValueError` para entrada que não seja `str`; `extrair_telefones` devolve lista vazia para entrada que não seja texto ou seja vazia, pois não há telefone a extrair.
+- **Duplicatas:** a deduplicação é pelo telefone já normalizado e preserva a primeira ocorrência, conforme o requisito de não repetir resultados.
+fatal: not a git repository (or any parent up to mount point /tmp)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+
+apply patch
+patch: completed
+/tmp/bench-qlojg4b1/telefones.py
+diff --git a/SUPOSICOES.md b/SUPOSICOES.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..6e9957a05d86c41df12e2c881893fee7de58680f
+--- /dev/null
++++ b/SUPOSICOES.md
+@@ -0,0 +1,9 @@
++# Suposições adotadas
++
++- **DDD:** interpretei “11 a 99, exceto 20, 30, ..., 90” como DDD de dois dígitos sem zero em nenhuma posição. Assim, códigos como `11`, `19`, `21` e `99` passam; `10`, `20` e `01` não. O texto explicita a exclusão dos terminados em zero e não fornece uma lista oficial mais restrita.
++- **Código do país:** `55` é removido como código do Brasil apenas quando o total é de 12 ou 13 dígitos, deixando um DDD e número de tamanho válido. Um `+` explícito exige o código `55`; sem `+`, o prefixo é opcional. Isso resolve a possível ambiguidade entre o prefixo e um DDD/número local sem adivinhar nem cortar dígitos.
++- **Caracteres permitidos na normalização:** aceitei somente dígitos ASCII, `+` inicial opcional, espaços em branco, hífen, ponto e parênteses. Os separadores são descartados mesmo quando repetidos ou combinados; não exigi parênteses balanceados, pois o enunciado enfatiza a tolerância a formatações variadas. Vírgula e barra não são separadores de um único telefone.
++- **Espaços externos:** espaços em branco antes ou depois do telefone são ignorados, como é comum em campos copiados de formulários. Outros caracteres de texto tornam a entrada inválida para `normalizar_telefone`.
++- **Extração em texto livre:** vírgulas, barras, ponto e vírgula e palavras encerram trechos numéricos; espaços, hífens, pontos e parênteses podem fazer parte da formatação do candidato. Só aceito candidatos completos com tamanho e início válidos. Sequências contíguas maiores não são cortadas em telefones menores, evitando extrair falsos telefones de CPFs, códigos ou números longos.
++- **Tipos e ausência de texto:** `normalizar_telefone` levanta `ValueError` para entrada que não seja `str`; `extrair_telefones` devolve lista vazia para entrada que não seja texto ou seja vazia, pois não há telefone a extrair.
++- **Duplicatas:** a deduplicação é pelo telefone já normalizado e preserva a primeira ocorrência, conforme o requisito de não repetir resultados.
+diff --git a/telefones.py b/telefones.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..dce796d94adbacc7823f0094964533011367feb5
+--- /dev/null
++++ b/telefones.py
+@@ -0,0 +1,102 @@
++"""Normalização e extração de telefones brasileiros."""
++
++import re
++
++
++_SEPARADORES_RE = re.compile(r"[ .()\t\n\r\v\f-]")
++
++
++def _validar_digitos(digitos: str) -> str:
++    """Valida DDD e número, aceitando prefixo nacional opcional 55."""
++    if digitos.startswith("55") and len(digitos) in (12, 13):
++        digitos = digitos[2:]
++
++    if len(digitos) not in (10, 11):
++        raise ValueError("telefone deve ter DDD e número com tamanho válido")
++
++    ddd, numero = digitos[:2], digitos[2:]
++    # DDDs vão de 11 a 99, exceto os terminados em zero.
++    if ddd[0] == "0" or ddd[1] == "0":
++        raise ValueError("DDD inválido")
++
++    if len(numero) == 8 and numero[0] in "2345":
++        return "+55" + digitos
++    if len(numero) == 9 and numero[0] == "9":
++        return "+55" + digitos
++    raise ValueError("número fixo ou celular inválido")
++
++
++def normalizar_telefone(texto: str) -> str:
++    """Converte um telefone brasileiro para o formato E.164."""
++    if not isinstance(texto, str):
++        raise ValueError("telefone deve ser texto")
++
++    valor = texto.strip()
++    if not valor:
++        raise ValueError("telefone vazio")
++
++    com_mais = valor.startswith("+")
++    if com_mais:
++        valor = valor[1:]
++    if "+" in valor:
++        raise ValueError("sinal de + só pode aparecer no início")
++
++    # O restante deve conter apenas dígitos ASCII e separadores de formatação.
++    digitos = _SEPARADORES_RE.sub("", valor)
++    if not digitos or re.fullmatch(r"[0-9]+", digitos) is None:
++        raise ValueError("texto não pode ser interpretado como telefone")
++    if com_mais and not digitos.startswith("55"):
++        raise ValueError("+ deve ser seguido pelo código do Brasil 55")
++
++    return _validar_digitos(digitos)
++
++
++def extrair_telefones(texto: str) -> list[str]:
++    """Extrai telefones válidos de texto livre, preservando a ordem."""
++    if not isinstance(texto, str) or not texto:
++        return []
++
++    encontrados: list[tuple[int, str]] = []
++    tamanho = len(texto)
++
++    # Cada candidato começa no início de um trecho numérico (ou em +55).
++    # Dentro dele só podem aparecer dígitos e separadores reconhecidos pelo
++    # normalizador. Pontuação como vírgula e barra encerra o candidato.
++    for inicio, caractere in enumerate(texto):
++        if caractere not in "+0123456789":
++            continue
++        if inicio > 0 and texto[inicio - 1].isdigit():
++            continue
++        if inicio > 0 and texto[inicio - 1] == "+":
++            continue
++        if caractere == "+" and (inicio + 1 == tamanho or texto[inicio + 1] not in "0123456789"):
++            continue
++
++        fim = inicio + (1 if caractere == "+" else 0)
++        while fim < tamanho and (texto[fim] in "0123456789" or _SEPARADORES_RE.fullmatch(texto[fim])):
++            fim += 1
++        if fim < tamanho and texto[fim] == "+":
++            # Um + interno não pertence a um telefone válido.
++            continue
++
++        # Avalia cada prefixo terminado em dígito. Isso permite que um
++        # telefone venha antes de outro número separado apenas por espaços.
++        for final in range(inicio + 1, fim + 1):
++            if texto[final - 1] not in "0123456789":
++                continue
++            if final < tamanho and texto[final].isdigit():
++                continue
++            candidato = texto[inicio:final]
++            try:
++                telefone = normalizar_telefone(candidato)
++            except ValueError:
++                continue
++            encontrados.append((inicio, telefone))
++
++    resultado: list[str] = []
++    vistos: set[str] = set()
++    for _, telefone in sorted(encontrados, key=lambda item: item[0]):
++        if telefone not in vistos:
++            vistos.add(telefone)
++            resultado.append(telefone)
++    return resultado
+
+codex
+Criei [telefones.py](/tmp/bench-qlojg4b1/telefones.py) com as funções de normalização e extração, incluindo validação do DDD e do tamanho do número. Registrei as decisões sobre casos ambíguos em [SUPOSICOES.md](/tmp/bench-qlojg4b1/SUPOSICOES.md).
+
+Não executei testes.
+tokens used
+19,027

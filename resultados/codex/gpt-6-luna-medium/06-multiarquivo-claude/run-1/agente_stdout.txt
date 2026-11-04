@@ -1,0 +1,1 @@
+Criei o pacote `biblioteca/` com os quatro arquivos solicitados: modelos e exceções, acervo, serviço de empréstimos e reexportações da API pública. A compilação dos módulos com `python3 -m compileall` foi concluída sem erros.

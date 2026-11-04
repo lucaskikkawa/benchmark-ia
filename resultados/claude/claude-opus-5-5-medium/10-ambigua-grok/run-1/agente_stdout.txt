@@ -1,0 +1,12 @@
+Criei os dois arquivos pedidos e testei a função à mão com todos os exemplos do enunciado. Todos deram o resultado esperado; não há uma suíte de testes no diretório.
+
+- **`solucao.py`**: a função `classificar_mensagem` atende a todo o núcleo fechado.
+  - `tamanho` é o `len(texto)` original. Por exemplo, `"\ud800"` dá 1 sem erro.
+  - `urgente` é verdadeiro só quando a substring exata `"URGENTE"` aparece. O lookalike cirílico dá `False`, e um texto de 100.000 caracteres com `"URGENTE"` no fim dá `True`.
+  - Só a string vazia recebe a categoria `"vazia"`.
+  - `None`, `bytes`, `bytearray` e `int` levantam `TypeError`.
+- **`SUPOSICOES.md`**: registra as decisões que tomei nos pontos em aberto, resumidas abaixo.
+  - **Categorias:** `reclamacao`, `pedido`, `duvida`, `elogio`, detectadas por palavras-chave em português casadas como palavra inteira. Texto com palavras que não casa nenhuma delas fica em `outro`. Texto sem nenhuma palavra (só espaços, pontuação ou emoji, ou `"\n"`) fica em `sem_conteudo`.
+  - **Empates:** quando o texto casa mais de uma categoria, vence a de maior prioridade: `reclamacao` > `pedido` > `duvida` > `elogio`. Um `?` sozinho, sem nenhuma palavra-chave, indica `duvida`.
+  - **Maiúsculas e acentos:** a classificação ignora os dois, mas só numa cópia interna do texto. A regra de `"URGENTE"` e o `tamanho` continuam usando o texto original.
+  - **Campo extra:** `categorias_casadas`, com todas as categorias que casaram, em ordem de prioridade.

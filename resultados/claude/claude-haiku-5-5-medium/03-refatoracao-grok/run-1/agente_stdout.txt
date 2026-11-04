@@ -1,0 +1,9 @@
+Refatorei `frete.py` conforme o `enunciado.md`. A tabela agora é `TabelaFrete.FAIXAS`, lida em cada chamada, e as três funções (`cotar`, `TabelaFrete.cotar` e `faixa_de_peso`) usam essa tabela. Não criei outros arquivos no diretório.
+
+Comparei a versão nova com a original em cerca de 241 mil combinações de entradas, válidas e inválidas, incluindo todos os pesos de 1 a 30000 com distâncias de borda. Exceções, valores e a ordem de validação batem. Os exemplos do enunciado também conferem, e a troca de `FAIXAS` em tempo de execução funciona. Esse script de comparação ficou em `/tmp`, fora do diretório.
+
+Escolhas que fiz:
+- **Ordem de validação preservada:** `cotar` checa os três tipos antes das faixas de peso e distância. Assim, uma entrada com dois erros levanta o mesmo erro de antes.
+- **`faixa_de_peso` valida só o peso**, como pede o enunciado.
+- **`cotar` delega para `TabelaFrete().cotar`**, então as duas saídas nunca divergem.
+- **`if expresso:` no lugar de `if expresso is True`:** equivalente, porque `expresso` já é garantido como `bool`.

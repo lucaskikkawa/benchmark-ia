@@ -1,0 +1,23 @@
+O script [`freq.py`](file:///tmp/bench-m087msyd/freq.py) foi implementado conforme as especificações descritas em [`enunciado.md`](file:///tmp/bench-m087msyd/enunciado.md).
+
+### Resumo da Implementação
+
+- **Argumentos via `argparse`**:
+  - `ARQUIVO`: caminho do arquivo UTF-8 ou `-` para leitura da entrada padrão (`stdin`).
+  - `-n N, --top N`: quantidade de palavras a exibir (validador inteiro `>= 1`, padrão `10`).
+  - `-m K, --min-len K`: comprimento mínimo de caracteres (validador inteiro `>= 1`, padrão `1`).
+  - `-i, --ignore-case`: conversão com `str.lower()`.
+  - `-x PALAVRA, --excluir PALAVRA`: palavras excluídas (com suporte a repetição via `action="append"`).
+  - `--formato {texto,json}`: formato de saída (padrão `texto`).
+
+- **Regras e Processamento**:
+  - Extração de palavras usando a regex `[^\W\d_]+` no texto original sem normalização Unicode.
+  - Aplicação de `str.lower()` caso `-i` esteja ativado (inclusive nas palavras excluídas por `-x`).
+  - Filtragem por comprimento (`len(w) >= K`) e lista de exclusão.
+  - Contagem via `collections.Counter` e ordenação por frequência decrescente com desempate alfabético crescente.
+  - Saídas em formato `texto` (`palavra\tcontagem`) e `json` (`[{"palavra": ..., "contagem": ...}]`), com tratamento correto para ausência de palavras (`texto` vazio e `json` emitindo `[]`).
+
+- **Códigos de Saída e Tratamento de Erros**:
+  - `0`: execução com sucesso.
+  - `2`: argumentos inválidos (emitidos nativamente pelo `argparse` em `stderr`).
+  - `1`: erros de I/O e decodificação UTF-8 estrita (imprimindo uma única linha começando com `erro: ` em `stderr` e nada em `stdout`).

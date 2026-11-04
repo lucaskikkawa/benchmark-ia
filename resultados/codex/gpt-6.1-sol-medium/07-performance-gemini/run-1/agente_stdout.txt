@@ -1,0 +1,3 @@
+Implementado em [otimizador.py](/tmp/bench-9ley9v6y/otimizador.py), com tempo e espaço O(N) e validação estrita dos inteiros.
+
+Verificado com testes exaustivos, tipos inválidos e listas de 350.000 elementos, executadas em até 0,071 segundo.

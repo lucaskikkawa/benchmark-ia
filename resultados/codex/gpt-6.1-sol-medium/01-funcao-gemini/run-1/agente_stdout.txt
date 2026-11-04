@@ -1,0 +1,3 @@
+Implementei `resumir_intervalos` em [solucao.py](/tmp/bench-0k42hds1/solucao.py).
+
+Verifiquei os exemplos, validação de tipos, imutabilidade, inteiros grandes e uma lista com 100.001 elementos. Todos os testes passaram.

@@ -1,0 +1,20 @@
+Criei a suíte de testes em `tests/`. Ela tem 135 testes e todos passam contra o `validador.py` original, em cerca de 0,1 s.
+
+**Arquivos:**
+- `tests/test_validador.py`: os testes.
+- `tests/conftest.py`: coloca a pasta pai de `tests/` no `sys.path`, para que `import validador` funcione quando a pasta for copiada para o diretório temporário do avaliador.
+
+**O que os testes cobrem:**
+- **Constante:** o conjunto tem exatamente os 14 caracteres permitidos.
+- **Construtor:** valores padrão (8 e 64) e valores personalizados.
+- **Comprimento:** os limites exatos de cada lado (7/8 e 64/65) no padrão e com vários `min_tam`/`max_tam` personalizados, maiores e menores que o padrão.
+- **Composição:** a falta de cada classe de caractere (maiúscula, minúscula, dígito, especial), incluindo maiúsculas e minúsculas Unicode como "É" e "é".
+- **Caracteres especiais:** cada um dos 14 permitidos sozinho, no início, no meio e no fim. Também verifico que nenhuma outra pontuação de `string.punctuation` conta, nem símbolos como `§`, `€` e `ç`.
+- **Espaços:** espaço comum, tab, `\n`, `\r`, `\x0b`, `\x0c`, NBSP e `\u2003`, em várias posições.
+- **Repetição:** três ou mais caracteres iguais no início, no meio e exatamente no fim; dois iguais seguidos e repetições não consecutivas continuam válidos.
+- **Acúmulo de erros:** quando várias regras são violadas, a lista tem pelo menos um erro por regra. Os testes nunca dependem do texto nem da ordem das mensagens.
+- **Força:** os limites 9/10 e 13/14, a resposta `"invalida"` para cada tipo de violação, e os limites personalizados afetando a força.
+
+**Verificação:** como os 12 mutantes do avaliador não estão disponíveis, escrevi 24 mutantes próprios do mesmo tipo descrito no enunciado (off-by-one, regras removidas, conjunto de especiais alterado, faixas de força deslocadas). A suíte eliminou 23. O que sobreviveu é equivalente ao original, porque só insere um `if False: pass` sem efeito, e por isso nenhum teste consegue pegá-lo. Os mutantes foram criados numa pasta temporária, que já apaguei.
+
+Uma ressalva: o teste `test_contagem_erros_individual` exige exatamente **1** erro quando só uma regra é violada. O original faz isso, mas o enunciado não garante esse número. Se a correção usar uma versão do `validador.py` que dê mais de uma mensagem para uma única violação, esse teste falha.

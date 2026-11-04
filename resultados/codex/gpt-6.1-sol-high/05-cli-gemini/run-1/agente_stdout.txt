@@ -1,0 +1,4 @@
+Implementado em [contatexto.py](/tmp/bench-a2f9cnb4/contatexto.py), conforme o enunciado.
+
+As 24 verificações passaram, cobrindo métricas, ranking, JSON, gravação e códigos de erro. Neste ambiente, execute com `python3`.
+

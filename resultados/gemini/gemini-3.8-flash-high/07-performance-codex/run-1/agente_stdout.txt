@@ -1,0 +1,7 @@
+A tarefa foi resolvida com a criação do arquivo [`pares.py`](file:///tmp/bench-5drz6xf1/pares.py).
+
+### Detalhes da Implementação
+- **Contagem em $O(n)$ de tempo e $O(k)$ de memória**: utiliza `collections.Counter` para acumular frequências diretamente do iterável sem materializar listas completas em memória.
+- **Pares com elementos iguais ($x + x = \text{alvo}$)**: quando $\text{alvo}$ é par, calcula as combinações $\frac{c(c-1)}{2}$ para $x = \text{alvo} // 2$.
+- **Pares com elementos distintos ($x < \text{alvo} - x$)**: itera pelas chaves distintas multiplicando as contagens de $x$ e seu complemento $\text{alvo} - x$ uma única vez.
+- **Suporte a geradores e precisão arbitrária**: aceita geradores de passagem única sem alterar listas de entrada e opera com inteiros de precisão arbitrária (excedendo 64 bits).

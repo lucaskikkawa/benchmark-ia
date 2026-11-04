@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-haiku-5-5-high/07-performance-grok/run-1",
+ "empresa": "claude",
+ "modelo": "claude-haiku-5-5",
+ "esforco": "high",
+ "tarefa": "07-performance-grok",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 19.486,
+ "testes_passados": 12,
+ "testes_total": 12,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Conta combinações iguais e produtos cruzados sem duplicar pares; valida tipos e preserva a lista. Usa Counter linear, mas validação e contagem estão na mesma função e a docstring não menciona duplicatas.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Boa solucao com Counter e validacoes completas, mas validacao e contagem estao na mesma funcao e a docstring nao detalha tipos nem combinacoes de duplicatas.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 9.4,
+ "reexecucao_testes": {
+  "total": 12,
+  "passados": 12,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.4,
+ "nota_antiga_com_penalidade": 9.4
+}

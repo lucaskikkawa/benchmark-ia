@@ -1,0 +1,10 @@
+Implementei o pacote `estoque/` conforme o `enunciado.md`, editando os quatro módulos existentes e sem criar outros.
+
+- **`modelos.py`**: `Movimento` é uma dataclass `frozen=True` com `sku: str` e `delta: int`, sem validação no construtor.
+- **`operacoes.py`**: `calcular_saldos` copia `iniciais` (sem alterar o original) e valida se algum saldo inicial é negativo. Depois aplica os movimentos na ordem, lançando `ValueError` se um saldo intermediário ficar negativo. Entradas de saldo zero e SKUs iniciais sem movimentos são mantidos, e sempre retorna um dict novo.
+- **`persistencia.py`**: `carregar_movimentos` lê JSON UTF-8 e valida a forma da lista, a presença de `sku` e `delta`, SKU com ao menos um caractere não branco (preservado sem strip), e `delta` inteiro que não seja `bool`. Campos extras são ignorados. Erros de validação viram `ValueError`, e o `JSONDecodeError` já é subclasse dela.
+- **`__init__.py`**: mantido como estava, pois já exportava as três APIs.
+
+Fiz um smoke test isolado (`python3 -I`) cobrindo igualdade de `Movimento`, saldos negativos, cópia de `iniciais`, entrada vazia, casos inválidos de JSON e carga de 20.000 movimentos. Tudo passou. Não adicionei um arquivo de testes ao diretório, e removi o `__pycache__` gerado pela execução.
+
+Escolha minha: a validação de saldos iniciais negativos é feita antes de aplicar qualquer movimento, inclusive para SKUs sem movimentos, já que o enunciado trata saldo inicial negativo como erro.

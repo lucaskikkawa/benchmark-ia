@@ -1,0 +1,15 @@
+I criei `cliente_resiliente.py` com `ApiError` e `ClienteResiliente`, conforme o `enunciado.md`. Testei com um script rápido usando o `FakeApiServer`, e todos os casos passaram. Não escrevi uma suíte de testes no diretório.
+
+**O que o teste cobriu:**
+- **Recuperação após falhas:** com 2 falhas de rede, o cliente tentou de novo e retornou os dados, esperando 0.05 e depois 0.1 segundos.
+- **503 que não se resolve:** depois de 3 tentativas, levanta `ApiError` com `status_code=503`.
+- **Timeout que não se resolve:** depois de 3 tentativas, levanta `ApiError` com `status_code=None`.
+- **404:** levanta `ApiError` com `status_code=404` logo na primeira chamada, sem repetir.
+- **Validação dos parâmetros:** levantam `ValueError` os casos `max_tentativas=0`, `True` e `2.0`, `backoff_base=0`, `timeout=True` e `backoff_fator='2'`.
+
+**Escolhas que tomei onde o enunciado deixa margem:**
+- **Faixa 5xx:** o cliente repete qualquer status de 500 a 599, e não só 500, 502, 503 e 504. Li os quatro códigos citados como exemplos. Se a intenção era limitar a esses quatro, um 501 vai ser repetido quando não deveria; para mudar, basta uma linha em `_status_retentavel`.
+- **Validação extra:** além do exigido, `NaN` também é rejeitado em `backoff_base`, `backoff_fator` e `timeout`, e `sleep_fn` precisa ser chamável. Os dois casos levantam `ValueError`.
+- **Mensagem do erro:** `ApiError` guarda o texto em `mensagem` e em `message`, e `str(erro)` devolve só esse texto.
+
+Depois do meu teste, o arquivo foi alterado no disco por outra fonte, e não li a versão atual. Os resultados acima valem para a versão que eu escrevi.

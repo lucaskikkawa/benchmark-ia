@@ -1,0 +1,13 @@
+Criei `cliente.py` com `baixar_pedidos` e `TempoEsgotado`, conforme o enunciado. `loja_api.py` não foi alterado.
+
+Verifiquei com um script temporário fora do diretório (já removido), cobrindo:
+- `flaky-` com retry e backoff: sucesso na 3ª tentativa, com 0,03 s de backoff.
+- `timeout-` com `timeout_s=0.2`: três timeouts levantam `TempoEsgotado` em ~0,6 s, sem esperar os 1,2 s do `ATRASO_S`.
+- `slow-` com seed ímpar: duas esperas abandonadas e a terceira devolve o pedido.
+- `missing-` e `down-`: `LojaErroCliente` propaga sem retry; `down-` com última tentativa levanta `LojaIndisponivel`.
+- Lista vazia, `tuple` e validações de tipo e valor se comportam como descrito.
+
+Decisões que tomei:
+- **Timeout:** cada chamada roda numa `threading.Thread` daemon com `join(timeout_s)`. Se a thread ainda estiver viva, o cliente abandona a espera e levanta `TempoEsgotado`. A thread abandonada continua dormindo em segundo plano até acabar, o que é inevitável com uma API síncrona.
+- **Exceções:** `LojaErroCliente` e `LojaIndisponivel` são importadas de `loja_api`. Não é biblioteca externa; é o módulo que o enunciado fornece.
+- **Validação:** feita antes de qualquer chamada à API. `ids` é checado com `type(ids) is not list`, então subclasses de `list` também são rejeitadas.

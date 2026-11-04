@@ -1,0 +1,777 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-offw5fht
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189ba-3c9a-71c3-a8c7-451207e4cf61
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:14:07.918065Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para entender o que precisa ser implementado. Depois faço as alterações aqui e verifico o resultado conforme solicitado no enunciado.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' | head -100 && cat enunciado.md" in /tmp/bench-offw5fht
+ succeeded in 0ms:
+/tmp/bench-offw5fht
+processador.py
+enunciado.md
+# 03 - Refatoração do Processador de Pedidos
+
+Você recebeu um código legado funcional em `processador.py` com a função `processar_pedidos`. Embora o código funcione para casos básicos, ele é monolítico, desorganizado, sem tipos e viola o princípio de responsabilidade única.
+
+Sua tarefa é refatorar `processador.py` na raiz do diretório de trabalho, mantendo a interface e o formato de retorno da função `processar_pedidos` e extraindo uma arquitetura limpa e orientada a objetos com as classes e estruturas detalhadas abaixo. Nos cálculos, prevalecem as regras detalhadas a seguir, inclusive o arredondamento por item antes de somar os subtotais e pesos.
+
+## Classes e Métodos Exigidos
+
+O arquivo `processador.py` deve definir e exportar:
+
+### 1. `ItemPedido` (dataclass ou classe)
+- Atributos:
+  - `nome: str`
+  - `preco: float`
+  - `quantidade: int = 1`
+  - `peso_kg: float = 0.5`
+- Validações:
+  - `preco >= 0.0`, `quantidade >= 1`, `peso_kg >= 0.0`; caso contrário, levanta `ValueError`.
+- Propriedades ou métodos:
+  - `subtotal`: retorna `round(preco * quantidade, 2)`
+  - `peso_total`: retorna `round(peso_kg * quantidade, 3)`
+
+### 2. `CalculadoraFrete`
+- Método:
+  - `calcular(tipo: str, peso_kg: float, valor_total: float) -> float` (método de classe ou estático):
+    - Se `valor_total < 0` ou `peso_kg < 0`, levanta `ValueError`.
+    - Se `valor_total >= 200.0`, o frete é grátis: retorna `0.0`.
+    - Caso contrário, calcula conforme o tipo de frete (case-insensitive):
+      - `"padrao"`: `round(10.0 + peso_kg * 1.5, 2)`
+      - `"expresso"`: `round(25.0 + peso_kg * 3.0, 2)`
+      - `"economico"`: `round(5.0 + peso_kg * 0.8, 2)`
+      - Qualquer outro tipo: levanta `ValueError(f"Tipo de frete desconhecido: {tipo}")`.
+
+### 3. `CalculadoraDesconto`
+- Método:
+  - `calcular(categoria_cliente: str, valor_total: float) -> float` (método de classe ou estático):
+    - Se `valor_total < 0`, levanta `ValueError`.
+    - Conforme a categoria do cliente (case-insensitive):
+      - `"bronze"`: `0.0`
+      - `"prata"`: `round(0.05 * valor_total, 2)` se `valor_total >= 100.0`, senão `0.0`
+      - `"ouro"`: `round(0.10 * valor_total, 2)` se `valor_total >= 50.0`, senão `round(0.05 * valor_total, 2)`
+      - `"vip"`: `round(0.15 * valor_total, 2)` incondicional
+      - Outras categorias: `0.0`
+
+### 4. `Pedido` (dataclass ou classe)
+- Atributos:
+  - `id: str`
+  - `cliente: str`
+  - `categoria_cliente: str = "bronze"`
+  - `itens: list[ItemPedido]` (padrão lista vazia)
+  - `tipo_frete: str = "padrao"`
+- Métodos:
+  - `calcular_total_itens() -> float`: soma dos subtotais dos itens (`sum(item.subtotal for item in self.itens)`), arredondado em 2 casas.
+  - `calcular_peso_total() -> float`: soma dos pesos totais dos itens (`sum(item.peso_total for item in self.itens)`), arredondado em 3 casas.
+  - `calcular_desconto() -> float`: delega para `CalculadoraDesconto`.
+  - `calcular_frete() -> float`: delega para `CalculadoraFrete`.
+  - `calcular_total_final() -> float`: `round(total_itens - desconto + frete, 2)`.
+  - `para_dict() -> dict`:
+    ```python
+    {
+        "id": self.id,
+        "cliente": self.cliente,
+        "subtotal": self.calcular_total_itens(),
+        "desconto": self.calcular_desconto(),
+        "frete": self.calcular_frete(),
+        "total": self.calcular_total_final(),
+    }
+    ```
+
+### 5. `processar_pedidos(pedidos: list[dict]) -> list[dict]`
+- Recebe a lista de pedidos no formato de dicionário bruto, instancia as entidades modeladas e retorna a lista de dicionários resultantes de cada `pedido.para_dict()`.
+- Preserva a ordem dos pedidos recebidos. Cada dicionário usa os mesmos nomes de atributos de `Pedido` e `ItemPedido`; campos opcionais ausentes assumem os padrões dessas classes.
+- Pedidos com lista `itens` ausente ou vazia devem ser processados normalmente (com subtotal 0.0, desconto 0.0 e frete calculado para peso 0.0).
+
+exec
+/bin/bash -lc 'cat processador.py' in /tmp/bench-offw5fht
+ succeeded in 0ms:
+# Código legado funcional, mas macarrônico, sem classes e difícil de manter.
+
+def processar_pedidos(pedidos: list[dict]) -> list[dict]:
+    out = []
+    for p in pedidos:
+        pid = p["id"]
+        c = p["cliente"]
+        cat = str(p.get("categoria_cliente", "bronze")).lower()
+        items = p.get("itens", [])
+        tf = str(p.get("tipo_frete", "padrao")).lower()
+
+        # calcula subtotal e peso total (assume peso 0.5kg por item se não fornecido)
+        sub = 0.0
+        peso_total = 0.0
+        for it in items:
+            pr = float(it["preco"])
+            q = int(it.get("quantidade", 1))
+            sub += pr * q
+            peso_total += float(it.get("peso_kg", 0.5)) * q
+        sub = round(sub, 2)
+
+        # calcula desconto
+        desc = 0.0
+        if cat == "bronze":
+            desc = 0.0
+        elif cat == "prata":
+            if sub >= 100.0:
+                desc = 0.05 * sub
+            else:
+                desc = 0.0
+        elif cat == "ouro":
+            if sub >= 50.0:
+                desc = 0.10 * sub
+            else:
+                desc = 0.05 * sub
+        elif cat == "vip":
+            desc = 0.15 * sub
+        else:
+            desc = 0.0
+        desc = round(desc, 2)
+
+        # calcula frete
+        if sub >= 200.0:
+            fr = 0.0
+        else:
+            if tf == "padrao":
+                fr = 10.0 + peso_total * 1.5
+            elif tf == "expresso":
+                fr = 25.0 + peso_total * 3.0
+            elif tf == "economico":
+                fr = 5.0 + peso_total * 0.8
+            else:
+                raise ValueError(f"Tipo de frete desconhecido: {tf}")
+        fr = round(fr, 2)
+
+        tot = round(sub - desc + fr, 2)
+        out.append({
+            "id": pid,
+            "cliente": c,
+            "subtotal": sub,
+            "desconto": desc,
+            "frete": fr,
+            "total": tot
+        })
+    return out
+
+codex
+O legado calcula os valores diretamente no loop. Vou separar os cálculos nas classes exigidas e fazer o `Pedido` usar subtotal e peso já arredondados por item, como o enunciado determina.
+apply patch
+patch: completed
+/tmp/bench-offw5fht/processador.py
+diff --git a/processador.py b/processador.py
+deleted file mode 100644
+index af3bf62d018ea97ca83c5907dbdd7dc2c305c96b..0000000000000000000000000000000000000000
+--- a/processador.py
++++ /dev/null
+@@ -1,65 +0,0 @@
+-# Código legado funcional, mas macarrônico, sem classes e difícil de manter.
+-
+-def processar_pedidos(pedidos: list[dict]) -> list[dict]:
+-    out = []
+-    for p in pedidos:
+-        pid = p["id"]
+-        c = p["cliente"]
+-        cat = str(p.get("categoria_cliente", "bronze")).lower()
+-        items = p.get("itens", [])
+-        tf = str(p.get("tipo_frete", "padrao")).lower()
+-
+-        # calcula subtotal e peso total (assume peso 0.5kg por item se não fornecido)
+-        sub = 0.0
+-        peso_total = 0.0
+-        for it in items:
+-            pr = float(it["preco"])
+-            q = int(it.get("quantidade", 1))
+-            sub += pr * q
+-            peso_total += float(it.get("peso_kg", 0.5)) * q
+-        sub = round(sub, 2)
+-
+-        # calcula desconto
+-        desc = 0.0
+-        if cat == "bronze":
+-            desc = 0.0
+-        elif cat == "prata":
+-            if sub >= 100.0:
+-                desc = 0.05 * sub
+-            else:
+-                desc = 0.0
+-        elif cat == "ouro":
+-            if sub >= 50.0:
+-                desc = 0.10 * sub
+-            else:
+-                desc = 0.05 * sub
+-        elif cat == "vip":
+-            desc = 0.15 * sub
+-        else:
+-            desc = 0.0
+-        desc = round(desc, 2)
+-
+-        # calcula frete
+-        if sub >= 200.0:
+-            fr = 0.0
+-        else:
+-            if tf == "padrao":
+-                fr = 10.0 + peso_total * 1.5
+-            elif tf == "expresso":
+-                fr = 25.0 + peso_total * 3.0
+-            elif tf == "economico":
+-                fr = 5.0 + peso_total * 0.8
+-            else:
+-                raise ValueError(f"Tipo de frete desconhecido: {tf}")
+-        fr = round(fr, 2)
+-
+-        tot = round(sub - desc + fr, 2)
+-        out.append({
+-            "id": pid,
+-            "cliente": c,
+-            "subtotal": sub,
+-            "desconto": desc,
+-            "frete": fr,
+-            "total": tot
+-        })
+-    return out
+
+apply patch
+patch: completed
+/tmp/bench-offw5fht/processador.py
+diff --git a/processador.py b/processador.py
+index af3bf62d018ea97ca83c5907dbdd7dc2c305c96b..845d1d34b0530b3a622bf647ede273e8b76db39a
+--- a/processador.py
++++ b/processador.py
+@@ -1,65 +1,128 @@
+-# Código legado funcional, mas macarrônico, sem classes e difícil de manter.
++from dataclasses import dataclass, field
++
++
++@dataclass
++class ItemPedido:
++    nome: str
++    preco: float
++    quantidade: int = 1
++    peso_kg: float = 0.5
+ 
+-def processar_pedidos(pedidos: list[dict]) -> list[dict]:
+-    out = []
+-    for p in pedidos:
+-        pid = p["id"]
+-        c = p["cliente"]
+-        cat = str(p.get("categoria_cliente", "bronze")).lower()
+-        items = p.get("itens", [])
+-        tf = str(p.get("tipo_frete", "padrao")).lower()
++    def __post_init__(self) -> None:
++        if self.preco < 0.0:
++            raise ValueError("preco deve ser maior ou igual a 0.0")
++        if self.quantidade < 1:
++            raise ValueError("quantidade deve ser maior ou igual a 1")
++        if self.peso_kg < 0.0:
++            raise ValueError("peso_kg deve ser maior ou igual a 0.0")
++
++    @property
++    def subtotal(self) -> float:
++        return round(self.preco * self.quantidade, 2)
+ 
+-        # calcula subtotal e peso total (assume peso 0.5kg por item se não fornecido)
+-        sub = 0.0
+-        peso_total = 0.0
+-        for it in items:
+-            pr = float(it["preco"])
+-            q = int(it.get("quantidade", 1))
+-            sub += pr * q
+-            peso_total += float(it.get("peso_kg", 0.5)) * q
+-        sub = round(sub, 2)
++    @property
++    def peso_total(self) -> float:
++        return round(self.peso_kg * self.quantidade, 3)
+ 
+-        # calcula desconto
+-        desc = 0.0
+-        if cat == "bronze":
+-            desc = 0.0
+-        elif cat == "prata":
+-            if sub >= 100.0:
+-                desc = 0.05 * sub
+-            else:
+-                desc = 0.0
+-        elif cat == "ouro":
+-            if sub >= 50.0:
+-                desc = 0.10 * sub
+-            else:
+-                desc = 0.05 * sub
+-        elif cat == "vip":
+-            desc = 0.15 * sub
+-        else:
+-            desc = 0.0
+-        desc = round(desc, 2)
+ 
+-        # calcula frete
+-        if sub >= 200.0:
+-            fr = 0.0
+-        else:
+-            if tf == "padrao":
+-                fr = 10.0 + peso_total * 1.5
+-            elif tf == "expresso":
+-                fr = 25.0 + peso_total * 3.0
+-            elif tf == "economico":
+-                fr = 5.0 + peso_total * 0.8
+-            else:
+-                raise ValueError(f"Tipo de frete desconhecido: {tf}")
+-        fr = round(fr, 2)
++class CalculadoraFrete:
++    @staticmethod
++    def calcular(tipo: str, peso_kg: float, valor_total: float) -> float:
++        if valor_total < 0:
++            raise ValueError("valor_total deve ser maior ou igual a 0")
++        if peso_kg < 0:
++            raise ValueError("peso_kg deve ser maior ou igual a 0")
++        if valor_total >= 200.0:
++            return 0.0
+ 
+-        tot = round(sub - desc + fr, 2)
+-        out.append({
+-            "id": pid,
+-            "cliente": c,
+-            "subtotal": sub,
+-            "desconto": desc,
+-            "frete": fr,
+-            "total": tot
+-        })
+-    return out
++        tipo_normalizado = tipo.lower()
++        if tipo_normalizado == "padrao":
++            return round(10.0 + peso_kg * 1.5, 2)
++        if tipo_normalizado == "expresso":
++            return round(25.0 + peso_kg * 3.0, 2)
++        if tipo_normalizado == "economico":
++            return round(5.0 + peso_kg * 0.8, 2)
++        raise ValueError(f"Tipo de frete desconhecido: {tipo}")
++
++
++class CalculadoraDesconto:
++    @staticmethod
++    def calcular(categoria_cliente: str, valor_total: float) -> float:
++        if valor_total < 0:
++            raise ValueError("valor_total deve ser maior ou igual a 0")
++
++        categoria = categoria_cliente.lower()
++        if categoria == "bronze":
++            return 0.0
++        if categoria == "prata":
++            return round(0.05 * valor_total, 2) if valor_total >= 100.0 else 0.0
++        if categoria == "ouro":
++            percentual = 0.10 if valor_total >= 50.0 else 0.05
++            return round(percentual * valor_total, 2)
++        if categoria == "vip":
++            return round(0.15 * valor_total, 2)
++        return 0.0
++
++
++@dataclass
++class Pedido:
++    id: str
++    cliente: str
++    categoria_cliente: str = "bronze"
++    itens: list[ItemPedido] = field(default_factory=list)
++    tipo_frete: str = "padrao"
++
++    def calcular_total_itens(self) -> float:
++        return round(sum(item.subtotal for item in self.itens), 2)
++
++    def calcular_peso_total(self) -> float:
++        return round(sum(item.peso_total for item in self.itens), 3)
++
++    def calcular_desconto(self) -> float:
++        return CalculadoraDesconto.calcular(
++            self.categoria_cliente, self.calcular_total_itens()
++        )
++
++    def calcular_frete(self) -> float:
++        return CalculadoraFrete.calcular(
++            self.tipo_frete, self.calcular_peso_total(), self.calcular_total_itens()
++        )
++
++    def calcular_total_final(self) -> float:
++        return round(
++            self.calcular_total_itens() - self.calcular_desconto() + self.calcular_frete(),
++            2,
++        )
++
++    def para_dict(self) -> dict:
++        return {
++            "id": self.id,
++            "cliente": self.cliente,
++            "subtotal": self.calcular_total_itens(),
++            "desconto": self.calcular_desconto(),
++            "frete": self.calcular_frete(),
++            "total": self.calcular_total_final(),
++        }
++
++
++def processar_pedidos(pedidos: list[dict]) -> list[dict]:
++    resultado = []
++    for dados_pedido in pedidos:
++        itens = [
++            ItemPedido(
++                nome=dados_item["nome"],
++                preco=float(dados_item["preco"]),
++                quantidade=int(dados_item.get("quantidade", 1)),
++                peso_kg=float(dados_item.get("peso_kg", 0.5)),
++            )
++            for dados_item in dados_pedido.get("itens", [])
++        ]
++        pedido = Pedido(
++            id=dados_pedido["id"],
++            cliente=dados_pedido["cliente"],
++            categoria_cliente=dados_pedido.get("categoria_cliente", "bronze"),
++            itens=itens,
++            tipo_frete=dados_pedido.get("tipo_frete", "padrao"),
++        )
++        resultado.append(pedido.para_dict())
++    return resultado
+
+exec
+/bin/bash -lc 'git diff -- processador.py' in /tmp/bench-offw5fht
+ exited 129 in 0ms:
+warning: Not a git repository. Use --no-index to compare two paths outside a working tree
+usage: git diff --no-index [<options>] <path> <path>
+
+Diff output format options
+    -p, --patch           generate patch
+    -s, --no-patch        suppress diff output
+    -u                    generate patch
+    -U, --unified[=<n>]   generate diffs with <n> lines context
+    -W, --[no-]function-context
+                          generate diffs with <n> lines context
+    --raw                 generate the diff in raw format
+    --patch-with-raw      synonym for '-p --raw'
+    --patch-with-stat     synonym for '-p --stat'
+    --numstat             machine friendly --stat
+    --shortstat           output only the last line of --stat
+    -X, --dirstat[=<param1>,<param2>...]
+                          output the distribution of relative amount of changes for each sub-directory
+    --cumulative          synonym for --dirstat=cumulative
+    --dirstat-by-file[=<param1>,<param2>...]
+                          synonym for --dirstat=files,<param1>,<param2>...
+    --check               warn if changes introduce conflict markers or whitespace errors
+    --summary             condensed summary such as creations, renames and mode changes
+    --name-only           show only names of changed files
+    --name-status         show only names and status of changed files
+    --stat[=<width>[,<name-width>[,<count>]]]
+                          generate diffstat
+    --stat-width <width>  generate diffstat with a given width
+    --stat-name-width <width>
+                          generate diffstat with a given name width
+    --stat-graph-width <width>
+                          generate diffstat with a given graph width
+    --stat-count <count>  generate diffstat with limited lines
+    --[no-]compact-summary
+                          generate compact summary in diffstat
+    --binary              output a binary diff that can be applied
+    --[no-]full-index     show full pre- and post-image object names on the "index" lines
+    --[no-]color[=<when>] show colored diff
+    --ws-error-highlight <kind>
+                          highlight whitespace errors in the 'context', 'old' or 'new' lines in the diff
+    -z                    do not munge pathnames and use NULs as output field terminators in --raw or --numstat
+    --[no-]abbrev[=<n>]   use <n> digits to display object names
+    --src-prefix <prefix> show the given source prefix instead of "a/"
+    --dst-prefix <prefix> show the given destination prefix instead of "b/"
+    --line-prefix <prefix>
+                          prepend an additional prefix to every line of output
+    --no-prefix           do not show any source or destination prefix
+    --default-prefix      use default prefixes a/ and b/
+    --inter-hunk-context <n>
+                          show context between diff hunks up to the specified number of lines
+    --output-indicator-new <char>
+                          specify the character to indicate a new line instead of '+'
+    --output-indicator-old <char>
+                          specify the character to indicate an old line instead of '-'
+    --output-indicator-context <char>
+                          specify the character to indicate a context instead of ' '
+
+Diff rename options
+    -B, --break-rewrites[=<n>[/<m>]]
+                          break complete rewrite changes into pairs of delete and create
+    -M, --find-renames[=<n>]
+                          detect renames
+    -D, --irreversible-delete
+                          omit the preimage for deletes
+    -C, --find-copies[=<n>]
+                          detect copies
+    --[no-]find-copies-harder
+                          use unmodified files as source to find copies
+    --no-renames          disable rename detection
+    --[no-]rename-empty   use empty blobs as rename source
+    --[no-]follow         continue listing the history of a file beyond renames
+    -l <n>                prevent rename/copy detection if the number of rename/copy targets exceeds given limit
+
+Diff algorithm options
+    --minimal             produce the smallest possible diff
+    -w, --ignore-all-space
+                          ignore whitespace when comparing lines
+    -b, --ignore-space-change
+                          ignore changes in amount of whitespace
+    --ignore-space-at-eol ignore changes in whitespace at EOL
+    --ignore-cr-at-eol    ignore carrier-return at the end of line
+    --ignore-blank-lines  ignore changes whose lines are all blank
+    -I, --[no-]ignore-matching-lines <regex>
+                          ignore changes whose all lines match <regex>
+    --[no-]indent-heuristic
+                          heuristic to shift diff hunk boundaries for easy reading
+    --patience            generate diff using the "patience diff" algorithm
+    --histogram           generate diff using the "histogram diff" algorithm
+    --diff-algorithm <algorithm>
+                          choose a diff algorithm
+    --anchored <text>     generate diff using the "anchored diff" algorithm
+    --word-diff[=<mode>]  show word diff, using <mode> to delimit changed words
+    --word-diff-regex <regex>
+                          use <regex> to decide what a word is
+    --color-words[=<regex>]
+                          equivalent to --word-diff=color --word-diff-regex=<regex>
+    --[no-]color-moved[=<mode>]
+                          moved lines of code are colored differently
+    --[no-]color-moved-ws <mode>
+                          how white spaces are ignored in --color-moved
+
+Other diff options
+    --[no-]relative[=<prefix>]
+                          when run from subdir, exclude changes outside and show relative paths
+    -a, --[no-]text       treat all files as text
+    -R                    swap two inputs, reverse the diff
+    --[no-]exit-code      exit with 1 if there were differences, 0 otherwise
+    --[no-]quiet          disable all output of the program
+    --[no-]ext-diff       allow an external diff helper to be executed
+    --[no-]textconv       run external text conversion filters when comparing binary files
+    --ignore-submodules[=<when>]
+                          ignore changes to submodules in the diff generation
+    --submodule[=<format>]
+                          specify how differences in submodules are shown
+    --ita-invisible-in-index
+                          hide 'git add -N' entries from the index
+    --ita-visible-in-index
+                          treat 'git add -N' entries as real in the index
+    -S <string>           look for differences that change the number of occurrences of the specified string
+    -G <regex>            look for differences that change the number of occurrences of the specified regex
+    --pickaxe-all         show all changes in the changeset with -S or -G
+    --pickaxe-regex       treat <string> in -S as extended POSIX regular expression
+    -O <file>             control the order in which files appear in the output
+    --rotate-to <path>    show the change in the specified path first
+    --skip-to <path>      skip the output to the specified path
+    --find-object <object-id>
+                          look for differences that change the number of occurrences of the specified object
+    --diff-filter [(A|C|D|M|R|T|U|X|B)...[*]]
+                          select files by diff type
+    --output <file>       output to a specific file
+
+
+apply patch
+patch: completed
+/tmp/bench-offw5fht/processador.py
+diff --git a/processador.py b/processador.py
+index af3bf62d018ea97ca83c5907dbdd7dc2c305c96b..8224403cbad902739ed056febc676e25dc4299c6
+--- a/processador.py
++++ b/processador.py
+@@ -1,65 +1,128 @@
+-# Código legado funcional, mas macarrônico, sem classes e difícil de manter.
++from dataclasses import dataclass, field
++
++
++@dataclass
++class ItemPedido:
++    nome: str
++    preco: float
++    quantidade: int = 1
++    peso_kg: float = 0.5
+ 
+-def processar_pedidos(pedidos: list[dict]) -> list[dict]:
+-    out = []
+-    for p in pedidos:
+-        pid = p["id"]
+-        c = p["cliente"]
+-        cat = str(p.get("categoria_cliente", "bronze")).lower()
+-        items = p.get("itens", [])
+-        tf = str(p.get("tipo_frete", "padrao")).lower()
++    def __post_init__(self) -> None:
++        if not self.preco >= 0.0:
++            raise ValueError("preco deve ser maior ou igual a 0.0")
++        if self.quantidade < 1:
++            raise ValueError("quantidade deve ser maior ou igual a 1")
++        if not self.peso_kg >= 0.0:
++            raise ValueError("peso_kg deve ser maior ou igual a 0.0")
++
++    @property
++    def subtotal(self) -> float:
++        return round(self.preco * self.quantidade, 2)
+ 
+-        # calcula subtotal e peso total (assume peso 0.5kg por item se não fornecido)
+-        sub = 0.0
+-        peso_total = 0.0
+-        for it in items:
+-            pr = float(it["preco"])
+-            q = int(it.get("quantidade", 1))
+-            sub += pr * q
+-            peso_total += float(it.get("peso_kg", 0.5)) * q
+-        sub = round(sub, 2)
++    @property
++    def peso_total(self) -> float:
++        return round(self.peso_kg * self.quantidade, 3)
+ 
+-        # calcula desconto
+-        desc = 0.0
+-        if cat == "bronze":
+-            desc = 0.0
+-        elif cat == "prata":
+-            if sub >= 100.0:
+-                desc = 0.05 * sub
+-            else:
+-                desc = 0.0
+-        elif cat == "ouro":
+-            if sub >= 50.0:
+-                desc = 0.10 * sub
+-            else:
+-                desc = 0.05 * sub
+-        elif cat == "vip":
+-            desc = 0.15 * sub
+-        else:
+-            desc = 0.0
+-        desc = round(desc, 2)
+ 
+-        # calcula frete
+-        if sub >= 200.0:
+-            fr = 0.0
+-        else:
+-            if tf == "padrao":
+-                fr = 10.0 + peso_total * 1.5
+-            elif tf == "expresso":
+-                fr = 25.0 + peso_total * 3.0
+-            elif tf == "economico":
+-                fr = 5.0 + peso_total * 0.8
+-            else:
+-                raise ValueError(f"Tipo de frete desconhecido: {tf}")
+-        fr = round(fr, 2)
++class CalculadoraFrete:
++    @staticmethod
++    def calcular(tipo: str, peso_kg: float, valor_total: float) -> float:
++        if valor_total < 0:
++            raise ValueError("valor_total deve ser maior ou igual a 0")
++        if peso_kg < 0:
++            raise ValueError("peso_kg deve ser maior ou igual a 0")
++        if valor_total >= 200.0:
++            return 0.0
+ 
+-        tot = round(sub - desc + fr, 2)
+-        out.append({
+-            "id": pid,
+-            "cliente": c,
+-            "subtotal": sub,
+-            "desconto": desc,
+-            "frete": fr,
+-            "total": tot
+-        })
+-    return out
++        tipo_normalizado = tipo.lower()
++        if tipo_normalizado == "padrao":
++            return round(10.0 + peso_kg * 1.5, 2)
++        if tipo_normalizado == "expresso":
++            return round(25.0 + peso_kg * 3.0, 2)
++        if tipo_normalizado == "economico":
++            return round(5.0 + peso_kg * 0.8, 2)
++        raise ValueError(f"Tipo de frete desconhecido: {tipo}")
++
++
++class CalculadoraDesconto:
++    @staticmethod
++    def calcular(categoria_cliente: str, valor_total: float) -> float:
++        if valor_total < 0:
++            raise ValueError("valor_total deve ser maior ou igual a 0")
++
++        categoria = categoria_cliente.lower()
++        if categoria == "bronze":
++            return 0.0
++        if categoria == "prata":
++            return round(0.05 * valor_total, 2) if valor_total >= 100.0 else 0.0
++        if categoria == "ouro":
++            percentual = 0.10 if valor_total >= 50.0 else 0.05
++            return round(percentual * valor_total, 2)
++        if categoria == "vip":
++            return round(0.15 * valor_total, 2)
++        return 0.0
++
++
++@dataclass
++class Pedido:
++    id: str
++    cliente: str
++    categoria_cliente: str = "bronze"
++    itens: list[ItemPedido] = field(default_factory=list)
++    tipo_frete: str = "padrao"
++
++    def calcular_total_itens(self) -> float:
++        return round(sum(item.subtotal for item in self.itens), 2)
++
++    def calcular_peso_total(self) -> float:
++        return round(sum(item.peso_total for item in self.itens), 3)
++
++    def calcular_desconto(self) -> float:
++        return CalculadoraDesconto.calcular(
++            self.categoria_cliente, self.calcular_total_itens()
++        )
++
++    def calcular_frete(self) -> float:
++        return CalculadoraFrete.calcular(
++            self.tipo_frete, self.calcular_peso_total(), self.calcular_total_itens()
++        )
++
++    def calcular_total_final(self) -> float:
++        return round(
++            self.calcular_total_itens() - self.calcular_desconto() + self.calcular_frete(),
++            2,
++        )
++
++    def para_dict(self) -> dict:
++        return {
++            "id": self.id,
++            "cliente": self.cliente,
++            "subtotal": self.calcular_total_itens(),
++            "desconto": self.calcular_desconto(),
++            "frete": self.calcular_frete(),
++            "total": self.calcular_total_final(),
++        }
++
++
++def processar_pedidos(pedidos: list[dict]) -> list[dict]:
++    resultado = []
++    for dados_pedido in pedidos:
++        itens = [
++            ItemPedido(
++                nome=dados_item["nome"],
++                preco=float(dados_item["preco"]),
++                quantidade=int(dados_item.get("quantidade", 1)),
++                peso_kg=float(dados_item.get("peso_kg", 0.5)),
++            )
++            for dados_item in dados_pedido.get("itens", [])
++        ]
++        pedido = Pedido(
++            id=dados_pedido["id"],
++            cliente=dados_pedido["cliente"],
++            categoria_cliente=dados_pedido.get("categoria_cliente", "bronze"),
++            itens=itens,
++            tipo_frete=dados_pedido.get("tipo_frete", "padrao"),
++        )
++        resultado.append(pedido.para_dict())
++    return resultado
+
+codex
+Refatorei [processador.py](/tmp/bench-offw5fht/processador.py) com as classes `ItemPedido`, `Pedido`, `CalculadoraFrete` e `CalculadoraDesconto`, mantendo `processar_pedidos` e o formato de retorno. Subtotais e pesos são arredondados por item antes de serem somados, e pedidos sem itens são processados normalmente.
+
+Não executei testes.
+tokens used
+13,468

@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede um agregador de vendas em `solucao.py`. Vou conferir o CSV de exemplo e o que já existe no diretório.Vou confirmar como o `csv` trata linhas vazias, BOM e os casos de número que o enunciado cita, e em seguida escrever a função.

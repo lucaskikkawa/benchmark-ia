@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-haiku-5-5-medium/07-performance-gemini/run-1",
+ "empresa": "claude",
+ "modelo": "claude-haiku-5-5",
+ "esforco": "medium",
+ "tarefa": "07-performance-gemini",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 15.009,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Algoritmo linear claro e correto, com validações e tratamento de bordas; a docstring explica O(N), mas não especifica complexidade de espaço nem tipagem estrita completa.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Prefixos com primeira ocorrência em dicionário, enumerate e lookup O(1). Trata vazio, zeros, negativos e o maior comprimento. Docstring explica o método, cita O(N) e há type hints estritos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85,
+ "reexecucao_testes": {
+  "total": 15,
+  "passados": 15,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

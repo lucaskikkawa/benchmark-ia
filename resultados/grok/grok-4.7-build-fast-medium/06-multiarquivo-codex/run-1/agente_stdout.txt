@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O pacote já exporta as três APIs; vou implementar os modelos, o cálculo de saldos e a leitura do JSON.O pacote `estoque` está completo com as três APIs pedidas.
+
+- `Movimento` é uma dataclass congelada (`sku`, `delta`), sem validação no construtor.
+- `calcular_saldos` copia os saldos iniciais, aplica os movimentos na ordem e lança `ValueError` se algum saldo inicial ou intermediário ficar negativo. Saldos zero e SKUs iniciais sem movimento permanecem no dicionário novo.
+- `carregar_movimentos` lê o JSON em UTF-8, exige `sku` não vazio (texto original) e `delta` inteiro (bool rejeitado), ignora campos extras e mantém a ordem. Forma inválida ou JSON inválido geram `ValueError`.

@@ -1,0 +1,1 @@
+O arquivo [solucao.py](file:///tmp/bench-1qu6p_d6/solucao.py) foi criado com a implementação da função [`resumir_vendas`](file:///tmp/bench-1qu6p_d6/solucao.py#L16-L119) seguindo todas as regras especificadas em [enunciado.md](file:///tmp/bench-1qu6p_d6/enunciado.md).

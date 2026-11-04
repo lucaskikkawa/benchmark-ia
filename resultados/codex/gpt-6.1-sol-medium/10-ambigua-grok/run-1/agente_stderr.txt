@@ -1,0 +1,198 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-e6vx78ep
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189de-4820-77d2-87d4-87db0de044cd
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:53:29.986312Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para executar a tarefa e verificar o resultado.
+exec
+/bin/bash -lc "pwd && rg --files -g '*' -g '"'!node_modules'"' -g '"'!.git'"'" in /tmp/bench-e6vx78ep
+ succeeded in 0ms:
+/tmp/bench-e6vx78ep
+.gitkeep
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-e6vx78ep
+ succeeded in 0ms:
+# Tarefa: classificar uma mensagem curta
+
+Crie dois arquivos no diretório de trabalho:
+
+- `solucao.py` com `classificar_mensagem(texto: str) -> dict`
+- `SUPOSICOES.md` em UTF-8, com as decisões que você tomar nos pontos abertos
+
+Só a biblioteca padrão. A função é pura: o mesmo texto sempre devolve o mesmo dict, sem ler arquivo, relógio ou rede.
+
+## O que está fechado
+
+O dict tem **pelo menos** estas chaves (pode ter outras):
+
+```python
+{
+    "categoria": str,
+    "urgente": bool,
+    "tamanho": int,
+}
+```
+
+- `tamanho` é `len(texto)`, em code points, **sem** `strip`, sem normalizar (NFC, NFD, NFKC) e sem contar bytes UTF-8. `"ação"` tem tamanho 4. `"🙂"` tem tamanho 1. `"a\u0301"` tem tamanho 2. `"\ud800"` tem tamanho 1 e não pode levantar erro. Quebra de linha, `\u00a0` e `\u200b` contam.
+- `urgente` é `True` exatamente quando a substring `"URGENTE"` aparece em `texto` (maiúsculas, sem exigir palavra inteira, sem casefold e sem normalizar antes). `"urgente"`, `"Urgente"` e `"URGEN"` são `False`. `"XURGENTEY"` e `" URGENTE"` são `True`. Um lookalike cirílico (`"URGENT\u0415"`, com `Е`) é `False`. `"URGENTE"` no fim de um texto de 100_000 caracteres continua `True`, e `tamanho` é 100_000 mais o que vier junto.
+- `texto == ""` (string vazia, e só ela) devolve `categoria == "vazia"`, `urgente is False` e `tamanho == 0`.
+- Qualquer outro texto, inclusive só espaços, `"vazia"`, `"\u00a0"` ou `"\n"`, tem `categoria` string não vazia e **diferente** de `"vazia"`.
+- Se `texto` não for `str` (`None`, `bytes`, `bytearray`, `int`), levante `TypeError`. Não codifique o texto para decidir isso.
+
+Os testes automáticos cobrem só este núcleo.
+
+## O que fica em aberto
+
+Você escolhe e **registra em `SUPOSICOES.md`** (pelo menos duas linhas não vazias; o texto todo, sem contar espaços das pontas, com 80 caracteres ou mais):
+
+- Quais categorias existem além de `"vazia"` (por exemplo reclamação, dúvida, elogio, pedido, outro — a lista não é obrigatória).
+- Quais palavras ou sinais disparam cada categoria, e o que acontece quando o texto casa com mais de uma.
+- Se a classificação ignora maiúsculas e acentos. Isso **não** muda a regra de `"URGENTE"`, que continua sensível a maiúsculas.
+- Como classificar texto que não é vazio mas não tem palavra (espaços, pontuação). Lembre que ele não pode usar a categoria `"vazia"`.
+- Se o dict leva campos extras (idioma, confiança, etc.).
+
+Não há resposta única. O arquivo existe para outro avaliador entender o que você assumiu. Os testes não comparam o texto das suposições com um gabarito.
+
+apply patch
+patch: completed
+/tmp/bench-e6vx78ep/SUPOSICOES.md
+/tmp/bench-e6vx78ep/solucao.py
+diff --git a/SUPOSICOES.md b/SUPOSICOES.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..19b234c4f0f89aa8bf77fe691de4d9237767fc49
+--- /dev/null
++++ b/SUPOSICOES.md
+@@ -0,0 +1,10 @@
++# Decisões de classificação
++
++- As categorias são `vazia`, `pergunta` e `outro`.
++- Apenas a string exatamente vazia recebe `vazia`, com prioridade sobre as demais regras.
++- Qualquer texto contendo o sinal ASCII `?` recebe `pergunta`, independentemente de palavras ou da posição do sinal. Sinais semelhantes, como `？`, não disparam essa regra.
++- Todo texto não vazio sem `?` recebe `outro`. Isso inclui espaços, quebras de linha, pontuação isolada, caracteres invisíveis e a palavra literal `vazia`.
++- Nenhuma palavra dispara categorias. Maiúsculas e acentos não influenciam a categoria, pois a única busca é pelo sinal `?`; não se aplica normalização, remoção de acentos, `strip` ou conversão de caixa.
++- A urgência é independente da categoria: somente a substring literal `URGENTE` ativa o campo `urgente`, respeitando maiúsculas e os caracteres originais.
++- O tamanho é calculado diretamente com `len(texto)`, incluindo caracteres combinantes e substitutos Unicode isolados, sem codificação em bytes.
++- O dict contém somente `categoria`, `urgente` e `tamanho`, sem campos extras. Instâncias de `str`, inclusive subclasses, são aceitas; outros tipos levantam `TypeError`.
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..65cecfe38de20a52dabb117b9f774ccd4a58045b
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,23 @@
++"""Classificação determinística de mensagens curtas, sem dependências externas."""
++
++
++def classificar_mensagem(texto: str) -> dict:
++    """Classifica pelo sinal de pergunta, preservando o texto nas demais regras.
++
++    Levanta TypeError quando o argumento não é uma string.
++    """
++    if not isinstance(texto, str):
++        raise TypeError("texto deve ser str")
++
++    if texto == "":
++        categoria = "vazia"
++    elif "?" in texto:
++        categoria = "pergunta"
++    else:
++        categoria = "outro"
++
++    return {
++        "categoria": categoria,
++        "urgente": "URGENTE" in texto,
++        "tamanho": len(texto),
++    }
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+from pathlib import Path
+from solucao import classificar_mensagem
+
+cases = [
+    ('', 'vazia', False, 0),
+    ('ação', 'outro', False, 4),
+    ('🙂', 'outro', False, 1),
+    ('a\\u0301', 'outro', False, 2),
+    ('\\ud800', 'outro', False, 1),
+    (' \\n\\u00a0\\u200b', 'outro', False, 4),
+    ('vazia', 'outro', False, 5),
+    ('urgente', 'outro', False, 7),
+    ('Urgente', 'outro', False, 7),
+    ('URGEN', 'outro', False, 5),
+    ('XURGENTEY', 'outro', True, 9),
+    (' URGENTE', 'outro', True, 8),
+    ('URGENT\\u0415', 'outro', False, 7),
+    ('x' * 100_000 + 'URGENTE', 'outro', True, 100_007),
+    ('URGENTE?', 'pergunta', True, 8),
+    ('？', 'outro', False, 1),
+]
+for texto, categoria, urgente, tamanho in cases:
+    expected = dict(categoria=categoria, urgente=urgente, tamanho=tamanho)
+    result = classificar_mensagem(texto)
+    assert result == expected
+    assert result['urgente'] is urgente
+    assert classificar_mensagem(texto) == result
+for valor in (None, b'', bytearray(), 0, False, [], {}):
+    try:
+        classificar_mensagem(valor)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError(type(valor))
+assumptions = Path('SUPOSICOES.md').read_text(encoding='utf-8')
+assert len(assumptions.strip()) >= 80
+assert len([line for line in assumptions.splitlines() if line.strip()]) >= 2
+print('Verificação concluída: 16 casos válidos, 7 tipos inválidos e documentação UTF-8.')
+PY" in /tmp/bench-e6vx78ep
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from pathlib import Path
+from solucao import classificar_mensagem
+cases = [('', 'vazia', False), ('ação', 'outro', False), ('🙂', 'outro', False), ('a\\u0301', 'outro', False), ('\\ud800', 'outro', False), (' \\n\\u00a0\\u200b', 'outro', False), ('vazia', 'outro', False), ('urgente', 'outro', False), ('Urgente', 'outro', False), ('URGEN', 'outro', False), ('XURGENTEY', 'outro', True), (' URGENTE', 'outro', True), ('URGENT\\u0415', 'outro', False), ('x' * 100_000 + 'URGENTE', 'outro', True), ('URGENTE?', 'pergunta', True), ('？', 'outro', False)]
+for texto, categoria, urgente in cases:
+    result = classificar_mensagem(texto)
+    assert result == dict(categoria=categoria, urgente=urgente, tamanho=len(texto))
+    assert result['urgente'] is urgente
+    assert classificar_mensagem(texto) == result
+assert classificar_mensagem('ação')['tamanho'] == 4
+assert classificar_mensagem('🙂')['tamanho'] == 1
+assert classificar_mensagem('a\\u0301')['tamanho'] == 2
+assert classificar_mensagem('\\ud800')['tamanho'] == 1
+assert classificar_mensagem('x' * 100_000 + 'URGENTE')['tamanho'] == 100_007
+for valor in (None, b'', bytearray(), 0, False, [], {}):
+    try:
+        classificar_mensagem(valor)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError(type(valor))
+assumptions = Path('SUPOSICOES.md').read_text(encoding='utf-8')
+assert len(assumptions.strip()) >= 80
+assert len([line for line in assumptions.splitlines() if line.strip()]) >= 2
+print('Verificação concluída: 16 casos válidos, 7 tipos inválidos e documentação UTF-8.')
+PY" in /tmp/bench-e6vx78ep
+ succeeded in 0ms:
+Verificação concluída: 16 casos válidos, 7 tipos inválidos e documentação UTF-8.
+
+codex
+Criados `solucao.py` e `SUPOSICOES.md`, com a função e as decisões de classificação documentadas.
+
+Verificação com Python 3 concluída: 16 casos válidos e 7 entradas de tipos inválidos passaram, incluindo Unicode e texto longo.
+tokens used
+13,013

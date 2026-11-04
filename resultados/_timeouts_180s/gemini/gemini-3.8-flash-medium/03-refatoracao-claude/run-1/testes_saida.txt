@@ -1,0 +1,101 @@
+........................FFFFFFFF                                         [100%]
+=================================== FAILURES ===================================
+____________________________ test_calcular_subtotal ____________________________
+
+    def test_calcular_subtotal():
+>       assert relatorio.calcular_subtotal([{"preco": 2.5, "qtd": 4}, {"preco": 1.0, "qtd": 3}]) == pytest.approx(13.0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'relatorio' has no attribute 'calcular_subtotal'
+
+testes_ocultos/test_relatorio.py:225: AttributeError
+____________________________ test_calcular_desconto ____________________________
+
+    def test_calcular_desconto():
+        casos = [
+            (500.0, "vip", 50.0),
+            (2000.0, "vip", 300.0),
+            (1000.0, "vip", 100.0),
+            (400.0, "atacado", 20.0),
+            (1500.0, "atacado", 120.0),
+            (800.0, "comum", 0.0),
+            (1000.0, "desconhecido", 0.0),
+            (5000.0, "qualquer", 100.0),
+            (5000.0, "Vip", 100.0),
+        ]
+        for subtotal, tipo, desconto in casos:
+>           assert relatorio.calcular_desconto(subtotal, tipo) == pytest.approx(desconto), (subtotal, tipo)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'relatorio' has no attribute 'calcular_desconto'
+
+testes_ocultos/test_relatorio.py:244: AttributeError
+___________________________ test_constantes_de_taxas ___________________________
+
+    def test_constantes_de_taxas():
+>       assert relatorio.LIMITE_FAIXA_ALTA == 1000
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'relatorio' has no attribute 'LIMITE_FAIXA_ALTA'
+
+testes_ocultos/test_relatorio.py:248: AttributeError
+__________________ test_calcular_desconto_consulta_constantes __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7b778c7a70>
+
+    def test_calcular_desconto_consulta_constantes(monkeypatch):
+>       monkeypatch.setitem(relatorio.TAXAS_DESCONTO, "ouro", (0.25, 0.5))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'relatorio' has no attribute 'TAXAS_DESCONTO'
+
+testes_ocultos/test_relatorio.py:255: AttributeError
+___________________________ test_formatar_relatorio ____________________________
+
+    def test_formatar_relatorio():
+        # A ordenação alfabética é exigida na saída de gerar_relatorio; formatar pode
+        # preservar a ordem recebida ou ordenar ela mesma.
+>       assert relatorio.formatar_relatorio({"Ana": 2.345, "Bia": 10.0}) == "Ana: 2.35\nBia: 10.00\nTOTAL: 12.35"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'relatorio' has no attribute 'formatar_relatorio'. Did you mean: 'gerar_relatorio'?
+
+testes_ocultos/test_relatorio.py:267: AttributeError
+__________________ test_gerar_relatorio_usa_calcular_subtotal __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7b778c5fa0>
+
+    def test_gerar_relatorio_usa_calcular_subtotal(monkeypatch):
+>       monkeypatch.setattr(relatorio, "calcular_subtotal", lambda itens: 80.0)
+E       AttributeError: <module 'relatorio' from '/tmp/bench-rhkbigep/relatorio.py'> has no attribute 'calcular_subtotal'
+
+testes_ocultos/test_relatorio.py:272: AttributeError
+__________________ test_gerar_relatorio_usa_calcular_desconto __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7b778dade0>
+
+    def test_gerar_relatorio_usa_calcular_desconto(monkeypatch):
+>       monkeypatch.setattr(relatorio, "calcular_desconto", lambda subtotal, tipo: 0.0)
+E       AttributeError: <module 'relatorio' from '/tmp/bench-rhkbigep/relatorio.py'> has no attribute 'calcular_desconto'
+
+testes_ocultos/test_relatorio.py:277: AttributeError
+_________________ test_gerar_relatorio_usa_formatar_relatorio __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7b778dad20>
+
+    def test_gerar_relatorio_usa_formatar_relatorio(monkeypatch):
+        capturado = {}
+    
+        def falso(totais):
+            capturado.update(totais)
+            return "X"
+    
+>       monkeypatch.setattr(relatorio, "formatar_relatorio", falso)
+E       AttributeError: <module 'relatorio' from '/tmp/bench-rhkbigep/relatorio.py'> has no attribute 'formatar_relatorio'
+
+testes_ocultos/test_relatorio.py:288: AttributeError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_relatorio.py::test_calcular_subtotal - AttributeEr...
+FAILED testes_ocultos/test_relatorio.py::test_calcular_desconto - AttributeEr...
+FAILED testes_ocultos/test_relatorio.py::test_constantes_de_taxas - Attribute...
+FAILED testes_ocultos/test_relatorio.py::test_calcular_desconto_consulta_constantes
+FAILED testes_ocultos/test_relatorio.py::test_formatar_relatorio - AttributeE...
+FAILED testes_ocultos/test_relatorio.py::test_gerar_relatorio_usa_calcular_subtotal
+FAILED testes_ocultos/test_relatorio.py::test_gerar_relatorio_usa_calcular_desconto
+FAILED testes_ocultos/test_relatorio.py::test_gerar_relatorio_usa_formatar_relatorio
+8 failed, 24 passed in 0.10s

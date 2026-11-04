@@ -1,1 +1,3 @@
-Criei [solucao.py](/tmp/bench-j67adbph/solucao.py) com `parse_duracao`, incluindo validação do formato, ordem e repetição das unidades, e suporte a componentes numéricos de qualquer tamanho.
+Criei [solucao.py](/tmp/bench-butey3b7/solucao.py) com `parse_duracao(texto)`. A função valida os componentes em uma única passagem e converte números longos em blocos para não depender do limite de dígitos do Python.
+
+Não executei testes.

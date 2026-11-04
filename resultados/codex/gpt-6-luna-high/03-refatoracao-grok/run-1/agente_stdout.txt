@@ -1,0 +1,1 @@
+Refatorei [frete.py](/tmp/bench-ii7ctarj/frete.py) para expor `TabelaFrete` e `faixa_de_peso`. `cotar` e os novos métodos consultam `TabelaFrete.FAIXAS` a cada chamada, mantendo as validações, os erros e os cálculos descritos no enunciado.

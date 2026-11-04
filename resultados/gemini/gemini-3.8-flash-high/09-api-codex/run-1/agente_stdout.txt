@@ -1,0 +1,16 @@
+A tarefa foi concluída com sucesso.
+
+O arquivo [`cliente.py`](file:///tmp/bench-5cd3od3p/cliente.py) foi criado e [`fake_api.py`](file:///tmp/bench-5cd3od3p/fake_api.py) foi mantido inalterado.
+
+### Resumo da implementação em [`cliente.py`](file:///tmp/bench-5cd3od3p/cliente.py):
+- Implementação de `buscar_com_retry(api, chave, *, tentativas=3, timeout=1.0, backoff=0.1, dormir=time.sleep) -> dict`.
+- Validação antecipada (antes de qualquer efeito colateral na API ou chamada a `dormir`) dos parâmetros numéricos:
+  - `tentativas`: inteiro $\ge 1$.
+  - `timeout`: número real finito $> 0$.
+  - `backoff`: número real finito $\ge 0$.
+- Repetição exclusiva para `fake_api.ErroTemporario` e `TimeoutError` (incluindo suas subclasses).
+- Cálculo de espera exponencial `backoff * (2 ** indice)` antes da próxima tentativa, inclusive quando o atraso for zero.
+- Não dorme após sucesso ou após a última falha.
+- Propagação imediata de `ErroPermanente` e de outras exceções não transitórias, bem como exceções lançadas pela função `dormir`.
+- Propagação da última exceção original ao esgotar as tentativas.
+- Reinício do índice do backoff a cada invocação de `buscar_com_retry`.

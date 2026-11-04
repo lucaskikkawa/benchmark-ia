@@ -1,0 +1,440 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-bx08p7yh
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189bc-5241-75c2-b683-8291b3c84066
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:16:24.498645Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório, depois implementar a solução aqui e conferir o resultado.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' && rg --files -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-bx08p7yh
+ succeeded in 0ms:
+/tmp/bench-bx08p7yh
+enunciado.md
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-bx08p7yh
+ succeeded in 0ms:
+# Tarefa: pacote de empréstimos da biblioteca
+
+Crie um pacote `biblioteca` no diretório de trabalho, com exatamente estes quatro arquivos. Dentro do pacote use **imports relativos** (`from .models import ...`). Só a biblioteca padrão.
+
+```text
+biblioteca/__init__.py
+biblioteca/models.py
+biblioteca/catalogo.py
+biblioteca/emprestimos.py
+```
+
+`biblioteca/__init__.py` exporta `Livro`, `ErroBiblioteca`, `Catalogo` e `ServicoEmprestimos`.
+
+## models.py
+
+```python
+class ErroBiblioteca(Exception):
+    ...
+
+@dataclass(frozen=True)
+class Livro:
+    isbn: str
+    titulo: str
+    exemplares: int
+```
+
+`Livro` valida no `__post_init__` e levanta `ErroBiblioteca`:
+
+- `isbn`: string com exatamente 13 dígitos ASCII (`0-9`), sem hífen e sem espaços. Não confira o dígito verificador: `9780000000001` é válido mesmo que o verificador ISBN-13 não feche. Não dê `strip` no ISBN.
+- `titulo`: string. Guarde a versão com `strip`. Se ficar vazia, erro.
+- `exemplares`: `int` ≥ 1. `bool` não vale.
+
+## catalogo.py
+
+```python
+class Catalogo:
+    def adicionar(self, livro: Livro) -> None: ...
+    def buscar(self, isbn: str) -> Livro: ...
+    def listar(self) -> list[Livro]: ...
+```
+
+- `adicionar` exige uma instância de `Livro`. ISBN repetido → `ErroBiblioteca`.
+- `buscar` devolve o livro ou `ErroBiblioteca` se o ISBN não está no catálogo. A comparação é exata, sem `strip`.
+- `listar` devolve uma **lista nova** com os livros ordenados pelo ISBN. Alterar essa lista não muda o catálogo.
+
+O catálogo não sabe de empréstimos.
+
+## emprestimos.py
+
+```python
+class ServicoEmprestimos:
+    def __init__(self, catalogo: Catalogo) -> None: ...
+    def emprestar(self, isbn: str, usuario: str, dia: str) -> None: ...
+    def devolver(self, isbn: str, usuario: str, dia: str) -> int: ...
+    def disponiveis(self, isbn: str) -> int: ...
+    def ativos(self) -> list[tuple[str, str, str]]: ...
+```
+
+- O construtor exige um `Catalogo`. Guarde essa instância. Dois serviços no mesmo catálogo **não compartilham** empréstimos: o estoque livre é o do próprio serviço.
+- `usuario` é string; use `str.strip` (inclui espaço Unicode, como `\u00a0`). Vazio depois do strip → `ErroBiblioteca`. Espaços internos permanecem e distinguem usuários (`"Ana Maria"` e `"Ana  Maria"` são pessoas diferentes).
+- `dia` é `YYYY-MM-DD` de um dia real no calendário gregoriano (`datetime.date`, anos 1 a 9999). `1900-02-29` não existe. Qualquer outra coisa → `ErroBiblioteca`.
+- `emprestar` exige o ISBN no catálogo, comparado sem `strip`. O mesmo usuário não pode ter dois empréstimos ativos do mesmo ISBN, mesmo que ainda haja exemplar. Sem exemplar livre → `ErroBiblioteca`.
+- Exemplares livres = `exemplares` do livro menos os empréstimos ativos **deste serviço** para aquele ISBN.
+- O prazo é 14 dias corridos a partir do dia do empréstimo. A data prevista é `dia_emprestimo + 14 dias`, inclusive quando isso muda de mês ou de ano (`2024-12-20` → `2025-01-03`; `2024-01-31` → `2024-02-14`).
+- `devolver` devolve o atraso em dias inteiros: `max(0, (dia_devolucao - data_prevista).days)`. No dia do empréstimo ou até a data prevista, inclusive, o atraso é 0. Devolução anterior ao dia do empréstimo → `ErroBiblioteca`. Empréstimo inexistente (ou já devolvido) → `ErroBiblioteca`. A devolução libera o exemplar.
+- Se `emprestar` ou `devolver` levantar `ErroBiblioteca`, o estado anterior permanece (nada de reservar e desfazer pela metade).
+- `disponiveis` levanta `ErroBiblioteca` se o ISBN não está no catálogo.
+- `ativos` lista só o que ainda não foi devolvido, como tuplas `(isbn, usuario, dia_emprestimo)` com o dia em `YYYY-MM-DD`. Ordem: dia, depois ISBN, depois usuário, a mesma de `sorted` em code point (`"A"` antes de `"a"` antes de `"á"`).
+
+Erros de regra são sempre `ErroBiblioteca`, não `ValueError`.
+
+## Exemplos
+
+```python
+catalogo = Catalogo()
+catalogo.adicionar(Livro("9780000000001", "  Dom Casmurro ", 1))
+servico = ServicoEmprestimos(catalogo)
+servico.emprestar("9780000000001", "Ana", "2024-01-01")
+servico.disponiveis("9780000000001")          # 0
+servico.devolver("9780000000001", "Ana", "2024-01-16")  # 1
+# prevista = 2024-01-15; devolver em 2024-01-15 -> 0
+```
+
+`2024-02-29` mais 14 dias cai em `2024-03-14`.
+
+codex
+O enunciado pede apenas quatro arquivos dentro do pacote. Vou criar essa estrutura com validações explícitas e manter os empréstimos separados por instância do serviço.
+apply patch
+patch: completed
+/tmp/bench-bx08p7yh/biblioteca/__init__.py
+/tmp/bench-bx08p7yh/biblioteca/catalogo.py
+/tmp/bench-bx08p7yh/biblioteca/emprestimos.py
+/tmp/bench-bx08p7yh/biblioteca/models.py
+diff --git a/biblioteca/__init__.py b/biblioteca/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..fd3585c359f6b8daa42532555450d09adbeea138
+--- /dev/null
++++ b/biblioteca/__init__.py
+@@ -0,0 +1,5 @@
++from .models import ErroBiblioteca, Livro
++from .catalogo import Catalogo
++from .emprestimos import ServicoEmprestimos
++
++__all__ = ["Livro", "ErroBiblioteca", "Catalogo", "ServicoEmprestimos"]
+diff --git a/biblioteca/catalogo.py b/biblioteca/catalogo.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..7c406f68b2cca88bcf07f3d0103370154e9111c0
+--- /dev/null
++++ b/biblioteca/catalogo.py
+@@ -0,0 +1,22 @@
++from .models import ErroBiblioteca, Livro
++
++
++class Catalogo:
++    def __init__(self) -> None:
++        self._livros: dict[str, Livro] = {}
++
++    def adicionar(self, livro: Livro) -> None:
++        if not isinstance(livro, Livro):
++            raise ErroBiblioteca("É necessário adicionar uma instância de Livro")
++        if livro.isbn in self._livros:
++            raise ErroBiblioteca("ISBN já cadastrado")
++        self._livros[livro.isbn] = livro
++
++    def buscar(self, isbn: str) -> Livro:
++        try:
++            return self._livros[isbn]
++        except (KeyError, TypeError):
++            raise ErroBiblioteca("Livro não encontrado no catálogo") from None
++
++    def listar(self) -> list[Livro]:
++        return [self._livros[isbn] for isbn in sorted(self._livros)]
+diff --git a/biblioteca/emprestimos.py b/biblioteca/emprestimos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ddde8204e37e2705b2f7916144d5184be9ad2d02
+--- /dev/null
++++ b/biblioteca/emprestimos.py
+@@ -0,0 +1,73 @@
++from datetime import date, timedelta
++import re
++
++from .catalogo import Catalogo
++from .models import ErroBiblioteca
++
++
++_FORMATO_DIA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
++
++
++def _parse_dia(dia: str) -> date:
++    if not isinstance(dia, str) or _FORMATO_DIA.fullmatch(dia) is None:
++        raise ErroBiblioteca("Dia deve estar no formato YYYY-MM-DD")
++    try:
++        ano, mes, dia_mes = (int(parte) for parte in dia.split("-"))
++        return date(ano, mes, dia_mes)
++    except ValueError:
++        raise ErroBiblioteca("Dia não é uma data válida") from None
++
++
++class ServicoEmprestimos:
++    def __init__(self, catalogo: Catalogo) -> None:
++        if not isinstance(catalogo, Catalogo):
++            raise ErroBiblioteca("É necessário fornecer uma instância de Catalogo")
++        self._catalogo = catalogo
++        # Chaveia por ISBN e usuário já normalizado; o valor é a data do empréstimo.
++        self._emprestimos: dict[tuple[str, str], date] = {}
++
++    def emprestar(self, isbn: str, usuario: str, dia: str) -> None:
++        livro = self._catalogo.buscar(isbn)
++        if not isinstance(usuario, str):
++            raise ErroBiblioteca("Usuário deve ser uma string")
++        usuario_normalizado = usuario.strip()
++        if not usuario_normalizado:
++            raise ErroBiblioteca("Usuário não pode ser vazio")
++        data_emprestimo = _parse_dia(dia)
++        chave = (isbn, usuario_normalizado)
++        if chave in self._emprestimos:
++            raise ErroBiblioteca("Usuário já tem este livro emprestado")
++        if self.disponiveis(isbn) < 1:
++            raise ErroBiblioteca("Não há exemplares disponíveis")
++        try:
++            data_emprestimo + timedelta(days=14)
++        except OverflowError:
++            raise ErroBiblioteca("Data prevista ultrapassa o calendário suportado") from None
++        self._emprestimos[chave] = data_emprestimo
++
++    def devolver(self, isbn: str, usuario: str, dia: str) -> int:
++        if not isinstance(usuario, str):
++            raise ErroBiblioteca("Usuário deve ser uma string")
++        usuario_normalizado = usuario.strip()
++        if not usuario_normalizado:
++            raise ErroBiblioteca("Usuário não pode ser vazio")
++        data_devolucao = _parse_dia(dia)
++        chave = (isbn, usuario_normalizado)
++        data_emprestimo = self._emprestimos.get(chave)
++        if data_emprestimo is None:
++            raise ErroBiblioteca("Empréstimo ativo não encontrado")
++        if data_devolucao < data_emprestimo:
++            raise ErroBiblioteca("Devolução não pode anteceder o empréstimo")
++        data_prevista = data_emprestimo + timedelta(days=14)
++        atraso = max(0, (data_devolucao - data_prevista).days)
++        del self._emprestimos[chave]
++        return atraso
++
++    def disponiveis(self, isbn: str) -> int:
++        livro = self._catalogo.buscar(isbn)
++        emprestados = sum(1 for (isbn_ativo, _), _dia in self._emprestimos.items() if isbn_ativo == isbn)
++        return livro.exemplares - emprestados
++
++    def ativos(self) -> list[tuple[str, str, str]]:
++        ativos = [(isbn, usuario, dia.isoformat()) for (isbn, usuario), dia in self._emprestimos.items()]
++        return sorted(ativos, key=lambda emprestimo: (emprestimo[2], emprestimo[0], emprestimo[1]))
+diff --git a/biblioteca/models.py b/biblioteca/models.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..04c84ee40fc7b697ca95c58d9735912b85a5ffb8
+--- /dev/null
++++ b/biblioteca/models.py
+@@ -0,0 +1,25 @@
++from dataclasses import dataclass
++import re
++
++
++class ErroBiblioteca(Exception):
++    """Erro de validação ou de regra da biblioteca."""
++
++
++@dataclass(frozen=True)
++class Livro:
++    isbn: str
++    titulo: str
++    exemplares: int
++
++    def __post_init__(self) -> None:
++        if not isinstance(self.isbn, str) or re.fullmatch(r"[0-9]{13}", self.isbn) is None:
++            raise ErroBiblioteca("ISBN deve conter exatamente 13 dígitos ASCII")
++        if not isinstance(self.titulo, str):
++            raise ErroBiblioteca("Título deve ser uma string")
++        titulo = self.titulo.strip()
++        if not titulo:
++            raise ErroBiblioteca("Título não pode ser vazio")
++        object.__setattr__(self, "titulo", titulo)
++        if isinstance(self.exemplares, bool) or not isinstance(self.exemplares, int) or self.exemplares < 1:
++            raise ErroBiblioteca("Exemplares deve ser um inteiro maior ou igual a 1")
+
+apply patch
+patch: completed
+/tmp/bench-bx08p7yh/biblioteca/emprestimos.py
+diff --git a/biblioteca/__init__.py b/biblioteca/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..fd3585c359f6b8daa42532555450d09adbeea138
+--- /dev/null
++++ b/biblioteca/__init__.py
+@@ -0,0 +1,5 @@
++from .models import ErroBiblioteca, Livro
++from .catalogo import Catalogo
++from .emprestimos import ServicoEmprestimos
++
++__all__ = ["Livro", "ErroBiblioteca", "Catalogo", "ServicoEmprestimos"]
+diff --git a/biblioteca/catalogo.py b/biblioteca/catalogo.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..7c406f68b2cca88bcf07f3d0103370154e9111c0
+--- /dev/null
++++ b/biblioteca/catalogo.py
+@@ -0,0 +1,22 @@
++from .models import ErroBiblioteca, Livro
++
++
++class Catalogo:
++    def __init__(self) -> None:
++        self._livros: dict[str, Livro] = {}
++
++    def adicionar(self, livro: Livro) -> None:
++        if not isinstance(livro, Livro):
++            raise ErroBiblioteca("É necessário adicionar uma instância de Livro")
++        if livro.isbn in self._livros:
++            raise ErroBiblioteca("ISBN já cadastrado")
++        self._livros[livro.isbn] = livro
++
++    def buscar(self, isbn: str) -> Livro:
++        try:
++            return self._livros[isbn]
++        except (KeyError, TypeError):
++            raise ErroBiblioteca("Livro não encontrado no catálogo") from None
++
++    def listar(self) -> list[Livro]:
++        return [self._livros[isbn] for isbn in sorted(self._livros)]
+diff --git a/biblioteca/emprestimos.py b/biblioteca/emprestimos.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d5059d196afc02e71d2a7b454e3777dc923dfe0e
+--- /dev/null
++++ b/biblioteca/emprestimos.py
+@@ -0,0 +1,76 @@
++from datetime import date, timedelta
++import re
++
++from .catalogo import Catalogo
++from .models import ErroBiblioteca
++
++
++_FORMATO_DIA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
++
++
++def _parse_dia(dia: str) -> date:
++    if not isinstance(dia, str) or _FORMATO_DIA.fullmatch(dia) is None:
++        raise ErroBiblioteca("Dia deve estar no formato YYYY-MM-DD")
++    try:
++        ano, mes, dia_mes = (int(parte) for parte in dia.split("-"))
++        return date(ano, mes, dia_mes)
++    except ValueError:
++        raise ErroBiblioteca("Dia não é uma data válida") from None
++
++
++class ServicoEmprestimos:
++    def __init__(self, catalogo: Catalogo) -> None:
++        if not isinstance(catalogo, Catalogo):
++            raise ErroBiblioteca("É necessário fornecer uma instância de Catalogo")
++        self._catalogo = catalogo
++        # Chaveia por ISBN e usuário já normalizado; o valor é a data do empréstimo.
++        self._emprestimos: dict[tuple[str, str], date] = {}
++
++    def emprestar(self, isbn: str, usuario: str, dia: str) -> None:
++        livro = self._catalogo.buscar(isbn)
++        if not isinstance(usuario, str):
++            raise ErroBiblioteca("Usuário deve ser uma string")
++        usuario_normalizado = usuario.strip()
++        if not usuario_normalizado:
++            raise ErroBiblioteca("Usuário não pode ser vazio")
++        data_emprestimo = _parse_dia(dia)
++        chave = (isbn, usuario_normalizado)
++        if chave in self._emprestimos:
++            raise ErroBiblioteca("Usuário já tem este livro emprestado")
++        if self.disponiveis(isbn) < 1:
++            raise ErroBiblioteca("Não há exemplares disponíveis")
++        try:
++            data_emprestimo + timedelta(days=14)
++        except OverflowError:
++            raise ErroBiblioteca("Data prevista ultrapassa o calendário suportado") from None
++        self._emprestimos[chave] = data_emprestimo
++
++    def devolver(self, isbn: str, usuario: str, dia: str) -> int:
++        if not isinstance(usuario, str):
++            raise ErroBiblioteca("Usuário deve ser uma string")
++        usuario_normalizado = usuario.strip()
++        if not usuario_normalizado:
++            raise ErroBiblioteca("Usuário não pode ser vazio")
++        data_devolucao = _parse_dia(dia)
++        chave = (isbn, usuario_normalizado)
++        try:
++            data_emprestimo = self._emprestimos.get(chave)
++        except TypeError:
++            raise ErroBiblioteca("Empréstimo ativo não encontrado") from None
++        if data_emprestimo is None:
++            raise ErroBiblioteca("Empréstimo ativo não encontrado")
++        if data_devolucao < data_emprestimo:
++            raise ErroBiblioteca("Devolução não pode anteceder o empréstimo")
++        data_prevista = data_emprestimo + timedelta(days=14)
++        atraso = max(0, (data_devolucao - data_prevista).days)
++        del self._emprestimos[chave]
++        return atraso
++
++    def disponiveis(self, isbn: str) -> int:
++        livro = self._catalogo.buscar(isbn)
++        emprestados = sum(1 for (isbn_ativo, _), _dia in self._emprestimos.items() if isbn_ativo == isbn)
++        return livro.exemplares - emprestados
++
++    def ativos(self) -> list[tuple[str, str, str]]:
++        ativos = [(isbn, usuario, dia.isoformat()) for (isbn, usuario), dia in self._emprestimos.items()]
++        return sorted(ativos, key=lambda emprestimo: (emprestimo[2], emprestimo[0], emprestimo[1]))
+diff --git a/biblioteca/models.py b/biblioteca/models.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..04c84ee40fc7b697ca95c58d9735912b85a5ffb8
+--- /dev/null
++++ b/biblioteca/models.py
+@@ -0,0 +1,25 @@
++from dataclasses import dataclass
++import re
++
++
++class ErroBiblioteca(Exception):
++    """Erro de validação ou de regra da biblioteca."""
++
++
++@dataclass(frozen=True)
++class Livro:
++    isbn: str
++    titulo: str
++    exemplares: int
++
++    def __post_init__(self) -> None:
++        if not isinstance(self.isbn, str) or re.fullmatch(r"[0-9]{13}", self.isbn) is None:
++            raise ErroBiblioteca("ISBN deve conter exatamente 13 dígitos ASCII")
++        if not isinstance(self.titulo, str):
++            raise ErroBiblioteca("Título deve ser uma string")
++        titulo = self.titulo.strip()
++        if not titulo:
++            raise ErroBiblioteca("Título não pode ser vazio")
++        object.__setattr__(self, "titulo", titulo)
++        if isinstance(self.exemplares, bool) or not isinstance(self.exemplares, int) or self.exemplares < 1:
++            raise ErroBiblioteca("Exemplares deve ser um inteiro maior ou igual a 1")
+
+exec
+/bin/bash -lc 'rg --files biblioteca' in /tmp/bench-bx08p7yh
+ succeeded in 0ms:
+biblioteca/emprestimos.py
+biblioteca/catalogo.py
+biblioteca/models.py
+biblioteca/__init__.py
+
+codex
+Criei o pacote `biblioteca` com os quatro arquivos pedidos: `__init__.py`, `models.py`, `catalogo.py` e `emprestimos.py`.
+
+A implementação valida livros e datas, mantém empréstimos separados por serviço, calcula atrasos e devolve listas ordenadas. Não executei testes.
+tokens used
+13,482

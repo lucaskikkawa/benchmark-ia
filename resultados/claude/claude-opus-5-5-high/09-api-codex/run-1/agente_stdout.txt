@@ -1,0 +1,16 @@
+Criei `cliente.py` com `buscar_com_retry`. Não alterei `fake_api.py`. Rodei testes rápidos no próprio diretório e todos se comportaram como o enunciado pede.
+
+**Como funciona:**
+- **Validação antes de qualquer chamada:** `tentativas` precisa ser ≥ 1, `timeout` precisa ser finito e > 0, e `backoff` precisa ser finito e ≥ 0. Fora disso, levanta `ValueError` antes de chamar a API ou de dormir, mesmo quando a primeira chamada daria certo. `NaN` e infinito são recusados.
+- **Chamadas:** usa sempre a mesma chave, sem alteração (vale para chave vazia e Unicode), e o mesmo `timeout` em todas as tentativas. O resultado volta exatamente como a API devolveu, inclusive `{}`.
+- **Quando repete:** só para `ErroTemporario`, `TimeoutError` e subclasses delas. `ErroPermanente` e qualquer outra exceção sobem na hora, e não há captura genérica.
+- **Espera entre tentativas:** depois da falha de índice `i`, chama `dormir(backoff * 2**i)`, mesmo quando o valor é zero, sem arredondar nem limitar. Não dorme depois de um sucesso nem depois da última falha. A contagem recomeça do zero a cada chamada da função.
+- **Tentativas esgotadas:** relança a exceção original da última tentativa.
+- **Erros de `dormir`:** `dormir` é chamado fora do bloco `except`. Assim, um erro lançado por ele sobe direto, mesmo que seja `TimeoutError` ou `ErroTemporario`.
+
+**O que os testes mostraram:**
+- Com `FakeAPI` (seed 0), as chaves `'a'`, `'b'`, `'ç'` e `''` voltaram com os dados certos e as chamadas registradas batem com o esperado.
+- Uma chave ausente levantou `ErroPermanente` sem nenhuma espera.
+- Uma API que sempre falha, com 40 tentativas, fez 40 chamadas e 39 esperas (0.5, 1.0, 2.0, …) e terminou relançando o último erro.
+- Cada valor inválido gerou `ValueError` com zero chamadas à API.
+- Um `TimeoutError` lançado por `dormir` subiu imediatamente.

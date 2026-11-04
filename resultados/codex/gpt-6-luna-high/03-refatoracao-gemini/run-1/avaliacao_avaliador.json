@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/03-refatoracao-gemini/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "03-refatoracao-gemini",
+ "tipo": "03-refatoracao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 29.019,
+ "testes_passados": 24,
+ "testes_total": 24,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código claro e idiomático, com dataclasses, @property e fronteiras corretas; faltam docstrings nas classes e métodos exigidos.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Classes concisas, faixas, frete grátis, tipo inválido e lista vazia corretos; dataclasses, properties e tipagem completas. Sem docstrings, então documentação fica em 1.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 24,
+  "passados": 24,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

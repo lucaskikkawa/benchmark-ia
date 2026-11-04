@@ -1,0 +1,17 @@
+Criei `solucao.py` neste diretório com `consolidar(caminho_csv, caminho_sla, caminho_saida) -> dict`, usando só a biblioteca padrão. Não deixei nenhum arquivo de amostra.
+
+Testei com casos temporários, que removi depois:
+- o exemplo do enunciado (média 45, pior id `a1`);
+- empate `a10`/`a2` resolvido por ordem de `str`;
+- CRLF, campo entre aspas com vírgula, espaços nas bordas, linhas em branco e `,,,,`;
+- ordenação `sorted` por code point (`"A"`, `"Ana"`, `"São, Paulo"`, `"alfa"`, `"n1"`);
+- só cabeçalho gera `{"equipes": []}`;
+- fronteira do SLA: duração igual ao limite não estoura; duração que cruza o fim de fevereiro de 2024 é contada corretamente;
+- erros esperados: BOM no cabeçalho, data inexistente, formato inválido, `fechado_em` anterior, prioridade com maiúscula, id duplicado após strip, id vazio, número de colunas errado, SLA vazio/inválido/com chave faltando/extra, limite `float`/`bool`/`0`, e arquivo ausente (`FileNotFoundError`).
+
+Escolhas que tomei onde o enunciado não detalhava:
+- Linhas com número de colunas diferente de 5 (e não totalmente vazias) geram `ValueError`.
+- O arquivo de saída só é gravado depois de toda a validação passar; se algo falhar, nada é escrito.
+- A saída usa `newline=""` para não haver conversão de fim de linha em nenhuma plataforma.
+
+O repositório não é um git, então não fiz commit.

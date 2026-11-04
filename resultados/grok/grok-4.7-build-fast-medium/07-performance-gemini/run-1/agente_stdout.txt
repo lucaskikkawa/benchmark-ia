@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui.O problema pede o maior subarray contíguo com soma igual ao alvo, em tempo linear. Vou implementar isso com somas de prefixo e um mapa da primeira ocorrência.O teste manual tinha um resultado esperado errado. Vou conferir com força bruta e medir o caso grande.A função `maior_subarray_soma` está em `otimizador.py`.
+
+Ela devolve o comprimento do maior subarray contíguo cuja soma é exatamente `alvo`, ou `0` se não houver nenhum. A busca usa a soma dos prefixos e a primeira posição de cada soma, em tempo e espaço lineares. Entradas que não são `list` ou `int` puro (incluindo `bool`) levantam `TypeError`.
+
+Os exemplos do enunciado batem com o resultado, e uma lista de 350.000 elementos termina em cerca de 0,04 s.

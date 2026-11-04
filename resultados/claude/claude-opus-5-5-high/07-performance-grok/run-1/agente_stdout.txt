@@ -1,0 +1,9 @@
+Criei o `solucao.py` com a função `pares_com_soma`, usando só a biblioteca padrão.
+
+**Como funciona:** a lista é percorrida uma única vez com um dicionário de frequências. Para cada `x`, o total soma quantas vezes `alvo - x` já apareceu antes e só depois conta o próprio `x`. Assim, só entram pares de índices `i < j`, e o caso `2*x == alvo` dá `C(freq, 2)` automaticamente. O tempo é O(n), `nums` não é alterada e o resultado é um `int` normal do Python, sem montar a lista de pares.
+
+**Validação de tipos:** dá `TypeError` se `nums` não for `list`, se `alvo` ou algum elemento não for `int`, ou se for `bool`.
+
+**Testes que rodei:** todos os exemplos do enunciado e também `[1, 1, 1]` com alvo `2` deram o resultado esperado. As entradas com tipo inválido geraram `TypeError`. Com 200.000 valores iguais, a função levou cerca de 0,02 s e devolveu 19.999.900.000, e a lista de entrada continuou igual. Esse teste de tempo rodou no mesmo processo, não em subprocesso como na medição oficial.
+
+Apaguei o `__pycache__` que os testes geraram, então o diretório só tem o `solucao.py` como arquivo novo.

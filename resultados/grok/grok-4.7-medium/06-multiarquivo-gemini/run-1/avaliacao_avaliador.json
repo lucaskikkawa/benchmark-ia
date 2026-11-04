@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/grok/grok-4.7-medium/06-multiarquivo-gemini/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "medium",
+ "tarefa": "06-multiarquivo-gemini",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 124.796,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Módulos coesos, imports relativos, tipagem e tratamento de fila e falhas bem implementados; faltam docstrings em várias interfaces públicas.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Módulos coesos, imports relativos, dataclass/IntEnum/ABC e tipagem moderna; despacho e DLQ corretos. Faltam docstrings em classes e métodos públicos; __init__ tem docstring mínima.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 18,
+  "passados": 18,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

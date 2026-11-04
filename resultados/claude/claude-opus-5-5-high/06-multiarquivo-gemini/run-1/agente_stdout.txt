@@ -1,0 +1,14 @@
+Criei o pacote `eventhub` nos 4 arquivos pedidos: `models.py`, `handlers.py`, `bus.py` e `__init__.py`. Um teste rápido mostrou que o comportamento principal segue o enunciado.
+
+**O que o teste verificou:**
+- **Ordem:** os eventos saem por prioridade (HIGH, depois NORMAL, depois LOW) e, na mesma prioridade, por ordem de chegada. Um evento HIGH publicado de dentro de um handler foi atendido antes dos que já estavam na fila com prioridade menor.
+- **Inscrições:** inscrever o mesmo handler duas vezes não o duplica.
+- **Erros:** com `dlq` configurada, o erro vai para a `dlq` e os demais handlers continuam rodando. Sem `dlq`, a exceção é repassada para quem chamou.
+- **Retornos:** `dispatch_all()` devolve o total de eventos despachados, e `dispatch_next()` devolve `False` com a fila vazia. Um evento sem handlers é consumido e conta como despachado.
+- **Histórico:** `get_history()` devolve uma cópia, com ou sem filtro por tópico.
+
+**Decisões onde o enunciado não diz nada:**
+- O `id` de cada evento é um `uuid4` em texto.
+- Se dois eventos tiverem exatamente o mesmo `timestamp`, um contador interno mantém a ordem de publicação.
+- A lista de handlers é copiada antes do despacho, então um handler pode se inscrever ou se desinscrever durante o processamento sem quebrar o loop.
+- O campo `retry_count` existe no `Event`, mas nada no barramento o usa, porque o enunciado não diz quando ele deveria mudar.

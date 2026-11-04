@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "high",
+ "tarefa": "09-api-grok",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "timeout",
+ "duracao_agente_s": 420.063,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Timeout e erros específicos são tratados corretamente, com thread daemon e docstring. Porém, retry e backoff ficam inline, e a classe de erro transitório é detectada pelo nome.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Erros e timeout corretos. Classifica por nome de classe com except amplo, backoff repetido no laço, docstring não diz o que é retentado.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.0,
+ "nota_final_10": 9.1
+}

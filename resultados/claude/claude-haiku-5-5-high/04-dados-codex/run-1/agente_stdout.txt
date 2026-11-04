@@ -1,0 +1,11 @@
+Criei `vendas.py` neste diretório com `resumir_vendas(entrada, saida, minimo_centavos=0)`, seguindo o enunciado. Testei com Python 3.11 usando um script temporário (já removido): todos os casos passaram, inclusive 30.000 linhas em cerca de 0,04 s.
+
+Decisões que tomei onde o enunciado não cobria o caso:
+
+- **Entrada e saída iguais** (após resolver caminhos): lança `ValueError` antes de ler ou gravar.
+- **Status ausente em uma linha**: a linha é tratada como não paga e ignorada, pois não dá para saber se estava paga.
+- **Células extras além do cabeçalho**: ignoradas.
+- **Nomes de colunas** são comparados exatamente, sem `strip()` no cabeçalho.
+- **Limite de dígitos do Python 3.11**: a conversão int↔str tem limite de 4300 dígitos, o que quebraria a gravação do JSON com totais grandes. O código suspende esse limite só durante o cálculo e a serialização, e restaura o valor anterior ao final.
+
+A gravação só acontece depois de toda a validação e serialização, então um `ValueError` deixa a saída anterior intacta. Erros de acesso a arquivo (ex.: entrada inexistente) propagam normalmente.

@@ -1,0 +1,12 @@
+Criei o pacote `biblioteca/` com os quatro arquivos pedidos: `__init__.py`, `models.py`, `catalogo.py` e `emprestimos.py`. Ele usa só a biblioteca padrão e imports relativos. Rodei um teste rápido à mão com o exemplo do enunciado e alguns casos de erro, e todos deram o resultado esperado. Não escrevi testes automatizados.
+
+O que o teste cobriu:
+- **Exemplo do enunciado:** o título fica `"Dom Casmurro"` sem os espaços; depois do empréstimo, `disponiveis` dá 0; a devolução em `2024-01-16` dá 1 dia de atraso.
+- **Erros que levantam `ErroBiblioteca`:** dia `1900-02-29`, usuário só com `\u00a0`, ISBN com espaço no final e livro sem exemplar livre.
+- **`ativos`:** sai ordenado por dia, depois ISBN, depois usuário (`"A"` vem antes de `"b"`).
+- **Dois serviços no mesmo catálogo:** cada um tem seu próprio estoque.
+
+Decisões que tomei onde o enunciado não diz nada:
+- **Atraso:** calculo como dias entre empréstimo e devolução menos 14, em vez de montar a data prevista. Dá o mesmo número, mas não quebra com empréstimo em `9999-12-31`, cuja data prevista passaria do ano 9999.
+- **Ordem de validação no `devolver`:** primeiro vejo se o usuário e o dia são válidos, depois se o empréstimo existe. Toda checagem acontece antes de mudar o estado, então um erro em `emprestar` ou `devolver` não deixa nada pela metade.
+- **Formato do dia:** aceito só `YYYY-MM-DD` com dígitos ASCII, e a data precisa existir no calendário.

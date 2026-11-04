@@ -1,0 +1,529 @@
+combo,empresa,tarefa,run,status,pct_testes,rubrica_nova,nota_nova,nota_antiga,juizes,incoerencias
+claude-haiku-5-5-high,claude,01-funcao-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+claude-haiku-5-5-high,claude,01-funcao-gemini,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+claude-haiku-5-5-high,claude,01-funcao-grok,1,ok,100.0,8.0,9.4,9.55,codex+gemini,
+claude-haiku-5-5-high,claude,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-haiku-5-5-high,claude,02-bug-gemini,1,ok,100.0,8.5,9.55,9.7,codex+grok,
+claude-haiku-5-5-high,claude,02-bug-grok,1,ok,100.0,7.5,9.25,9.4,codex+gemini,
+claude-haiku-5-5-high,claude,03-refatoracao-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-haiku-5-5-high,claude,03-refatoracao-gemini,1,ok,100.0,9.5,9.85,9.85,codex+grok,
+claude-haiku-5-5-high,claude,03-refatoracao-grok,1,ok,100.0,9.0,9.7,9.85,codex+gemini,
+claude-haiku-5-5-high,claude,04-dados-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-haiku-5-5-high,claude,04-dados-gemini,1,ok,100.0,9.0,9.7,9.4,codex+grok,
+claude-haiku-5-5-high,claude,04-dados-grok,1,ok,100.0,9.5,9.85,10.0,codex+gemini,
+claude-haiku-5-5-high,claude,04-dados-grok,2,ok,100.0,9.5,9.85,9.7,codex+gemini,
+claude-haiku-5-5-high,claude,04-dados-grok,3,ok,100.0,9.5,9.85,9.7,codex+gemini,
+claude-haiku-5-5-high,claude,04-dados-grok,4,ok,100.0,8.5,9.55,9.85,codex+gemini,
+claude-haiku-5-5-high,claude,05-cli-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-haiku-5-5-high,claude,05-cli-gemini,1,ok,100.0,8.5,9.55,9.55,codex+grok,
+claude-haiku-5-5-high,claude,05-cli-grok,1,ok,100.0,9.0,9.7,9.85,codex+gemini,
+claude-haiku-5-5-high,claude,06-multiarquivo-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-haiku-5-5-high,claude,06-multiarquivo-gemini,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+claude-haiku-5-5-high,claude,06-multiarquivo-grok,1,ok,100.0,9.0,9.7,9.7,codex+gemini,
+claude-haiku-5-5-high,claude,07-performance-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-haiku-5-5-high,claude,07-performance-gemini,1,ok,100.0,8.5,9.55,9.55,codex+grok,
+claude-haiku-5-5-high,claude,07-performance-grok,1,ok,100.0,8.0,9.4,9.4,codex+gemini,
+claude-haiku-5-5-high,claude,08-testes-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-haiku-5-5-high,claude,08-testes-gemini,1,ok,100.0,9.5,9.85,9.7,codex+grok,
+claude-haiku-5-5-high,claude,08-testes-grok,1,ok,100.0,10.0,10.0,9.85,codex+gemini,
+claude-haiku-5-5-high,claude,09-api-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-haiku-5-5-high,claude,09-api-gemini,1,ok,100.0,9.5,9.85,9.85,codex+grok,
+claude-haiku-5-5-high,claude,09-api-grok,1,ok,100.0,9.0,9.7,9.55,codex+gemini,
+claude-haiku-5-5-high,claude,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-haiku-5-5-high,claude,10-ambigua-gemini,1,ok,100.0,9.5,9.85,10.0,codex+grok,
+claude-haiku-5-5-high,claude,10-ambigua-grok,1,ok,100.0,10.0,10.0,10.0,codex+gemini,
+claude-haiku-5-5-medium,claude,01-funcao-codex,1,ok,100.0,9.0,9.7,9.55,gemini+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+claude-haiku-5-5-medium,claude,01-funcao-gemini,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+claude-haiku-5-5-medium,claude,01-funcao-grok,1,ok,100.0,8.0,9.4,9.25,codex+gemini,
+claude-haiku-5-5-medium,claude,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-haiku-5-5-medium,claude,02-bug-gemini,1,ok,100.0,8.5,9.55,9.7,codex+grok,
+claude-haiku-5-5-medium,claude,02-bug-grok,1,ok,100.0,8.0,9.4,9.4,codex+gemini,
+claude-haiku-5-5-medium,claude,03-refatoracao-codex,1,ok,100.0,8.5,9.55,9.55,gemini+grok,
+claude-haiku-5-5-medium,claude,03-refatoracao-gemini,1,ok,100.0,9.5,9.85,9.85,codex+grok,
+claude-haiku-5-5-medium,claude,03-refatoracao-grok,1,ok,100.0,7.5,9.25,9.1,codex+gemini,
+claude-haiku-5-5-medium,claude,04-dados-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-haiku-5-5-medium,claude,04-dados-gemini,1,ok,100.0,8.5,9.55,9.7,codex+grok,
+claude-haiku-5-5-medium,claude,04-dados-grok,1,ok,100.0,9.5,9.85,9.85,codex+gemini,
+claude-haiku-5-5-medium,claude,04-dados-grok,2,ok,100.0,10.0,10.0,9.85,codex+gemini,
+claude-haiku-5-5-medium,claude,04-dados-grok,3,ok,100.0,10.0,10.0,10.0,codex+gemini,
+claude-haiku-5-5-medium,claude,04-dados-grok,4,ok,100.0,9.5,9.85,10.0,codex+gemini,
+claude-haiku-5-5-medium,claude,05-cli-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-haiku-5-5-medium,claude,05-cli-gemini,1,ok,100.0,8.0,9.4,9.55,codex+grok,
+claude-haiku-5-5-medium,claude,05-cli-grok,1,ok,100.0,8.5,9.55,9.7,codex+gemini,
+claude-haiku-5-5-medium,claude,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-haiku-5-5-medium,claude,06-multiarquivo-gemini,1,ok,100.0,9.0,9.7,9.85,codex+grok,
+claude-haiku-5-5-medium,claude,06-multiarquivo-grok,1,ok,88.24,9.0,8.88,8.88,codex+gemini,
+claude-haiku-5-5-medium,claude,07-performance-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-haiku-5-5-medium,claude,07-performance-gemini,1,ok,100.0,9.5,9.85,10.0,codex+grok,
+claude-haiku-5-5-medium,claude,07-performance-grok,1,ok,100.0,7.0,9.1,9.1,codex+gemini,
+claude-haiku-5-5-medium,claude,08-testes-codex,1,ok,93.33,9.5,9.38,9.53,gemini+grok,
+claude-haiku-5-5-medium,claude,08-testes-gemini,1,ok,100.0,9.5,9.85,10.0,codex+grok,
+claude-haiku-5-5-medium,claude,08-testes-grok,1,ok,100.0,10.0,10.0,10.0,codex+gemini,
+claude-haiku-5-5-medium,claude,09-api-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-haiku-5-5-medium,claude,09-api-gemini,1,ok,100.0,10.0,10.0,9.85,codex+grok,
+claude-haiku-5-5-medium,claude,09-api-grok,1,ok,100.0,8.5,9.55,9.55,codex+gemini,
+claude-haiku-5-5-medium,claude,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-haiku-5-5-medium,claude,10-ambigua-gemini,1,ok,100.0,9.5,9.85,10.0,codex+grok,
+claude-haiku-5-5-medium,claude,10-ambigua-grok,1,ok,100.0,10.0,10.0,10.0,codex+gemini,
+claude-opus-5-5-high,claude,01-funcao-codex,1,ok,100.0,9.5,9.85,9.85,gemini+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+claude-opus-5-5-high,claude,01-funcao-gemini,1,ok,100.0,9.0,9.7,9.85,codex+grok,
+claude-opus-5-5-high,claude,01-funcao-grok,1,ok,100.0,7.5,9.25,9.4,codex+gemini,
+claude-opus-5-5-high,claude,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-opus-5-5-high,claude,02-bug-gemini,1,ok,100.0,9.0,9.7,9.55,codex+grok,
+claude-opus-5-5-high,claude,02-bug-grok,1,ok,100.0,8.5,9.55,9.55,codex+gemini,
+claude-opus-5-5-high,claude,03-refatoracao-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-opus-5-5-high,claude,03-refatoracao-gemini,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+claude-opus-5-5-high,claude,03-refatoracao-grok,1,ok,100.0,9.0,9.7,9.7,codex+gemini,
+claude-opus-5-5-high,claude,04-dados-codex,1,ok,100.0,7.5,9.25,9.1,gemini+grok,
+claude-opus-5-5-high,claude,04-dados-gemini,1,ok,100.0,8.0,9.4,9.25,codex+grok,
+claude-opus-5-5-high,claude,04-dados-grok,1,ok,100.0,9.0,9.7,10.0,codex+gemini,
+claude-opus-5-5-high,claude,04-dados-grok,2,ok,100.0,9.0,9.7,9.55,codex+gemini,execução refeita (commit b850e82 'Refaz 7 execuções do opus-5-5-high que falharam por cota'; backup em resultados/_erros_cota). Documentada no commit
+claude-opus-5-5-high,claude,04-dados-grok,3,ok,100.0,9.0,9.7,9.7,codex+gemini,execução refeita (commit b850e82 'Refaz 7 execuções do opus-5-5-high que falharam por cota'; backup em resultados/_erros_cota). Documentada no commit
+claude-opus-5-5-high,claude,04-dados-grok,4,ok,100.0,9.5,9.85,9.85,codex+gemini,execução refeita (commit b850e82 'Refaz 7 execuções do opus-5-5-high que falharam por cota'; backup em resultados/_erros_cota). Documentada no commit
+claude-opus-5-5-high,claude,05-cli-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-opus-5-5-high,claude,05-cli-gemini,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 22/22 testes passam (100%), mas a regra zera a nota"
+claude-opus-5-5-high,claude,05-cli-grok,1,ok,100.0,9.5,9.85,10.0,codex+gemini,
+claude-opus-5-5-high,claude,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-opus-5-5-high,claude,06-multiarquivo-gemini,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+claude-opus-5-5-high,claude,06-multiarquivo-grok,1,ok,100.0,8.5,9.55,9.25,codex+gemini,
+claude-opus-5-5-high,claude,07-performance-codex,1,ok,100.0,9.0,9.7,9.4,gemini+grok,
+claude-opus-5-5-high,claude,07-performance-gemini,1,ok,100.0,9.5,9.85,9.85,codex+grok,
+claude-opus-5-5-high,claude,07-performance-grok,1,ok,100.0,7.0,9.1,9.1,codex+gemini,
+claude-opus-5-5-high,claude,08-testes-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-opus-5-5-high,claude,08-testes-gemini,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+claude-opus-5-5-high,claude,08-testes-grok,1,ok,100.0,10.0,10.0,10.0,codex+gemini,
+claude-opus-5-5-high,claude,09-api-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-opus-5-5-high,claude,09-api-gemini,1,ok,100.0,10.0,10.0,10.0,codex+grok,
+claude-opus-5-5-high,claude,09-api-grok,1,ok,100.0,8.5,9.55,9.7,codex+gemini,execução refeita (commit b850e82 'Refaz 7 execuções do opus-5-5-high que falharam por cota'; backup em resultados/_erros_cota). Documentada no commit
+claude-opus-5-5-high,claude,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,execução refeita (commit b850e82 'Refaz 7 execuções do opus-5-5-high que falharam por cota'; backup em resultados/_erros_cota). Documentada no commit
+claude-opus-5-5-high,claude,10-ambigua-gemini,1,ok,100.0,10.0,10.0,10.0,codex+grok,execução refeita (commit b850e82 'Refaz 7 execuções do opus-5-5-high que falharam por cota'; backup em resultados/_erros_cota). Documentada no commit
+claude-opus-5-5-high,claude,10-ambigua-grok,1,ok,100.0,10.0,10.0,10.0,codex+gemini,execução refeita (commit b850e82 'Refaz 7 execuções do opus-5-5-high que falharam por cota'; backup em resultados/_erros_cota). Documentada no commit
+claude-opus-5-5-medium,claude,01-funcao-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+claude-opus-5-5-medium,claude,01-funcao-gemini,1,ok,100.0,9.0,9.7,9.55,codex+grok,
+claude-opus-5-5-medium,claude,01-funcao-grok,1,ok,100.0,8.0,9.4,9.1,codex+gemini,
+claude-opus-5-5-medium,claude,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-opus-5-5-medium,claude,02-bug-gemini,1,ok,100.0,8.0,9.4,9.7,codex+grok,
+claude-opus-5-5-medium,claude,02-bug-grok,1,ok,100.0,8.0,9.4,9.4,codex+gemini,
+claude-opus-5-5-medium,claude,03-refatoracao-codex,1,ok,100.0,9.0,9.7,10.0,gemini+grok,
+claude-opus-5-5-medium,claude,03-refatoracao-gemini,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+claude-opus-5-5-medium,claude,03-refatoracao-grok,1,ok,100.0,9.5,9.85,9.55,codex+gemini,
+claude-opus-5-5-medium,claude,04-dados-codex,1,ok,100.0,8.5,9.55,9.4,gemini+grok,
+claude-opus-5-5-medium,claude,04-dados-gemini,1,ok,100.0,7.0,9.1,9.1,codex+grok,
+claude-opus-5-5-medium,claude,04-dados-grok,1,ok,100.0,9.5,9.85,9.85,codex+gemini,
+claude-opus-5-5-medium,claude,04-dados-grok,2,ok,100.0,9.5,9.85,9.7,codex+gemini,
+claude-opus-5-5-medium,claude,04-dados-grok,3,ok,100.0,9.0,9.7,9.85,codex+gemini,
+claude-opus-5-5-medium,claude,04-dados-grok,4,ok,100.0,9.5,9.85,9.85,codex+gemini,
+claude-opus-5-5-medium,claude,05-cli-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-opus-5-5-medium,claude,05-cli-gemini,1,ok,100.0,9.5,9.85,9.55,codex+grok,
+claude-opus-5-5-medium,claude,05-cli-grok,1,ok,100.0,9.5,9.85,9.85,codex+gemini,
+claude-opus-5-5-medium,claude,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-opus-5-5-medium,claude,06-multiarquivo-gemini,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+claude-opus-5-5-medium,claude,06-multiarquivo-grok,1,ok,100.0,7.5,9.25,9.25,codex+gemini,
+claude-opus-5-5-medium,claude,07-performance-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-opus-5-5-medium,claude,07-performance-gemini,1,ok,100.0,9.0,9.7,9.55,codex+grok,
+claude-opus-5-5-medium,claude,07-performance-grok,1,ok,100.0,8.0,9.4,9.4,codex+gemini,
+claude-opus-5-5-medium,claude,08-testes-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-opus-5-5-medium,claude,08-testes-gemini,1,ok,100.0,9.5,9.85,9.7,codex+grok,
+claude-opus-5-5-medium,claude,08-testes-grok,1,ok,100.0,9.5,9.85,9.7,codex+gemini,
+claude-opus-5-5-medium,claude,09-api-codex,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+claude-opus-5-5-medium,claude,09-api-gemini,1,ok,100.0,9.5,9.85,9.85,codex+grok,
+claude-opus-5-5-medium,claude,09-api-grok,1,ok,100.0,8.5,9.55,9.55,codex+gemini,
+claude-opus-5-5-medium,claude,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,gemini+grok,
+claude-opus-5-5-medium,claude,10-ambigua-gemini,1,ok,100.0,10.0,10.0,10.0,codex+grok,
+claude-opus-5-5-medium,claude,10-ambigua-grok,1,ok,100.0,10.0,10.0,10.0,codex+gemini,
+gpt-6-luna-high,codex,01-funcao-claude,1,ok,100.0,5.0,8.5,8.8,gemini+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+gpt-6-luna-high,codex,01-funcao-gemini,1,ok,100.0,8.0,9.4,9.4,claude+grok,
+gpt-6-luna-high,codex,01-funcao-grok,1,ok,100.0,7.0,9.1,9.1,claude+gemini,
+gpt-6-luna-high,codex,02-bug-claude,1,ok,100.0,8.5,9.55,9.7,gemini+grok,
+gpt-6-luna-high,codex,02-bug-gemini,1,ok,100.0,8.0,9.4,9.25,claude+grok,
+gpt-6-luna-high,codex,02-bug-grok,1,ok,100.0,7.5,9.25,9.25,claude+gemini,
+gpt-6-luna-high,codex,03-refatoracao-claude,1,ok,100.0,8.0,9.4,9.4,gemini+grok,
+gpt-6-luna-high,codex,03-refatoracao-gemini,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gpt-6-luna-high,codex,03-refatoracao-grok,1,ok,100.0,8.5,9.55,9.7,claude+gemini,
+gpt-6-luna-high,codex,04-dados-claude,1,ok,96.88,7.0,8.88,8.43,gemini+grok,
+gpt-6-luna-high,codex,04-dados-claude,2,ok,96.88,6.5,8.73,8.88,gemini+grok,
+gpt-6-luna-high,codex,04-dados-claude,3,ok,96.88,7.5,9.03,8.88,gemini+grok,
+gpt-6-luna-high,codex,04-dados-claude,4,ok,96.88,6.5,8.73,8.88,gemini+grok,
+gpt-6-luna-high,codex,04-dados-gemini,1,ok,100.0,8.0,9.4,9.25,claude+grok,
+gpt-6-luna-high,codex,04-dados-grok,1,ok,100.0,8.5,9.55,9.7,claude+gemini,
+gpt-6-luna-high,codex,05-cli-claude,1,ok,100.0,8.0,9.4,9.4,gemini+grok,
+gpt-6-luna-high,codex,05-cli-gemini,1,ok,100.0,9.5,9.85,9.85,claude+grok,
+gpt-6-luna-high,codex,05-cli-grok,1,ok,100.0,8.0,9.4,9.4,claude+gemini,
+gpt-6-luna-high,codex,06-multiarquivo-claude,1,ok,100.0,8.0,9.4,9.7,gemini+grok,
+gpt-6-luna-high,codex,06-multiarquivo-gemini,1,ok,100.0,9.5,9.85,10.0,claude+grok,
+gpt-6-luna-high,codex,06-multiarquivo-grok,1,ok,100.0,5.5,8.65,7.0,claude+gemini,
+gpt-6-luna-high,codex,07-performance-claude,1,ok,100.0,7.5,9.25,9.4,gemini+grok,
+gpt-6-luna-high,codex,07-performance-gemini,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gpt-6-luna-high,codex,07-performance-grok,1,timeout,0.0,,0.0,0.0,,
+gpt-6-luna-high,codex,08-testes-claude,1,ok,94.12,8.5,9.14,9.29,gemini+grok,
+gpt-6-luna-high,codex,08-testes-gemini,1,ok,100.0,8.0,9.4,9.4,claude+grok,
+gpt-6-luna-high,codex,08-testes-grok,1,ok,93.33,7.5,8.78,6.53,claude+gemini,
+gpt-6-luna-high,codex,09-api-claude,1,ok,100.0,7.0,9.1,7.0,gemini+grok,
+gpt-6-luna-high,codex,09-api-gemini,1,ok,100.0,8.5,9.55,9.7,claude+grok,
+gpt-6-luna-high,codex,09-api-grok,1,ok,100.0,8.0,9.4,9.4,claude+gemini,
+gpt-6-luna-high,codex,10-ambigua-claude,1,ok,95.24,6.5,8.62,8.77,gemini+grok,
+gpt-6-luna-high,codex,10-ambigua-gemini,1,ok,100.0,8.0,9.4,9.4,claude+grok,
+gpt-6-luna-high,codex,10-ambigua-grok,1,ok,100.0,8.0,9.4,9.4,claude+gemini,
+gpt-6-luna-medium,codex,01-funcao-claude,1,ok,100.0,5.5,8.65,8.8,gemini+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+gpt-6-luna-medium,codex,01-funcao-gemini,1,ok,100.0,8.0,9.4,9.4,claude+grok,
+gpt-6-luna-medium,codex,01-funcao-grok,1,ok,100.0,6.5,8.95,7.0,claude+gemini,
+gpt-6-luna-medium,codex,02-bug-claude,1,ok,100.0,7.5,9.25,9.4,gemini+grok,
+gpt-6-luna-medium,codex,02-bug-gemini,1,ok,100.0,8.5,9.55,9.7,claude+grok,
+gpt-6-luna-medium,codex,02-bug-grok,1,ok,100.0,8.0,9.4,9.4,claude+gemini,
+gpt-6-luna-medium,codex,03-refatoracao-claude,1,ok,96.88,6.5,8.73,9.18,gemini+grok,
+gpt-6-luna-medium,codex,03-refatoracao-gemini,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gpt-6-luna-medium,codex,03-refatoracao-grok,1,ok,100.0,7.5,9.25,9.1,claude+gemini,
+gpt-6-luna-medium,codex,04-dados-claude,1,ok,100.0,7.5,9.25,9.4,gemini+grok,
+gpt-6-luna-medium,codex,04-dados-claude,2,ok,100.0,7.5,9.25,9.1,gemini+grok,
+gpt-6-luna-medium,codex,04-dados-claude,3,ok,96.88,8.0,9.18,8.88,gemini+grok,
+gpt-6-luna-medium,codex,04-dados-claude,4,ok,100.0,8.0,9.4,9.4,gemini+grok,
+gpt-6-luna-medium,codex,04-dados-gemini,1,ok,100.0,8.0,9.4,9.7,claude+grok,
+gpt-6-luna-medium,codex,04-dados-grok,1,ok,100.0,8.5,9.55,7.0,claude+gemini,
+gpt-6-luna-medium,codex,05-cli-claude,1,ok,100.0,8.0,9.4,9.4,gemini+grok,
+gpt-6-luna-medium,codex,05-cli-gemini,1,ok,100.0,8.0,9.4,9.7,claude+grok,
+gpt-6-luna-medium,codex,05-cli-grok,1,ok,100.0,7.5,9.25,7.0,claude+gemini,
+gpt-6-luna-medium,codex,06-multiarquivo-claude,1,ok,100.0,8.0,9.4,9.7,gemini+grok,
+gpt-6-luna-medium,codex,06-multiarquivo-gemini,1,ok,100.0,9.5,9.85,9.7,claude+grok,
+gpt-6-luna-medium,codex,06-multiarquivo-grok,1,ok,100.0,7.5,9.25,9.4,claude+gemini,
+gpt-6-luna-medium,codex,07-performance-claude,1,ok,100.0,7.5,9.25,9.4,gemini+grok,
+gpt-6-luna-medium,codex,07-performance-gemini,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gpt-6-luna-medium,codex,07-performance-grok,1,ok,100.0,6.0,8.8,8.65,claude+gemini,
+gpt-6-luna-medium,codex,08-testes-claude,1,ok,11.76,5.5,2.47,2.62,gemini+grok,
+gpt-6-luna-medium,codex,08-testes-gemini,1,ok,92.31,5.5,8.11,8.11,claude+grok,
+gpt-6-luna-medium,codex,08-testes-grok,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+gpt-6-luna-medium,codex,09-api-claude,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+gpt-6-luna-medium,codex,09-api-gemini,1,ok,100.0,8.5,9.55,9.7,claude+grok,
+gpt-6-luna-medium,codex,09-api-grok,1,ok,100.0,8.0,9.4,9.55,claude+gemini,
+gpt-6-luna-medium,codex,10-ambigua-claude,1,ok,95.24,8.5,9.22,9.37,gemini+grok,
+gpt-6-luna-medium,codex,10-ambigua-gemini,1,ok,100.0,7.5,9.25,9.25,claude+grok,
+gpt-6-luna-medium,codex,10-ambigua-grok,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+gpt-6.1-sol-high,codex,01-funcao-claude,1,ok,100.0,7.0,9.1,9.1,gemini+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+gpt-6.1-sol-high,codex,01-funcao-gemini,1,ok,100.0,8.0,9.4,9.4,claude+grok,
+gpt-6.1-sol-high,codex,01-funcao-grok,1,ok,100.0,7.0,9.1,9.1,claude+gemini,
+gpt-6.1-sol-high,codex,02-bug-claude,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+gpt-6.1-sol-high,codex,02-bug-gemini,1,ok,100.0,7.5,9.25,9.1,claude+grok,
+gpt-6.1-sol-high,codex,02-bug-grok,1,ok,100.0,7.5,9.25,9.25,claude+gemini,
+gpt-6.1-sol-high,codex,03-refatoracao-claude,1,ok,100.0,8.0,9.4,9.4,gemini+grok,
+gpt-6.1-sol-high,codex,03-refatoracao-gemini,1,ok,100.0,9.0,9.7,9.4,claude+grok,
+gpt-6.1-sol-high,codex,03-refatoracao-grok,1,ok,100.0,9.5,9.85,9.7,claude+gemini,
+gpt-6.1-sol-high,codex,04-dados-claude,1,ok,100.0,7.0,9.1,9.1,gemini+grok,
+gpt-6.1-sol-high,codex,04-dados-claude,2,ok,100.0,7.0,9.1,9.1,gemini+grok,
+gpt-6.1-sol-high,codex,04-dados-claude,3,ok,100.0,7.0,9.1,9.1,gemini+grok,
+gpt-6.1-sol-high,codex,04-dados-claude,4,timeout,0.0,,0.0,0.0,,
+gpt-6.1-sol-high,codex,04-dados-gemini,1,ok,100.0,6.5,8.95,8.5,claude+grok,
+gpt-6.1-sol-high,codex,04-dados-grok,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+gpt-6.1-sol-high,codex,05-cli-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 27/27 testes passam (100%), mas a regra zera a nota"
+gpt-6.1-sol-high,codex,05-cli-gemini,1,timeout,27.27,,0.0,0.0,,"timeout com entrega parcial: 6/22 testes passam (27%), mas a regra zera a nota"
+gpt-6.1-sol-high,codex,05-cli-grok,1,ok,100.0,8.5,9.55,9.4,claude+gemini,
+gpt-6.1-sol-high,codex,06-multiarquivo-claude,1,ok,100.0,8.0,9.4,9.7,gemini+grok,
+gpt-6.1-sol-high,codex,06-multiarquivo-gemini,1,ok,100.0,9.5,9.85,9.7,claude+grok,
+gpt-6.1-sol-high,codex,06-multiarquivo-grok,1,ok,100.0,7.0,9.1,9.4,claude+gemini,
+gpt-6.1-sol-high,codex,07-performance-claude,1,ok,100.0,8.0,9.4,7.0,gemini+grok,
+gpt-6.1-sol-high,codex,07-performance-gemini,1,ok,100.0,8.5,9.55,9.7,claude+grok,
+gpt-6.1-sol-high,codex,07-performance-grok,1,ok,100.0,5.5,8.65,8.65,claude+gemini,
+gpt-6.1-sol-high,codex,08-testes-claude,1,timeout,5.88,,0.0,0.0,,"timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+gpt-6.1-sol-high,codex,08-testes-gemini,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 13/13 testes passam (100%), mas a regra zera a nota"
+gpt-6.1-sol-high,codex,08-testes-grok,1,ok,100.0,9.5,9.85,9.85,claude+gemini,
+gpt-6.1-sol-high,codex,09-api-claude,1,ok,100.0,8.0,9.4,9.4,gemini+grok,
+gpt-6.1-sol-high,codex,09-api-gemini,1,ok,100.0,8.5,9.55,9.4,claude+grok,
+gpt-6.1-sol-high,codex,09-api-grok,1,ok,100.0,8.0,9.4,9.4,claude+gemini,
+gpt-6.1-sol-high,codex,10-ambigua-claude,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+gpt-6.1-sol-high,codex,10-ambigua-gemini,1,ok,100.0,8.0,9.4,9.1,claude+grok,
+gpt-6.1-sol-high,codex,10-ambigua-grok,1,ok,100.0,8.0,9.4,9.4,claude+gemini,
+gpt-6.1-sol-medium,codex,01-funcao-claude,1,ok,100.0,6.5,8.95,9.1,gemini+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+gpt-6.1-sol-medium,codex,01-funcao-gemini,1,ok,100.0,8.0,9.4,9.4,claude+grok,
+gpt-6.1-sol-medium,codex,01-funcao-grok,1,ok,100.0,7.0,9.1,9.1,claude+gemini,
+gpt-6.1-sol-medium,codex,02-bug-claude,1,ok,100.0,9.0,9.7,9.7,gemini+grok,
+gpt-6.1-sol-medium,codex,02-bug-gemini,1,ok,100.0,7.5,9.25,9.25,claude+grok,
+gpt-6.1-sol-medium,codex,02-bug-grok,1,ok,100.0,7.5,9.25,9.25,claude+gemini,
+gpt-6.1-sol-medium,codex,03-refatoracao-claude,1,ok,100.0,8.0,9.4,9.4,gemini+grok,
+gpt-6.1-sol-medium,codex,03-refatoracao-gemini,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gpt-6.1-sol-medium,codex,03-refatoracao-grok,1,ok,100.0,9.5,9.85,9.85,claude+gemini,
+gpt-6.1-sol-medium,codex,04-dados-claude,1,ok,100.0,7.0,9.1,9.1,gemini+grok,
+gpt-6.1-sol-medium,codex,04-dados-claude,2,ok,100.0,8.0,9.4,9.1,gemini+grok,
+gpt-6.1-sol-medium,codex,04-dados-claude,3,ok,100.0,7.0,9.1,9.1,gemini+grok,
+gpt-6.1-sol-medium,codex,04-dados-claude,4,ok,100.0,6.5,8.95,8.95,gemini+grok,
+gpt-6.1-sol-medium,codex,04-dados-gemini,1,ok,100.0,8.5,9.55,9.4,claude+grok,
+gpt-6.1-sol-medium,codex,04-dados-grok,1,ok,100.0,9.0,9.7,9.55,claude+gemini,
+gpt-6.1-sol-medium,codex,05-cli-claude,1,ok,100.0,6.5,8.95,8.95,gemini+grok,
+gpt-6.1-sol-medium,codex,05-cli-gemini,1,ok,100.0,9.5,9.85,9.85,claude+grok,
+gpt-6.1-sol-medium,codex,05-cli-grok,1,ok,100.0,8.5,9.55,9.4,claude+gemini,
+gpt-6.1-sol-medium,codex,06-multiarquivo-claude,1,ok,100.0,8.0,9.4,9.85,gemini+grok,
+gpt-6.1-sol-medium,codex,06-multiarquivo-gemini,1,ok,100.0,9.5,9.85,9.85,claude+grok,
+gpt-6.1-sol-medium,codex,06-multiarquivo-grok,1,ok,100.0,7.5,9.25,9.4,claude+gemini,
+gpt-6.1-sol-medium,codex,07-performance-claude,1,ok,100.0,8.0,9.4,9.25,gemini+grok,
+gpt-6.1-sol-medium,codex,07-performance-gemini,1,ok,100.0,9.0,9.7,9.4,claude+grok,
+gpt-6.1-sol-medium,codex,07-performance-grok,1,ok,100.0,5.5,8.65,8.65,claude+gemini,
+gpt-6.1-sol-medium,codex,08-testes-claude,1,ok,100.0,6.0,8.8,8.8,gemini+grok,
+gpt-6.1-sol-medium,codex,08-testes-gemini,1,ok,100.0,8.0,9.4,9.25,claude+grok,
+gpt-6.1-sol-medium,codex,08-testes-grok,1,ok,100.0,9.5,9.85,9.38,claude+gemini,"reexecução dos testes deu 15/15, resultado.json diz 14/15"
+gpt-6.1-sol-medium,codex,09-api-claude,1,ok,100.0,9.0,9.7,9.55,gemini+grok,
+gpt-6.1-sol-medium,codex,09-api-gemini,1,timeout,0.0,,0.0,0.0,,
+gpt-6.1-sol-medium,codex,09-api-grok,1,timeout,0.0,,0.0,0.0,,
+gpt-6.1-sol-medium,codex,10-ambigua-claude,1,ok,100.0,8.0,9.4,9.7,gemini+grok,
+gpt-6.1-sol-medium,codex,10-ambigua-gemini,1,ok,100.0,8.0,9.4,9.1,claude+grok,
+gpt-6.1-sol-medium,codex,10-ambigua-grok,1,ok,100.0,8.5,9.55,9.1,claude+gemini,
+gemini-3.8-flash-high,gemini,01-funcao-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,01-funcao-codex,1,ok,100.0,9.5,9.85,10.0,claude+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+gemini-3.8-flash-high,gemini,01-funcao-grok,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,02-bug-claude,1,timeout,26.92,,0.0,0.0,,"timeout com entrega parcial: 7/26 testes passam (27%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-3.8-flash-high,gemini,02-bug-grok,1,timeout,12.5,,0.0,0.0,,"timeout com entrega parcial: 2/16 testes passam (12%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,03-refatoracao-claude,1,timeout,75.0,,0.0,0.0,,"timeout com entrega parcial: 24/32 testes passam (75%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,03-refatoracao-codex,1,timeout,47.37,,0.0,0.0,,"timeout com entrega parcial: 9/19 testes passam (47%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,03-refatoracao-grok,1,timeout,75.0,,0.0,0.0,,"timeout com entrega parcial: 9/12 testes passam (75%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,04-dados-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,04-dados-claude,2,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,04-dados-claude,3,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,04-dados-claude,4,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,04-dados-codex,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,04-dados-grok,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,05-cli-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,05-cli-codex,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,05-cli-grok,1,timeout,6.67,,0.0,0.0,,"timeout com entrega parcial: 1/15 testes passam (7%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,06-multiarquivo-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,06-multiarquivo-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 42/42 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,06-multiarquivo-grok,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 17/17 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,07-performance-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 36/36 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,07-performance-codex,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,07-performance-grok,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,08-testes-claude,1,timeout,5.88,,0.0,0.0,,"timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,08-testes-codex,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,08-testes-grok,1,timeout,93.33,,0.0,0.0,,"timeout com entrega parcial: 14/15 testes passam (93%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,09-api-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,09-api-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 38/38 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-high,gemini,09-api-grok,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,10-ambigua-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-high,gemini,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-3.8-flash-high,gemini,10-ambigua-grok,1,ok,100.0,8.5,9.55,9.4,codex+claude,
+gemini-3.8-flash-medium,gemini,01-funcao-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 23/23 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,01-funcao-codex,1,ok,100.0,9.5,9.85,9.85,claude+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+gemini-3.8-flash-medium,gemini,01-funcao-grok,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,02-bug-claude,1,timeout,26.92,,0.0,0.0,,"timeout com entrega parcial: 7/26 testes passam (27%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-3.8-flash-medium,gemini,02-bug-grok,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 16/16 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,03-refatoracao-claude,1,timeout,75.0,,0.0,0.0,,"timeout com entrega parcial: 24/32 testes passam (75%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,03-refatoracao-codex,1,timeout,47.37,,0.0,0.0,,"timeout com entrega parcial: 9/19 testes passam (47%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,03-refatoracao-grok,1,timeout,75.0,,0.0,0.0,,"timeout com entrega parcial: 9/12 testes passam (75%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,04-dados-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,04-dados-claude,2,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,04-dados-claude,3,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,04-dados-claude,4,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,04-dados-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 47/47 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,04-dados-grok,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,05-cli-claude,1,ok,100.0,5.0,8.5,8.8,codex+grok,
+gemini-3.8-flash-medium,gemini,05-cli-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 28/28 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,05-cli-grok,1,timeout,6.67,,0.0,0.0,,"timeout com entrega parcial: 1/15 testes passam (7%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,06-multiarquivo-claude,1,ok,100.0,6.0,8.8,9.7,codex+grok,
+gemini-3.8-flash-medium,gemini,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gemini-3.8-flash-medium,gemini,06-multiarquivo-grok,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 17/17 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,07-performance-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,07-performance-codex,1,ok,100.0,7.5,9.25,9.25,claude+grok,
+gemini-3.8-flash-medium,gemini,07-performance-grok,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,08-testes-claude,1,timeout,5.88,,0.0,0.0,,"timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,08-testes-codex,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,08-testes-grok,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 15/15 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,09-api-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 42/42 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,09-api-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-3.8-flash-medium,gemini,09-api-grok,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 18/18 testes passam (100%), mas a regra zera a nota"
+gemini-3.8-flash-medium,gemini,10-ambigua-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-3.8-flash-medium,gemini,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-3.8-flash-medium,gemini,10-ambigua-grok,1,ok,100.0,8.0,9.4,9.4,codex+claude,
+gemini-4-argon-high,gemini,01-funcao-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-4-argon-high,gemini,01-funcao-codex,1,ok,100.0,9.0,9.7,9.1,claude+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+gemini-4-argon-high,gemini,01-funcao-grok,1,ok,100.0,7.5,9.25,9.4,codex+claude,
+gemini-4-argon-high,gemini,02-bug-claude,1,ok,100.0,7.0,9.1,8.5,codex+grok,
+gemini-4-argon-high,gemini,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-4-argon-high,gemini,02-bug-grok,1,ok,100.0,7.5,9.25,9.25,codex+claude,
+gemini-4-argon-high,gemini,03-refatoracao-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-high,gemini,03-refatoracao-codex,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gemini-4-argon-high,gemini,03-refatoracao-grok,1,ok,100.0,8.5,9.55,9.85,codex+claude,
+gemini-4-argon-high,gemini,04-dados-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-high,gemini,04-dados-claude,2,ok,100.0,6.0,8.8,8.8,codex+grok,
+gemini-4-argon-high,gemini,04-dados-claude,3,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-high,gemini,04-dados-claude,4,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-high,gemini,04-dados-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 47/47 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-high,gemini,04-dados-grok,1,ok,100.0,8.5,9.55,9.7,codex+claude,
+gemini-4-argon-high,gemini,05-cli-claude,1,ok,100.0,7.5,9.25,9.4,codex+grok,
+gemini-4-argon-high,gemini,05-cli-codex,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gemini-4-argon-high,gemini,05-cli-grok,1,ok,100.0,8.0,9.4,9.7,codex+claude,
+gemini-4-argon-high,gemini,06-multiarquivo-claude,1,ok,100.0,7.5,9.25,9.7,codex+grok,
+gemini-4-argon-high,gemini,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gemini-4-argon-high,gemini,06-multiarquivo-grok,1,ok,100.0,7.5,9.25,9.4,codex+claude,
+gemini-4-argon-high,gemini,07-performance-claude,1,ok,100.0,7.0,9.1,8.8,codex+grok,
+gemini-4-argon-high,gemini,07-performance-codex,1,ok,100.0,7.5,9.25,9.4,claude+grok,
+gemini-4-argon-high,gemini,07-performance-grok,1,ok,100.0,8.0,9.4,9.4,codex+claude,
+gemini-4-argon-high,gemini,08-testes-claude,1,timeout,5.88,,0.0,0.0,,"timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+gemini-4-argon-high,gemini,08-testes-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 15/15 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-high,gemini,08-testes-grok,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 15/15 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-high,gemini,09-api-claude,1,ok,100.0,9.5,9.85,10.0,codex+grok,
+gemini-4-argon-high,gemini,09-api-codex,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gemini-4-argon-high,gemini,09-api-grok,1,ok,100.0,7.5,9.25,9.55,codex+claude,
+gemini-4-argon-high,gemini,10-ambigua-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-4-argon-high,gemini,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-4-argon-high,gemini,10-ambigua-grok,1,ok,100.0,9.0,9.7,9.7,codex+claude,
+gemini-4-argon-medium,gemini,01-funcao-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 23/23 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-medium,gemini,01-funcao-codex,1,ok,100.0,8.5,9.55,9.7,claude+grok,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+gemini-4-argon-medium,gemini,01-funcao-grok,1,ok,100.0,7.5,9.25,9.1,codex+claude,
+gemini-4-argon-medium,gemini,02-bug-claude,1,ok,100.0,7.5,9.25,9.1,codex+grok,
+gemini-4-argon-medium,gemini,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-4-argon-medium,gemini,02-bug-grok,1,ok,100.0,7.5,9.25,9.25,codex+claude,
+gemini-4-argon-medium,gemini,03-refatoracao-claude,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+gemini-4-argon-medium,gemini,03-refatoracao-codex,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gemini-4-argon-medium,gemini,03-refatoracao-grok,1,ok,100.0,8.5,9.55,9.85,codex+claude,
+gemini-4-argon-medium,gemini,04-dados-claude,1,ok,100.0,6.0,8.8,8.8,codex+grok,
+gemini-4-argon-medium,gemini,04-dados-claude,2,ok,100.0,6.5,8.95,8.5,codex+grok,
+gemini-4-argon-medium,gemini,04-dados-claude,3,ok,100.0,6.0,8.8,8.8,codex+grok,
+gemini-4-argon-medium,gemini,04-dados-claude,4,ok,100.0,6.0,8.8,8.8,codex+grok,
+gemini-4-argon-medium,gemini,04-dados-codex,1,ok,100.0,7.0,9.1,9.1,claude+grok,
+gemini-4-argon-medium,gemini,04-dados-grok,1,ok,100.0,9.0,9.7,9.4,codex+claude,
+gemini-4-argon-medium,gemini,05-cli-claude,1,ok,100.0,7.0,9.1,9.4,codex+grok,
+gemini-4-argon-medium,gemini,05-cli-codex,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gemini-4-argon-medium,gemini,05-cli-grok,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 15/15 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-medium,gemini,06-multiarquivo-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 40/40 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-medium,gemini,06-multiarquivo-codex,1,timeout,2.38,,0.0,0.0,,"timeout com entrega parcial: 1/42 testes passam (2%), mas a regra zera a nota"
+gemini-4-argon-medium,gemini,06-multiarquivo-grok,1,ok,100.0,6.0,8.8,8.95,codex+claude,
+gemini-4-argon-medium,gemini,07-performance-claude,1,ok,100.0,5.0,8.5,8.8,codex+grok,
+gemini-4-argon-medium,gemini,07-performance-codex,1,ok,100.0,7.5,9.25,9.4,claude+grok,
+gemini-4-argon-medium,gemini,07-performance-grok,1,ok,100.0,7.5,9.25,9.25,codex+claude,
+gemini-4-argon-medium,gemini,08-testes-claude,1,timeout,11.76,,0.0,0.0,,"timeout com entrega parcial: 2/17 testes passam (12%), mas a regra zera a nota"
+gemini-4-argon-medium,gemini,08-testes-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 15/15 testes passam (100%), mas a regra zera a nota"
+gemini-4-argon-medium,gemini,08-testes-grok,1,ok,100.0,9.5,9.85,10.0,codex+claude,
+gemini-4-argon-medium,gemini,09-api-claude,1,ok,100.0,9.0,9.7,9.7,codex+grok,
+gemini-4-argon-medium,gemini,09-api-codex,1,ok,100.0,9.0,9.7,9.7,claude+grok,
+gemini-4-argon-medium,gemini,09-api-grok,1,ok,100.0,7.0,9.1,9.25,codex+claude,
+gemini-4-argon-medium,gemini,10-ambigua-claude,1,timeout,0.0,,0.0,0.0,,
+gemini-4-argon-medium,gemini,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,claude+grok,
+gemini-4-argon-medium,gemini,10-ambigua-grok,1,ok,100.0,9.0,9.7,9.4,codex+claude,
+grok-4.7-build-fast-high,grok,01-funcao-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,01-funcao-codex,1,ok,100.0,8.5,9.55,9.55,claude+gemini,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+grok-4.7-build-fast-high,grok,01-funcao-gemini,1,ok,100.0,8.5,9.55,9.55,codex+claude,
+grok-4.7-build-fast-high,grok,02-bug-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 26/26 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-high,grok,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-build-fast-high,grok,02-bug-gemini,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 20/20 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-high,grok,03-refatoracao-claude,1,timeout,75.0,,0.0,0.0,,"timeout com entrega parcial: 24/32 testes passam (75%), mas a regra zera a nota"
+grok-4.7-build-fast-high,grok,03-refatoracao-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-build-fast-high,grok,03-refatoracao-gemini,1,ok,100.0,9.0,9.7,9.7,codex+claude,
+grok-4.7-build-fast-high,grok,04-dados-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,04-dados-claude,2,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,04-dados-claude,3,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,04-dados-claude,4,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,04-dados-codex,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,04-dados-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,05-cli-claude,1,ok,100.0,10.0,10.0,9.85,codex+gemini,
+grok-4.7-build-fast-high,grok,05-cli-codex,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,05-cli-gemini,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 22/22 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-high,grok,06-multiarquivo-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 40/40 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-high,grok,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-build-fast-high,grok,06-multiarquivo-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,07-performance-claude,1,ok,100.0,7.0,9.1,8.95,codex+gemini,
+grok-4.7-build-fast-high,grok,07-performance-codex,1,ok,100.0,9.5,9.85,9.85,claude+gemini,
+grok-4.7-build-fast-high,grok,07-performance-gemini,1,ok,100.0,7.0,9.1,9.1,codex+claude,
+grok-4.7-build-fast-high,grok,08-testes-claude,1,timeout,5.88,,0.0,0.0,,"timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+grok-4.7-build-fast-high,grok,08-testes-codex,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,08-testes-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,09-api-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,09-api-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-build-fast-high,grok,09-api-gemini,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 46/46 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-high,grok,10-ambigua-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-high,grok,10-ambigua-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-build-fast-high,grok,10-ambigua-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-medium,grok,01-funcao-claude,1,ok,100.0,5.0,8.5,8.5,codex+gemini,
+grok-4.7-build-fast-medium,grok,01-funcao-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+grok-4.7-build-fast-medium,grok,01-funcao-gemini,1,ok,100.0,9.0,9.7,9.4,codex+claude,
+grok-4.7-build-fast-medium,grok,02-bug-claude,1,ok,100.0,7.5,9.25,9.55,codex+gemini,
+grok-4.7-build-fast-medium,grok,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-build-fast-medium,grok,02-bug-gemini,1,ok,100.0,7.5,9.25,9.55,codex+claude,
+grok-4.7-build-fast-medium,grok,03-refatoracao-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-medium,grok,03-refatoracao-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-build-fast-medium,grok,03-refatoracao-gemini,1,ok,100.0,9.0,9.7,9.7,codex+claude,
+grok-4.7-build-fast-medium,grok,04-dados-claude,1,ok,100.0,6.5,8.95,8.95,codex+gemini,
+grok-4.7-build-fast-medium,grok,04-dados-claude,2,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-medium,grok,04-dados-claude,3,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-medium,grok,04-dados-claude,4,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-medium,grok,04-dados-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 47/47 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-medium,grok,04-dados-gemini,1,ok,100.0,9.0,9.7,9.7,codex+claude,
+grok-4.7-build-fast-medium,grok,05-cli-claude,1,ok,100.0,7.5,9.25,8.8,codex+gemini,
+grok-4.7-build-fast-medium,grok,05-cli-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-build-fast-medium,grok,05-cli-gemini,1,ok,100.0,9.0,9.7,9.85,codex+claude,
+grok-4.7-build-fast-medium,grok,06-multiarquivo-claude,1,ok,100.0,8.5,9.55,9.85,codex+gemini,
+grok-4.7-build-fast-medium,grok,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-build-fast-medium,grok,06-multiarquivo-gemini,1,ok,100.0,8.5,9.55,9.7,codex+claude,
+grok-4.7-build-fast-medium,grok,07-performance-claude,1,ok,100.0,8.5,9.55,9.4,codex+gemini,
+grok-4.7-build-fast-medium,grok,07-performance-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-build-fast-medium,grok,07-performance-gemini,1,ok,100.0,8.5,9.55,9.7,codex+claude,
+grok-4.7-build-fast-medium,grok,08-testes-claude,1,timeout,5.88,,0.0,0.0,,"timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+grok-4.7-build-fast-medium,grok,08-testes-codex,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 15/15 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-medium,grok,08-testes-gemini,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 13/13 testes passam (100%), mas a regra zera a nota"
+grok-4.7-build-fast-medium,grok,09-api-claude,1,ok,100.0,10.0,10.0,10.0,codex+gemini,
+grok-4.7-build-fast-medium,grok,09-api-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-build-fast-medium,grok,09-api-gemini,1,ok,100.0,8.5,9.55,9.85,codex+claude,
+grok-4.7-build-fast-medium,grok,10-ambigua-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-build-fast-medium,grok,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-build-fast-medium,grok,10-ambigua-gemini,1,ok,100.0,8.5,9.55,9.4,codex+claude,
+grok-4.7-high,grok,01-funcao-claude,1,timeout,91.3,,0.0,0.0,,"timeout com entrega parcial: 21/23 testes passam (91%), mas a regra zera a nota"
+grok-4.7-high,grok,01-funcao-codex,1,timeout,0.0,,0.0,0.0,,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+grok-4.7-high,grok,01-funcao-gemini,1,ok,100.0,9.0,9.7,9.55,codex+claude,
+grok-4.7-high,grok,02-bug-claude,1,ok,100.0,8.0,9.4,9.1,codex+gemini,
+grok-4.7-high,grok,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-high,grok,02-bug-gemini,1,timeout,5.0,,0.0,0.0,,"timeout com entrega parcial: 1/20 testes passam (5%), mas a regra zera a nota"
+grok-4.7-high,grok,03-refatoracao-claude,1,timeout,75.0,,0.0,0.0,,"timeout com entrega parcial: 24/32 testes passam (75%), mas a regra zera a nota"
+grok-4.7-high,grok,03-refatoracao-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-high,grok,03-refatoracao-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-high,grok,04-dados-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-high,grok,04-dados-claude,2,ok,100.0,6.0,4.4,0.0,codex+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/04-dados-claude/run-2/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/04-dados-claude/run-2/avaliacao.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/junit.xml', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/resultado.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga"
+grok-4.7-high,grok,04-dados-claude,3,timeout,100.0,8.0,4.7,0.0,codex+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/04-dados-claude/run-3/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/04-dados-claude/run-3/avaliacao.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/junit.xml', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/resultado.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga | timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+grok-4.7-high,grok,04-dados-claude,4,ok,100.0,8.0,4.7,0.0,codex+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/04-dados-claude/run-4/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/04-dados-claude/run-4/avaliacao.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-4/junit.xml', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-4/resultado.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-4/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga"
+grok-4.7-high,grok,04-dados-codex,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-high,grok,04-dados-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-high,grok,05-cli-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-high,grok,05-cli-codex,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-high,grok,05-cli-gemini,1,timeout,27.27,,0.0,0.0,,"timeout com entrega parcial: 6/22 testes passam (27%), mas a regra zera a nota"
+grok-4.7-high,grok,06-multiarquivo-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-high,grok,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,0.0,claude+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/agente_stdout.txt', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/modelos.py', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/operacoes.py', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/persistencia.py'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+grok-4.7-high,grok,06-multiarquivo-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-high,grok,07-performance-claude,1,ok,100.0,5.5,8.65,0.0,codex+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/07-performance-claude/run-1/agente_stdout.txt', ' M resultados/grok/grok-4.7-high/07-performance-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/07-performance-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/07-performance-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/07-performance-claude/run-1/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+grok-4.7-high,grok,07-performance-codex,1,ok,100.0,9.5,9.85,10.0,claude+gemini,"resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+grok-4.7-high,grok,07-performance-gemini,1,ok,100.0,9.0,9.7,9.7,codex+claude,"resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+grok-4.7-high,grok,08-testes-claude,1,timeout,5.88,0.0,0.0,0.0,codex+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/08-testes-claude/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/08-testes-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga | timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+grok-4.7-high,grok,08-testes-codex,1,ok,100.0,9.5,4.92,0.0,claude+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/08-testes-codex/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/08-testes-codex/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/08-testes-codex/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/08-testes-codex/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/08-testes-codex/run-1/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga"
+grok-4.7-high,grok,08-testes-gemini,1,timeout,0.0,0.0,0.0,0.0,codex+claude,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/08-testes-gemini/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/08-testes-gemini/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/08-testes-gemini/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/08-testes-gemini/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/08-testes-gemini/run-1/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga"
+grok-4.7-high,grok,09-api-claude,1,timeout,0.0,0.0,0.0,0.0,codex+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/09-api-claude/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/09-api-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/09-api-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/09-api-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/09-api-claude/run-1/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga"
+grok-4.7-high,grok,09-api-codex,1,ok,100.0,10.0,7.0,0.0,claude+gemini,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/09-api-codex/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/09-api-codex/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/09-api-codex/run-1/codigo/cliente.py', ' M resultados/grok/grok-4.7-high/09-api-codex/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/09-api-codex/run-1/resultado.json'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga"
+grok-4.7-high,grok,09-api-gemini,1,ok,100.0,10.0,10.0,0.0,codex+claude,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/09-api-gemini/run-1/agente_stdout.txt', ' M resultados/grok/grok-4.7-high/09-api-gemini/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/09-api-gemini/run-1/codigo/cliente_resiliente.py', ' M resultados/grok/grok-4.7-high/09-api-gemini/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/09-api-gemini/run-1/resultado.json'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+grok-4.7-high,grok,10-ambigua-claude,1,timeout,0.0,,0.0,0.0,,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga"
+grok-4.7-high,grok,10-ambigua-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,"resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+grok-4.7-high,grok,10-ambigua-gemini,1,ok,100.0,8.0,6.58,0.0,codex+claude,"arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/testes_saida.txt'] | resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md'] | sem avaliacao.json antiga"
+grok-4.7-medium,grok,01-funcao-claude,1,ok,100.0,5.5,8.65,8.5,codex+gemini,
+grok-4.7-medium,grok,01-funcao-codex,1,ok,100.0,9.5,9.85,9.85,claude+gemini,"resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+grok-4.7-medium,grok,01-funcao-gemini,1,ok,100.0,8.5,9.55,9.7,codex+claude,
+grok-4.7-medium,grok,02-bug-claude,1,ok,100.0,8.5,9.55,9.7,codex+gemini,
+grok-4.7-medium,grok,02-bug-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-medium,grok,02-bug-gemini,1,ok,100.0,7.0,9.1,9.4,codex+claude,
+grok-4.7-medium,grok,03-refatoracao-claude,1,ok,100.0,7.0,9.1,8.8,codex+gemini,
+grok-4.7-medium,grok,03-refatoracao-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-medium,grok,03-refatoracao-gemini,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 24/24 testes passam (100%), mas a regra zera a nota"
+grok-4.7-medium,grok,04-dados-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+grok-4.7-medium,grok,04-dados-claude,2,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+grok-4.7-medium,grok,04-dados-claude,3,timeout,0.0,,0.0,0.0,,
+grok-4.7-medium,grok,04-dados-claude,4,ok,100.0,6.5,8.95,8.8,codex+gemini,
+grok-4.7-medium,grok,04-dados-codex,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-medium,grok,04-dados-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-medium,grok,05-cli-claude,1,ok,100.0,9.5,9.85,10.0,codex+gemini,
+grok-4.7-medium,grok,05-cli-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-medium,grok,05-cli-gemini,1,ok,100.0,9.5,9.85,9.85,codex+claude,
+grok-4.7-medium,grok,06-multiarquivo-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 40/40 testes passam (100%), mas a regra zera a nota"
+grok-4.7-medium,grok,06-multiarquivo-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-medium,grok,06-multiarquivo-gemini,1,ok,100.0,9.0,9.7,9.7,codex+claude,
+grok-4.7-medium,grok,07-performance-claude,1,ok,100.0,6.5,8.95,9.1,codex+gemini,
+grok-4.7-medium,grok,07-performance-codex,1,ok,100.0,9.5,9.85,9.85,claude+gemini,
+grok-4.7-medium,grok,07-performance-gemini,1,ok,100.0,9.5,9.85,9.7,codex+claude,
+grok-4.7-medium,grok,08-testes-claude,1,timeout,5.88,,0.0,0.0,,"timeout com entrega parcial: 1/17 testes passam (6%), mas a regra zera a nota"
+grok-4.7-medium,grok,08-testes-codex,1,ok,100.0,9.5,9.85,10.0,claude+gemini,
+grok-4.7-medium,grok,08-testes-gemini,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-medium,grok,09-api-claude,1,timeout,100.0,,0.0,0.0,,"timeout com entrega parcial: 42/42 testes passam (100%), mas a regra zera a nota"
+grok-4.7-medium,grok,09-api-codex,1,ok,100.0,9.0,9.7,9.7,claude+gemini,
+grok-4.7-medium,grok,09-api-gemini,1,ok,100.0,9.0,9.7,9.7,codex+claude,
+grok-4.7-medium,grok,10-ambigua-claude,1,timeout,0.0,,0.0,0.0,,
+grok-4.7-medium,grok,10-ambigua-codex,1,ok,100.0,10.0,10.0,10.0,claude+gemini,
+grok-4.7-medium,grok,10-ambigua-gemini,1,ok,100.0,8.5,9.55,9.7,codex+claude,

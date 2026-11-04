@@ -1,0 +1,1 @@
+A implementação da função [`resumir_vendas`](file:///tmp/bench-_jqv5utx/solucao.py#L16-L108) foi criada em [solucao.py](file:///tmp/bench-_jqv5utx/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-_jqv5utx/enunciado.md).

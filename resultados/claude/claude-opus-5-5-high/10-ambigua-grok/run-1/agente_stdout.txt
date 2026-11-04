@@ -1,0 +1,14 @@
+Criei `solucao.py` e `SUPOSICOES.md` no diretório. Rodei um script de teste meu com todos os casos do núcleo descritos no enunciado e todos passaram, inclusive `"\ud800"`, que não levanta erro.
+
+**`solucao.py`**: só usa a biblioteca padrão e a função `classificar_mensagem` é pura.
+- **`tamanho`** é `len(texto)`. O texto nunca é codificado nem normalizado para isso.
+- **`urgente`** é `"URGENTE" in texto`, sensível a maiúsculas e sem normalizar o texto antes.
+- **Texto vazio:** `""` devolve a categoria `"vazia"`.
+- **Tipo errado:** se a entrada não for `str`, levanta `TypeError`.
+
+**Decisões nos pontos abertos**, registradas em `SUPOSICOES.md`:
+- **Categorias:** `reclamacao`, `pedido`, `duvida`, `elogio`, `outro` e `sem_palavras`. Esta última serve para texto não vazio sem letras nem dígitos, como espaços, `\n`, `\u00a0`, pontuação ou emoji.
+- **Gatilhos:** listas fixas de palavras e expressões de duas palavras em português, como "não funciona" e "por favor". A comparação é por palavra inteira, então "bom" não casa em "bombeiro". O caractere `?` também conta 1 ponto para `duvida`.
+- **Maiúsculas e acentos:** a classificação ignora os dois. Isso não altera `tamanho` nem `urgente`.
+- **Mais de uma categoria:** cada categoria ganha 1 ponto por gatilho encontrado e vence a de maior pontuação. No empate, a ordem é `reclamacao > pedido > duvida > elogio`.
+- **Campo extra:** `categorias_casadas`, com a lista de todas as categorias que tiveram algum gatilho. Não há campo de idioma nem de confiança.

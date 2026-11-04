@@ -1,1 +1,8 @@
-A tarefa foi concluída. O arquivo [`solucao.py`](file:///tmp/bench-n5x2_496/solucao.py) foi criado implementando a função [`unir_intervalos`](file:///tmp/bench-n5x2_496/solucao.py#L1-L31) conforme os requisitos especificados em [`enunciado.md`](file:///tmp/bench-n5x2_496/enunciado.md).
+A tarefa foi resolvida com a criação do arquivo [`solucao.py`](file:///tmp/bench-ju2y1zq_/solucao.py).
+
+### Detalhes da Implementação
+- **Validação**: Valida todos os intervalos recebidos garantindo `inicio <= fim`, mesmo aqueles descartados pelo recorte. Valida também limites invertidos (`minimo > maximo`), inclusive para entrada vazia.
+- **Imutabilidade e Geradores**: O iterável `intervalos` é percorrido uma única vez sem modificar coleções recebidas nem os limites informados.
+- **Intersecção fechada com limites**: Quando fornecido, cada intervalo é recortado mantendo extremidades pontuais e descartando intersecções vazias.
+- **União e ordenação**: Utiliza ordenação $O(n \log n)$ e varredura linear $O(n)$ para fundir intervalos sobrepostos ou que compartilham extremidades, mantendo separados os intervalos com distância $\ge 1$.
+- **Precisão**: Operações puramente inteiras para suportar inteiros de precisão arbitrária.

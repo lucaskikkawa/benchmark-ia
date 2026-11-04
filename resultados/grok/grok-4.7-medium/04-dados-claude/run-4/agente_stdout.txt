@@ -1,0 +1,3 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui.O enunciado pede um agregador de CSV de vendas. Vou implementar `solucao.py` e conferir o resultado com o exemplo.`solucao.py` define `resumir_vendas`, que lê o CSV de vendas, agrega as linhas válidas com status `concluida` e grava o mesmo resumo em JSON.
+
+Para `vendas_exemplo.csv` o resultado é Norte 7 unidades e R$ 8,40 (Lápis), Sul 12 unidades e R$ 55,00 (Caneta), total geral R$ 63,40 e 2 linhas inválidas. Se faltar alguma coluna obrigatória ou o arquivo não existir, a função levanta `ValueError` ou `FileNotFoundError` e não cria nem altera o arquivo de saída.

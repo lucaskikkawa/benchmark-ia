@@ -1,3 +1,3 @@
-Criei [solucao.py](/tmp/bench-6dayxyfw/solucao.py) com `parse_duracao`, conforme o enunciado.
+Criei [solucao.py](/tmp/bench-d2kj5_ss/solucao.py) com `parse_duracao`.
 
-Validei exemplos, combinações de unidades, espaços, entradas inválidas e inteiros grandes. Todos os testes passaram.
+Testes passaram, incluindo entradas inválidas, números com 10 mil dígitos e textos de aproximadamente 1 MB, processados em cerca de 0,003 segundo.

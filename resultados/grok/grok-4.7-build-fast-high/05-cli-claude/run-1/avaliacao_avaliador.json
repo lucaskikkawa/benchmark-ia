@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/grok/grok-4.7-build-fast-high/05-cli-claude/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7-build-fast",
+ "esforco": "high",
+ "tarefa": "05-cli-claude",
+ "tipo": "05-cli",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 262.818,
+ "testes_passados": 27,
+ "testes_total": 27,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Separa parser, leitura, contagem e saída; trata erros e stdin, usa argparse e Counter, e oferece funções reutilizáveis. A CLI e a documentação atendem aos requisitos.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Código modular e idiomático, com tratamento completo de erros e UTF-8 estrito, CLI bem documentada e funções puras para contagem.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0,
+ "reexecucao_testes": {
+  "total": 27,
+  "passados": 27,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.85,
+ "nota_antiga_com_penalidade": 9.85
+}

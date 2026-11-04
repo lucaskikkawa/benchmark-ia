@@ -1,0 +1,14 @@
+Criei os dois arquivos em `/tmp/bench-jri7hld3/`, seguindo o `enunciado.md`:
+
+- **`solucao.py`**: `classificar_mensagem(texto: str) -> dict`, só com a biblioteca padrão (`re` e `unicodedata`).
+- **`SUPOSICOES.md`**: as decisões tomadas nos pontos em aberto, em UTF-8.
+
+**Decisões principais** (detalhadas em `SUPOSICOES.md`):
+- **Categorias**: `reclamacao`, `pedido`, `duvida`, `elogio`, `outro` (padrão), e `indefinida` para texto sem nenhum caractere alfanumérico.
+- **Multi-match**: vence a primeira categoria na ordem reclamação > pedido > dúvida > elogio.
+- **Maiúsculas e acentos**: ignorados só na categoria (NFKD, sem diacríticos, `casefold`). A regra de `URGENTE` continua usando o texto original.
+- **Campos extras**: nenhum. O dict tem só `categoria`, `urgente` e `tamanho`.
+
+**Verificação**: rodei checagens inline (sem criar arquivos de teste) cobrindo os casos do enunciado: string vazia, `tamanho` com emoji, acento combinado, surrogate isolado, quebra de linha, `\u00a0` e `\u200b`, as variantes de `URGENTE` (incluindo o lookalike cirílico), texto de 100.000 caracteres, e `TypeError` para `None`, `bytes`, `bytearray` e `int`. Tudo passou. Também confirmei que `SUPOSICOES.md` tem mais de duas linhas não vazias com 80 caracteres ou mais cada.
+
+Não usei as ferramentas de docs do Claude, porque você não pediu um documento. Também não fiz commit, pois não é um repositório git.

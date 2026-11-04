@@ -1,0 +1,10 @@
+Criei o `solucao.py` com a função `unir_intervalos`. Rodei alguns casos rápidos e todos deram o resultado esperado:
+
+- **Exemplo do enunciado:** `[(5, 8), (1, 3), (3, 6), (10, 10)]` retorna `[(1, 8), (10, 10)]`.
+- **Separados por uma unidade:** `(1, 2)` e `(3, 4)` continuam separados.
+- **Entrada vazia:** retorna `[]`.
+- **Gerador com duplicatas:** gerador com `(2, 2)`, `(2, 2)` e `(0, 5)` retorna `[(0, 5)]`.
+- **Lista recebida:** não é modificada.
+- **Início maior que o fim:** `(2, 1)` lança `ValueError`.
+
+A função lê a entrada uma única vez, copiando os pares para uma lista nova; por isso aceita geradores e não altera a lista original. Em seguida ordena essa cópia e funde os intervalos que se sobrepõem ou compartilham uma extremidade. Se houver um par inválido, o `ValueError` é lançado antes de qualquer resultado ser montado.

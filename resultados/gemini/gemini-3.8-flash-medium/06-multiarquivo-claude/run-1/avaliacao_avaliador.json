@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "medium",
+ "tarefa": "06-multiarquivo-claude",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 236.055,
+ "testes_passados": 40,
+ "testes_total": 40,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 4.0,
+   "justificativa": "A implementação é clara e separada, mas Livro omite o campo autor, causando erro; faltam docstrings e há divergências na API e validação de __contains__.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Métodos curtos, dicts e regras de empréstimo corretas (ordem, multa, estado). Livro omite autor e a validação quebra com erro genérico. Faltam docstrings de módulos e classes.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.0,
+ "nota_final_10": 8.8,
+ "reexecucao_testes": {
+  "total": 40,
+  "passados": 40,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

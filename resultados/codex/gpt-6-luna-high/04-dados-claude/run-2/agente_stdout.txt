@@ -1,0 +1,1 @@
+Implementei `resumir_vendas` em [solucao.py](/tmp/bench-4iqegyr5/solucao.py). A função valida e agrega o CSV, ordena as regiões, grava o JSON em UTF-8 e retorna o mesmo resumo. Não executei testes.

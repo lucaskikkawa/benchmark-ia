@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/grok/grok-4.7-build-fast-high/06-multiarquivo-codex/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7-build-fast",
+ "esforco": "high",
+ "tarefa": "06-multiarquivo-codex",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 245.753,
+ "testes_passados": 42,
+ "testes_total": 42,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes saldo, iniciais e delta claros; valida saldos intermediários, forma do JSON, bool e campos ausentes; imports relativos e cópia explícita. Sem docstrings: ordem e saldo negativo não documentados.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Excelente implementação com validações robustas e estrutura idiomática, porém não inclui docstrings documentando o comportamento das APIs.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 42,
+  "passados": 42,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

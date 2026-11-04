@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede `vendas.py` com agregação de CSV. Vou ver o diretório e implementar a função com validação antes de gravar a saída.

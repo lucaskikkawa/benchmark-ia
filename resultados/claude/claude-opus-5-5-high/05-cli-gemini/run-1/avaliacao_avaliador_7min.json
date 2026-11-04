@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "high",
+ "tarefa": "05-cli-gemini",
+ "tipo": "05-cli",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 28.688,
+ "testes_passados": 22,
+ "testes_total": 22,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código modular, usa argparse, Counter e pathlib e trata erros e bordas corretamente; atende às flags e formatos, mas faltam docstrings informativas para nota máxima em documentação.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Modular e idiomático: argparse, Counter, pathlib e cálculo separado da saída. Exit 0/1/2, vazio e pontuação corretos. Help curto e sem docstrings nas funções.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7
+}

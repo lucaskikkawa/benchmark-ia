@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6.1-sol-medium/06-multiarquivo-gemini/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6.1-sol",
+ "esforco": "medium",
+ "tarefa": "06-multiarquivo-gemini",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 36.278,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Módulos coesos, imports relativos corretos, desempate FIFO por sequência, DLQ e fila vazia tratados. Faltam docstrings em classes e métodos públicos; há um .gitkeep extra.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Modulos coesos sem ciclos: dataclass, IntEnum, ABC, hints e imports relativos. Prioridade, FIFO por timestamp, fila vazia, DLQ e unsubscribe ausente corretos; __all__ e docstrings presentes.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85,
+ "reexecucao_testes": {
+  "total": 18,
+  "passados": 18,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.85,
+ "nota_antiga_com_penalidade": 9.85
+}

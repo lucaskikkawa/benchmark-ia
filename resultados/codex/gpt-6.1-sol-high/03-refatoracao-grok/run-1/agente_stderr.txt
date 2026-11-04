@@ -1,0 +1,472 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-dw6qdpce
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189e3-4d2f-72f3-a881-23c8bb947938
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:58:58.876988Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, implementar a solução e verificar o resultado.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g 'AGENTS.md' -g '*'" in /tmp/bench-dw6qdpce
+ succeeded in 0ms:
+/tmp/bench-dw6qdpce
+enunciado.md
+frete.py
+
+exec
+/bin/bash -lc 'cat enunciado.md frete.py' in /tmp/bench-dw6qdpce
+ succeeded in 0ms:
+# Tarefa: refatorar a cotação de frete
+
+O arquivo `frete.py` calcula o frete certo, mas a tabela está copiada em ramos e não há onde reutilizá-la. **Refatore `frete.py`** sem mudar o resultado de `cotar` para nenhuma entrada válida ou inválida.
+
+Mantenha a função:
+
+```python
+def cotar(peso_g: int, distancia_km: int, expresso: bool) -> dict:
+    ...
+```
+
+E passe a expor também:
+
+```python
+class TabelaFrete:
+    FAIXAS: tuple[tuple[str, int, int, int, int], ...]
+
+    def cotar(self, peso_g: int, distancia_km: int, expresso: bool) -> dict:
+        """Mesmo contrato da função cotar."""
+
+def faixa_de_peso(peso_g: int) -> str:
+    """Nome da faixa. Mesmas regras de tipo e intervalo de cotar para o peso."""
+```
+
+`TabelaFrete` não recebe argumentos no construtor. `FAIXAS` é atributo de classe. A função `cotar` deve produzir o mesmo dict que `TabelaFrete().cotar(...)`.
+
+`cotar`, `TabelaFrete.cotar` e `faixa_de_peso` leem `TabelaFrete.FAIXAS` **em cada chamada** (não uma cópia feita na importação nem um snapshot só do `__init__`). Se o atributo de classe for substituído por outra tupla no mesmo formato, as três passam a usar a tabela nova. A validação global não muda com a troca: peso continua em `1..30000`, distância em `0..3000`, `bool` continua inválido. Peso válido que não cair em nenhuma faixa da tabela corrente é `ValueError`.
+
+`FAIXAS` é uma sequência de tuplas `(nome, peso_min, peso_max, base_centavos, centavos_por_km)`, limites de peso inclusivos, exatamente nesta ordem e com estes números:
+
+| nome | peso_min | peso_max | base_centavos | centavos_por_km |
+|---|---:|---:|---:|---:|
+| carta | 1 | 300 | 800 | 0 |
+| pac | 301 | 2000 | 1500 | 2 |
+| sedex | 2001 | 10000 | 2500 | 5 |
+| transportadora | 10001 | 30000 | 4000 | 8 |
+
+## Comportamento (não mude)
+
+- `peso_g` e `distancia_km` são `int`. `bool` não vale: `TypeError`.
+- `expresso` é `bool`. Outro tipo: `TypeError`.
+- `peso_g` fora de `1..30000`: `ValueError`.
+- `distancia_km` fora de `0..3000`: `ValueError`.
+- `valor = base_centavos + centavos_por_km * distancia_km`.
+- Se `expresso` for `True`, `valor = (valor * 3) // 2` (divisão inteira, sem float e sem `round`). `2505 * 3 // 2` é `3757`, não `3758`.
+- Retorno exatamente:
+
+```python
+{"faixa": nome, "valor_centavos": valor, "expresso": expresso}
+```
+
+`faixa_de_peso` só olha o peso: devolve o nome da faixa ou levanta o mesmo `TypeError`/`ValueError` de peso inválido. Não peça distância.
+
+Exemplos:
+
+```python
+cotar(300, 100, False)   # {"faixa": "carta", "valor_centavos": 800, "expresso": False}
+cotar(301, 1, True)      # {"faixa": "pac", "valor_centavos": 2253, "expresso": True}
+cotar(10001, 1, False)   # {"faixa": "transportadora", "valor_centavos": 4008, "expresso": False}
+faixa_de_peso(2001)      # "sedex"
+cotar(2001, 1, True)     # {"faixa": "sedex", "valor_centavos": 3757, "expresso": True}
+```
+
+`2253` vem de `1500 + 2 * 1 = 1502` e `(1502 * 3) // 2`.
+`3757` vem de `2500 + 5 * 1 = 2505` e `(2505 * 3) // 2`.
+
+Use apenas a biblioteca padrão. Não crie outros módulos.
+# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.
+
+def cotar(peso_g, distancia_km, expresso):
+    if type(peso_g) is not int:
+        raise TypeError("peso_g")
+    if type(distancia_km) is not int:
+        raise TypeError("distancia_km")
+    if type(expresso) is not bool:
+        raise TypeError("expresso")
+    if peso_g <= 0 or peso_g > 30000:
+        raise ValueError("peso fora da faixa")
+    if distancia_km < 0 or distancia_km > 3000:
+        raise ValueError("distancia fora da faixa")
+
+    # carta / pac / sedex / transportadora — números repetidos de propósito
+    if peso_g >= 1 and peso_g <= 300:
+        nome = "carta"
+        base = 800
+        por_km = 0
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 301 and peso_g <= 2000:
+        nome = "pac"
+        base = 1500
+        por_km = 2
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 2001 and peso_g <= 10000:
+        nome = "sedex"
+        base = 2500
+        por_km = 5
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 10001 and peso_g <= 30000:
+        nome = "transportadora"
+        base = 4000
+        por_km = 8
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    raise ValueError("peso fora da faixa")
+
+exec
+/bin/bash -lc 'cat frete.py' in /tmp/bench-dw6qdpce
+ succeeded in 0ms:
+# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.
+
+def cotar(peso_g, distancia_km, expresso):
+    if type(peso_g) is not int:
+        raise TypeError("peso_g")
+    if type(distancia_km) is not int:
+        raise TypeError("distancia_km")
+    if type(expresso) is not bool:
+        raise TypeError("expresso")
+    if peso_g <= 0 or peso_g > 30000:
+        raise ValueError("peso fora da faixa")
+    if distancia_km < 0 or distancia_km > 3000:
+        raise ValueError("distancia fora da faixa")
+
+    # carta / pac / sedex / transportadora — números repetidos de propósito
+    if peso_g >= 1 and peso_g <= 300:
+        nome = "carta"
+        base = 800
+        por_km = 0
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 301 and peso_g <= 2000:
+        nome = "pac"
+        base = 1500
+        por_km = 2
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 2001 and peso_g <= 10000:
+        nome = "sedex"
+        base = 2500
+        por_km = 5
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 10001 and peso_g <= 30000:
+        nome = "transportadora"
+        base = 4000
+        por_km = 8
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    raise ValueError("peso fora da faixa")
+
+2026-10-29T22:59:30.335676Z ERROR codex_core::tools::router: error=apply_patch verification failed: invalid patch: multiple operations target /tmp/bench-dw6qdpce/frete.py
+apply patch
+patch: completed
+/tmp/bench-dw6qdpce/frete.py
+diff --git a/frete.py b/frete.py
+index 0830a1d7fe2b4b3f181f10ac06d41bfe1f5da69e..46f48137545289799d4609185c9a7a33b3781dda
+--- a/frete.py
++++ b/frete.py
+@@ -1,48 +1,51 @@
+-# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.
+-
+-def cotar(peso_g, distancia_km, expresso):
++def _validar_peso(peso_g: int) -> None:
+     if type(peso_g) is not int:
+         raise TypeError("peso_g")
+-    if type(distancia_km) is not int:
+-        raise TypeError("distancia_km")
+-    if type(expresso) is not bool:
+-        raise TypeError("expresso")
+     if peso_g <= 0 or peso_g > 30000:
+         raise ValueError("peso fora da faixa")
+-    if distancia_km < 0 or distancia_km > 3000:
+-        raise ValueError("distancia fora da faixa")
+ 
+-    # carta / pac / sedex / transportadora — números repetidos de propósito
+-    if peso_g >= 1 and peso_g <= 300:
+-        nome = "carta"
+-        base = 800
+-        por_km = 0
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 301 and peso_g <= 2000:
+-        nome = "pac"
+-        base = 1500
+-        por_km = 2
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 2001 and peso_g <= 10000:
+-        nome = "sedex"
+-        base = 2500
+-        por_km = 5
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 10001 and peso_g <= 30000:
+-        nome = "transportadora"
+-        base = 4000
+-        por_km = 8
++
++def _buscar_faixa(peso_g: int) -> tuple[str, int, int, int, int]:
++    for faixa in TabelaFrete.FAIXAS:
++        if faixa[1] <= peso_g <= faixa[2]:
++            return faixa
++    raise ValueError("peso fora da faixa")
++
++
++class TabelaFrete:
++    FAIXAS: tuple[tuple[str, int, int, int, int], ...] = (
++        ("carta", 1, 300, 800, 0),
++        ("pac", 301, 2000, 1500, 2),
++        ("sedex", 2001, 10000, 2500, 5),
++        ("transportadora", 10001, 30000, 4000, 8),
++    )
++
++    def cotar(self, peso_g: int, distancia_km: int, expresso: bool) -> dict:
++        """Calcula o frete usando a tabela de faixas corrente."""
++        # Preserve a precedência das validações do cotador original.
++        if type(peso_g) is not int:
++            raise TypeError("peso_g")
++        if type(distancia_km) is not int:
++            raise TypeError("distancia_km")
++        if type(expresso) is not bool:
++            raise TypeError("expresso")
++        _validar_peso(peso_g)
++        if distancia_km < 0 or distancia_km > 3000:
++            raise ValueError("distancia fora da faixa")
++
++        nome, _, _, base, por_km = _buscar_faixa(peso_g)
+         total = base + por_km * distancia_km
+-        if expresso is True:
++        if expresso:
+             total = (total * 3) // 2
+         return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    raise ValueError("peso fora da faixa")
++
++
++def cotar(peso_g: int, distancia_km: int, expresso: bool) -> dict:
++    """Calcula o frete usando a tabela de faixas corrente."""
++    return TabelaFrete().cotar(peso_g, distancia_km, expresso)
++
++
++def faixa_de_peso(peso_g: int) -> str:
++    """Nome da faixa. Mesmas regras de tipo e intervalo de cotar para o peso."""
++    _validar_peso(peso_g)
++    return _buscar_faixa(peso_g)[0]
+
+codex
+A tabela já está centralizada, e as três interfaces consultam o atributo de classe a cada chamada. Vou comparar os resultados e as exceções com a versão original e testar a substituição da tabela em uma instância já criada.
+exec
+/bin/bash -lc "python -B - <<'PY'
+original_source = \"# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.\\n\\ndef cotar(peso_g, distancia_km, expresso):\\n    if type(peso_g) is not int:\\n        raise TypeError(\\\"peso_g\\\")\\n    if type(distancia_km) is not int:\\n        raise TypeError(\\\"distancia_km\\\")\\n    if type(expresso) is not bool:\\n        raise TypeError(\\\"expresso\\\")\\n    if peso_g <= 0 or peso_g > 30000:\\n        raise ValueError(\\\"peso fora da faixa\\\")\\n    if distancia_km < 0 or distancia_km > 3000:\\n        raise ValueError(\\\"distancia fora da faixa\\\")\\n\\n    # carta / pac / sedex / transportadora — números repetidos de propósito\\n    if peso_g >= 1 and peso_g <= 300:\\n        nome = \\\"carta\\\"\\n        base = 800\\n        por_km = 0\\n        total = base + por_km * distancia_km\\n        if expresso is True:\\n            total = (total * 3) // 2\\n        return {\\\"faixa\\\": nome, \\\"valor_centavos\\\": total, \\\"expresso\\\": expresso}\\n    if peso_g >= 301 and peso_g <= 2000:\\n        nome = \\\"pac\\\"\\n        base = 1500\\n        por_km = 2\\n        total = base + por_km * distancia_km\\n        if expresso is True:\\n            total = (total * 3) // 2\\n        return {\\\"faixa\\\": nome, \\\"valor_centavos\\\": total, \\\"expresso\\\": expresso}\\n    if peso_g >= 2001 and peso_g <= 10000:\\n        nome = \\\"sedex\\\"\\n        base = 2500\\n        por_km = 5\\n        total = base + por_km * distancia_km\\n        if expresso is True:\\n            total = (total * 3) // 2\\n        return {\\\"faixa\\\": nome, \\\"valor_centavos\\\": total, \\\"expresso\\\": expresso}\\n    if peso_g >= 10001 and peso_g <= 30000:\\n        nome = \\\"transportadora\\\"\\n        base = 4000\\n        por_km = 8\\n        total = base + por_km * distancia_km\\n        if expresso is True:\\n            total = (total * 3) // 2\\n        return {\\\"faixa\\\": nome, \\\"valor_centavos\\\": total, \\\"expresso\\\": expresso}\\n    raise ValueError(\\\"peso fora da faixa\\\")\\n\"
+
+import itertools
+import frete
+
+namespace = {}
+exec(compile(original_source, \"<frete original>\", \"exec\"), namespace)
+original = namespace[\"cotar\"]
+tabela = frete.TabelaFrete()
+checks = 0
+
+def resultado(func, *args):
+    try:
+        return (\"retorno\", func(*args))
+    except Exception as erro:
+        return (type(erro), erro.args)
+
+def comparar(args):
+    global checks
+    esperado = resultado(original, *args)
+    assert resultado(frete.cotar, *args) == esperado, args
+    assert resultado(tabela.cotar, *args) == esperado, args
+    checks += 2
+
+for peso in range(1, 30001):
+    for distancia, expresso in itertools.product((0, 1, 17, 2999, 3000), (False, True)):
+        comparar((peso, distancia, expresso))
+    assert frete.faixa_de_peso(peso) == original(peso, 0, False)[\"faixa\"]
+    checks += 1
+
+for args in itertools.product(
+    (1, 300, 301, 2000, 2001, 10000, 10001, 30000),
+    range(3001), (False, True)
+):
+    comparar(args)
+
+class Inteiro(int):
+    pass
+
+invalidos = (None, True, False, 1.0, \"1\", [], {}, Inteiro(1), -1, 0, 30001)
+for args in itertools.product(
+    invalidos + (1, 30000),
+    invalidos + (3000, 3001),
+    (True, False, None, 0, 1, \"True\", [], {})
+):
+    comparar(args)
+
+for peso in invalidos:
+    assert resultado(frete.faixa_de_peso, peso) == resultado(original, peso, 0, False)
+    checks += 1
+
+anterior = frete.TabelaFrete.FAIXAS
+try:
+    frete.TabelaFrete.FAIXAS = (
+        (\"nova\", 100, 200, 101, 3),
+        (\"ampla\", -100, 40000, 5, 1),
+    )
+    for cotador in (frete.cotar, tabela.cotar, frete.TabelaFrete().cotar):
+        assert cotador(150, 2, True) == {
+            \"faixa\": \"nova\", \"valor_centavos\": 160, \"expresso\": True
+        }
+        assert resultado(cotador, 0, 0, False) == (ValueError, (\"peso fora da faixa\",))
+        assert resultado(cotador, 30001, 0, False) == (ValueError, (\"peso fora da faixa\",))
+        assert resultado(cotador, 150, 3001, False) == (ValueError, (\"distancia fora da faixa\",))
+        assert resultado(cotador, True, 0, False) == (TypeError, (\"peso_g\",))
+    assert frete.faixa_de_peso(150) == \"nova\"
+    assert resultado(frete.faixa_de_peso, 30001) == (ValueError, (\"peso fora da faixa\",))
+
+    frete.TabelaFrete.FAIXAS = ((\"restrita\", 100, 200, 7, 2),)
+    assert frete.faixa_de_peso(100) == \"restrita\"
+    for peso in (1, 99, 201, 30000):
+        assert resultado(frete.faixa_de_peso, peso) == (ValueError, (\"peso fora da faixa\",))
+        for cotador in (frete.cotar, tabela.cotar):
+            assert resultado(cotador, peso, 0, False) == (ValueError, (\"peso fora da faixa\",))
+
+    frete.TabelaFrete.FAIXAS = ()
+    assert resultado(frete.faixa_de_peso, 1) == (ValueError, (\"peso fora da faixa\",))
+    assert resultado(frete.cotar, 1, 0, False) == (ValueError, (\"peso fora da faixa\",))
+    assert resultado(tabela.cotar, 1, 0, False) == (ValueError, (\"peso fora da faixa\",))
+finally:
+    frete.TabelaFrete.FAIXAS = anterior
+
+print(f\"OK: {checks} comparações com a versão original; troca dinâmica, lacunas e limites validados.\")
+PY" in /tmp/bench-dw6qdpce
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+original_source = \"# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.\\n\\ndef cotar(peso_g, distancia_km, expresso):\\n    if type(peso_g) is not int:\\n        raise TypeError(\\\"peso_g\\\")\\n    if type(distancia_km) is not int:\\n        raise TypeError(\\\"distancia_km\\\")\\n    if type(expresso) is not bool:\\n        raise TypeError(\\\"expresso\\\")\\n    if peso_g <= 0 or peso_g > 30000:\\n        raise ValueError(\\\"peso fora da faixa\\\")\\n    if distancia_km < 0 or distancia_km > 3000:\\n        raise ValueError(\\\"distancia fora da faixa\\\")\\n\\n    # carta / pac / sedex / transportadora — números repetidos de propósito\\n    if peso_g >= 1 and peso_g <= 300:\\n        nome = \\\"carta\\\"\\n        base = 800\\n        por_km = 0\\n        total = base + por_km * distancia_km\\n        if expresso is True:\\n            total = (total * 3) // 2\\n        return {\\\"faixa\\\": nome, \\\"valor_centavos\\\": total, \\\"expresso\\\": expresso}\\n    if peso_g >= 301 and peso_g <= 2000:\\n        nome = \\\"pac\\\"\\n        base = 1500\\n        por_km = 2\\n        total = base + por_km * distancia_km\\n        if expresso is True:\\n            total = (total * 3) // 2\\n        return {\\\"faixa\\\": nome, \\\"valor_centavos\\\": total, \\\"expresso\\\": expresso}\\n    if peso_g >= 2001 and peso_g <= 10000:\\n        nome = \\\"sedex\\\"\\n        base = 2500\\n        por_km = 5\\n        total = base + por_km * distancia_km\\n        if expresso is True:\\n            total = (total * 3) // 2\\n        return {\\\"faixa\\\": nome, \\\"valor_centavos\\\": total, \\\"expresso\\\": expresso}\\n    if peso_g >= 10001 and peso_g <= 30000:\\n        nome = \\\"transportadora\\\"\\n        base = 4000\\n        por_km = 8\\n        total = base + por_km * distancia_km\\n        if expresso is True:\\n            total = (total * 3) // 2\\n        return {\\\"faixa\\\": nome, \\\"valor_centavos\\\": total, \\\"expresso\\\": expresso}\\n    raise ValueError(\\\"peso fora da faixa\\\")\\n\"
+
+import itertools
+import frete
+namespace = {}
+exec(compile(original_source, \"<original>\", \"exec\"), namespace)
+original = namespace[\"cotar\"]
+instancia = frete.TabelaFrete()
+checks = 0
+
+def resultado(func, *args):
+    try:
+        return func(*args)
+    except Exception as erro:
+        return type(erro), erro.args
+
+def comparar(args):
+    global checks
+    esperado = resultado(original, *args)
+    for func in (frete.cotar, instancia.cotar):
+        assert resultado(func, *args) == esperado, args
+        checks += 1
+
+for peso in range(1, 30001):
+    for distancia, expresso in itertools.product((0, 1, 17, 2999, 3000), (False, True)):
+        comparar((peso, distancia, expresso))
+    assert frete.faixa_de_peso(peso) == original(peso, 0, False)[\"faixa\"]
+    checks += 1
+
+for args in itertools.product(
+    (1, 300, 301, 2000, 2001, 10000, 10001, 30000), range(3001), (False, True)
+):
+    comparar(args)
+
+class Inteiro(int):
+    pass
+
+valores = (None, True, False, 1.0, \"1\", [], {}, Inteiro(1), -1, 0, 1, 3000, 3001, 30000, 30001)
+for args in itertools.product(valores, valores, (True, False, None, 0, 1, \"True\", [], {})):
+    comparar(args)
+for peso in valores:
+    esperado = resultado(original, peso, 0, False)
+    if type(esperado) is dict:
+        esperado = esperado[\"faixa\"]
+    assert resultado(frete.faixa_de_peso, peso) == esperado
+    checks += 1
+
+anterior = frete.TabelaFrete.FAIXAS
+try:
+    frete.TabelaFrete.FAIXAS = (
+        (\"nova\", 100, 200, 101, 3),
+        (\"ampla\", -100, 40000, 5, 1),
+    )
+    for func in (frete.cotar, instancia.cotar, frete.TabelaFrete().cotar):
+        assert func(150, 2, True) == {\"faixa\": \"nova\", \"valor_centavos\": 160, \"expresso\": True}
+        for peso in (0, 30001):
+            assert resultado(func, peso, 0, False) == (ValueError, (\"peso fora da faixa\",))
+        assert resultado(func, 150, 3001, False) == (ValueError, (\"distancia fora da faixa\",))
+        assert resultado(func, True, 0, False) == (TypeError, (\"peso_g\",))
+    assert frete.faixa_de_peso(150) == \"nova\"
+    for peso in (0, 30001):
+        assert resultado(frete.faixa_de_peso, peso) == (ValueError, (\"peso fora da faixa\",))
+
+    for tabela in (((\"restrita\", 100, 200, 7, 2),), ()):
+        frete.TabelaFrete.FAIXAS = tabela
+        for peso in (1, 99, 201, 30000):
+            assert resultado(frete.faixa_de_peso, peso) == (ValueError, (\"peso fora da faixa\",))
+            for func in (frete.cotar, instancia.cotar):
+                assert resultado(func, peso, 0, False) == (ValueError, (\"peso fora da faixa\",))
+finally:
+    frete.TabelaFrete.FAIXAS = anterior
+
+print(f\"OK: {checks} comparações com a versão original; troca dinâmica, lacunas e limites validados.\")
+PY" in /tmp/bench-dw6qdpce
+ succeeded in 613ms:
+OK: 729647 comparações com a versão original; troca dinâmica, lacunas e limites validados.
+
+codex
+Refatorei [frete.py](/tmp/bench-dw6qdpce/frete.py), expondo `TabelaFrete`, `FAIXAS` e `faixa_de_peso`, com consulta dinâmica à tabela.
+
+Validação concluída: 729.647 comparações com a versão original, além de testes de substituição da tabela, lacunas e limites. Todos passaram.
+tokens used
+21,337

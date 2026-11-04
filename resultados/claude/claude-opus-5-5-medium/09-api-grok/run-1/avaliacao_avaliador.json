@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-medium/09-api-grok/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "medium",
+ "tarefa": "09-api-grok",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 30.875,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Separa chamada com prazo, retry por id e orquestração; trata erros definitivos, tentativas e timeout corretamente. A fórmula do backoff e a exceção retentável ficam soltas no laço.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Excelente decomposição e controle de concorrência, mas falta docstring em baixar_pedidos e a política de retry com backoff está inline no laço.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.5,
+ "nota_final_10": 9.55,
+ "reexecucao_testes": {
+  "total": 18,
+  "passados": 18,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.55,
+ "nota_antiga_com_penalidade": 9.55
+}

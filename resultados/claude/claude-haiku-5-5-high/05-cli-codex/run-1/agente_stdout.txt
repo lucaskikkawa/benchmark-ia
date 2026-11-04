@@ -1,0 +1,20 @@
+Criei `cli.py` neste diretório, seguindo o `enunciado.md`. Testei manualmente os contratos principais e nenhum teste automatizado foi adicionado.
+
+**O que foi verificado**
+- **Formato padrão:** cada linha sai como `PALAVRA\tCONTAGEM\n`, com ordenação por contagem decrescente e depois por palavra. Sem resultados, o stdout fica vazio.
+- **JSON:** sai uma linha com acentos preservados e quebra final. Sem resultados, sai `[]`.
+- **Filtros:** `--minimo`, `--top` e `--ignorar-caixa` funcionam, inclusive combinados. `--top` é aplicado depois de filtrar e ordenar.
+- **Erros:** arquivo inexistente, diretório, UTF-8 inválido, flag desconhecida, argumento obrigatório ausente e `--minimo`/`--top` inválidos (`0`, `-1`, `abc`, `2.0`) retornam 2, com stdout vazio, mensagem no stderr e sem traceback.
+- **`-h`:** mostra a ajuda e retorna 0.
+- **Importação:** `import cli` não produz saída.
+- **Múltiplas chamadas:** `main` pode ser chamado várias vezes sem estado compartilhado.
+- **Volume:** 100.000 tokens processados em cerca de 0,03 s.
+- **Unicode:** formas compostas e decompostas continuam distintas.
+
+**Escolhas que fiz**
+- `main` captura o `SystemExit` do argparse e retorna o código (0 ou 2), para que `main(...)` sempre devolva um `int`. Ao executar como script, o código sai via `sys.exit(main())`.
+- Desativei abreviações de flags (`allow_abbrev=False`), para que só os nomes listados no enunciado sejam aceitos.
+- O arquivo é lido em bytes e decodificado como UTF-8 estrito, sem normalização de quebras de linha. Um BOM, se existir, fica no primeiro token.
+- Aceito `+3` como inteiro positivo válido em `--minimo`/`--top`. Se preferir apenas dígitos, é uma linha para mudar.
+
+Os testes usaram Python 3.13.5, que é o disponível aqui. O código não usa nada específico de versão, mas não foi executado no Python 3.11 exigido pelo enunciado. Removi os arquivos de teste temporários e o `__pycache__`; o diretório contém apenas `cli.py`, `enunciado.md` e `.gitkeep`.

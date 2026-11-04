@@ -1,0 +1,5 @@
+O arquivo [agenda_cli.py](file:///tmp/bench-3s7fx6zb/agenda_cli.py) foi implementado conforme a especificação de [enunciado.md](file:///tmp/bench-3s7fx6zb/enunciado.md):
+
+- [`construir_parser`](file:///tmp/bench-3s7fx6zb/agenda_cli.py#L183-L204) define os subcomandos `adicionar`, `listar` e `concluir` usando `argparse` com `--arquivo` obrigatório e validação de argumentos.
+- [`carregar_agenda`](file:///tmp/bench-3s7fx6zb/agenda_cli.py#L84-L111) e [`validar_estrutura_agenda`](file:///tmp/bench-3s7fx6zb/agenda_cli.py#L40-L81) validam estritamente o esquema JSON (`proximo_id`, `tarefas`, tipos exatos sem aceitar `bool` como `int`, unicidade e limites de `id`, normalização de `titulo` e datas gregorianas válidas em [`data_valida`](file:///tmp/bench-3s7fx6zb/agenda_cli.py#L19-L29)).
+- [`cmd_adicionar`](file:///tmp/bench-3s7fx6zb/agenda_cli.py#L130-L153), [`cmd_listar`](file:///tmp/bench-3s7fx6zb/agenda_cli.py#L156-L171) e [`cmd_concluir`](file:///tmp/bench-3s7fx6zb/agenda_cli.py#L174-L180) implementam as operações de adição, listagem filtrada/ordenada e conclusão de tarefas com as saídas e códigos de retorno exigidos.

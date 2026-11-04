@@ -1,0 +1,6 @@
+O pacote `estoque` foi completado conforme especificado em [enunciado.md](file:///tmp/bench-cjyxiu7n/enunciado.md):
+
+- [`Movimento`](file:///tmp/bench-cjyxiu7n/estoque/modelos.py#L4-L7) em [modelos.py](file:///tmp/bench-cjyxiu7n/estoque/modelos.py): dataclass imutável (`frozen=True`) com os campos `sku: str` e `delta: int`, sem validação no construtor.
+- [`calcular_saldos`](file:///tmp/bench-cjyxiu7n/estoque/operacoes.py#L5-L22) em [operacoes.py](file:///tmp/bench-cjyxiu7n/estoque/operacoes.py): copia `iniciais` sem modificá-lo, valida saldos iniciais e intermediários contra valores negativos lançando `ValueError`, processa iteráveis de passagem única na ordem e preserva chaves com saldo zero.
+- [`carregar_movimentos`](file:///tmp/bench-cjyxiu7n/estoque/persistencia.py#L6-L30) em [persistencia.py](file:///tmp/bench-cjyxiu7n/estoque/persistencia.py): lê arquivos JSON UTF-8 (`str` ou `Path`), valida a estrutura de lista de objetos, exige `sku` string com ao menos um caractere não branco (mantendo a string original) e `delta` inteiro (rejeitando `bool`), ignora campos extras e lança `ValueError` para entradas ou JSON inválidos.
+- [__init__.py](file:///tmp/bench-cjyxiu7n/estoque/__init__.py): exporta `Movimento`, `calcular_saldos` e `carregar_movimentos`.

@@ -1,0 +1,3 @@
+Corrigi [intervalos.py](/tmp/bench-pe9lyz1i/intervalos.py): agora intervalos vazios retornam `[]`, entradas são validadas sem alterar a original, e intervalos que se sobrepõem ou se tocam são unidos usando o maior fim. `total_coberto` passa a usar essa união corrigida.
+
+Não executei testes.

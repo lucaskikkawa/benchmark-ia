@@ -122,6 +122,8 @@ def main():
         with (task / "meta.yaml").open(encoding="utf-8") as f:
             meta = yaml.safe_load(f) or {}
     timeout_s = min(300, max(1, int(meta.get("timeout_s") or 60 * float(meta.get("timeout_min", 5)))))
+    if os.environ.get("BENCH_TIMEOUT_S"):  # override explícito (ex.: refazer timeouts com 300s)
+        timeout_s = min(900, max(1, int(os.environ["BENCH_TIMEOUT_S"])))
 
     base = ROOT / "resultados" / args.empresa / f"{args.modelo}-{args.esforco}" / args.tarefa
     if args.run is None:
@@ -202,7 +204,7 @@ def main():
         result = {"empresa": args.empresa, "modelo": args.modelo, "esforco": args.esforco,
                   "tarefa": args.tarefa, "run": run_n, "status": status, "exit_code": exit_code,
                   "duracao_agente_s": duration, "testes_total": total, "testes_passados": passed,
-                  "pct_passados": pct, "inicio_iso": start, "cmd": cmd}
+                  "pct_passados": pct, "inicio_iso": start, "cmd": cmd, "timeout_s": timeout_s}
         (output / "resultado.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(result, ensure_ascii=False, indent=2))
     finally:

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/04-dados-grok/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "04-dados-grok",
+ "tipo": "04-dados",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 25.437,
+ "testes_passados": 22,
+ "testes_total": 22,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Agregação misturada à leitura do CSV no laço de consolidar; bordas, csv/json/datetime e constantes bem tratados; docstring não descreve os três caminhos.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Excelente tratamento de bordas, manutenibilidade e uso da stdlib; porém a leitura do CSV e a agregação estão misturadas no mesmo laço.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.5,
+ "nota_final_10": 9.55,
+ "reexecucao_testes": {
+  "total": 22,
+  "passados": 22,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": null,
+ "nota_antiga_com_penalidade": 7.0
+}

@@ -1,0 +1,19 @@
+Implementei a tarefa em `cliente_resiliente.py`. Também escrevi um arquivo de testes, `test_cliente_resiliente.py`, e os 34 testes passam.
+
+**`ApiError(mensagem="", status_code=None)`**: herda de `Exception` e guarda a mensagem e o `status_code`.
+
+**`ClienteResiliente`**:
+- **Validação no construtor:**
+  - `max_tentativas` precisa ser `int` de verdade (`type(...) is int`) e ser maior ou igual a 1.
+  - `backoff_base`, `backoff_fator` e `timeout` precisam ser `int` ou `float` (bool não vale) e maiores que 0. Em qualquer outro caso, levanta `ValueError`.
+- **`get` e `post`** só repassam a chamada para `executar`.
+- **`executar`** chama `servidor.requisicao(..., timeout=self.timeout)` e:
+  - devolve `resposta.data` quando o status é 2xx;
+  - tenta de novo em `SimulatedNetworkError`, `SimulatedTimeoutError`, 429 e 5xx, esperando `sleep_fn(backoff_base * backoff_fator ** (tentativa - 1))` entre as tentativas. Não há espera depois da última;
+  - quando as tentativas acabam, levanta `ApiError`: com o código HTTP em `status_code` se a última falha foi HTTP, ou com `status_code=None` se foi erro de rede ou timeout (a exceção original fica encadeada);
+  - nos demais status (3xx, 4xx exceto 429), levanta `ApiError` na hora, com o código, sem tentar de novo.
+
+Tomei três decisões onde o enunciado deixa margem:
+- **Faixa de retry:** trato como retentável toda a faixa 500–599, e não só os códigos listados (500, 502, 503, 504). Isso inclui o 501, que dá para argumentar que não deveria ser repetido. Se a intenção era aceitar só os quatro códigos, basta trocar a checagem em `_status_retentavel`.
+- **Valores não finitos:** `backoff_base`, `backoff_fator` e `timeout` com NaN ou infinito também são rejeitados com `ValueError`. O enunciado não pede isso; adicionei porque NaN passaria pela checagem `<= 0`.
+- **Mensagem do erro:** a mensagem fica disponível como `mensagem` e também como `message`.

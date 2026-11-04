@@ -1,0 +1,785 @@
+[
+ {
+  "pasta": "resultados/grok/grok-4.7-high/01-funcao-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "01-funcao-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.115,
+  "timeout_s": 180,
+  "testes_total": 23,
+  "testes_passados": 21,
+  "pct": 91.30434782608695,
+  "rerun": {
+   "total": 23,
+   "passados": 21,
+   "pct": 91.3
+  },
+  "nota_antiga": 7.59,
+  "rubrica_antiga": 4.0,
+  "n_arquivos_codigo": 2,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/01-funcao-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "01-funcao-codex",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.128,
+  "timeout_s": 180,
+  "testes_total": 2,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 2,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.0,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "resultado.json alterado em 2 commits: ['652b466 Rodada 1: 528 execuções, avaliações e RODADA.md', '98a25b8 Piloto: 16 combinações + juízes da rubrica; runner aceita timeout_min']"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/01-funcao-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "01-funcao-gemini",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 133.405,
+  "timeout_s": 180,
+  "testes_total": 33,
+  "testes_passados": 33,
+  "pct": 100.0,
+  "rerun": {
+   "total": 33,
+   "passados": 33,
+   "pct": 100.0
+  },
+  "nota_antiga": 9.55,
+  "rubrica_antiga": 8.5,
+  "n_arquivos_codigo": 2,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/02-bug-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "02-bug-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 167.274,
+  "timeout_s": 180,
+  "testes_total": 26,
+  "testes_passados": 26,
+  "pct": 100.0,
+  "rerun": {
+   "total": 26,
+   "passados": 26,
+   "pct": 100.0
+  },
+  "nota_antiga": 9.1,
+  "rubrica_antiga": 7.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/02-bug-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "02-bug-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 32.534,
+  "timeout_s": 180,
+  "testes_total": 21,
+  "testes_passados": 21,
+  "pct": 100.0,
+  "rerun": {
+   "total": 21,
+   "passados": 21,
+   "pct": 100.0
+  },
+  "nota_antiga": 10.0,
+  "rubrica_antiga": 10.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/02-bug-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "02-bug-gemini",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.127,
+  "timeout_s": 180,
+  "testes_total": 20,
+  "testes_passados": 1,
+  "pct": 5.0,
+  "rerun": {
+   "total": 20,
+   "passados": 1,
+   "pct": 5.0
+  },
+  "nota_antiga": 1.1,
+  "rubrica_antiga": 2.5,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/03-refatoracao-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "03-refatoracao-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.061,
+  "timeout_s": 180,
+  "testes_total": 32,
+  "testes_passados": 24,
+  "pct": 75.0,
+  "rerun": {
+   "total": 32,
+   "passados": 24,
+   "pct": 75.0
+  },
+  "nota_antiga": 5.85,
+  "rubrica_antiga": 2.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/03-refatoracao-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "03-refatoracao-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 37.429,
+  "timeout_s": 180,
+  "testes_total": 19,
+  "testes_passados": 19,
+  "pct": 100.0,
+  "rerun": {
+   "total": 19,
+   "passados": 19,
+   "pct": 100.0
+  },
+  "nota_antiga": 9.7,
+  "rubrica_antiga": 9.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/03-refatoracao-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "03-refatoracao-gemini",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.137,
+  "timeout_s": 180,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.3,
+  "rubrica_antiga": 1.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/04-dados-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "04-dados-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.177,
+  "timeout_s": 180,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.0,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/04-dados-claude/run-2",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "04-dados-claude",
+  "run": 2,
+  "status": "ok",
+  "duracao_s": 648.681,
+  "timeout_s": 900,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct": 100.0,
+  "rerun": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/04-dados-claude/run-2/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/04-dados-claude/run-2/avaliacao.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/junit.xml', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/resultado.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-2/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/04-dados-claude/run-3",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "04-dados-claude",
+  "run": 3,
+  "status": "timeout",
+  "duracao_s": 900.07,
+  "timeout_s": 900,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct": 100.0,
+  "rerun": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/04-dados-claude/run-3/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/04-dados-claude/run-3/avaliacao.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/junit.xml', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/resultado.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-3/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/04-dados-claude/run-4",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "04-dados-claude",
+  "run": 4,
+  "status": "ok",
+  "duracao_s": 863.402,
+  "timeout_s": 900,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct": 100.0,
+  "rerun": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/04-dados-claude/run-4/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/04-dados-claude/run-4/avaliacao.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-4/junit.xml', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-4/resultado.json', ' M resultados/grok/grok-4.7-high/04-dados-claude/run-4/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/04-dados-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "04-dados-codex",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.126,
+  "timeout_s": 180,
+  "testes_total": 2,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 2,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.0,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/04-dados-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "04-dados-gemini",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.117,
+  "timeout_s": 180,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.0,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/05-cli-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "05-cli-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 300.129,
+  "timeout_s": 300,
+  "testes_total": 27,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 27,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.0,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/05-cli-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "05-cli-codex",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 300.131,
+  "timeout_s": 300,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.0,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/05-cli-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "05-cli-gemini",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.116,
+  "timeout_s": 180,
+  "testes_total": 22,
+  "testes_passados": 6,
+  "pct": 27.272727272727273,
+  "rerun": {
+   "total": 22,
+   "passados": 6,
+   "pct": 27.27
+  },
+  "nota_antiga": 1.91,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/06-multiarquivo-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "06-multiarquivo-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 300.05,
+  "timeout_s": 300,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.0,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "06-multiarquivo-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 297.589,
+  "timeout_s": 300,
+  "testes_total": 42,
+  "testes_passados": 42,
+  "pct": 100.0,
+  "rerun": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  },
+  "nota_antiga": 9.7,
+  "rubrica_antiga": 9.0,
+  "n_arquivos_codigo": 4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/agente_stdout.txt', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/modelos.py', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/operacoes.py', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/persistencia.py']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/06-multiarquivo-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "06-multiarquivo-gemini",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 180.1,
+  "timeout_s": 180,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": 0.0,
+  "rubrica_antiga": 0.0,
+  "n_arquivos_codigo": 1,
+  "incoerencias": []
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/07-performance-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "07-performance-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 250.448,
+  "timeout_s": 300,
+  "testes_total": 36,
+  "testes_passados": 36,
+  "pct": 100.0,
+  "rerun": {
+   "total": 36,
+   "passados": 36,
+   "pct": 100.0
+  },
+  "nota_antiga": 8.8,
+  "rubrica_antiga": 6.0,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/07-performance-claude/run-1/agente_stdout.txt', ' M resultados/grok/grok-4.7-high/07-performance-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/07-performance-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/07-performance-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/07-performance-claude/run-1/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/07-performance-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "07-performance-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 169.337,
+  "timeout_s": 180,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct": 100.0,
+  "rerun": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  },
+  "nota_antiga": 10.0,
+  "rubrica_antiga": 10.0,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/07-performance-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "07-performance-gemini",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 52.146,
+  "timeout_s": 180,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": 9.7,
+  "rubrica_antiga": 9.0,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/08-testes-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "08-testes-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 900.097,
+  "timeout_s": 900,
+  "testes_total": 17,
+  "testes_passados": 1,
+  "pct": 5.882352941176471,
+  "rerun": {
+   "total": 17,
+   "passados": 1,
+   "pct": 5.88
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/08-testes-claude/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/08-testes-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/08-testes-claude/run-1/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/08-testes-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "08-testes-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 861.676,
+  "timeout_s": 900,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/08-testes-codex/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/08-testes-codex/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/08-testes-codex/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/08-testes-codex/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/08-testes-codex/run-1/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/08-testes-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "08-testes-gemini",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 900.069,
+  "timeout_s": 900,
+  "testes_total": 13,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 13,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/08-testes-gemini/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/08-testes-gemini/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/08-testes-gemini/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/08-testes-gemini/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/08-testes-gemini/run-1/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/09-api-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "09-api-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 900.102,
+  "timeout_s": 900,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/09-api-claude/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/09-api-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/09-api-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/09-api-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/09-api-claude/run-1/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/09-api-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "09-api-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 182.906,
+  "timeout_s": 900,
+  "testes_total": 38,
+  "testes_passados": 38,
+  "pct": 100.0,
+  "rerun": {
+   "total": 38,
+   "passados": 38,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/09-api-codex/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/09-api-codex/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/09-api-codex/run-1/codigo/cliente.py', ' M resultados/grok/grok-4.7-high/09-api-codex/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/09-api-codex/run-1/resultado.json']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/09-api-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "09-api-gemini",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 194.612,
+  "timeout_s": 300,
+  "testes_total": 46,
+  "testes_passados": 46,
+  "pct": 100.0,
+  "rerun": {
+   "total": 46,
+   "passados": 46,
+   "pct": 100.0
+  },
+  "nota_antiga": 9.85,
+  "rubrica_antiga": 9.5,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/09-api-gemini/run-1/agente_stdout.txt', ' M resultados/grok/grok-4.7-high/09-api-gemini/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/09-api-gemini/run-1/codigo/cliente_resiliente.py', ' M resultados/grok/grok-4.7-high/09-api-gemini/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/09-api-gemini/run-1/resultado.json']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/10-ambigua-claude/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "10-ambigua-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 900.137,
+  "timeout_s": 900,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/10-ambigua-claude/run-1/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/10-ambigua-codex/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "10-ambigua-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 89.212,
+  "timeout_s": 180,
+  "testes_total": 14,
+  "testes_passados": 14,
+  "pct": 100.0,
+  "rerun": {
+   "total": 14,
+   "passados": 14,
+   "pct": 100.0
+  },
+  "nota_antiga": 9.7,
+  "rubrica_antiga": 9.0,
+  "n_arquivos_codigo": 3,
+  "incoerencias": [
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+  ]
+ },
+ {
+  "pasta": "resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1",
+  "empresa": "grok",
+  "combo": "grok-4.7-high",
+  "tarefa": "10-ambigua-gemini",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 292.647,
+  "timeout_s": 900,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct": 100.0,
+  "rerun": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 3,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/agente_stdout.txt', ' D resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/junit.xml', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/resultado.json', ' M resultados/grok/grok-4.7-high/10-ambigua-gemini/run-1/testes_saida.txt']",
+   "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']",
+   "sem avaliacao.json antiga"
+  ]
+ }
+]

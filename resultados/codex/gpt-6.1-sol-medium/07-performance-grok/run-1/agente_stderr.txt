@@ -1,0 +1,154 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-xpu27aw7
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189d2-42f9-7731-940a-8ff380dc9c29
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:40:22.350122Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, implementar a solução e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-xpu27aw7
+ succeeded in 0ms:
+/tmp/bench-xpu27aw7
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-xpu27aw7
+ succeeded in 0ms:
+# Tarefa: contar pares que somam um alvo
+
+Crie `solucao.py` no diretório de trabalho com a função abaixo. Só a biblioteca padrão. Não crie outros arquivos.
+
+```python
+def pares_com_soma(nums: list[int], alvo: int) -> int:
+    """Quantidade de pares i < j com nums[i] + nums[j] == alvo."""
+```
+
+## Regras
+
+- Conte pares de **índices** `i < j`, não pares de valores únicos. `[1, 1, 1]` e alvo `2` valem `3`.
+- Quando `2 * x == alvo`, a resposta daquele valor é `C(freq, 2) = freq * (freq - 1) // 2`.
+- Números negativos e zero são válidos.
+- Lista vazia ou com um elemento devolve `0`.
+- Não altere `nums`.
+- `nums` tem de ser `list`. Cada elemento e `alvo` têm de ser `int`. `bool` não conta como `int` (`TypeError`). Outro tipo → `TypeError`.
+- A resposta cabe num `int` do Python (não use inteiro de largura fixa). Valores como `10**18` e negativos grandes são válidos. Não materialize a lista de pares: com dezenas de milhares de valores iguais a resposta passa de 10^9.
+- Há teste com `n = 200_000`. Um laço duplo não termina no limite de 3 segundos. Uma passagem com contagem de frequências (ou dois ponteiros depois de ordenar **uma cópia**) passa. A medição roda em subprocesso.
+
+## Exemplos
+
+```python
+pares_com_soma([], 0)            # 0
+pares_com_soma([5], 10)          # 0
+pares_com_soma([1, 2, 3], 4)     # 1  (1+3)
+pares_com_soma([1, 3, 1, 3], 4)  # 4
+pares_com_soma([2, 2, 2], 4)     # 3
+pares_com_soma([0, 0, 0, 0], 0)  # 6
+pares_com_soma([-2, 0, 2, -2], 0)  # 2
+pares_com_soma([5, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2], 7)  # 35
+pares_com_soma([10**18, -(10**18), 10**18], 0)  # 2
+```
+
+apply patch
+patch: completed
+/tmp/bench-xpu27aw7/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..28f01ad25200adba0ab794a66ac2671dc0793f4a
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,15 @@
++def pares_com_soma(nums: list[int], alvo: int) -> int:
++    """Quantidade de pares i < j com nums[i] + nums[j] == alvo."""
++    if not isinstance(nums, list):
++        raise TypeError("nums deve ser uma lista")
++    if not isinstance(alvo, int) or isinstance(alvo, bool):
++        raise TypeError("alvo deve ser um inteiro")
++
++    frequencias = {}
++    total = 0
++    for numero in nums:
++        if not isinstance(numero, int) or isinstance(numero, bool):
++            raise TypeError("cada elemento de nums deve ser um inteiro")
++        total += frequencias.get(alvo - numero, 0)
++        frequencias[numero] = frequencias.get(numero, 0) + 1
++    return total
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+from solucao import pares_com_soma
+from random import Random
+from time import perf_counter
+
+casos = [([], 0, 0), ([5], 10, 0), ([1, 2, 3], 4, 1), ([1, 3, 1, 3], 4, 4), ([2, 2, 2], 4, 3), ([0, 0, 0, 0], 0, 6), ([-2, 0, 2, -2], 0, 2), ([5]*5 + [2]*7, 7, 35), ([10**18, -10**18, 10**18], 0, 2)]
+for nums, alvo, esperado in casos:
+    copia = nums[:]
+    assert pares_com_soma(nums, alvo) == esperado
+    assert nums == copia
+for nums, alvo in [((), 0), (None, 0), ([], True), ([], 1.0), ([True], 1), ([1.0], 2), ([1, '2'], 3)]:
+    try:
+        pares_com_soma(nums, alvo)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError((nums, alvo))
+rng = Random(42)
+for _ in range(1000):
+    nums = [rng.randrange(-10, 11) for _ in range(rng.randrange(30))]
+    alvo = rng.randrange(-20, 21)
+    esperado = sum(nums[i] + nums[j] == alvo for i in range(len(nums)) for j in range(i + 1, len(nums)))
+    assert pares_com_soma(nums, alvo) == esperado
+inicio = perf_counter()
+assert pares_com_soma([1] * 200_000, 2) == 200_000 * 199_999 // 2
+print(f'Todos os testes passaram; caso com 200.000 elementos: {perf_counter() - inicio:.3f}s')
+PY" in /tmp/bench-xpu27aw7
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from solucao import pares_com_soma
+from random import Random
+from time import perf_counter
+
+casos = [([], 0, 0), ([5], 10, 0), ([1, 2, 3], 4, 1), ([1, 3, 1, 3], 4, 4), ([2, 2, 2], 4, 3), ([0, 0, 0, 0], 0, 6), ([-2, 0, 2, -2], 0, 2), ([5]*5 + [2]*7, 7, 35), ([10**18, -10**18, 10**18], 0, 2)]
+for nums, alvo, esperado in casos:
+    copia = nums[:]
+    assert pares_com_soma(nums, alvo) == esperado
+    assert nums == copia
+for nums, alvo in [((), 0), (None, 0), ([], True), ([], 1.0), ([True], 1), ([1.0], 2), ([1, '2'], 3)]:
+    try:
+        pares_com_soma(nums, alvo)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError((nums, alvo))
+rng = Random(42)
+for _ in range(1000):
+    nums = [rng.randrange(-10, 11) for _ in range(rng.randrange(30))]
+    alvo = rng.randrange(-20, 21)
+    esperado = sum(nums[i] + nums[j] == alvo for i in range(len(nums)) for j in range(i + 1, len(nums)))
+    assert pares_com_soma(nums, alvo) == esperado
+inicio = perf_counter()
+assert pares_com_soma([1] * 200_000, 2) == 200_000 * 199_999 // 2
+print(f'Todos os testes passaram; caso com 200.000 elementos: {perf_counter() - inicio:.3f}s')
+PY" in /tmp/bench-xpu27aw7
+ succeeded in 0ms:
+Todos os testes passaram; caso com 200.000 elementos: 0.018s
+
+codex
+Criado [solucao.py](/tmp/bench-xpu27aw7/solucao.py) com contagem por frequências em O(n), validação de tipos e sem alterar a lista.
+
+Passaram os exemplos, 1.000 testes aleatórios e o teste com 200.000 elementos (0,018 s).
+tokens used
+6,368

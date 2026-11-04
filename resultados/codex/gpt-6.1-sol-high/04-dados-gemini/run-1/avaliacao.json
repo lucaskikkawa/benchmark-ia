@@ -1,0 +1,29 @@
+{
+ "autora": "gemini",
+ "resolvedora": "codex",
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": null,
+   "rubrica_10": null
+  }
+ },
+ "obs": [
+  "grok tentativa 1 falhou: JSON inválido",
+  "grok tentativa 2 falhou: JSON inválido",
+  "só 1 juiz válido; usada só a nota dele"
+ ],
+ "rubrica_10": 5.0,
+ "nota_final_10": 8.5
+}

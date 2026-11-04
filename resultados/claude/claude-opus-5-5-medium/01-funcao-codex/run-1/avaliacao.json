@@ -1,13 +1,29 @@
 {
- "juiz_empresa": "grok",
- "juiz_modelo": "grok-4.7-build-fast",
- "itens": {
-  "legibilidade": 2,
-  "erros_bordas": 2,
-  "idiomatico": 2,
-  "manutenibilidade": 2,
-  "documentacao_instrucoes": 1
+ "autora": "codex",
+ "resolvedora": "claude",
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": null,
+   "rubrica_10": null
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0
+  }
  },
+ "obs": [
+  "gemini tentativa 1 falhou: timeout",
+  "gemini tentativa 2 falhou: timeout",
+  "só 1 juiz válido; usada só a nota dele"
+ ],
  "rubrica_10": 9.0,
  "nota_final_10": 9.7
 }

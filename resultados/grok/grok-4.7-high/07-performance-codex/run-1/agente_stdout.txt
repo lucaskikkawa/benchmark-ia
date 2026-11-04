@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo, sem perguntas.A função está em `pares.py`. Vou conferir os casos do enunciado, o tempo em um milhão de itens e o pico de memória do gerador.`pares.py` define `contar_pares(valores, alvo)`, que conta pares de índices distintos `i < j` cuja soma é `alvo`.
+
+A função percorre a entrada uma vez e guarda só a frequência de cada valor já visto. Para cada elemento, soma quantas vezes o complemento `alvo - valor` já apareceu e só então registra o valor. Assim um item não forma par consigo mesmo, duplicatas contam como elementos distintos e o mesmo par não entra duas vezes. Listas recebidas não são alteradas, geradores são consumidos numa passagem só e não fica estado entre chamadas.
+
+O tempo é O(n) e a memória O(k), com k igual ao número de valores distintos. Inteiros grandes são comparados com exatidão pelo `int` do Python. Em um milhão de elementos a chamada levou bem menos de 1 s, e o pico extra com quatro valores distintos ficou em cerca de 624 bytes, abaixo de 4 MiB.

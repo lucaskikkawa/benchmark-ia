@@ -1,0 +1,11 @@
+A tarefa foi resolvida com a criação do módulo [`solucao.py`](file:///tmp/bench-lm90vu7q/solucao.py) contendo a função [`resumir_vendas`](file:///tmp/bench-lm90vu7q/solucao.py#L7-L112).
+
+### Principais detalhes da implementação:
+- **Codificação e Leitura**: Leitura usando `utf-8-sig` para suportar arquivos com ou sem BOM UTF-8 e o módulo `csv` da biblioteca padrão para tratar delimitadores, aspas e quebras de linha em campos.
+- **Validação de Cabeçalho**: Verificação das colunas obrigatórias com diferenciação de maiúsculas/minúsculas após remoção de espaços nas bordas (`strip()`), levantando `ValueError` caso falte alguma ou se o arquivo for vazio.
+- **Tratamento de Linhas e Erros**:
+  - Linhas totalmente vazias são ignoradas sem contar como inválidas.
+  - Linhas com contagem de campos divergente do cabeçalho, `regiao` ou `produto` vazios, `quantidade` inválida/`<= 0`, ou `preco_unitario` inválido/não finito/`< 0` são contabilizadas em `linhas_invalidas` independentemente do `status`.
+  - Apenas linhas válidas com `status` igual a `"concluida"` (insensível a maiúsculas/minúsculas) entram no resumo.
+- **Agregação e Desempate**: Agregação por região (diferenciando maiúsculas), cálculo de `quantidade_total`, `total_vendas` arredondado para 2 casas decimais e determinação do `produto_mais_vendido` com desempate pelo menor nome em ordem alfabética.
+- **Geração do JSON**: Chaves de `regioes` ordenadas alfabeticamente, criação de diretórios pais de `saida` quando necessário, escrita em UTF-8 com `ensure_ascii=False` e `indent=2`, sem criar ou alterar o arquivo de saída em caso de erro.

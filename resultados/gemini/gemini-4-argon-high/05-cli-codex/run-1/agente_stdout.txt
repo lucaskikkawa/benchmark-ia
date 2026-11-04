@@ -1,0 +1,5 @@
+A ferramenta de contagem de palavras foi implementada em [cli.py](file:///tmp/bench-99w68b7l/cli.py) conforme especificado em [enunciado.md](file:///tmp/bench-99w68b7l/enunciado.md):
+
+- [`main`](file:///tmp/bench-99w68b7l/cli.py#L64-L110): expõe `main(argv=None) -> int`, utilizando `argparse` ([`_criar_parser`](file:///tmp/bench-99w68b7l/cli.py#L24-L61)) com suporte a `ARQUIVO`, `--minimo N`, `--top N`, `--ignorar-caixa`, `--json` e `-h`/`--help`.
+- [`_inteiro_positivo`](file:///tmp/bench-99w68b7l/cli.py#L10-L21): valida inteiros estritamente positivos para `--minimo` e `--top`, resultando em código de saída `2` e mensagem no `stderr` em caso de erro de argumentos ou leitura UTF-8.
+- Tokenização via `str.split()`, normalização opcional com `str.casefold()`, ordenação por `(-contagem, palavra)` e formatação em texto tabulado (`PALAVRA\tCONTAGEM\n`) ou JSON em linha única (`ensure_ascii=False`).

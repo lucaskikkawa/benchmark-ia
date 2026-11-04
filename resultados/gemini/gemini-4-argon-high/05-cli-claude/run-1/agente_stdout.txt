@@ -1,0 +1,5 @@
+O script [freq.py](file:///tmp/bench-a95c57sh/freq.py) foi criado conforme especificado em [enunciado.md](file:///tmp/bench-a95c57sh/enunciado.md):
+
+- **CLI (`argparse`)**: suporta `ARQUIVO` (incluindo `-` para `stdin`), `-n`/`--top` ([`positive_int`](file:///tmp/bench-a95c57sh/freq.py#L11-L18)), `-m`/`--min-len` ([`positive_int`](file:///tmp/bench-a95c57sh/freq.py#L11-L18)), `-i`/`--ignore-case`, `-x`/`--excluir` (repetível) e `--formato {texto,json}` em [`build_parser`](file:///tmp/bench-a95c57sh/freq.py#L21-L65).
+- **Processamento e ordenação**: extrai palavras com a expressão regular `[^\W\d_]+`, aplica `str.lower()` quando `-i` está ativo, filtra por tamanho mínimo e lista de exclusão, e ordena por `(-contagem, palavra)` em [`main`](file:///tmp/bench-a95c57sh/freq.py#L77-L116).
+- **Leitura e códigos de saída**: decodifica a entrada sempre em UTF-8 estrito ([`read_input`](file:///tmp/bench-a95c57sh/freq.py#L68-L74)), retornando código `0` em caso de sucesso, `2` para argumentos inválidos via `argparse` e `1` para erros de leitura/decodificação com mensagem única `erro: ...` em `stderr`.

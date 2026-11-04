@@ -1,0 +1,3 @@
+Implementei `processar_vendas` em [analisador_vendas.py](analisador_vendas.py), conforme o enunciado.
+
+Verificações com Python 3 passaram: BOM e espaços, filtros, valores inválidos, empates, arquivo vazio, validação de parâmetros e gravação do JSON.

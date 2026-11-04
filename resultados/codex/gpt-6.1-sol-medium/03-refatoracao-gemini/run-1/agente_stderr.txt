@@ -1,0 +1,396 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-4ipk67e1
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189c7-3f5c-7fd2-bb32-dd9dc46b475f
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:28:21.454193Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para executar a tarefa.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g 'AGENTS.md' -g '*'" in /tmp/bench-4ipk67e1
+ succeeded in 0ms:
+/tmp/bench-4ipk67e1
+processador.py
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md processador.py' in /tmp/bench-4ipk67e1
+ succeeded in 0ms:
+# 03 - Refatoração do Processador de Pedidos
+
+Você recebeu um código legado funcional em `processador.py` com a função `processar_pedidos`. Embora o código funcione para casos básicos, ele é monolítico, desorganizado, sem tipos e viola o princípio de responsabilidade única.
+
+Sua tarefa é refatorar `processador.py` na raiz do diretório de trabalho, mantendo a interface e o formato de retorno da função `processar_pedidos` e extraindo uma arquitetura limpa e orientada a objetos com as classes e estruturas detalhadas abaixo. Nos cálculos, prevalecem as regras detalhadas a seguir, inclusive o arredondamento por item antes de somar os subtotais e pesos.
+
+## Classes e Métodos Exigidos
+
+O arquivo `processador.py` deve definir e exportar:
+
+### 1. `ItemPedido` (dataclass ou classe)
+- Atributos:
+  - `nome: str`
+  - `preco: float`
+  - `quantidade: int = 1`
+  - `peso_kg: float = 0.5`
+- Validações:
+  - `preco >= 0.0`, `quantidade >= 1`, `peso_kg >= 0.0`; caso contrário, levanta `ValueError`.
+- Propriedades ou métodos:
+  - `subtotal`: retorna `round(preco * quantidade, 2)`
+  - `peso_total`: retorna `round(peso_kg * quantidade, 3)`
+
+### 2. `CalculadoraFrete`
+- Método:
+  - `calcular(tipo: str, peso_kg: float, valor_total: float) -> float` (método de classe ou estático):
+    - Se `valor_total < 0` ou `peso_kg < 0`, levanta `ValueError`.
+    - Se `valor_total >= 200.0`, o frete é grátis: retorna `0.0`.
+    - Caso contrário, calcula conforme o tipo de frete (case-insensitive):
+      - `"padrao"`: `round(10.0 + peso_kg * 1.5, 2)`
+      - `"expresso"`: `round(25.0 + peso_kg * 3.0, 2)`
+      - `"economico"`: `round(5.0 + peso_kg * 0.8, 2)`
+      - Qualquer outro tipo: levanta `ValueError(f"Tipo de frete desconhecido: {tipo}")`.
+
+### 3. `CalculadoraDesconto`
+- Método:
+  - `calcular(categoria_cliente: str, valor_total: float) -> float` (método de classe ou estático):
+    - Se `valor_total < 0`, levanta `ValueError`.
+    - Conforme a categoria do cliente (case-insensitive):
+      - `"bronze"`: `0.0`
+      - `"prata"`: `round(0.05 * valor_total, 2)` se `valor_total >= 100.0`, senão `0.0`
+      - `"ouro"`: `round(0.10 * valor_total, 2)` se `valor_total >= 50.0`, senão `round(0.05 * valor_total, 2)`
+      - `"vip"`: `round(0.15 * valor_total, 2)` incondicional
+      - Outras categorias: `0.0`
+
+### 4. `Pedido` (dataclass ou classe)
+- Atributos:
+  - `id: str`
+  - `cliente: str`
+  - `categoria_cliente: str = "bronze"`
+  - `itens: list[ItemPedido]` (padrão lista vazia)
+  - `tipo_frete: str = "padrao"`
+- Métodos:
+  - `calcular_total_itens() -> float`: soma dos subtotais dos itens (`sum(item.subtotal for item in self.itens)`), arredondado em 2 casas.
+  - `calcular_peso_total() -> float`: soma dos pesos totais dos itens (`sum(item.peso_total for item in self.itens)`), arredondado em 3 casas.
+  - `calcular_desconto() -> float`: delega para `CalculadoraDesconto`.
+  - `calcular_frete() -> float`: delega para `CalculadoraFrete`.
+  - `calcular_total_final() -> float`: `round(total_itens - desconto + frete, 2)`.
+  - `para_dict() -> dict`:
+    ```python
+    {
+        "id": self.id,
+        "cliente": self.cliente,
+        "subtotal": self.calcular_total_itens(),
+        "desconto": self.calcular_desconto(),
+        "frete": self.calcular_frete(),
+        "total": self.calcular_total_final(),
+    }
+    ```
+
+### 5. `processar_pedidos(pedidos: list[dict]) -> list[dict]`
+- Recebe a lista de pedidos no formato de dicionário bruto, instancia as entidades modeladas e retorna a lista de dicionários resultantes de cada `pedido.para_dict()`.
+- Preserva a ordem dos pedidos recebidos. Cada dicionário usa os mesmos nomes de atributos de `Pedido` e `ItemPedido`; campos opcionais ausentes assumem os padrões dessas classes.
+- Pedidos com lista `itens` ausente ou vazia devem ser processados normalmente (com subtotal 0.0, desconto 0.0 e frete calculado para peso 0.0).
+# Código legado funcional, mas macarrônico, sem classes e difícil de manter.
+
+def processar_pedidos(pedidos: list[dict]) -> list[dict]:
+    out = []
+    for p in pedidos:
+        pid = p["id"]
+        c = p["cliente"]
+        cat = str(p.get("categoria_cliente", "bronze")).lower()
+        items = p.get("itens", [])
+        tf = str(p.get("tipo_frete", "padrao")).lower()
+
+        # calcula subtotal e peso total (assume peso 0.5kg por item se não fornecido)
+        sub = 0.0
+        peso_total = 0.0
+        for it in items:
+            pr = float(it["preco"])
+            q = int(it.get("quantidade", 1))
+            sub += pr * q
+            peso_total += float(it.get("peso_kg", 0.5)) * q
+        sub = round(sub, 2)
+
+        # calcula desconto
+        desc = 0.0
+        if cat == "bronze":
+            desc = 0.0
+        elif cat == "prata":
+            if sub >= 100.0:
+                desc = 0.05 * sub
+            else:
+                desc = 0.0
+        elif cat == "ouro":
+            if sub >= 50.0:
+                desc = 0.10 * sub
+            else:
+                desc = 0.05 * sub
+        elif cat == "vip":
+            desc = 0.15 * sub
+        else:
+            desc = 0.0
+        desc = round(desc, 2)
+
+        # calcula frete
+        if sub >= 200.0:
+            fr = 0.0
+        else:
+            if tf == "padrao":
+                fr = 10.0 + peso_total * 1.5
+            elif tf == "expresso":
+                fr = 25.0 + peso_total * 3.0
+            elif tf == "economico":
+                fr = 5.0 + peso_total * 0.8
+            else:
+                raise ValueError(f"Tipo de frete desconhecido: {tf}")
+        fr = round(fr, 2)
+
+        tot = round(sub - desc + fr, 2)
+        out.append({
+            "id": pid,
+            "cliente": c,
+            "subtotal": sub,
+            "desconto": desc,
+            "frete": fr,
+            "total": tot
+        })
+    return out
+
+codex
+Vou separar as entidades e as calculadoras, mantendo a interface de `processar_pedidos`. Também vou verificar os limites de desconto e frete, as validações e o arredondamento de cada item antes da soma.
+exec
+/bin/bash -lc "cat > processador.py <<'PY'
+\"\"\"Entidades e regras de cálculo para o processamento de pedidos.\"\"\"
+
+from dataclasses import dataclass, field
+
+
+@dataclass
+class ItemPedido:
+    nome: str
+    preco: float
+    quantidade: int = 1
+    peso_kg: float = 0.5
+
+    def __post_init__(self) -> None:
+        if self.preco < 0.0:
+            raise ValueError(\"O preço deve ser maior ou igual a zero.\")
+        if self.quantidade < 1:
+            raise ValueError(\"A quantidade deve ser maior ou igual a um.\")
+        if self.peso_kg < 0.0:
+            raise ValueError(\"O peso deve ser maior ou igual a zero.\")
+
+    @property
+    def subtotal(self) -> float:
+        return round(self.preco * self.quantidade, 2)
+
+    @property
+    def peso_total(self) -> float:
+        return round(self.peso_kg * self.quantidade, 3)
+
+
+class CalculadoraFrete:
+    @staticmethod
+    def calcular(tipo: str, peso_kg: float, valor_total: float) -> float:
+        if valor_total < 0.0 or peso_kg < 0.0:
+            raise ValueError(\"O valor total e o peso devem ser não negativos.\")
+        if valor_total >= 200.0:
+            return 0.0
+
+        tarifas = {
+            \"padrao\": (10.0, 1.5),
+            \"expresso\": (25.0, 3.0),
+            \"economico\": (5.0, 0.8),
+        }
+        if tipo.lower() not in tarifas:
+            raise ValueError(f\"Tipo de frete desconhecido: {tipo}\")
+        base, valor_por_kg = tarifas[tipo.lower()]
+        return round(base + peso_kg * valor_por_kg, 2)
+
+
+class CalculadoraDesconto:
+    @staticmethod
+    def calcular(categoria_cliente: str, valor_total: float) -> float:
+        if valor_total < 0.0:
+            raise ValueError(\"O valor total deve ser não negativo.\")
+
+        categoria = categoria_cliente.lower()
+        if categoria == \"prata\" and valor_total >= 100.0:
+            return round(0.05 * valor_total, 2)
+        if categoria == \"ouro\":
+            taxa = 0.10 if valor_total >= 50.0 else 0.05
+            return round(taxa * valor_total, 2)
+        if categoria == \"vip\":
+            return round(0.15 * valor_total, 2)
+        return 0.0
+
+
+@dataclass
+class Pedido:
+    id: str
+    cliente: str
+    categoria_cliente: str = \"bronze\"
+    itens: list[ItemPedido] = field(default_factory=list)
+    tipo_frete: str = \"padrao\"
+
+    def calcular_total_itens(self) -> float:
+        return round(sum((item.subtotal for item in self.itens), 0.0), 2)
+
+    def calcular_peso_total(self) -> float:
+        return round(sum((item.peso_total for item in self.itens), 0.0), 3)
+
+    def calcular_desconto(self) -> float:
+        return CalculadoraDesconto.calcular(
+            self.categoria_cliente, self.calcular_total_itens()
+        )
+
+    def calcular_frete(self) -> float:
+        return CalculadoraFrete.calcular(
+            self.tipo_frete, self.calcular_peso_total(), self.calcular_total_itens()
+        )
+
+    def calcular_total_final(self) -> float:
+        return round(
+            self.calcular_total_itens()
+            - self.calcular_desconto()
+            + self.calcular_frete(),
+            2,
+        )
+
+    def para_dict(self) -> dict:
+        return {
+            \"id\": self.id,
+            \"cliente\": self.cliente,
+            \"subtotal\": self.calcular_total_itens(),
+            \"desconto\": self.calcular_desconto(),
+            \"frete\": self.calcular_frete(),
+            \"total\": self.calcular_total_final(),
+        }
+
+
+def processar_pedidos(pedidos: list[dict]) -> list[dict]:
+    \"\"\"Converte pedidos brutos em entidades e preserva a ordem dos resultados.\"\"\"
+    resultados = []
+    for dados in pedidos:
+        itens = [
+            ItemPedido(
+                nome=item[\"nome\"],
+                preco=float(item[\"preco\"]),
+                quantidade=int(item.get(\"quantidade\", 1)),
+                peso_kg=float(item.get(\"peso_kg\", 0.5)),
+            )
+            for item in dados.get(\"itens\", [])
+        ]
+        pedido = Pedido(
+            id=dados[\"id\"],
+            cliente=dados[\"cliente\"],
+            categoria_cliente=str(dados.get(\"categoria_cliente\", \"bronze\")),
+            itens=itens,
+            tipo_frete=str(dados.get(\"tipo_frete\", \"padrao\")),
+        )
+        resultados.append(pedido.para_dict())
+    return resultados
+PY
+python - <<'PY'
+from processador import ItemPedido, Pedido, CalculadoraFrete as F, CalculadoraDesconto as D, processar_pedidos
+
+for kwargs in ({'preco': -1}, {'preco': 1, 'quantidade': 0}, {'preco': 1, 'peso_kg': -1}):
+    try:
+        ItemPedido(nome='item', **kwargs)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError(kwargs)
+
+for tipo, esperado in [('PADRAO', 13.0), ('ExPrEsSo', 31.0), ('economico', 6.6)]:
+    assert F.calcular(tipo, 2.0, 199.99) == esperado
+assert F.calcular('desconhecido', 2.0, 200.0) == 0.0
+for args in [('padrao', -1, 200), ('padrao', 1, -1), ('INVALIDO', 0, 0)]:
+    try:
+        F.calcular(*args)
+    except ValueError as exc:
+        if args[0] == 'INVALIDO':
+            assert str(exc) == 'Tipo de frete desconhecido: INVALIDO'
+    else:
+        raise AssertionError(args)
+
+for categoria, total, esperado in [('bronze', 200, 0.0), ('PRATA', 99.99, 0.0), ('prata', 100, 5.0), ('ouro', 49, 2.45), ('OURO', 50, 5.0), ('VIP', 10, 1.5), ('outra', 100, 0.0)]:
+    assert D.calcular(categoria, total) == esperado
+try:
+    D.calcular('vip', -1)
+except ValueError:
+    pass
+else:
+    raise AssertionError('Desconto aceita valor negativo')
+
+pedido = Pedido('1', 'Ana', itens=[ItemPedido('a', 0.014, peso_kg=0.0006), ItemPedido('b', 0.014, peso_kg=0.0006)])
+assert pedido.calcular_total_itens() == 0.02
+assert pedido.calcular_peso_total() == 0.002
+assert Pedido('2', 'Bia').itens is not Pedido('3', 'Caio').itens
+assert processar_pedidos([]) == []
+assert processar_pedidos([{'id': '1', 'cliente': 'Ana'}, {'id': '2', 'cliente': 'Bia', 'itens': []}]) == [
+    {'id': '1', 'cliente': 'Ana', 'subtotal': 0.0, 'desconto': 0.0, 'frete': 10.0, 'total': 10.0},
+    {'id': '2', 'cliente': 'Bia', 'subtotal': 0.0, 'desconto': 0.0, 'frete': 10.0, 'total': 10.0},
+]
+assert processar_pedidos([{'id': '3', 'cliente': 'Caio', 'categoria_cliente': 'VIP', 'tipo_frete': 'EXPRESSO', 'itens': [{'nome': 'a', 'preco': '100', 'quantidade': '2'}]}]) == [
+    {'id': '3', 'cliente': 'Caio', 'subtotal': 200.0, 'desconto': 30.0, 'frete': 0.0, 'total': 170.0}
+]
+print('Todas as verificações passaram.')
+PY" in /tmp/bench-4ipk67e1
+ exited 127 in 0ms:
+/bin/bash: line 133: python: command not found
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+from processador import ItemPedido, Pedido, CalculadoraFrete as F, CalculadoraDesconto as D, processar_pedidos
+
+def rejeita(funcao, *args, **kwargs):
+    try:
+        funcao(*args, **kwargs)
+    except ValueError:
+        return
+    raise AssertionError((args, kwargs))
+
+for campos in ({'preco': -1}, {'preco': 1, 'quantidade': 0}, {'preco': 1, 'peso_kg': -1}):
+    rejeita(ItemPedido, nome='a', **campos)
+for tipo, esperado in [('PADRAO', 13.0), ('ExPrEsSo', 31.0), ('economico', 6.6)]:
+    assert F.calcular(tipo, 2, 199.99) == esperado
+assert F.calcular('qualquer', 2, 200) == 0.0
+for args in [('padrao', -1, 200), ('padrao', 1, -1), ('INVALIDO', 0, 0)]:
+    rejeita(F.calcular, *args)
+try:
+    F.calcular('INVALIDO', 0, 0)
+except ValueError as exc:
+    assert str(exc) == 'Tipo de frete desconhecido: INVALIDO'
+for categoria, total, esperado in [('bronze', 200, 0.0), ('PRATA', 99.99, 0.0), ('prata', 100, 5.0), ('ouro', 49, 2.45), ('OURO', 50, 5.0), ('VIP', 10, 1.5), ('outra', 100, 0.0)]:
+    assert D.calcular(categoria, total) == esperado
+rejeita(D.calcular, 'vip', -1)
+pedido = Pedido('1', 'Ana', itens=[ItemPedido('a', 0.014, peso_kg=0.0006), ItemPedido('b', 0.014, peso_kg=0.0006)])
+assert pedido.calcular_total_itens() == 0.02
+assert pedido.calcular_peso_total() == 0.002
+assert Pedido('2', 'Bia').itens is not Pedido('3', 'Caio').itens
+assert processar_pedidos([]) == []
+assert processar_pedidos([{'id': '1', 'cliente': 'Ana'}, {'id': '2', 'cliente': 'Bia', 'itens': []}]) == [
+    {'id': '1', 'cliente': 'Ana', 'subtotal': 0.0, 'desconto': 0.0, 'frete': 10.0, 'total': 10.0},
+    {'id': '2', 'cliente': 'Bia', 'subtotal': 0.0, 'desconto': 0.0, 'frete': 10.0, 'total': 10.0}]
+assert processar_pedidos([{'id': '3', 'cliente': 'Caio', 'categoria_cliente': 'VIP', 'tipo_frete': 'EXPRESSO', 'itens': [{'nome': 'a', 'preco': '100', 'quantidade': '2'}]}]) == [
+    {'id': '3', 'cliente': 'Caio', 'subtotal': 200.0, 'desconto': 30.0, 'frete': 0.0, 'total': 170.0}]
+print('Todas as verificações passaram.')
+PY" in /tmp/bench-4ipk67e1
+ succeeded in 0ms:
+Todas as verificações passaram.
+
+codex
+Refatorei [processador.py](/tmp/bench-4ipk67e1/processador.py) com as quatro classes exigidas, validações, tipos e arredondamento por item, preservando a interface e o retorno de `processar_pedidos`.
+
+Verificações com Python 3 passaram, incluindo pedidos vazios, descontos, frete grátis e entradas inválidas.
+tokens used
+7,879

@@ -1,0 +1,3 @@
+Implementei `classificar_cliente` em [solucao.py](/tmp/bench-_oc8_et3/solucao.py) e documentei as decisões em [SUPOSICOES.md](/tmp/bench-_oc8_et3/SUPOSICOES.md).
+
+Validação concluída: 12 casos passaram, incluindo limites de categorias, valores negativos, Unicode, imutabilidade e um milhão de compras.

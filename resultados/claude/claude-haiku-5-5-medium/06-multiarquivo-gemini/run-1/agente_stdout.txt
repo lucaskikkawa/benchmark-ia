@@ -1,0 +1,17 @@
+Implementei o pacote `eventhub` com os quatro arquivos especificados, dentro de `/tmp/bench-7e67kkgy/eventhub/`:
+
+- `models.py`: `Priority` (IntEnum) e `Event`, com `timestamp` gerado por `time.time` e `retry_count=0`.
+- `handlers.py`: `EventHandler` (ABC com `handle` abstrato) e `DeadLetterQueue` (`add`, `get_failed_events` retornando cópia, `clear`).
+- `bus.py`: `EventBus` com `subscribe`, `unsubscribe`, `publish`, `dispatch_next`, `dispatch_all` e `get_history`.
+- `__init__.py`: reexporta `Event`, `Priority`, `EventHandler`, `DeadLetterQueue` e `EventBus` via imports relativos.
+
+Escolhas de implementação que você pode querer revisar:
+
+- **Fila:** um `heapq` ordenado por `(-prioridade, timestamp, sequência)`. O contador de sequência desempata eventos com o mesmo timestamp, para garantir FIFO.
+- **Inscrições:** não duplicam (checagem por `in`). `unsubscribe` remove a chave do tópico quando a lista fica vazia.
+- **Despacho:** itera sobre uma cópia da lista de handlers, então inscrições feitas durante um despacho não afetam a rodada atual.
+- **Erros:** com DLQ, cada falha vai para `dlq.add` e os demais handlers continuam. Sem DLQ, a exceção é propagada imediatamente, e o evento já foi retirado da fila.
+- **`id`:** gerado com `uuid4().hex` em `publish`, já que o enunciado não especifica a origem.
+- **Anotações:** `from __future__ import annotations` nos módulos que usam `X | None`.
+
+Testei manualmente (Python 3.13.5): a ordem de prioridade e FIFO, a não duplicação de inscrições, o encaminhamento para a DLQ, a propagação sem DLQ, e a publicação de eventos dentro de um handler (que entram na fila respeitando prioridade). Todos se comportaram como especificado. Não criei arquivos de teste no diretório e removi o `__pycache__` gerado.

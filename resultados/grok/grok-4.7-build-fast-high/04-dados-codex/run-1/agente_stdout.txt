@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O enunciado pede um resumo de vendas em CSV. Vou ver o diretório e os detalhes da especificação antes de implementar.

@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O laço para uma posição antes do fim e descarta a última janela. Vou corrigir o intervalo e conferir os casos do enunciado.Corrigi `janelas.py`. O laço ia só até `len(valores) - 1` e deixava de fora a última janela.
+
+Agora o intervalo é `range(tamanho, len(valores))`. A soma desliza em tempo linear: entra o elemento novo e sai o que ficou para trás. O exemplo `somas_janelas([1, 2, 3, 4], 2)` devolve `[3, 5, 7]`.
+
+Continuam iguais os outros comportamentos: tamanho maior que a lista devolve `[]`, tamanho zero ou negativo lança `ValueError`, a lista de entrada não muda e as somas permanecem inteiros exatos.

@@ -1,0 +1,269 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-e04afb8k
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189b7-e117-7771-9052-6c238023753a
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:11:33.412572Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos existentes neste diretório, identificar o que precisa ser criado ou alterado e implementar a solução aqui.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!*node_modules*'"' -g '"'!*.lock'"'" in /tmp/bench-e04afb8k
+ succeeded in 0ms:
+/tmp/bench-e04afb8k
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md && rg --files' in /tmp/bench-e04afb8k
+ succeeded in 0ms:
+# 09 - Cliente Resiliente de API com Retry e Backoff
+
+No diretório de trabalho, você encontrará o módulo `fake_api.py` que simula um servidor HTTP em processo através da classe `FakeApiServer`, sem exigir conexão real de rede.
+
+Sua tarefa é implementar a classe `ClienteResiliente` e a exceção `ApiError` no arquivo `cliente_resiliente.py` na raiz do seu diretório de trabalho.
+
+## Especificação de `cliente_resiliente.py`
+
+### 1. Exceção `ApiError(Exception)`
+- Deve herdar de `Exception`.
+- Deve aceitar opcionalmente o atributo `status_code: int | None = None` e guardar a mensagem de erro.
+
+### 2. Classe `ClienteResiliente`
+- Construtor:
+  ```python
+  def __init__(
+      self,
+      servidor: FakeApiServer,
+      max_tentativas: int = 3,
+      backoff_base: float = 0.05,
+      backoff_fator: float = 2.0,
+      timeout: float = 2.0,
+      sleep_fn: Callable[[float], None] = time.sleep,
+  ) -> None:
+      ...
+  ```
+  - **Validação de Parâmetros**:
+    - Se `max_tentativas` não for um número inteiro (`type(max_tentativas) is int`) ou for `< 1`, deve levantar `ValueError`.
+    - Se `backoff_base <= 0`, `backoff_fator <= 0` ou `timeout <= 0` (ou se forem de tipo não numérico / bool), deve levantar `ValueError`.
+  - O parâmetro `sleep_fn` permite injetar uma função customizada de espera (como um mock de testes) para evitar pausas reais durante a suíte.
+
+- Métodos:
+  - `get(self, rota: str) -> dict`: atalho que invoca `self.executar("GET", rota)`.
+  - `post(self, rota: str, payload: dict) -> dict`: atalho que invoca `self.executar("POST", rota, payload)`.
+  - `executar(self, metodo: str, rota: str, payload: dict | None = None) -> dict`:
+    - Chama `servidor.requisicao(metodo=metodo, rota=rota, payload=payload, timeout=self.timeout)`.
+    - **Sucesso (status 2xx)**: retorna o dicionário `resposta.data`.
+    - **Erros Retentáveis (Transitórios)**:
+      - Exceções `SimulatedNetworkError` e `SimulatedTimeoutError`.
+      - Respostas HTTP com status `429` (Rate Limit) e status `5xx` (`500`, `502`, `503`, `504`).
+      - Caso ocorram, se a tentativa atual for menor que `max_tentativas`:
+        - Calcula o tempo de espera através da fórmula de exponential backoff:
+          `delay = backoff_base * (backoff_fator ** (tentativa - 1))`
+        - Invoca `self.sleep_fn(delay)`.
+        - Tenta novamente.
+      - Se as tentativas se esgotarem (`tentativa == max_tentativas`), deve levantar `ApiError`. Se o esgotamento ocorreu devido a status HTTP retentável, o `ApiError` levantado deve ter `status_code` preenchido com o respectivo código HTTP retornado; se decorreu de erro de rede ou timeout, `status_code` deve ser `None`.
+    - **Erros Não Retentáveis (Definitivos)**:
+      - Qualquer resposta HTTP fora da faixa 2xx que não pertença ao conjunto de erros retentáveis (por exemplo `400`, `401`, `403`, `404`, ou códigos `3xx`).
+      - Não deve tentar novamente; deve levantar imediatamente `ApiError` contendo o `status_code` correspondente.
+fake_api.py
+enunciado.md
+
+codex
+O enunciado pede apenas um módulo novo. Vou conferir a interface real do simulador para manter compatibilidade com as classes e respostas que ele fornece.
+exec
+/bin/bash -lc 'cat fake_api.py && ls -la' in /tmp/bench-e04afb8k
+ succeeded in 0ms:
+from dataclasses import dataclass, field
+import random
+from typing import Any
+
+
+class SimulatedNetworkError(Exception):
+    """Simula perda transitória de conexão de rede."""
+    pass
+
+
+class SimulatedTimeoutError(Exception):
+    """Simula timeout da requisição."""
+    pass
+
+
+@dataclass
+class ApiResponse:
+    status_code: int
+    data: dict
+    headers: dict = field(default_factory=dict)
+
+
+class FakeApiServer:
+    """Servidor mock determinístico em processo."""
+
+    def __init__(self, seed: int = 42) -> None:
+        self.rng = random.Random(seed)
+        self.chamadas: list[dict[str, Any]] = []
+        self._falhas: dict[str, dict[str, Any]] = {}
+        self._respostas: dict[str, ApiResponse] = {}
+
+    def configurar_falhas(self, rota: str, qtd_falhas: int, tipo_falha: str = "network") -> None:
+        """Configura quantidade e tipo de falha transitória antes de responder com sucesso."""
+        self._falhas[rota] = {"qtd": qtd_falhas, "tipo": tipo_falha}
+
+    def configurar_resposta(self, rota: str, status_code: int, data: dict) -> None:
+        """Define a resposta padrão para uma rota."""
+        self._respostas[rota] = ApiResponse(status_code=status_code, data=data)
+
+    def requisicao(
+        self,
+        metodo: str,
+        rota: str,
+        payload: dict | None = None,
+        timeout: float | None = None,
+    ) -> ApiResponse:
+        """Processa uma requisição simulada."""
+        self.chamadas.append({
+            "metodo": metodo,
+            "rota": rota,
+            "payload": payload,
+            "timeout": timeout,
+        })
+
+        if rota in self._falhas:
+            cfg = self._falhas[rota]
+            if cfg["qtd"] > 0:
+                cfg["qtd"] -= 1
+                tipo = cfg["tipo"]
+                if tipo == "network":
+                    raise SimulatedNetworkError("Conexão interrompida com o servidor.")
+                elif tipo == "timeout":
+                    raise SimulatedTimeoutError("Operação excedeu o tempo limite configurado.")
+                elif tipo == "503":
+                    return ApiResponse(status_code=503, data={"erro": "Serviço Indisponível"})
+                elif tipo == "429":
+                    return ApiResponse(status_code=429, data={"erro": "Too Many Requests"})
+
+        if rota in self._respostas:
+            return self._respostas[rota]
+
+        return ApiResponse(
+            status_code=200,
+            data={"status": "ok", "metodo": metodo, "rota": rota, "payload": payload},
+        )
+total 12
+drwx------ 2 box box 4096 Oct 29 19:11 .
+drwxr-xr-x 3 box box   60 Oct 29 19:11 ..
+-rw-r--r-- 1 box box 3013 Oct 29 19:07 enunciado.md
+-rw-r--r-- 1 box box 2510 Oct 29 16:06 fake_api.py
+
+apply patch
+patch: completed
+/tmp/bench-e04afb8k/cliente_resiliente.py
+diff --git a/cliente_resiliente.py b/cliente_resiliente.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..24a8471c3024f2c1a8e73a6d0edb6a1bbf6f87c9
+--- /dev/null
++++ b/cliente_resiliente.py
+@@ -0,0 +1,89 @@
++"""Cliente HTTP resiliente para o servidor simulado do exercício."""
++
++import time
++from numbers import Number
++from typing import Callable
++
++from fake_api import (
++    FakeApiServer,
++    SimulatedNetworkError,
++    SimulatedTimeoutError,
++)
++
++
++class ApiError(Exception):
++    """Erro de API, com código HTTP quando houve uma resposta do servidor."""
++
++    def __init__(self, message: str, status_code: int | None = None) -> None:
++        super().__init__(message)
++        self.status_code = status_code
++
++
++class ClienteResiliente:
++    def __init__(
++        self,
++        servidor: FakeApiServer,
++        max_tentativas: int = 3,
++        backoff_base: float = 0.05,
++        backoff_fator: float = 2.0,
++        timeout: float = 2.0,
++        sleep_fn: Callable[[float], None] = time.sleep,
++    ) -> None:
++        if type(max_tentativas) is not int or max_tentativas < 1:
++            raise ValueError("max_tentativas deve ser um inteiro maior ou igual a 1")
++
++        for nome, valor in (
++            ("backoff_base", backoff_base),
++            ("backoff_fator", backoff_fator),
++            ("timeout", timeout),
++        ):
++            if isinstance(valor, bool) or not isinstance(valor, Number) or valor <= 0:
++                raise ValueError(f"{nome} deve ser um número maior que zero")
++
++        self.servidor = servidor
++        self.max_tentativas = max_tentativas
++        self.backoff_base = backoff_base
++        self.backoff_fator = backoff_fator
++        self.timeout = timeout
++        self.sleep_fn = sleep_fn
++
++    def get(self, rota: str) -> dict:
++        return self.executar("GET", rota)
++
++    def post(self, rota: str, payload: dict) -> dict:
++        return self.executar("POST", rota, payload)
++
++    def executar(self, metodo: str, rota: str, payload: dict | None = None) -> dict:
++        codigos_retentaveis = {429, 500, 502, 503, 504}
++
++        for tentativa in range(1, self.max_tentativas + 1):
++            try:
++                resposta = self.servidor.requisicao(
++                    metodo=metodo,
++                    rota=rota,
++                    payload=payload,
++                    timeout=self.timeout,
++                )
++            except (SimulatedNetworkError, SimulatedTimeoutError) as erro:
++                if tentativa == self.max_tentativas:
++                    raise ApiError(str(erro)) from erro
++                self.sleep_fn(self.backoff_base * (self.backoff_fator ** (tentativa - 1)))
++                continue
++
++            status = resposta.status_code
++            if 200 <= status < 300:
++                return resposta.data
++
++            if status in codigos_retentaveis:
++                erro = ApiError(
++                    f"Erro HTTP {status}: {resposta.data}", status_code=status
++                )
++                if tentativa == self.max_tentativas:
++                    raise erro
++                self.sleep_fn(self.backoff_base * (self.backoff_fator ** (tentativa - 1)))
++                continue
++
++            raise ApiError(f"Erro HTTP {status}: {resposta.data}", status_code=status)
++
++        # O laço sempre retorna ou lança uma exceção; este ponto é inalcançável.
++        raise RuntimeError("Estado inesperado ao executar requisição")
+
+codex
+Implementei `ApiError` e `ClienteResiliente` em [cliente_resiliente.py](/tmp/bench-e04afb8k/cliente_resiliente.py), com validação dos parâmetros, atalhos `get` e `post`, retentativas para falhas transitórias e backoff exponencial. Erros HTTP definitivos são levantados imediatamente; ao esgotar as tentativas, `ApiError.status_code` reflete a resposta HTTP ou fica `None` para falhas de rede e timeout.
+
+Não executei testes.
+tokens used
+12,372

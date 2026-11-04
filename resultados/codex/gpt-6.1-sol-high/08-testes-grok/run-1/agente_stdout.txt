@@ -1,0 +1,5 @@
+Criei a suíte em [tests/test_descontos.py](/tmp/bench-xh2cjpc3/tests/test_descontos.py), cobrindo cálculos, arredondamentos, limites de datas e entradas inválidas.
+
+Validação: **5.059 testes passaram** com `python3 -m pytest -q`.
+
+`descontos.py` não foi alterado.

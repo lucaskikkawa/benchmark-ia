@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-haiku-5-5-medium/07-performance-codex/run-1",
+ "empresa": "claude",
+ "modelo": "claude-haiku-5-5",
+ "esforco": "medium",
+ "tarefa": "07-performance-codex",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 15.143,
+ "testes_passados": 17,
+ "testes_total": 17,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Solução impecável em passagem única com dict, tempo O(n) e memória O(k), cobrindo bordas sem mutação e com docstring clara sobre i < j e complexidade.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Dict de frequências, soma do complemento antes de inserir, uma passagem e estado local. Docstring cobre i < j e O(n)/O(k). Duplicatas, vazio, negativos e geradores ficam corretos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0,
+ "reexecucao_testes": {
+  "total": 17,
+  "passados": 17,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

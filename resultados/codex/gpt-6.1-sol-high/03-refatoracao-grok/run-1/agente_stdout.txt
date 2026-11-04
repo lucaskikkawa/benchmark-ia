@@ -1,0 +1,3 @@
+Refatorei [frete.py](/tmp/bench-dw6qdpce/frete.py), expondo `TabelaFrete`, `FAIXAS` e `faixa_de_peso`, com consulta dinâmica à tabela.
+
+Validação concluída: 729.647 comparações com a versão original, além de testes de substituição da tabela, lacunas e limites. Todos passaram.

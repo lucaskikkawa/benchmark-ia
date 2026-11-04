@@ -1,0 +1,10 @@
+Criei o pacote `biblioteca/` com os quatro arquivos pedidos (`__init__.py`, `models.py`, `catalogo.py`, `emprestimos.py`). Ele usa imports relativos e só a biblioteca padrão.
+
+Testei rapidamente à mão: o exemplo do enunciado dá `0` e depois `1`, e a virada de ano `2024-12-20` → `2025-01-03` dá atraso `0`. As entradas inválidas que testei levantam `ErroBiblioteca`. Não escrevi testes automatizados, e algumas regras ficaram sem teste: o estado intacto depois de um erro, a separação entre dois serviços no mesmo catálogo e a ordem de `ativos()` com vários empréstimos.
+
+Decisões que vão além do enunciado:
+
+- **Formato do dia:** aceito só `YYYY-MM-DD` com dígitos ASCII e confiro a data com `datetime.date`. Não usei `date.fromisoformat`, porque nas versões novas do Python ele também aceita formatos como `20240101`. Assim, `1900-02-29`, `0000-01-01`, `2024-1-01`, dígitos de largura total e `\n` no final são rejeitados.
+- **Datas perto de 9999-12-31:** o atraso é calculado como `max(0, dias_decorridos - 14)`, que dá o mesmo resultado da fórmula do enunciado. Somar 14 dias a um empréstimo no fim de 9999 passaria da maior data que o Python aceita e causaria erro; assim, isso não acontece.
+- **Tipos errados:** se receberem um tipo errado (ISBN, usuário ou dia que não são texto, ou um catálogo que não é `Catalogo`), as funções levantam `ErroBiblioteca`, e não `TypeError`.
+- **Validar antes de alterar:** `emprestar` e `devolver` fazem todas as verificações antes de mudar qualquer coisa. Se derem erro, o estado anterior fica como estava.

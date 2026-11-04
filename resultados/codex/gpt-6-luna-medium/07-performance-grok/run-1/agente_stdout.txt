@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-08md75nm/solucao.py) com `pares_com_soma`. A função valida os tipos, conta pares de índices em uma passagem, aceita inteiros negativos e grandes e não altera a lista.

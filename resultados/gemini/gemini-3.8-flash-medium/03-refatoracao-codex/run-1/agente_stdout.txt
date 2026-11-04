@@ -1,0 +1,5 @@
+A tarefa foi concluída com a refatoração do arquivo [pedidos.py](file:///tmp/bench-gnpp2yew/pedidos.py):
+
+- Criada a função pública [`subtotal(quantidade: int, preco_centavos: int, desconto_percentual: int = 0) -> int`](file:///tmp/bench-gnpp2yew/pedidos.py#L1-L2), calculando `quantidade * preco_centavos * (100 - desconto_percentual) // 100` sem conversão para ponto flutuante e com truncamento por linha.
+- Atualizada [`resumo_pedidos`](file:///tmp/bench-gnpp2yew/pedidos.py#L5-L30) para delegar o cálculo à função `subtotal` a cada item (inclusive com quantidade zero), substituindo variáveis opacas por nomes descritivos.
+- Suporte a iteráveis de passagem única, preservação exata das categorias (incluindo valores que somam zero, sem mutação, strip ou normalização) e retorno vazio conforme especificado.

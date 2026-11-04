@@ -1,0 +1,17 @@
+Refatorei `pedidos.py` conforme o enunciado. Não há outros arquivos de código no diretório além dele.
+
+**O que mudou**
+
+- Nova função pública `subtotal(quantidade, preco_centavos, desconto_percentual=0)`, que calcula `quantidade * preco_centavos * (100 - desconto_percentual) // 100`. O truncamento é por linha e usa só inteiros.
+- `resumo_pedidos` chama `subtotal` uma vez por pedido, inclusive quando a quantidade é zero. Ele usa o valor devolvido nas duas agregações (total geral e por categoria), então uma substituição de `subtotal` em testes afeta ambas.
+- Os nomes opacos (`a`, `b`, `c`, `x`, `y`) viraram `total_itens`, `total_centavos`, `subtotais_por_categoria`, `pedido`, `subtotal_pedido`.
+- O formato de retorno e as regras de categoria (sem strip ou normalização, categorias com soma zero continuam presentes) foram mantidos. A entrada não é alterada e o iterável é percorrido uma única vez.
+
+**Verificação**
+
+Rodei um script temporário fora do diretório de trabalho, que foi apagado depois. Ele comparou a versão nova com a original em 2000 entradas aleatórias, incluindo inteiros muito grandes e categorias com caixa e acentos diferentes. Também conferi entrada vazia, linha com quantidade zero e a delegação com `subtotal` substituído. Todas as checagens passaram. Não rodei testes de unidade porque o enunciado não trouxe nenhum.
+
+**Escolhas que fiz**
+
+- `subtotal` aplica o desconto sobre o bruto (`quantidade * preco_centavos`) antes do `// 100`. Isso dá o mesmo resultado que a fórmula do enunciado, porque a multiplicação é associativa com inteiros.
+- Mantive `x.get('desconto_percentual', 0)` na chamada, como estava no original, para o campo opcional funcionar.

@@ -1,0 +1,10 @@
+Criei `cliente.py` neste diretório com `buscar_com_retry`, e `fake_api.py` ficou intacto. Os testes ad hoc passaram.
+
+A implementação:
+- **Validação antes de qualquer efeito:** `tentativas` < 1, `timeout` não finito ou <= 0, e `backoff` não finito ou < 0 lançam `ValueError` antes de chamar a API ou dormir.
+- **Retry:** só `fake_api.ErroTemporario` e `TimeoutError` são repetidos. Após a falha de índice `i`, espera `backoff * 2**i` via `dormir`, exceto após a última tentativa.
+- **Propagação:** a última exceção original sobe com `raise` simples. `ErroPermanente`, outras exceções e erros de `dormir` propagam imediatamente, pois `dormir` fica fora do `try`.
+
+Os testes cobriram retry com sucesso após falhas, esgotamento de tentativas, erro permanente sem retry, validação sem chamadas à API, erro vindo de `dormir`, e o `FakeAPI` real com chave Unicode, chave vazia e 40 tentativas. Eles estão em `/tmp/testes_cliente/`, fora deste diretório, para não poluí-lo.
+
+Não tratei tipos não numéricos, porque o enunciado os deixa fora do escopo.

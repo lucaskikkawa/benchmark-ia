@@ -1,0 +1,1 @@
+Implementei [`consolidar`](file:///tmp/bench-j6ochty6/solucao.py#L54-L143) em [solucao.py](file:///tmp/bench-j6ochty6/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-j6ochty6/enunciado.md).

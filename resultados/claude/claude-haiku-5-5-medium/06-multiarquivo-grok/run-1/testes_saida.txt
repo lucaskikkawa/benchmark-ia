@@ -1,0 +1,60 @@
+.F......F........                                                        [100%]
+=================================== FAILURES ===================================
+____________________ test_catalogo_busca_lista_e_duplicata _____________________
+
+    def test_catalogo_busca_lista_e_duplicata():
+        catalogo = _catalogo()
+        assert catalogo.buscar(ISBN_A).titulo == "Dom Casmurro"
+        assert [livro.isbn for livro in catalogo.listar()] == [ISBN_A, ISBN_B]
+        with pytest.raises(ErroBiblioteca):
+            catalogo.adicionar(Livro(ISBN_A, "Outro", 1))
+        with pytest.raises(ErroBiblioteca):
+            catalogo.buscar("9780000000099")
+        with pytest.raises(ErroBiblioteca):
+>           catalogo.adicionar({"isbn": ISBN_A})
+
+testes_ocultos/test_biblioteca.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <biblioteca.catalogo.Catalogo object at 0x7f3874105c40>
+livro = {'isbn': '9780000000001'}
+
+    def adicionar(self, livro: Livro) -> None:
+        if not isinstance(livro, Livro):
+>           raise TypeError("adicionar exige uma instância de Livro")
+E           TypeError: adicionar exige uma instância de Livro
+
+biblioteca/catalogo.py:10: TypeError
+_______________________ test_datas_e_usuarios_invalidos ________________________
+
+    def test_datas_e_usuarios_invalidos():
+        servico = ServicoEmprestimos(_catalogo())
+        with pytest.raises(ErroBiblioteca):
+            servico.emprestar(ISBN_A, "   ", "2024-01-01")
+        with pytest.raises(ErroBiblioteca):
+            servico.emprestar(ISBN_A, "Ana", "2023-02-29")
+        with pytest.raises(ErroBiblioteca):
+            servico.emprestar(ISBN_A, "Ana", "2024-1-01")
+        with pytest.raises(ErroBiblioteca):
+            servico.emprestar("9780000000099", "Ana", "2024-01-01")
+        with pytest.raises(ErroBiblioteca):
+            servico.disponiveis("9780000000099")
+        with pytest.raises(ErroBiblioteca):
+>           ServicoEmprestimos(object())
+
+testes_ocultos/test_biblioteca.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <biblioteca.emprestimos.ServicoEmprestimos object at 0x7f3874104f80>
+catalogo = <object object at 0x7f3874df5820>
+
+    def __init__(self, catalogo: Catalogo) -> None:
+        if not isinstance(catalogo, Catalogo):
+>           raise TypeError("o serviço exige um Catalogo")
+E           TypeError: o serviço exige um Catalogo
+
+biblioteca/emprestimos.py:32: TypeError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_biblioteca.py::test_catalogo_busca_lista_e_duplicata
+FAILED testes_ocultos/test_biblioteca.py::test_datas_e_usuarios_invalidos - T...
+2 failed, 15 passed in 0.07s

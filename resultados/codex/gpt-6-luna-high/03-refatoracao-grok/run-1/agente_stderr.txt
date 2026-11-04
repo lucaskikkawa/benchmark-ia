@@ -1,0 +1,600 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-ii7ctarj
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189ba-7f7a-7120-b37e-406c1130a046
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:14:25.073844Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório, identificar o que precisa ser implementado e fazer as alterações diretamente aqui.
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' | head -80" in /tmp/bench-ii7ctarj
+ succeeded in 0ms:
+/tmp/bench-ii7ctarj
+enunciado.md
+enunciado.md
+frete.py
+
+exec
+/bin/bash -lc "cat enunciado.md && printf '\\n--- frete.py ---\\n' && cat frete.py" in /tmp/bench-ii7ctarj
+ succeeded in 0ms:
+# Tarefa: refatorar a cotação de frete
+
+O arquivo `frete.py` calcula o frete certo, mas a tabela está copiada em ramos e não há onde reutilizá-la. **Refatore `frete.py`** sem mudar o resultado de `cotar` para nenhuma entrada válida ou inválida.
+
+Mantenha a função:
+
+```python
+def cotar(peso_g: int, distancia_km: int, expresso: bool) -> dict:
+    ...
+```
+
+E passe a expor também:
+
+```python
+class TabelaFrete:
+    FAIXAS: tuple[tuple[str, int, int, int, int], ...]
+
+    def cotar(self, peso_g: int, distancia_km: int, expresso: bool) -> dict:
+        """Mesmo contrato da função cotar."""
+
+def faixa_de_peso(peso_g: int) -> str:
+    """Nome da faixa. Mesmas regras de tipo e intervalo de cotar para o peso."""
+```
+
+`TabelaFrete` não recebe argumentos no construtor. `FAIXAS` é atributo de classe. A função `cotar` deve produzir o mesmo dict que `TabelaFrete().cotar(...)`.
+
+`cotar`, `TabelaFrete.cotar` e `faixa_de_peso` leem `TabelaFrete.FAIXAS` **em cada chamada** (não uma cópia feita na importação nem um snapshot só do `__init__`). Se o atributo de classe for substituído por outra tupla no mesmo formato, as três passam a usar a tabela nova. A validação global não muda com a troca: peso continua em `1..30000`, distância em `0..3000`, `bool` continua inválido. Peso válido que não cair em nenhuma faixa da tabela corrente é `ValueError`.
+
+`FAIXAS` é uma sequência de tuplas `(nome, peso_min, peso_max, base_centavos, centavos_por_km)`, limites de peso inclusivos, exatamente nesta ordem e com estes números:
+
+| nome | peso_min | peso_max | base_centavos | centavos_por_km |
+|---|---:|---:|---:|---:|
+| carta | 1 | 300 | 800 | 0 |
+| pac | 301 | 2000 | 1500 | 2 |
+| sedex | 2001 | 10000 | 2500 | 5 |
+| transportadora | 10001 | 30000 | 4000 | 8 |
+
+## Comportamento (não mude)
+
+- `peso_g` e `distancia_km` são `int`. `bool` não vale: `TypeError`.
+- `expresso` é `bool`. Outro tipo: `TypeError`.
+- `peso_g` fora de `1..30000`: `ValueError`.
+- `distancia_km` fora de `0..3000`: `ValueError`.
+- `valor = base_centavos + centavos_por_km * distancia_km`.
+- Se `expresso` for `True`, `valor = (valor * 3) // 2` (divisão inteira, sem float e sem `round`). `2505 * 3 // 2` é `3757`, não `3758`.
+- Retorno exatamente:
+
+```python
+{"faixa": nome, "valor_centavos": valor, "expresso": expresso}
+```
+
+`faixa_de_peso` só olha o peso: devolve o nome da faixa ou levanta o mesmo `TypeError`/`ValueError` de peso inválido. Não peça distância.
+
+Exemplos:
+
+```python
+cotar(300, 100, False)   # {"faixa": "carta", "valor_centavos": 800, "expresso": False}
+cotar(301, 1, True)      # {"faixa": "pac", "valor_centavos": 2253, "expresso": True}
+cotar(10001, 1, False)   # {"faixa": "transportadora", "valor_centavos": 4008, "expresso": False}
+faixa_de_peso(2001)      # "sedex"
+cotar(2001, 1, True)     # {"faixa": "sedex", "valor_centavos": 3757, "expresso": True}
+```
+
+`2253` vem de `1500 + 2 * 1 = 1502` e `(1502 * 3) // 2`.
+`3757` vem de `2500 + 5 * 1 = 2505` e `(2505 * 3) // 2`.
+
+Use apenas a biblioteca padrão. Não crie outros módulos.
+
+--- frete.py ---
+# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.
+
+def cotar(peso_g, distancia_km, expresso):
+    if type(peso_g) is not int:
+        raise TypeError("peso_g")
+    if type(distancia_km) is not int:
+        raise TypeError("distancia_km")
+    if type(expresso) is not bool:
+        raise TypeError("expresso")
+    if peso_g <= 0 or peso_g > 30000:
+        raise ValueError("peso fora da faixa")
+    if distancia_km < 0 or distancia_km > 3000:
+        raise ValueError("distancia fora da faixa")
+
+    # carta / pac / sedex / transportadora — números repetidos de propósito
+    if peso_g >= 1 and peso_g <= 300:
+        nome = "carta"
+        base = 800
+        por_km = 0
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 301 and peso_g <= 2000:
+        nome = "pac"
+        base = 1500
+        por_km = 2
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 2001 and peso_g <= 10000:
+        nome = "sedex"
+        base = 2500
+        por_km = 5
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    if peso_g >= 10001 and peso_g <= 30000:
+        nome = "transportadora"
+        base = 4000
+        por_km = 8
+        total = base + por_km * distancia_km
+        if expresso is True:
+            total = (total * 3) // 2
+        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+    raise ValueError("peso fora da faixa")
+
+apply patch
+patch: completed
+/tmp/bench-ii7ctarj/frete.py
+diff --git a/frete.py b/frete.py
+deleted file mode 100644
+index 0830a1d7fe2b4b3f181f10ac06d41bfe1f5da69e..0000000000000000000000000000000000000000
+--- a/frete.py
++++ /dev/null
+@@ -1,48 +0,0 @@
+-# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.
+-
+-def cotar(peso_g, distancia_km, expresso):
+-    if type(peso_g) is not int:
+-        raise TypeError("peso_g")
+-    if type(distancia_km) is not int:
+-        raise TypeError("distancia_km")
+-    if type(expresso) is not bool:
+-        raise TypeError("expresso")
+-    if peso_g <= 0 or peso_g > 30000:
+-        raise ValueError("peso fora da faixa")
+-    if distancia_km < 0 or distancia_km > 3000:
+-        raise ValueError("distancia fora da faixa")
+-
+-    # carta / pac / sedex / transportadora — números repetidos de propósito
+-    if peso_g >= 1 and peso_g <= 300:
+-        nome = "carta"
+-        base = 800
+-        por_km = 0
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 301 and peso_g <= 2000:
+-        nome = "pac"
+-        base = 1500
+-        por_km = 2
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 2001 and peso_g <= 10000:
+-        nome = "sedex"
+-        base = 2500
+-        por_km = 5
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 10001 and peso_g <= 30000:
+-        nome = "transportadora"
+-        base = 4000
+-        por_km = 8
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    raise ValueError("peso fora da faixa")
+
+apply patch
+patch: completed
+/tmp/bench-ii7ctarj/frete.py
+diff --git a/frete.py b/frete.py
+index 0830a1d7fe2b4b3f181f10ac06d41bfe1f5da69e..27233cd5fe6fc614a330bc76deda14a6acef74a3
+--- a/frete.py
++++ b/frete.py
+@@ -1,48 +1,51 @@
+-# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.
++class TabelaFrete:
++    FAIXAS: tuple[tuple[str, int, int, int, int], ...] = (
++        ("carta", 1, 300, 800, 0),
++        ("pac", 301, 2000, 1500, 2),
++        ("sedex", 2001, 10000, 2500, 5),
++        ("transportadora", 10001, 30000, 4000, 8),
++    )
++
++    def cotar(self, peso_g: int, distancia_km: int, expresso: bool) -> dict:
++        """Calcula o frete usando a tabela de faixas atual."""
++        _validar_peso(peso_g)
++        if type(distancia_km) is not int:
++            raise TypeError("distancia_km")
++        if type(expresso) is not bool:
++            raise TypeError("expresso")
++        if distancia_km < 0 or distancia_km > 3000:
++            raise ValueError("distancia fora da faixa")
+ 
+-def cotar(peso_g, distancia_km, expresso):
++        for nome, peso_min, peso_max, base_centavos, centavos_por_km in TabelaFrete.FAIXAS:
++            if peso_min <= peso_g <= peso_max:
++                valor = base_centavos + centavos_por_km * distancia_km
++                if expresso:
++                    valor = (valor * 3) // 2
++                return {
++                    "faixa": nome,
++                    "valor_centavos": valor,
++                    "expresso": expresso,
++                }
++
++        raise ValueError("peso fora da faixa")
++
++
++def _validar_peso(peso_g: int) -> None:
+     if type(peso_g) is not int:
+         raise TypeError("peso_g")
+-    if type(distancia_km) is not int:
+-        raise TypeError("distancia_km")
+-    if type(expresso) is not bool:
+-        raise TypeError("expresso")
+     if peso_g <= 0 or peso_g > 30000:
+         raise ValueError("peso fora da faixa")
+-    if distancia_km < 0 or distancia_km > 3000:
+-        raise ValueError("distancia fora da faixa")
+ 
+-    # carta / pac / sedex / transportadora — números repetidos de propósito
+-    if peso_g >= 1 and peso_g <= 300:
+-        nome = "carta"
+-        base = 800
+-        por_km = 0
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 301 and peso_g <= 2000:
+-        nome = "pac"
+-        base = 1500
+-        por_km = 2
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 2001 and peso_g <= 10000:
+-        nome = "sedex"
+-        base = 2500
+-        por_km = 5
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 10001 and peso_g <= 30000:
+-        nome = "transportadora"
+-        base = 4000
+-        por_km = 8
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
++
++def cotar(peso_g: int, distancia_km: int, expresso: bool) -> dict:
++    """Calcula o frete com a tabela de faixas padrão."""
++    return TabelaFrete().cotar(peso_g, distancia_km, expresso)
++
++
++def faixa_de_peso(peso_g: int) -> str:
++    """Devolve o nome da faixa correspondente ao peso."""
++    _validar_peso(peso_g)
++    for nome, peso_min, peso_max, _base_centavos, _centavos_por_km in TabelaFrete.FAIXAS:
++        if peso_min <= peso_g <= peso_max:
++            return nome
+     raise ValueError("peso fora da faixa")
+
+codex
+A tabela agora fica em `TabelaFrete.FAIXAS`, e as três entradas consultam esse atributo no momento de cada chamada. Estou conferindo o arquivo final para garantir que os limites e as validações preservam o contrato descrito.
+exec
+/bin/bash -lc 'cat frete.py && git diff -- frete.py' in /tmp/bench-ii7ctarj
+ exited 129 in 0ms:
+class TabelaFrete:
+    FAIXAS: tuple[tuple[str, int, int, int, int], ...] = (
+        ("carta", 1, 300, 800, 0),
+        ("pac", 301, 2000, 1500, 2),
+        ("sedex", 2001, 10000, 2500, 5),
+        ("transportadora", 10001, 30000, 4000, 8),
+    )
+
+    def cotar(self, peso_g: int, distancia_km: int, expresso: bool) -> dict:
+        """Calcula o frete usando a tabela de faixas atual."""
+        _validar_peso(peso_g)
+        if type(distancia_km) is not int:
+            raise TypeError("distancia_km")
+        if type(expresso) is not bool:
+            raise TypeError("expresso")
+        if distancia_km < 0 or distancia_km > 3000:
+            raise ValueError("distancia fora da faixa")
+
+        for nome, peso_min, peso_max, base_centavos, centavos_por_km in TabelaFrete.FAIXAS:
+            if peso_min <= peso_g <= peso_max:
+                valor = base_centavos + centavos_por_km * distancia_km
+                if expresso:
+                    valor = (valor * 3) // 2
+                return {
+                    "faixa": nome,
+                    "valor_centavos": valor,
+                    "expresso": expresso,
+                }
+
+        raise ValueError("peso fora da faixa")
+
+
+def _validar_peso(peso_g: int) -> None:
+    if type(peso_g) is not int:
+        raise TypeError("peso_g")
+    if peso_g <= 0 or peso_g > 30000:
+        raise ValueError("peso fora da faixa")
+
+
+def cotar(peso_g: int, distancia_km: int, expresso: bool) -> dict:
+    """Calcula o frete com a tabela de faixas padrão."""
+    return TabelaFrete().cotar(peso_g, distancia_km, expresso)
+
+
+def faixa_de_peso(peso_g: int) -> str:
+    """Devolve o nome da faixa correspondente ao peso."""
+    _validar_peso(peso_g)
+    for nome, peso_min, peso_max, _base_centavos, _centavos_por_km in TabelaFrete.FAIXAS:
+        if peso_min <= peso_g <= peso_max:
+            return nome
+    raise ValueError("peso fora da faixa")
+warning: Not a git repository. Use --no-index to compare two paths outside a working tree
+usage: git diff --no-index [<options>] <path> <path>
+
+Diff output format options
+    -p, --patch           generate patch
+    -s, --no-patch        suppress diff output
+    -u                    generate patch
+    -U, --unified[=<n>]   generate diffs with <n> lines context
+    -W, --[no-]function-context
+                          generate diffs with <n> lines context
+    --raw                 generate the diff in raw format
+    --patch-with-raw      synonym for '-p --raw'
+    --patch-with-stat     synonym for '-p --stat'
+    --numstat             machine friendly --stat
+    --shortstat           output only the last line of --stat
+    -X, --dirstat[=<param1>,<param2>...]
+                          output the distribution of relative amount of changes for each sub-directory
+    --cumulative          synonym for --dirstat=cumulative
+    --dirstat-by-file[=<param1>,<param2>...]
+                          synonym for --dirstat=files,<param1>,<param2>...
+    --check               warn if changes introduce conflict markers or whitespace errors
+    --summary             condensed summary such as creations, renames and mode changes
+    --name-only           show only names of changed files
+    --name-status         show only names and status of changed files
+    --stat[=<width>[,<name-width>[,<count>]]]
+                          generate diffstat
+    --stat-width <width>  generate diffstat with a given width
+    --stat-name-width <width>
+                          generate diffstat with a given name width
+    --stat-graph-width <width>
+                          generate diffstat with a given graph width
+    --stat-count <count>  generate diffstat with limited lines
+    --[no-]compact-summary
+                          generate compact summary in diffstat
+    --binary              output a binary diff that can be applied
+    --[no-]full-index     show full pre- and post-image object names on the "index" lines
+    --[no-]color[=<when>] show colored diff
+    --ws-error-highlight <kind>
+                          highlight whitespace errors in the 'context', 'old' or 'new' lines in the diff
+    -z                    do not munge pathnames and use NULs as output field terminators in --raw or --numstat
+    --[no-]abbrev[=<n>]   use <n> digits to display object names
+    --src-prefix <prefix> show the given source prefix instead of "a/"
+    --dst-prefix <prefix> show the given destination prefix instead of "b/"
+    --line-prefix <prefix>
+                          prepend an additional prefix to every line of output
+    --no-prefix           do not show any source or destination prefix
+    --default-prefix      use default prefixes a/ and b/
+    --inter-hunk-context <n>
+                          show context between diff hunks up to the specified number of lines
+    --output-indicator-new <char>
+                          specify the character to indicate a new line instead of '+'
+    --output-indicator-old <char>
+                          specify the character to indicate an old line instead of '-'
+    --output-indicator-context <char>
+                          specify the character to indicate a context instead of ' '
+
+Diff rename options
+    -B, --break-rewrites[=<n>[/<m>]]
+                          break complete rewrite changes into pairs of delete and create
+    -M, --find-renames[=<n>]
+                          detect renames
+    -D, --irreversible-delete
+                          omit the preimage for deletes
+    -C, --find-copies[=<n>]
+                          detect copies
+    --[no-]find-copies-harder
+                          use unmodified files as source to find copies
+    --no-renames          disable rename detection
+    --[no-]rename-empty   use empty blobs as rename source
+    --[no-]follow         continue listing the history of a file beyond renames
+    -l <n>                prevent rename/copy detection if the number of rename/copy targets exceeds given limit
+
+Diff algorithm options
+    --minimal             produce the smallest possible diff
+    -w, --ignore-all-space
+                          ignore whitespace when comparing lines
+    -b, --ignore-space-change
+                          ignore changes in amount of whitespace
+    --ignore-space-at-eol ignore changes in whitespace at EOL
+    --ignore-cr-at-eol    ignore carrier-return at the end of line
+    --ignore-blank-lines  ignore changes whose lines are all blank
+    -I, --[no-]ignore-matching-lines <regex>
+                          ignore changes whose all lines match <regex>
+    --[no-]indent-heuristic
+                          heuristic to shift diff hunk boundaries for easy reading
+    --patience            generate diff using the "patience diff" algorithm
+    --histogram           generate diff using the "histogram diff" algorithm
+    --diff-algorithm <algorithm>
+                          choose a diff algorithm
+    --anchored <text>     generate diff using the "anchored diff" algorithm
+    --word-diff[=<mode>]  show word diff, using <mode> to delimit changed words
+    --word-diff-regex <regex>
+                          use <regex> to decide what a word is
+    --color-words[=<regex>]
+                          equivalent to --word-diff=color --word-diff-regex=<regex>
+    --[no-]color-moved[=<mode>]
+                          moved lines of code are colored differently
+    --[no-]color-moved-ws <mode>
+                          how white spaces are ignored in --color-moved
+
+Other diff options
+    --[no-]relative[=<prefix>]
+                          when run from subdir, exclude changes outside and show relative paths
+    -a, --[no-]text       treat all files as text
+    -R                    swap two inputs, reverse the diff
+    --[no-]exit-code      exit with 1 if there were differences, 0 otherwise
+    --[no-]quiet          disable all output of the program
+    --[no-]ext-diff       allow an external diff helper to be executed
+    --[no-]textconv       run external text conversion filters when comparing binary files
+    --ignore-submodules[=<when>]
+                          ignore changes to submodules in the diff generation
+    --submodule[=<format>]
+                          specify how differences in submodules are shown
+    --ita-invisible-in-index
+                          hide 'git add -N' entries from the index
+    --ita-visible-in-index
+                          treat 'git add -N' entries as real in the index
+    -S <string>           look for differences that change the number of occurrences of the specified string
+    -G <regex>            look for differences that change the number of occurrences of the specified regex
+    --pickaxe-all         show all changes in the changeset with -S or -G
+    --pickaxe-regex       treat <string> in -S as extended POSIX regular expression
+    -O <file>             control the order in which files appear in the output
+    --rotate-to <path>    show the change in the specified path first
+    --skip-to <path>      skip the output to the specified path
+    --find-object <object-id>
+                          look for differences that change the number of occurrences of the specified object
+    --diff-filter [(A|C|D|M|R|T|U|X|B)...[*]]
+                          select files by diff type
+    --output <file>       output to a specific file
+
+
+apply patch
+patch: completed
+/tmp/bench-ii7ctarj/frete.py
+diff --git a/frete.py b/frete.py
+index 0830a1d7fe2b4b3f181f10ac06d41bfe1f5da69e..6177777d04f5ec1f686f6bba894d827280b5dbb5
+--- a/frete.py
++++ b/frete.py
+@@ -1,48 +1,54 @@
+-# cotador antigo — planilha copiada em cada ramo. funciona, mas ninguém quer mexer.
++class TabelaFrete:
++    FAIXAS: tuple[tuple[str, int, int, int, int], ...] = (
++        ("carta", 1, 300, 800, 0),
++        ("pac", 301, 2000, 1500, 2),
++        ("sedex", 2001, 10000, 2500, 5),
++        ("transportadora", 10001, 30000, 4000, 8),
++    )
++
++    def cotar(self, peso_g: int, distancia_km: int, expresso: bool) -> dict:
++        """Calcula o frete usando a tabela de faixas atual."""
++        if type(peso_g) is not int:
++            raise TypeError("peso_g")
++        if type(distancia_km) is not int:
++            raise TypeError("distancia_km")
++        if type(expresso) is not bool:
++            raise TypeError("expresso")
++        if peso_g <= 0 or peso_g > 30000:
++            raise ValueError("peso fora da faixa")
++        if distancia_km < 0 or distancia_km > 3000:
++            raise ValueError("distancia fora da faixa")
++
++        for nome, peso_min, peso_max, base_centavos, centavos_por_km in TabelaFrete.FAIXAS:
++            if peso_min <= peso_g <= peso_max:
++                valor = base_centavos + centavos_por_km * distancia_km
++                if expresso:
++                    valor = (valor * 3) // 2
++                return {
++                    "faixa": nome,
++                    "valor_centavos": valor,
++                    "expresso": expresso,
++                }
++
++        raise ValueError("peso fora da faixa")
++
+ 
+-def cotar(peso_g, distancia_km, expresso):
++def _validar_peso(peso_g: int) -> None:
+     if type(peso_g) is not int:
+         raise TypeError("peso_g")
+-    if type(distancia_km) is not int:
+-        raise TypeError("distancia_km")
+-    if type(expresso) is not bool:
+-        raise TypeError("expresso")
+     if peso_g <= 0 or peso_g > 30000:
+         raise ValueError("peso fora da faixa")
+-    if distancia_km < 0 or distancia_km > 3000:
+-        raise ValueError("distancia fora da faixa")
+ 
+-    # carta / pac / sedex / transportadora — números repetidos de propósito
+-    if peso_g >= 1 and peso_g <= 300:
+-        nome = "carta"
+-        base = 800
+-        por_km = 0
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 301 and peso_g <= 2000:
+-        nome = "pac"
+-        base = 1500
+-        por_km = 2
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 2001 and peso_g <= 10000:
+-        nome = "sedex"
+-        base = 2500
+-        por_km = 5
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
+-    if peso_g >= 10001 and peso_g <= 30000:
+-        nome = "transportadora"
+-        base = 4000
+-        por_km = 8
+-        total = base + por_km * distancia_km
+-        if expresso is True:
+-            total = (total * 3) // 2
+-        return {"faixa": nome, "valor_centavos": total, "expresso": expresso}
++
++def cotar(peso_g: int, distancia_km: int, expresso: bool) -> dict:
++    """Calcula o frete com a tabela de faixas padrão."""
++    return TabelaFrete().cotar(peso_g, distancia_km, expresso)
++
++
++def faixa_de_peso(peso_g: int) -> str:
++    """Devolve o nome da faixa correspondente ao peso."""
++    _validar_peso(peso_g)
++    for nome, peso_min, peso_max, _base_centavos, _centavos_por_km in TabelaFrete.FAIXAS:
++        if peso_min <= peso_g <= peso_max:
++            return nome
+     raise ValueError("peso fora da faixa")
+
+codex
+Refatorei [frete.py](/tmp/bench-ii7ctarj/frete.py) para expor `TabelaFrete` e `faixa_de_peso`. `cotar` e os novos métodos consultam `TabelaFrete.FAIXAS` a cada chamada, mantendo as validações, os erros e os cálculos descritos no enunciado.
+tokens used
+15,173

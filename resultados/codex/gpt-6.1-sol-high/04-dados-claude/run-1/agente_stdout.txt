@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-vou_ndwd/solucao.py) com a função `resumir_vendas`.
+
+Validei o exemplo e casos com BOM, campos multilinha, linhas inválidas, desempate e preservação da saída em erros. Todas as verificações passaram.

@@ -1,0 +1,1 @@
+Criei [freq.py](/tmp/bench-knn1w058/freq.py) com as opções e regras do enunciado: leitura UTF-8 estrita, contagem e ordenação de palavras e saída em texto ou JSON. Não executei testes.

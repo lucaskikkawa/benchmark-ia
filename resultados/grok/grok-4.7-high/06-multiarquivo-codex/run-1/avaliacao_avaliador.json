@@ -1,0 +1,67 @@
+{
+ "pasta": "resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "high",
+ "tarefa": "06-multiarquivo-codex",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 297.589,
+ "testes_passados": 42,
+ "testes_total": 42,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes alinhados ao estoque; valida cada saldo intermediário e a forma do JSON, incluindo bool e campos ausentes; dataclass frozen, imports relativos e cópia explícita. Não há docstrings: ordem, saldo negativo e formato JSON não são documentados.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código correto, idiomático e modular, com validação precisa de bordas e tipos no JSON e saldos, mas sem docstrings documentando os comportamentos das APIs.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7,
+ "reexecucao_testes": {
+  "total": 42,
+  "passados": 42,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "arquivos da execução com mudanças não commitadas: ['M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/agente_stdout.txt', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/avaliacao.json', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/modelos.py', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/operacoes.py', ' M resultados/grok/grok-4.7-high/06-multiarquivo-codex/run-1/codigo/estoque/persistencia.py']",
+  "resultado.json alterado em 2 commits: ['b4386c7 rodada-1: refaz 16 execuções grok-4.7-high (erro de cota), julga e regenera RODADA.md', '652b466 Rodada 1: 528 execuções, avaliações e RODADA.md']"
+ ],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 0.0,
+ "regra_excepcional_grok_4_7_high": {
+  "nota_base": 9.7,
+  "fator": 1.0,
+  "regra": "1ª tentativa, 298 s (≤300 s): nota cheia"
+ }
+}

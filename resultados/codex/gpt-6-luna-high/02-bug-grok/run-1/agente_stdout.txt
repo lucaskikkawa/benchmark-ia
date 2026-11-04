@@ -1,0 +1,1 @@
+Atualizei [boletim.py](/tmp/bench-8d6i120k/boletim.py) para seguir o contrato: validar entradas, ignorar ausências, descartar uma nota somente quando houver quatro notas válidas e arredondar a média com `Decimal` e `ROUND_HALF_UP`. A lista recebida não é modificada.

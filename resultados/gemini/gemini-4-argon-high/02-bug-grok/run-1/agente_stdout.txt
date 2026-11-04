@@ -1,0 +1,5 @@
+A função [`fechar_boletim`](file:///tmp/bench-bbd1x3wz/boletim.py#L7-L50) em [boletim.py](file:///tmp/bench-bbd1x3wz/boletim.py) foi corrigida conforme o contrato em [enunciado.md](file:///tmp/bench-bbd1x3wz/enunciado.md):
+
+- **Imutabilidade e validação de entrada**: preserva a lista `provas` original sem alterá-la, exige `list` de tamanho 1 a 4, rejeita `bool` e tipos diferentes de `int`, `float` ou `None` com `TypeError`, e valida finitude (`math.isfinite`), intervalo fechado `[0, 10]` e presença de ao menos uma nota válida com `ValueError`.
+- **Ausências e descarte**: ignora `None` mantendo a ordem original e descarta apenas a primeira ocorrência do menor valor (`float`) exclusivamente quando há 4 notas válidas.
+- **Média e conceito**: converte as notas restantes via `Decimal(str(nota))`, divide a soma pela quantidade de notas consideradas e arredonda uma única vez com `ROUND_HALF_UP` para duas casas decimais, atribuindo o conceito com limites inclusivos (`>= 9` → `"A"`, `>= 7` → `"B"`, `>= 5` → `"C"`, `< 5` → `"D"`) e `aprovado = (conceito != "D")`.

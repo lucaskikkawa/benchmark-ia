@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O código legado calcula tudo numa função só. Vou extrair as classes pedidas e manter `processar_pedidos` com o mesmo retorno, arredondando cada item antes de somar.

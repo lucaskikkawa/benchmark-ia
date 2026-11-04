@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-medium/09-api-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "medium",
+ "tarefa": "09-api-grok",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 73.352,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Retry e timeout estão implementados com thread daemon e exceção transitória específica; porém LojaErroCliente não é capturada explicitamente, e a fórmula de backoff e as exceções retentáveis ficam no laço.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Retry, backoff, 404 imediato, timeout via Event.wait e validação estão corretos; laço inline com fator 2 e exceções retentáveis soltas; baixar_pedidos sem docstring.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.0,
+ "nota_final_10": 9.1,
+ "reexecucao_testes": {
+  "total": 18,
+  "passados": 18,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.25,
+ "nota_antiga_com_penalidade": 9.25
+}

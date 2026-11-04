@@ -1,0 +1,8 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com arquivos daqui.O enunciado pede o pacote `eventhub` em quatro módulos. Vou implementar o modelo, os handlers, o barramento e as exportações.O pacote `eventhub` está implementado nestes quatro arquivos:
+
+- `eventhub/models.py` define `Priority` e o dataclass `Event`.
+- `eventhub/handlers.py` define `EventHandler` e `DeadLetterQueue`.
+- `eventhub/bus.py` define `EventBus`, com fila por prioridade (`HIGH`, depois `NORMAL`, depois `LOW`) e, na mesma prioridade, ordem cronológica.
+- `eventhub/__init__.py` exporta `Event`, `Priority`, `EventHandler`, `DeadLetterQueue` e `EventBus`.
+
+Sem dead-letter queue, a exceção do handler segue para quem chamou o despacho. Com dead-letter queue, a falha é registrada e os outros handlers do mesmo evento continuam. Eventos publicados durante o processamento entram na fila e saem nos despachos seguintes.

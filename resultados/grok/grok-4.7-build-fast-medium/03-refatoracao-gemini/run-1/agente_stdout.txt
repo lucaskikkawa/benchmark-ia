@@ -1,0 +1,9 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O processador legado soma antes de arredondar e concentra tudo numa função. Vou extrair as classes pedidas e aplicar o arredondamento por item.`processador.py` foi refatorado e a função `processar_pedidos` continua recebendo a lista de pedidos e devolvendo os mesmos dicionários, na mesma ordem.
+
+A lógica ficou em cinco peças:
+
+- `ItemPedido` valida preço, quantidade e peso, e arredonda o subtotal (2 casas) e o peso (3 casas) de cada item.
+- `CalculadoraDesconto` aplica bronze, prata, ouro e vip, sem diferenciar maiúsculas de minúsculas.
+- `CalculadoraFrete` trata padrão, expresso e econômico, zera o frete a partir de 200 e rejeita tipo desconhecido.
+- `Pedido` soma os valores já arredondados por item e expõe `para_dict()`.
+- Um pedido sem itens segue com subtotal 0.0, desconto 0.0 e frete calculado com peso 0.0.

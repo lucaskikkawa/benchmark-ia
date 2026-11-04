@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-high/09-api-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "high",
+ "tarefa": "09-api-grok",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 149.601,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Tratamento de timeout, retry e backoff está concentrado no laço; erros e limites são tratados corretamente. Exceções retentáveis e fator do backoff não estão centralizados.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Laço e backoff inline em baixar_pedidos; timeout isolado em helper. Bordas corretas (404 sem retry, join com prazo). Exceções e fator 2 soltos; sem docstring em baixar_pedidos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.25,
+ "reexecucao_testes": {
+  "total": 18,
+  "passados": 18,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.55,
+ "nota_antiga_com_penalidade": 9.55
+}

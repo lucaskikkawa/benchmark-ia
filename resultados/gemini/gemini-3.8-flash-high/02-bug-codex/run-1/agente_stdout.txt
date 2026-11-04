@@ -1,0 +1,19 @@
+A correção em [janelas.py](file:///tmp/bench-4_xao56z/janelas.py) foi realizada.
+
+### Causa e Solução do Bug
+No laço que percorria a lista atualizando a soma da janela deslizante, o limite superior do `range` estava definido como `len(valores) - 1`, o que fazia com que o último elemento da lista não fosse processado e a última janela fosse omitida. 
+
+O laço foi corrigido para:
+```python
+for indice in range(tamanho, len(valores)):
+    soma += valores[indice] - valores[indice - tamanho]
+    resultado.append(soma)
+```
+
+Todos os requisitos e casos de borda foram verificados:
+- Total de janelas igual a `len(valores) - tamanho + 1`
+- `tamanho > len(valores)` retorna lista vazia `[]`
+- `tamanho <= 0` levanta `ValueError`
+- Lista de entrada preservada sem mutação
+- Complexidade de tempo $O(n)$ mantida
+- Suporte a inteiros de precisão arbitrária (> 64 bits) sem conversão para ponto flutuante

@@ -1,0 +1,49 @@
+RANKING A (media nota_nova por combo, N):
+  claude-haiku-5-5-high 9.7545 N=33
+  claude-opus-5-5-medium 9.7091 N=33
+  claude-haiku-5-5-medium 9.6836 N=33
+  claude-opus-5-5-high 9.4197 N=33
+  gpt-6-luna-medium 9.1094 N=33
+  gpt-6-luna-high 8.9836 N=33
+  gpt-6.1-sol-medium 8.8212 N=33
+  gpt-6.1-sol-high 7.9667 N=33
+  gemini-4-argon-medium 7.3652 N=33
+  grok-4.7-build-fast-medium 6.9818 N=33
+  gemini-4-argon-high 6.5970 N=33
+  grok-4.7-medium 6.3848 N=33
+  grok-4.7-high 3.9000 N=33
+  grok-4.7-build-fast-high 3.5136 N=33
+  gemini-3.8-flash-medium 2.5909 N=33
+  gemini-3.8-flash-high 1.1939 N=33
+Medias por empresa A (media das combos): {'claude': 9.6417, 'codex': 8.7202, 'gemini': 4.4367, 'grok': 5.1951}
+high-medium A: {'claude-haiku-5-5': 0.0709, 'claude-opus-5-5': -0.2894, 'gemini-3.8-flash': -1.397, 'gemini-4-argon': -0.7682, 'gpt-6-luna': -0.1258, 'gpt-6.1-sol': -0.8545, 'grok-4.7': -2.4848, 'grok-4.7-build-fast': -3.4682}
+RANKING B nota_i:
+  claude-haiku-5-5-high 9.7550 N=30
+  claude-opus-5-5-high 9.7100 N=30
+  claude-opus-5-5-medium 9.7000 N=30
+  claude-haiku-5-5-medium 9.6570 N=30
+  gpt-6.1-sol-medium 9.4150 N=30
+  gpt-6.1-sol-high 9.3900 N=30
+  gpt-6-luna-high 9.2873 N=30
+  gpt-6-luna-medium 9.0927 N=30
+  gemini-4-argon-medium 9.0917 N=30
+  gemini-4-argon-high 8.5200 N=30
+  gemini-3.8-flash-medium 7.8483 N=30
+  gemini-3.8-flash-high 5.0483 N=30
+ empresas: {'claude': 9.7055, 'codex': 9.2963, 'gemini': 7.6271}
+ high-medium: {'claude-haiku-5-5': 0.098, 'claude-opus-5-5': 0.01, 'gemini-3.8-flash': -2.8, 'gemini-4-argon': -0.5717, 'gpt-6-luna': 0.1947, 'gpt-6.1-sol': -0.025}
+RANKING B nota_ii:
+  claude-haiku-5-5-high 9.7550 N=30
+  claude-opus-5-5-high 9.7100 N=30
+  claude-opus-5-5-medium 9.7000 N=30
+  claude-haiku-5-5-medium 9.6570 N=30
+  gpt-6.1-sol-medium 9.4150 N=30
+  gpt-6.1-sol-high 9.3900 N=30
+  gpt-6-luna-high 9.2873 N=30
+  gemini-4-argon-high 9.1767 N=30
+  gpt-6-luna-medium 9.0927 N=30
+  gemini-4-argon-medium 9.0917 N=30
+  gemini-3.8-flash-medium 8.8020 N=30
+  gemini-3.8-flash-high 7.0883 N=30
+ empresas: {'claude': 9.7055, 'codex': 9.2963, 'gemini': 8.5397}
+ high-medium: {'claude-haiku-5-5': 0.098, 'claude-opus-5-5': 0.01, 'gemini-3.8-flash': -1.7137, 'gemini-4-argon': 0.085, 'gpt-6-luna': 0.1947, 'gpt-6.1-sol': -0.025}

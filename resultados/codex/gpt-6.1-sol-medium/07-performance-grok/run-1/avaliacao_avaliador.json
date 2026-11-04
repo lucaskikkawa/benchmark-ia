@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6.1-sol-medium/07-performance-grok/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6.1-sol",
+ "esforco": "medium",
+ "tarefa": "07-performance-grok",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 24.931,
+ "testes_passados": 12,
+ "testes_total": 12,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Contagem linear com dict, correta em duplicatas, negativos, zero e bool/float. O caso x+x não tem ramo nomeado. Validação de elementos fica dentro do laço. Docstring não cita duplicatas.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0,
+   "justificativa": "Solução correta nas bordas e tipos, mas validação de itens dentro do laço, uso de dict manual sem isolar combinatória e docstring básica.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 5.5,
+ "nota_final_10": 8.65,
+ "reexecucao_testes": {
+  "total": 12,
+  "passados": 12,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.65,
+ "nota_antiga_com_penalidade": 8.65
+}

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/10-ambigua-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "10-ambigua-claude",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 59.166,
+ "testes_passados": 40,
+ "testes_total": 42,
+ "pct_testes": 95.24,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Código robusto e bem documentado no SUPOSICOES.md, mas regras misturadas em bloco único com literais mágicos espalhados e extração por varredura manual de caracteres.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Etapas nomeadas e reuso ok. Extração char a char erra com + após espaço ou nova linha. Literais espalhados. SUPOSICOES omite ramal, prefixo 0 e móvel de 8 dígitos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.62,
+ "reexecucao_testes": {
+  "total": 42,
+  "passados": 40,
+  "pct": 95.24
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.77,
+ "nota_antiga_com_penalidade": 8.77
+}

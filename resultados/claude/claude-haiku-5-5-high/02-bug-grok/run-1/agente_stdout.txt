@@ -1,0 +1,12 @@
+Reescrevi `boletim.py` para seguir o enunciado. Não mexi em mais nada no diretório.
+
+Testei com o Python da máquina: todos os exemplos do enunciado batem (médias, conceitos, `descartada`, arredondamento HALF_UP como `0.015 → 0.02` e `9.995 → 10.0`) e todos os casos de erro levantam a exceção certa. Também confirmei que a lista recebida não é alterada.
+
+Escolhas que tomei onde o enunciado não cobria:
+- **`provas` aceita subclasses de `list`** (`isinstance` em vez de `type(...) is list`).
+- **Ordem de validação:** primeiro o tamanho da lista (`ValueError`), depois cada item na ordem. Então `[True, 1, 1, 1, 1]` gera `ValueError` por tamanho, não `TypeError`.
+- **`NaN` e `inf` são tratados como `ValueError`.** Checo `isfinite` só para floats, para não estourar com inteiros muito grandes.
+- **Sem `-0.0` na média:** a soma começa em `Decimal(0)`, então a média nunca sai como `-0.0`.
+- **O conceito é calculado sobre a média já arredondada**, como pede o enunciado. Por isso `8.995` vira `"A"`.
+
+O diretório não é um repositório git, então não há commit.

@@ -1,0 +1,19 @@
+Concluí o pacote `estoque/` e todos os testes que escrevi passam. O código de saída 1 no final veio só de eu ter apagado a pasta temporária de testes enquanto ela ainda era o diretório atual; não é falha do código. Continuam existindo apenas os quatro módulos, e `__init__.py` ficou como já estava, exportando as três APIs.
+
+- **`modelos.py`**: `Movimento` é uma `@dataclass(frozen=True)` com `sku: str` e `delta: int`. O construtor só guarda os campos, sem validar nada.
+- **`operacoes.py`**: `calcular_saldos` trabalha numa cópia de `iniciais` (ou num dict novo), então o dict original nunca é alterado, nem quando dá erro. Lança `ValueError` se algum saldo inicial for negativo. Aplica os movimentos na ordem, numa única passagem, e lança `ValueError` assim que um saldo intermediário fica negativo. Mantém os saldos zero e os SKUs iniciais sem movimentos, e usa os SKUs exatamente como vieram.
+- **`persistencia.py`**: `carregar_movimentos` lê o arquivo em UTF-8 e lança `ValueError` em todos os casos inválidos do enunciado. Campos extras são ignorados, a ordem é mantida e uma lista vazia devolve `[]`.
+
+Duas decisões que não estão explícitas no enunciado:
+- **Inteiros muito grandes no JSON**: o leitor JSON padrão do Python recusa inteiros com mais de 4.300 dígitos. Para garantir a precisão arbitrária, converto os inteiros via `Decimal`, sem passar por float e sem mudar configurações globais do Python.
+- **JSON aninhado demais**: um arquivo com nível de aninhamento extremo derruba o leitor com `RecursionError`; eu converto isso em `ValueError`.
+
+Os testes cobriram:
+- igualdade e imutabilidade de `Movimento`;
+- movimentos vindos de um iterador de passagem única;
+- `iniciais` intacto mesmo quando o cálculo falha;
+- saldo negativo no meio do processamento, mesmo com reposição depois;
+- deltas com 5.000 dígitos;
+- os vários formatos inválidos de JSON.
+
+Carregar e calcular 20.000 movimentos levou cerca de 0,02 s.

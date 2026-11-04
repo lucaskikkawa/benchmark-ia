@@ -1,0 +1,14 @@
+Corrigi o bug em `janelas.py`: a varredura parava uma janela antes do fim. A mudança foi uma linha, em `janelas.py:8`.
+
+- **Antes:** `range(tamanho, len(valores) - 1)`
+- **Depois:** `range(tamanho, len(valores))`
+
+A assinatura e os demais comportamentos ficaram como estavam: tamanho maior que a lista devolve `[]`, tamanho zero ou negativo lança `ValueError`, a lista de entrada não é alterada e cada chamada devolve uma lista nova. A varredura continua O(n) e não há dependências.
+
+Verifiquei com um script de teste (fora do diretório de trabalho):
+- o exemplo `[1, 2, 3, 4]` com janela 2 dá `[3, 5, 7]`, e os casos de borda passam;
+- somas com inteiros acima de 64 bits saem exatas;
+- 300 listas aleatórias batem com a soma por força bruta;
+- com 200.000 valores e janela de 100.000, a função levou cerca de 0,01 s e devolveu 100.001 resultados.
+
+Não criei arquivos de teste no diretório, e não fiz commit.

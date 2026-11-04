@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/grok/grok-4.7-build-fast-medium/06-multiarquivo-gemini/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7-build-fast",
+ "esforco": "medium",
+ "tarefa": "06-multiarquivo-gemini",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 150.827,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Os quatro módulos têm boa separação, tipagem e docstrings nos métodos; faltam docstrings em várias classes e funções.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Módulos coesos e lógica correta (FIFO por timestamp e seq, fila vazia, DLQ, desinscrição segura). Faltam docstrings na maioria das classes e no __init__; há um .gitkeep extra.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.5,
+ "nota_final_10": 9.55,
+ "reexecucao_testes": {
+  "total": 18,
+  "passados": 18,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.7,
+ "nota_antiga_com_penalidade": 9.7
+}

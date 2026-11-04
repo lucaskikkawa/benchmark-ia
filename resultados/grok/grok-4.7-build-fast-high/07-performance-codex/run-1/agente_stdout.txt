@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.A função precisa contar pares em tempo esperado O(n) e memória O(k), inclusive para geradores. Vou implementar isso com um mapa de frequências e validar os casos do enunciado.`pares.py` define `contar_pares(valores, alvo)`, que conta pares de índices distintos `(i, j)` com `i < j` e soma igual a `alvo`.
+
+A função percorre a entrada uma vez e guarda só a frequência de cada valor já visto. Para cada elemento, soma quantos complementos `alvo - valor` já apareceram e só então atualiza a contagem. Isso cobre duplicatas (`[2, 2, 2]` com alvo `4` dá `3`), não conta o elemento consigo mesmo e não conta o mesmo par duas vezes. Listas não são alteradas e geradores são consumidos numa única passagem, com tempo esperado O(n) e memória O(k).
+
+Nos testes locais, o exemplo `[1, 3, 2, 2]` com alvo `4` retorna `2`. Entradas de 1.000.000 de elementos ficaram abaixo de 1,2 s, e o pico extra de memória num gerador com quatro valores distintos ficou bem abaixo de 4 MiB.

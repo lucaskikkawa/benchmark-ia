@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6.1-sol",
+ "esforco": "medium",
+ "tarefa": "09-api-gemini",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 58.814,
+ "testes_passados": 46,
+ "testes_total": 46,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Loop explícito e backoff claro; erros transitórios e definitivos bem separados. Faltam conjunto de status retentáveis, docstrings na classe e nos métodos; códigos HTTP ficam fixos no código.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Loop explícito, backoff claro e retry só em rede, timeout, 429 e 5xx; 4xx encerra na hora. sleep_fn injetável, ApiError com chaining e validação correta. Faltam docstrings na classe e nos métodos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.5,
+ "nota_final_10": 9.55
+}

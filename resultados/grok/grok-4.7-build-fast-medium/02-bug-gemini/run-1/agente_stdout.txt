@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede correção da classe do carrinho. Vou implementar as validações e o isolamento de estado conforme a especificação.A classe `CarrinhoDeCompras` em `carrinho.py` foi corrigida para cumprir a especificação.
+
+- Cada instância guarda a própria cópia dos itens, inclusive dos dicionários internos.
+- Inclusão, remoção e cupom validam tipo e intervalo (`TypeError` ou `ValueError`) e o cupom novo substitui o anterior.
+- Subtotal, desconto e total são arredondados para duas casas, e o total nunca fica abaixo de `0.0`.
+- `listar_itens` devolve uma lista nova, ordenada pelo nome com `sorted`, sem alterar o estado interno.

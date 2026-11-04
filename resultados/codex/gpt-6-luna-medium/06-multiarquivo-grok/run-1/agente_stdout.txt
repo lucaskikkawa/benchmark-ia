@@ -1,0 +1,3 @@
+Implementei o pacote `biblioteca` com os quatro arquivos solicitados: modelos e validações, catálogo e serviço de empréstimos.
+
+Não executei testes.

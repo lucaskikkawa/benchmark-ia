@@ -1,0 +1,237 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-x51phgw5
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189dd-f31e-7461-b927-30c3659dd6aa
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:53:08.643639Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório para executar a tarefa.
+
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!'"\\.git'" in /tmp/bench-x51phgw5
+ succeeded in 0ms:
+/tmp/bench-x51phgw5
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-x51phgw5
+ succeeded in 0ms:
+# 10 - Classificação de Clientes e Score de Fidelidade (Especificação com Pontos Abertos)
+
+Implemente a função `classificar_cliente` no arquivo `solucao.py` na raiz do seu diretório de trabalho.
+
+## Assinatura
+
+```python
+def classificar_cliente(dados: dict) -> dict:
+    ...
+```
+
+## Núcleo Explícito Obrigatório
+
+O dicionário `dados` de entrada possui as seguintes informações sobre o cliente:
+- `id` (str): identificador único do cliente.
+- `nome` (str): nome do cliente.
+- `compras` (list[float | int]): histórico de valores de compras realizadas.
+- `anos_ativo` (int): número de anos em que o cliente é usuário ativo.
+
+### Regras Inequívocas de Cálculo do Score:
+1. O score base de compras corresponde a **10% da soma dos valores das compras** (`soma_compras * 0.1`).
+2. O score de fidelidade concede **5 pontos por cada ano ativo** (`anos_ativo * 5`).
+3. O score final é a soma do score base de compras com o score de fidelidade, devendo ser arredondado para 2 casas decimais (`round(..., 2)`).
+4. O dicionário de retorno deve conter obrigatoriamente as chaves:
+   - `"id"`: mesmo id de entrada (preservado).
+   - `"nome"`: mesmo nome de entrada (preservado).
+   - `"score"`: número (float ou int) correspondente ao score final calculado.
+   - `"categoria"`: uma string não vazia representando o segmento/nível do cliente.
+5. **Imutabilidade**: A função não deve modificar o dicionário `dados` fornecido na entrada nem a lista `compras` nele contida.
+6. A função deve suportar grande volume de compras e entradas com caracteres Unicode em `id` e `nome`.
+
+## Pontos Abertos e Arquivo `SUPOSICOES.md` (OBRIGATÓRIO)
+
+Alguns aspectos do comportamento não foram fechados na especificação, tais como:
+- Quais nomes de categorias atribuir e quais faixas/critérios de pontuação utilizar para categorizar o cliente.
+- Como lidar com valores negativos na lista de compras (ex.: estornos/devoluções vs. ignorar).
+- Como interpretar ou ajustar anos ativos negativos caso ocorram.
+- Como tratar campos adicionais presentes na entrada.
+
+Você **DEVE** criar um arquivo chamado `SUPOSICOES.md` na raiz do diretório de trabalho documentando detalhadamente suas decisões de design, critérios de categorização adotados e premissas assumidas.
+
+> **Importante:** A suíte de testes automatizados valida exclusivamente o **núcleo explícito inequívoco** e a presença do arquivo `SUPOSICOES.md`. A qualidade e profundidade da sua documentação de suposições serão avaliadas pela rubrica qualitativa.
+
+codex
+Vou aplicar a fórmula aos valores fornecidos, incluindo compras e anos negativos. Usarei as categorias Bronze, Prata, Ouro e Diamante e documentarei os limites e demais suposições em `SUPOSICOES.md`.
+
+apply patch
+patch: completed
+/tmp/bench-x51phgw5/SUPOSICOES.md
+/tmp/bench-x51phgw5/solucao.py
+diff --git a/SUPOSICOES.md b/SUPOSICOES.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..ef76923fd041f7b8d8874c927ee969d7aba42c9c
+--- /dev/null
++++ b/SUPOSICOES.md
+@@ -0,0 +1,72 @@
++# Suposições e decisões de design
++
++## Cálculo obrigatório
++
++O score é calculado exatamente como `round(sum(compras) * 0.1 + anos_ativo * 5, 2)`.
++O arredondamento ocorre uma única vez, após somar os dois componentes. Não se
++arredondam compras individuais nem componentes intermediários. Uma lista vazia
++tem soma zero; nesse caso, apenas os anos ativos contribuem para o score.
++
++Usa-se o `round` nativo do Python, inclusive seu comportamento de desempate para
++o número par e as limitações da representação binária de ponto flutuante.
++Não se aplica arredondamento financeiro alternativo. O retorno é numérico, sem
++formatação textual ou garantia de exibir zeros finais.
++
++## Categorias
++
++Como não foram fornecidas faixas comerciais, foram escolhidos quatro níveis
++simples e determinísticos. Os limites são decisões desta implementação, passíveis
++de revisão caso surjam regras de negócio:
++
++| Categoria | Intervalo do score final |
++| --- | --- |
++| Bronze | score < 100 |
++| Prata | 100 <= score < 500 |
++| Ouro | 500 <= score < 1000 |
++| Diamante | score >= 1000 |
++
++A classificação utiliza o score **já arredondado**, exatamente como retornado.
++Assim, um valor bruto que arredonde para 100 pertence a Prata. Os limites inferiores
++de Prata, Ouro e Diamante são inclusivos; não há lacunas nem sobreposição.
++Scores negativos e zero pertencem a Bronze. Não há teto para Diamante.
++Os nomes são rótulos de segmentação, sem implicar benefícios ou descontos.
++
++## Valores negativos
++
++Compras negativas são interpretadas como estornos ou devoluções e participam
++integralmente da soma. Não são descartadas, convertidas para valores absolutos
++nem limitadas a zero. Isso preserva a fórmula obrigatória mesmo quando o total
++líquido de compras é negativo.
++
++Anos ativos negativos são mantidos no cálculo e contribuem com cinco pontos
++negativos por ano. Embora possam representar inconsistência cadastral, ajustá-los
++silenciosamente alteraria a fórmula explícita. Uma eventual validação cadastral
++deve ocorrer antes da chamada. O score final também não é limitado a zero.
++
++## Contrato de entrada e campos adicionais
++
++Espera-se um dicionário com todas as quatro chaves obrigatórias e os tipos
++descritos no enunciado: `id` e `nome` como strings, `compras` como lista de números
++e `anos_ativo` como inteiro. Os números devem ser finitos, e os cálculos devem
++caber na representação numérica do Python. Não há conversão automática de strings,
++preenchimento de campos ausentes ou validação específica de tipos fora do contrato.
++Nesses casos, as exceções naturais das operações do Python podem ser propagadas;
++não se promete uma mensagem de erro específica.
++
++Campos adicionais são ignorados e não aparecem no resultado. O retorno contém
++exatamente `id`, `nome`, `score` e `categoria`. Identificadores e nomes são
++preservados sem normalização Unicode, remoção de espaços ou mudança de caixa;
++nenhuma restrição de caracteres ou de string não vazia é acrescentada.
++
++## Imutabilidade e volume
++
++A função cria um novo dicionário de retorno e apenas lê a entrada. Não ordena,
++substitui ou edita a lista de compras, nem adiciona ou remove campos de `dados`.
++Como os campos preservados são strings imutáveis, não é necessário copiá-los.
++Chamadas repetidas com os mesmos dados produzem resultados iguais, sem estado
++global ou efeitos colaterais.
++
++A soma percorre a lista uma única vez: tempo O(n), com n igual ao número de
++compras, e memória auxiliar O(1), sem criar outra lista. Essa escolha permite
++históricos grandes, sujeitos à memória disponível para a própria entrada e aos
++limites usuais de precisão de ponto flutuante.
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..20ca86a3533a08daa1c3be4000c95645ba28e722
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,25 @@
++"""Cálculo do score e classificação de clientes por fidelidade."""
++
++
++def classificar_cliente(dados: dict) -> dict:
++    """Retorna identificação, score arredondado e categoria sem alterar dados.
++
++    As premissas de entrada e as faixas estão descritas em SUPOSICOES.md.
++    """
++    score = round(sum(dados["compras"]) * 0.1 + dados["anos_ativo"] * 5, 2)
++
++    if score < 100:
++        categoria = "Bronze"
++    elif score < 500:
++        categoria = "Prata"
++    elif score < 1000:
++        categoria = "Ouro"
++    else:
++        categoria = "Diamante"
++
++    return {
++        "id": dados["id"],
++        "nome": dados["nome"],
++        "score": score,
++        "categoria": categoria,
++    }
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+from copy import deepcopy
+from solucao import classificar_cliente
+
+for compras, anos, categoria in [([], 0, 'Bronze'), ([1000], 0, 'Prata'), ([5000], 0, 'Ouro'), ([10000], 0, 'Diamante'), ([-200, 100], -2, 'Bronze'), ([12.34, 56.78], 3, 'Bronze')]:
+    dados = {'id': '客户-ç🚀', 'nome': 'João 日本語', 'compras': compras, 'anos_ativo': anos, 'extra': {'ativo': True}}
+    original = deepcopy(dados)
+    resultado = classificar_cliente(dados)
+    assert resultado == {'id': dados['id'], 'nome': dados['nome'], 'score': round(sum(compras) * 0.1 + anos * 5, 2), 'categoria': categoria}
+    assert dados == original
+    assert resultado is not dados
+
+dados = {'id': 'volume', 'nome': 'Á', 'compras': [1] * 1_000_000, 'anos_ativo': 2}
+assert classificar_cliente(dados)['score'] == 100010.0
+assert len(dados['compras']) == 1_000_000
+assert classificar_cliente({'id': '', 'nome': '', 'compras': [999.99], 'anos_ativo': 0})['categoria'] == 'Prata'
+print('Verificações concluídas: fórmula, limites, arredondamento, negativos, Unicode, imutabilidade e um milhão de compras.')
+PY" in /tmp/bench-x51phgw5
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from copy import deepcopy
+from solucao import classificar_cliente
+
+for compras, anos, categoria in [([], 0, 'Bronze'), ([1000], 0, 'Prata'), ([5000], 0, 'Ouro'), ([10000], 0, 'Diamante'), ([-200, 100], -2, 'Bronze'), ([12.34, 56.78], 3, 'Bronze')]:
+    dados = {'id': '客户-ç🚀', 'nome': 'João 日本語', 'compras': compras, 'anos_ativo': anos, 'extra': {'ativo': True}}
+    original = deepcopy(dados)
+    resultado = classificar_cliente(dados)
+    assert resultado == {'id': dados['id'], 'nome': dados['nome'], 'score': round(sum(compras) * 0.1 + anos * 5, 2), 'categoria': categoria}
+    assert dados == original
+    assert resultado is not dados
+
+dados = {'id': 'volume', 'nome': 'Á', 'compras': [1] * 1_000_000, 'anos_ativo': 2}
+assert classificar_cliente(dados)['score'] == 100010.0
+assert len(dados['compras']) == 1_000_000
+assert classificar_cliente({'id': '', 'nome': '', 'compras': [999.99], 'anos_ativo': 0})['categoria'] == 'Prata'
+print('Verificações concluídas: fórmula, limites, arredondamento, negativos, Unicode, imutabilidade e um milhão de compras.')
+PY" in /tmp/bench-x51phgw5
+ succeeded in 0ms:
+Verificações concluídas: fórmula, limites, arredondamento, negativos, Unicode, imutabilidade e um milhão de compras.
+
+codex
+Implementação concluída em [solucao.py](/tmp/bench-x51phgw5/solucao.py), com decisões documentadas em [SUPOSICOES.md](/tmp/bench-x51phgw5/SUPOSICOES.md).
+
+Verificações passaram para fórmula, categorias, arredondamento, valores negativos, Unicode, imutabilidade e histórico de um milhão de compras.
+tokens used
+10,317

@@ -1,0 +1,6 @@
+O pacote `biblioteca` foi implementado conforme especificado em [enunciado.md](file:///tmp/bench-qq0wxdln/enunciado.md):
+
+- [`biblioteca/__init__.py`](file:///tmp/bench-qq0wxdln/biblioteca/__init__.py): reexporta a API pública e define `__all__` com os 10 nomes solicitados.
+- [`biblioteca/modelos.py`](file:///tmp/bench-qq0wxdln/biblioteca/modelos.py): define as dataclasses imutáveis [`Livro`](file:///tmp/bench-qq0wxdln/biblioteca/modelos.py#L29-L44) e [`Emprestimo`](file:///tmp/bench-qq0wxdln/biblioteca/modelos.py#L48-L54), além da hierarquia de exceções derivada de [`BibliotecaErro`](file:///tmp/bench-qq0wxdln/biblioteca/modelos.py#L5-L25).
+- [`biblioteca/acervo.py`](file:///tmp/bench-qq0wxdln/biblioteca/acervo.py): implementa a classe [`Acervo`](file:///tmp/bench-qq0wxdln/biblioteca/acervo.py#L4-L35) com adição, obtenção, busca por autor (`casefold`), tamanho e verificação de pertinência.
+- [`biblioteca/emprestimos.py`](file:///tmp/bench-qq0wxdln/biblioteca/emprestimos.py): implementa [`ServicoEmprestimos`](file:///tmp/bench-qq0wxdln/biblioteca/emprestimos.py#L14-L124) com controle de empréstimos, devoluções com cálculo de multa, renovações, consulta de disponibilidade e listagem de empréstimos por usuário e em atraso.

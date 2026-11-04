@@ -1,0 +1,16 @@
+{
+  "regioes": {
+    "Norte": {
+      "quantidade_total": 7,
+      "total_vendas": 8.4,
+      "produto_mais_vendido": "Lápis"
+    },
+    "Sul": {
+      "quantidade_total": 12,
+      "total_vendas": 55.0,
+      "produto_mais_vendido": "Caneta"
+    }
+  },
+  "total_geral": 63.4,
+  "linhas_invalidas": 2
+}

@@ -1,0 +1,169 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-0k42hds1
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189c5-7ddc-71f3-9b26-f8507437a1b5
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:26:25.300074Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório, implementar a solução e verificar o resultado.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!.git'"'" in /tmp/bench-0k42hds1
+ succeeded in 0ms:
+/tmp/bench-0k42hds1
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-0k42hds1
+ succeeded in 0ms:
+# 01 - Resumidor de Intervalos Numéricos
+
+Implemente a função `resumir_intervalos` no arquivo `solucao.py` na raiz do seu diretório de trabalho.
+
+## Especificação
+
+A função deve ter a seguinte assinatura:
+
+```python
+def resumir_intervalos(numeros: list[int]) -> str:
+    ...
+```
+
+### Comportamento:
+1. Recebe uma lista de inteiros (`numeros`). A lista pode conter valores desordenados, duplicados ou negativos.
+2. Deve remover números duplicados e ordenar os valores em ordem crescente.
+3. Deve agrupar sequências de números consecutivos em intervalos no formato `"inicio-fim"` se houver 2 ou mais números consecutivos (por exemplo, `[1, 2, 3]` vira `"1-3"`; `[7, 8]` vira `"7-8"`).
+4. Números que não formam sequência com seus vizinhos devem aparecer isolados (por exemplo, `5` vira `"5"`).
+5. Os intervalos e números isolados devem ser concatenados em uma única string separados por vírgula e espaço (`", "`).
+6. Se a lista de entrada for vazia, deve retornar uma string vazia `""`.
+7. **Validação de tipos**:
+   - Caso o argumento `numeros` não seja uma lista (`isinstance(numeros, list)` deve ser verdadeiro), levanta `TypeError`.
+   - Todos os elementos devem ser estritamente do tipo inteiro primitivo (`type(x) is int`). Note que `bool` e quaisquer subclasses de `int` não são permitidos e devem levantar `TypeError`.
+8. **Imutabilidade**: A função não deve modificar a lista original recebida no parâmetro `numeros` (não realize mutações in-place na lista do chamador).
+9. A função deve suportar listas com grandes volumes de dados de forma eficiente, bem como inteiros de magnitude arbitrária (positivos ou negativos).
+
+### Exemplos:
+- `resumir_intervalos([1, 2, 3, 5, 7, 8, 9])` -> `"1-3, 5, 7-9"`
+- `resumir_intervalos([9, 1, 8, 2, 7, 3, 5])` -> `"1-3, 5, 7-9"`
+- `resumir_intervalos([1, 1, 2, 2, 3])` -> `"1-3"`
+- `resumir_intervalos([42])` -> `"42"`
+- `resumir_intervalos([])` -> `""`
+- `resumir_intervalos([-3, -2, -1, 1, 2])` -> `"-3--1, 1-2"`
+
+apply patch
+patch: completed
+/tmp/bench-0k42hds1/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..26c06f2aff0f6edc261887458f9a25bc31f34069
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,22 @@
++def resumir_intervalos(numeros: list[int]) -> str:
++    """Resume valores inteiros únicos em intervalos consecutivos ordenados."""
++    if not isinstance(numeros, list):
++        raise TypeError("numeros deve ser uma lista")
++    if any(type(numero) is not int for numero in numeros):
++        raise TypeError("todos os elementos devem ser inteiros primitivos")
++
++    ordenados = sorted(set(numeros))
++    if not ordenados:
++        return ""
++
++    partes = []
++    inicio = fim = ordenados[0]
++    for numero in ordenados[1:]:
++        if numero == fim + 1:
++            fim = numero
++        else:
++            partes.append(str(inicio) if inicio == fim else f"{inicio}-{fim}")
++            inicio = fim = numero
++
++    partes.append(str(inicio) if inicio == fim else f"{inicio}-{fim}")
++    return ", ".join(partes)
+
+exec
+/bin/bash -lc "python - <<'PY'
+from solucao import resumir_intervalos
+
+casos = [
+    ([1, 2, 3, 5, 7, 8, 9], '1-3, 5, 7-9'),
+    ([9, 1, 8, 2, 7, 3, 5], '1-3, 5, 7-9'),
+    ([1, 1, 2, 2, 3], '1-3'),
+    ([42], '42'),
+    ([], ''),
+    ([-3, -2, -1, 1, 2], '-3--1, 1-2'),
+    ([0, -1, 1], '-1-1'),
+    ([10**100, 10**100 + 1], f'{10**100}-{10**100 + 1}'),
+]
+for entrada, esperado in casos:
+    original = entrada.copy()
+    assert resumir_intervalos(entrada) == esperado
+    assert entrada == original
+
+class Inteiro(int):
+    pass
+
+for invalido in (None, (), '123', 1, [True], [False], [Inteiro(1)], [1.0], [1, '2']):
+    try:
+        resumir_intervalos(invalido)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError(f'TypeError esperado: {invalido"'!r}'"')
+
+assert resumir_intervalos(list(range(100000, -1, -1))) == '0-100000'
+print('Todos os testes passaram.')
+PY" in /tmp/bench-0k42hds1
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+from solucao import resumir_intervalos
+
+casos = [
+    ([1, 2, 3, 5, 7, 8, 9], '1-3, 5, 7-9'),
+    ([9, 1, 8, 2, 7, 3, 5], '1-3, 5, 7-9'),
+    ([1, 1, 2, 2, 3], '1-3'),
+    ([42], '42'), ([], ''),
+    ([-3, -2, -1, 1, 2], '-3--1, 1-2'),
+    ([0, -1, 1], '-1-1'),
+    ([10**100, 10**100 + 1], f'{10**100}-{10**100 + 1}'),
+]
+for entrada, esperado in casos:
+    original = entrada.copy()
+    assert resumir_intervalos(entrada) == esperado
+    assert entrada == original
+
+class Inteiro(int):
+    pass
+
+for invalido in (None, (), '123', 1, [True], [False], [Inteiro(1)], [1.0], [1, '2']):
+    try:
+        resumir_intervalos(invalido)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError(f'TypeError esperado: {invalido"'!r}'"')
+
+assert resumir_intervalos(list(range(100000, -1, -1))) == '0-100000'
+print('Todos os testes passaram.')
+PY" in /tmp/bench-0k42hds1
+ succeeded in 0ms:
+Todos os testes passaram.
+
+codex
+Implementei `resumir_intervalos` em [solucao.py](/tmp/bench-0k42hds1/solucao.py).
+
+Verifiquei os exemplos, validação de tipos, imutabilidade, inteiros grandes e uma lista com 100.001 elementos. Todos os testes passaram.
+tokens used
+8,161

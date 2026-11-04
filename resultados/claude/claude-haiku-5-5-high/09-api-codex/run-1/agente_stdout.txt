@@ -1,0 +1,15 @@
+Criei `cliente.py` neste diretório com `buscar_com_retry` conforme o enunciado. `fake_api.py` ficou intacto e `enunciado.md` não foi alterado.
+
+Verifiquei o comportamento com um script ad hoc rodado em Python 3.11 (`python3.11 -I`), sem salvar nenhum arquivo de teste. Ele cobriu:
+- FakeAPI com 200 seeds: resultado correto, sono apenas entre falhas, valores `backoff * 2**i`.
+- Chave ausente (`ErroPermanente`) propaga sem dormir.
+- 40 tentativas esgotadas: 40 chamadas, 39 esperas, última exceção original propagada.
+- `backoff=0` gera esperas de zero; nenhuma espera após sucesso.
+- Erro lançado por `dormir` propaga, mesmo sendo `TimeoutError`.
+- Parâmetros inválidos (`tentativas`, `timeout`, `backoff`, incluindo NaN e infinito) geram `ValueError` antes de qualquer chamada ou espera.
+- Chave e timeout são iguais em todas as chamadas, e o dict retornado é o próprio objeto (inclusive vazio).
+
+Escolhas que tomei sobre pontos não detalhados no enunciado:
+- `tentativas` precisa ser `int` (um `float` como `2.0` gera `ValueError`). Não tratei `bool` de forma especial.
+- Adicionei dois helpers privados, `_validar` e `_real_finito`, e importei `math` além de `time`.
+- `ErroTemporario` é importado de `fake_api`, então `cliente.py` depende desse módulo no mesmo diretório.

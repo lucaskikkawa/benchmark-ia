@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede uma suíte pytest para `carrinho.py`, sem alterar o módulo. Vou ler a API e o código para cobrir o comportamento público e as bordas.

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/01-funcao-grok/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "01-funcao-grok",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 18.631,
+ "testes_passados": 33,
+ "testes_total": 33,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Bordas corretas: TypeError/ValueError, duração zero ignorada, 24:00 só no fim, encostados fundidos. Fusão e folgas no mesmo corpo, parse por ord-48, 24/1440 em duas funções, docstring sem exceções.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Bordas e estilo corretos, mas faltam funções separadas para fusão e folgas, constantes para limites do dia e menção a exceções na docstring.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.95,
+ "reexecucao_testes": {
+  "total": 33,
+  "passados": 33,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": null,
+ "nota_antiga_com_penalidade": 7.0
+}

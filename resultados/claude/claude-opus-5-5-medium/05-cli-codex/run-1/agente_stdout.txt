@@ -1,0 +1,15 @@
+Criei o `cli.py`, que atende ao `enunciado.md`. Testei à mão vários casos e todos deram o resultado esperado; não criei uma suíte de testes automatizados.
+
+**O que testei:**
+- **Separação de palavras:** espaço não separável e form feed separam palavras; o espaço de largura zero continua dentro da palavra.
+- **Unicode:** formas compostas e decompostas (`é` e `e`+acento) contam como palavras distintas.
+- **Ordenação e flags:** a ordem é por contagem decrescente e depois pela palavra. `--ignorar-caixa`, `--top` e `--minimo` funcionam no formato padrão e no JSON.
+- **Saída vazia:** sem resultados, o formato padrão não escreve nada e o JSON escreve `[]` com quebra de linha.
+- **Acentos no JSON:** saem sem escapes ASCII.
+- **Erros:** arquivo ausente, UTF-8 inválido, argumento obrigatório faltando, flag desconhecida e `--minimo`/`--top` com 0, negativo ou não inteiro retornam código 2, com stdout vazio e mensagem no stderr, sem traceback.
+- **Ajuda:** `-h` retorna 0.
+- **`main` em sequência:** chamar `main` várias vezes seguidas funciona sem compartilhar estado, e importar `cli` não executa nada.
+
+**Decisões que tomei:**
+- **Erros dentro de `main`:** quando o argparse encerraria o programa (`-h` ou erro de argumento), `main` retorna o código (0 ou 2) em vez de deixar o `SystemExit` escapar. O enunciado só diz que `main` "retorna 0 em sucesso", então tratei a assinatura `-> int` como regra para todos os casos. Se os testes esperarem que o `SystemExit` escape, essa é a parte a mudar.
+- **Codificação da saída:** quando rodado como script, o stdout é forçado para UTF-8, para os acentos saírem corretamente mesmo num terminal com outra codificação.

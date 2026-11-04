@@ -1,0 +1,5 @@
+O script [freq.py](file:///tmp/bench-ibbb_aub/freq.py) foi implementado conforme especificado em [enunciado.md](file:///tmp/bench-ibbb_aub/enunciado.md):
+
+- **CLI e validação (`argparse`)**: suporta `ARQUIVO` (ou `-` para `stdin`), `-n`/`--top` ([`positive_int`](file:///tmp/bench-ibbb_aub/freq.py#L11-L18)), `-m`/`--min-len` ([`positive_int`](file:///tmp/bench-ibbb_aub/freq.py#L11-L18)), `-i`/`--ignore-case`, `-x`/`--excluir` (repetível) e `--formato {texto,json}`.
+- **Leitura e codificação ([`read_input`](file:///tmp/bench-ibbb_aub/freq.py#L65-L71))**: lê bytes de arquivo ou `stdin` e decodifica sempre em UTF-8 estrito, reportando falhas de leitura/decodificação em linha única com prefixo `erro: ` em `stderr` e código de saída `1`.
+- **Processamento e saída ([`main`](file:///tmp/bench-ibbb_aub/freq.py#L74-L111))**: extrai palavras com a regex `[^\W\d_]+`, aplica `str.lower()` quando `-i` está ativo, filtra por tamanho mínimo e exclusões, ordena por `(-contagem, palavra)` e formata a saída em `texto` ou `json`.

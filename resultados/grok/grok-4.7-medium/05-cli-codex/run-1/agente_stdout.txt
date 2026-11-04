@@ -1,0 +1,7 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede um contador de palavras em `cli.py`. Vou implementá-lo e conferir os casos de saída, ordenação e erro.`cli.py` está pronto e conta palavras com `python cli.py ARQUIVO [flags]`.
+
+- A função `main(argv=None)` devolve `0` em sucesso e `2` em erro, sem traceback.
+- A saída padrão é `palavra<tab>contagem`, ordenada por contagem decrescente e depois pela palavra.
+- `--json` emite uma única linha com acentos preservados.
+- `--minimo`, `--top` e `--ignorar-caixa` filtram, limitam e aplicam `casefold()` antes da contagem.
+- Arquivo ausente, ilegível ou com UTF-8 inválido, argumento faltando, flag desconhecida e `N` inválido deixam o stdout vazio e escrevem a mensagem no stderr.

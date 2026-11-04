@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/04-dados-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 23.765,
+ "testes_passados": 32,
+ "testes_total": 32,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Excelente em bordas, stdlib e instruções; perde pontos em legibilidade e manutenibilidade por concentrar validação e agregação em função única sem encapsulamento.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Validação e agregação na mesma função. Linha só de campos vazios ignorada indevidamente. csv, json, with e setdefault idiomáticos. Métricas pouco extensíveis. Contrato, JSON e docstring ok.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.25,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 32,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.4,
+ "nota_antiga_com_penalidade": 9.4
+}

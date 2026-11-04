@@ -1,0 +1,3 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede um cliente com retentativas só para falhas transitórias. Vou implementar `cliente.py` e conferir o comportamento com a API local.`cliente.py` implementa `buscar_com_retry` e `fake_api.py` ficou intacto.
+
+A função valida `tentativas`, `timeout` e `backoff` e só então chama `api.get` com a mesma chave e o mesmo timeout. Repete apenas `ErroTemporario`, `TimeoutError` e subclasses. O atraso antes da tentativa seguinte ao índice `i` é `backoff * 2**i`, inclusive quando é zero. Não dorme depois do sucesso nem da última falha, e a última exceção original segue adiante. `ErroPermanente`, qualquer outra exceção de `get` e qualquer erro de `dormir` interrompem na hora.

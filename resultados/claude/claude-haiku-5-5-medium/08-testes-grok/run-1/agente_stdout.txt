@@ -1,0 +1,8 @@
+A suíte está em `tests/test_descontos.py`, com um `tests/conftest.py` que põe a raiz no `sys.path` para o `from descontos import aplicar_desconto` funcionar de qualquer diretório. `descontos.py` não foi alterado.
+
+- **Módulo correto:** os 143 testes passam (`python3 -m pytest -q tests`).
+- **Cópias com bug:** gerei 24 mutantes (fórmulas com subtração, limites de BEMVINDO e NATAL, piso do FIXO500, `strip` no cupom, `bool` aceito, preço negativo aceito, ano bissexto, `desconto` errado, chave extra etc.). 23 fazem a suíte falhar. O 24º remove só o `isinstance(hoje, str)`, mas `len(hoje)` já levanta `TypeError` para não-str, então o comportamento é idêntico ao original e nenhum teste conseguiria distingui-lo.
+
+Os testes cobrem os exemplos pedidos: percentuais com piso, piso do FIXO500, os dois extremos de BEMVINDO, 24 e 25 de dezembro, cupom vazio, cupom desconhecido, preço negativo e data inválida.
+
+Não usei `python` (não existe no ambiente), apenas `python3`. Não criei nenhum documento no Claude Docs, porque você não pediu.

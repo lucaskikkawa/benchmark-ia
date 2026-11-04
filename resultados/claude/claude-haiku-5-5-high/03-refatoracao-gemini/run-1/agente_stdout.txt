@@ -1,0 +1,13 @@
+Refatorei `processador.py` na raiz do diretório, seguindo o enunciado. Nenhum outro arquivo foi criado ou alterado.
+
+O módulo define e exporta:
+- **`ItemPedido`** (dataclass): valida `preco >= 0`, `quantidade >= 1` e `peso_kg >= 0` com `ValueError`. Tem as propriedades `subtotal` e `peso_total`, arredondadas por item.
+- **`CalculadoraFrete.calcular`** e **`CalculadoraDesconto.calcular`** (métodos estáticos): regras, validações e comparações case-insensitive conforme o enunciado.
+- **`Pedido`** (dataclass): `calcular_total_itens`, `calcular_peso_total`, `calcular_desconto`, `calcular_frete`, `calcular_total_final` e `para_dict`.
+- **`processar_pedidos`**: mantém a assinatura e o formato de retorno, preserva a ordem e aceita `itens` ausente ou vazio.
+
+Verifiquei com uma execução de exemplos cobrindo categorias, frete grátis, pedido sem itens, tipo de frete desconhecido e preço negativo. Os valores conferem com cálculo manual. Não rodei uma comparação sistemática contra o código legado.
+
+Escolhas que tomei:
+- **`nome` ausente**: o enunciado torna `nome` obrigatório em `ItemPedido`, mas o código legado aceitava itens sem esse campo. Para não quebrar essas entradas, `processar_pedidos` usa `""` quando `nome` falta. Se preferir que a ausência seja erro, troque `it.get("nome", "")` por `it["nome"]`.
+- **Mensagem de frete desconhecido**: usa o tipo como foi recebido, conforme a assinatura do enunciado. O legado mostrava o valor em minúsculas.

@@ -1,0 +1,10 @@
+Implementei `cliente_resiliente.py` na raiz do diretório, com `ApiError` e `ClienteResiliente` conforme o enunciado. O smoke test passou em todos os cenários: retry de rede, esgotamento com 503, erro 404 sem retry, timeout esgotado e validação de parâmetros.
+
+Algumas escolhas que tomei onde o enunciado deixava margem:
+
+- **Status retentáveis:** usei exatamente o conjunto `{429, 500, 502, 503, 504}`, já que o enunciado lista esses códigos. Um `501` ou `505` é tratado como definitivo. Se a intenção for retentar qualquer 5xx, troque `STATUS_RETENTAVEIS` por uma checagem de faixa.
+- **Validação numérica:** `backoff_base`, `backoff_fator` e `timeout` aceitam `int` ou `float`, exceto `bool`. Valores não numéricos ou `<= 0` levantam `ValueError`.
+- **`ApiError`:** a mensagem fica em `self.mensagem` e também é passada ao `Exception`. O `status_code` é `None` em erros de rede/timeout.
+- **Erro com `from`:** nos esgotamentos de rede/timeout, o `ApiError` encadeia a exceção original via `raise ... from erro`.
+
+Não criei arquivo de testes porque o enunciado não pediu; a verificação foi um script ad hoc que não ficou no diretório.

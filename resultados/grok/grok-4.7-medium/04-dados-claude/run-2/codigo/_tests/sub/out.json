@@ -1,0 +1,16 @@
+{
+  "regioes": {
+    "Norte": {
+      "quantidade_total": 10,
+      "total_vendas": 8.3,
+      "produto_mais_vendido": "Alpha"
+    },
+    "sul": {
+      "quantidade_total": 10,
+      "total_vendas": 77.5,
+      "produto_mais_vendido": "Caderno"
+    }
+  },
+  "total_geral": 85.8,
+  "linhas_invalidas": 12
+}

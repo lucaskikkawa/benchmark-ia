@@ -1,0 +1,4 @@
+Os arquivos solicitados foram criados no diretório de trabalho:
+
+- [solucao.py](file:///tmp/bench-iysr0oz7/solucao.py): implementa a função pura [`classificar_mensagem`](file:///tmp/bench-iysr0oz7/solucao.py#L72-L120) utilizando apenas a biblioteca padrão, validando o tipo `str` (levantando `TypeError` para outros tipos sem codificar o texto), calculando `tamanho` em code points (`len(texto)`), verificando `urgente` pela presença exata da substring `"URGENTE"` e atribuindo `"vazia"` exclusivamente para `""`.
+- [SUPOSICOES.md](file:///tmp/bench-iysr0oz7/SUPOSICOES.md): documenta em UTF-8 as categorias adicionais (`"reclamacao"`, `"duvida"`, `"pedido"`, `"elogio"`, `"sem_conteudo"` e `"outro"`), os sinais/palavras-chave e a ordem de precedência, a normalização de caixa e acentos para classificação e o tratamento de textos sem palavras.

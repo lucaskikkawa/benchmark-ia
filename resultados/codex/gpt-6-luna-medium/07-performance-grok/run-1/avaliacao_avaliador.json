@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/07-performance-grok/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "07-performance-grok",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 11.597,
+ "testes_passados": 12,
+ "testes_total": 12,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Contagem linear correta, bordas cobertas. Caso x+x sem ramo isolado nem C(n,2). Validação de elementos dentro do laço. Docstring sem nota sobre duplicatas.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0,
+   "justificativa": "Trata bordas e tipos corretamente, mas validação no laço afeta manutenção, usa dict manual sem Counter e docstring omite tipos e duplicatas.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.0,
+ "nota_final_10": 8.8,
+ "reexecucao_testes": {
+  "total": 12,
+  "passados": 12,
+  "pct": 100.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.65,
+ "nota_antiga_com_penalidade": 8.65
+}

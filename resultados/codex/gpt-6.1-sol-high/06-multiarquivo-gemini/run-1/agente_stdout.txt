@@ -1,0 +1,3 @@
+Pacote `eventhub` implementado nos quatro arquivos exigidos, com prioridades, inscrições, histórico e tratamento de falhas conforme o enunciado.
+
+Validação concluída: 7 testes passaram com `python3`.

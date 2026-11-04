@@ -1,0 +1,3 @@
+Criei [telefones.py](/tmp/bench-qlojg4b1/telefones.py) com as funções de normalização e extração, incluindo validação do DDD e do tamanho do número. Registrei as decisões sobre casos ambíguos em [SUPOSICOES.md](/tmp/bench-qlojg4b1/SUPOSICOES.md).
+
+Não executei testes.

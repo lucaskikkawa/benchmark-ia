@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.O enunciado pede um cliente com retry. Vou ler `fake_api.py` e conferir o que já existe no diretório.O contrato está claro: validar os parâmetros, repetir só falhas transitórias e devolver o resultado intacto. Vou implementar `cliente.py` e testar com a `FakeAPI`.Criei `cliente.py` com `buscar_com_retry`. O arquivo `fake_api.py` permanece como estava.
+
+A função valida `tentativas`, `timeout` e `backoff` antes de chamar a API ou dormir. Em seguida chama `api.get(chave, timeout=timeout)` até `tentativas` vezes e devolve o dict recebido, inclusive se estiver vazio. Só repete em `fake_api.ErroTemporario`, `TimeoutError` e subclasses. Depois da falha de índice `i`, e só quando ainda há outra tentativa, chama `dormir(backoff * 2**i)`, mesmo com atraso zero. A última falha transitória é relançada; `ErroPermanente`, qualquer outra exceção e erro de `dormir` seguem imediatamente. Cada chamada recomeça o backoff em zero.
+
+Testei sucesso imediato, dict vazio, chaves Unicode, a fórmula de atraso até 40 tentativas, subclasses, exceções de `dormir` e a `FakeAPI`.

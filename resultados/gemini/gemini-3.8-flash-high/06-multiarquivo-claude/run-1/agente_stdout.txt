@@ -1,0 +1,6 @@
+O pacote `biblioteca` foi criado com sucesso com exatamente os 4 arquivos solicitados:
+
+- [`biblioteca/__init__.py`](file:///tmp/bench-acyfdsgj/biblioteca/__init__.py): Reexporta os 10 símbolos públicos e define `__all__`.
+- [`biblioteca/modelos.py`](file:///tmp/bench-acyfdsgj/biblioteca/modelos.py): Dataclasses imutáveis `Livro` (com validação em `__post_init__`), `Emprestimo` e a hierarquia de exceções derivada de `BibliotecaErro`.
+- [`biblioteca/acervo.py`](file:///tmp/bench-acyfdsgj/biblioteca/acervo.py): Classe `Acervo` com métodos `adicionar`, `obter`, `buscar_por_autor` (comparações com `str.casefold()` e ordenação por `titulo` e `isbn`), `__len__` e `__contains__`.
+- [`biblioteca/emprestimos.py`](file:///tmp/bench-acyfdsgj/biblioteca/emprestimos.py): Classe `ServicoEmprestimos` gerenciando empréstimos ativos, cálculo e arredondamento de multas na devolução, renovações, verificação de disponibilidade e listagem de empréstimos em atraso.

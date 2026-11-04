@@ -1,0 +1,10 @@
+Criei o `otimizador.py` com a função `maior_subarray_soma`. Ela roda em tempo linear e uma chamada com 350.000 elementos levou cerca de 0,11 s, bem abaixo do limite de 5 s.
+
+**Como funciona:** a função percorre a lista uma vez, somando os elementos, e guarda em um dicionário a primeira posição em que cada soma acumulada aparece. A soma vazia (0) fica registrada como se estivesse antes do primeiro elemento. Na posição `i`, se a soma acumulada menos `alvo` já apareceu antes, existe um subarray que termina em `i` e soma exatamente `alvo`. Como sempre guardo a primeira ocorrência de cada soma, esse subarray é o mais longo possível com fim em `i`.
+
+**Validação:** a função lança `TypeError` se `numeros` não for uma `list`, se `alvo` não for exatamente `int` ou se algum elemento não for exatamente `int`. Valores `bool` são rejeitados nos dois casos.
+
+**Testes que rodei:**
+- Os quatro exemplos do enunciado deram os resultados esperados (4, 2, 0, 0).
+- As entradas com tipo errado (`bool`, tupla, `float`) lançaram `TypeError`.
+- Em 2.000 listas pequenas aleatórias, o resultado bateu com uma solução de força bruta.

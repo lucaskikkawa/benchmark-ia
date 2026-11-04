@@ -1,0 +1,3 @@
+Criei [cliente.py](cliente.py) com validação, retry, backoff exponencial e timeout que abandona a espera. `loja_api.py` permaneceu intacto.
+
+Os testes de ordem, repetição, erros, backoff, timeout e recuperação passaram.

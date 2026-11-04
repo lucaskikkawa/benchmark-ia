@@ -1,7 +1,5 @@
-Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede unir intervalos fechados em `solucao.py`. Vou implementar a função e testar os casos do enunciado.`solucao.py` define `unir_intervalos`, que devolve a união dos intervalos fechados ordenada pelo início.
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede a união de intervalos fechados com recorte opcional. Vou implementar a varredura em `solucao.py` e testar os casos da especificação.`solucao.py` define `unir_intervalos`, que devolve a união dos intervalos fechados ordenada por início.
 
-- Intervalos que se sobrepõem ou compartilham uma extremidade são fundidos. Os separados por uma unidade permanecem distintos: `(1, 2)` e `(3, 4)` não se unem.
-- A entrada vazia devolve `[]`. Um par com início maior que o fim levanta `ValueError`.
-- A lista recebida não é alterada, e um gerador é consumido uma única vez.
-
-O exemplo do enunciado retorna `[(1, 8), (10, 10)]`.
+- Intervalos que se sobrepõem ou compartilham uma extremidade são fundidos. Um vão de uma unidade, como `(1, 2)` e `(3, 4)`, permanece separado.
+- Com `limites=(minimo, maximo)`, cada intervalo é recortado antes da união. Limites ou pares invertidos lançam `ValueError`, e todos os pares originais são validados.
+- A entrada não é alterada. A função aceita geradores e usa ordenação seguida de varredura, em tempo O(n log n).

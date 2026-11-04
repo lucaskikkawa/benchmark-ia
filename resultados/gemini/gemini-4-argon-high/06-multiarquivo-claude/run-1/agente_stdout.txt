@@ -1,0 +1,6 @@
+O pacote `biblioteca` foi criado com os quatro módulos solicitados:
+
+- [__init__.py](file:///tmp/bench-k_s34lqm/biblioteca/__init__.py): reexporta a API pública e define `__all__` com os 10 nomes exigidos.
+- [modelos.py](file:///tmp/bench-k_s34lqm/biblioteca/modelos.py): implementa as dataclasses imutáveis [`Livro`](file:///tmp/bench-k_s34lqm/biblioteca/modelos.py#L29-L49) e [`Emprestimo`](file:///tmp/bench-k_s34lqm/biblioteca/modelos.py#L53-L58), além da hierarquia de exceções derivada de [`BibliotecaErro`](file:///tmp/bench-k_s34lqm/biblioteca/modelos.py#L5-L25).
+- [acervo.py](file:///tmp/bench-k_s34lqm/biblioteca/acervo.py): implementa [`Acervo`](file:///tmp/bench-k_s34lqm/biblioteca/acervo.py#L4-L35) com cadastro, obtenção por ISBN, busca por autor usando `casefold()` e suporte a `len()` e `in`.
+- [emprestimos.py](file:///tmp/bench-k_s34lqm/biblioteca/emprestimos.py): implementa [`ServicoEmprestimos`](file:///tmp/bench-k_s34lqm/biblioteca/emprestimos.py#L14-L120) com controle de empréstimos, devoluções com cálculo de multa, renovações e consulta de empréstimos ativos e atrasados.

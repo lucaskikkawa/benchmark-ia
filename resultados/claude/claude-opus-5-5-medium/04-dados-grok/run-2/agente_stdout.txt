@@ -1,0 +1,15 @@
+Criei o `solucao.py` com a função `consolidar`, usando só a biblioteca padrão. Testei à mão com um CSV temporário fora do diretório e apaguei depois; não ficou nenhuma amostra aqui.
+
+**O que os testes cobriram:**
+- O exemplo do enunciado dá o resultado esperado: média 45, `a1` estoura e é o `pior_id`.
+- No empate de duração, `a10` vence `a2`.
+- Funcionam: fim de linha `\r\n`, campo entre aspas com vírgula (`"São, Paulo"`), strip de equipe e prioridade, linhas em branco e `,,,,` ignoradas, duração que atravessa a virada do ano.
+- Dão `ValueError`: cabeçalho com BOM, arquivo vazio, data inexistente (`2024-02-30`), data fora do formato (`2024-3-01`) e id repetido depois do strip (`a` e ` a `).
+
+Não testei as regras do JSON de SLA: chave extra, prioridade faltando, limite `bool`, `float` ou menor que 1, e JSON inválido. O código trata todos esses casos.
+
+**Decisões onde o enunciado não era explícito:**
+- **Datas:** exijo o formato exato `YYYY-MM-DDTHH:MM` com uma expressão regular antes de converter. Sem isso, `strptime` aceitaria datas com um dígito só, como `2024-3-1`.
+- **CSV malformado:** aspas quebradas fazem o `csv` lançar um erro próprio, que não é `ValueError`. Converto esse erro em `ValueError`.
+- **Linhas em branco antes do cabeçalho:** a primeira linha do arquivo é sempre tratada como cabeçalho. Então uma linha em branco no topo dá `ValueError`.
+- **Arquivo de saída:** só é gravado se a validação inteira passar. Com entrada inválida, nada é escrito.

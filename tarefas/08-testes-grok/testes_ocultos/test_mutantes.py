@@ -66,7 +66,11 @@ def _executar(origem_modulo: Path) -> tuple[int, str]:
                 check=False,
             )
         except subprocess.TimeoutExpired as exc:
-            saida = (exc.stdout or "") + (exc.stderr or "")
+            # TimeoutExpired traz bytes mesmo com text=True: decodifica antes de concatenar
+            saida = "".join(
+                p.decode(errors="replace") if isinstance(p, bytes) else (p or "")
+                for p in (exc.stdout, exc.stderr)
+            )
             return 1, saida
         saida = (proc.stdout or "") + (proc.stderr or "")
         return proc.returncode, saida

@@ -1,0 +1,13 @@
+Criei `agenda_cli.py` neste diretório, só com a biblioteca padrão. Os 19 testes que escrevi (`test_agenda_cli.py`, rodados com `unittest` e `subprocess`) passam.
+
+O script cobre os três subcomandos com `argparse`, o arquivo JSON com validação completa, e os códigos de saída: 0 em sucesso, 2 para erros de regra (`erro: MENSAGEM` no stderr, stdout vazio) e para erros de uso do `argparse`.
+
+Decisões que tomei onde o enunciado não fixa o comportamento:
+
+- **Ordem das validações no `adicionar`:** primeiro os argumentos (`titulo vazio`, `titulo invalido`, `prazo invalido`), depois o arquivo. Assim um erro de argumento nunca cria nem altera o arquivo.
+- **`--id` inválido** (por exemplo `abc`) é tratado pelo `argparse` com código 2 e mensagem de uso, não com `erro: ...`.
+- **Chave JSON repetida** no arquivo é rejeitada como `arquivo invalido`. `NaN` e `Infinity` também.
+- **Falha de escrita** (por exemplo, diretório pai inexistente) gera `erro: nao foi possivel gravar arquivo`, mensagem que não está no enunciado.
+- **Abreviações de opções** (`--arq` por `--arquivo`) são desligadas, para que só valham os nomes exatos.
+
+Não criei nenhum documento no Claude Docs, porque você não pediu.

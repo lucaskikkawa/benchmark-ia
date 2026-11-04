@@ -1,0 +1,158 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-fs_1511x
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189e5-8b0c-7692-9977-88782a4ce8f2
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:01:26.296639Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório, implementar a solução e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!'"\\.git'" in /tmp/bench-fs_1511x
+ succeeded in 0ms:
+/tmp/bench-fs_1511x
+enunciado.md
+
+exec
+/bin/bash -lc "cat enunciado.md && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!'"\\.git'" in /tmp/bench-fs_1511x
+ succeeded in 0ms:
+# Tarefa: CLI de frequência de palavras
+
+Crie o script `freq.py` no diretório de trabalho, executável como `python freq.py [opções] ARQUIVO`,
+usando `argparse` e apenas a biblioteca padrão. Ele conta as palavras de um arquivo de texto e
+imprime as mais frequentes.
+
+## Argumentos
+
+| argumento | descrição |
+|---|---|
+| `ARQUIVO` (posicional, obrigatório) | caminho do arquivo de texto (UTF-8). `-` significa ler da entrada padrão. |
+| `-n N`, `--top N` | quantas palavras mostrar; inteiro `>= 1`; padrão `10`. |
+| `-m K`, `--min-len K` | ignora palavras com menos de `K` caracteres; inteiro `>= 1`; padrão `1`. |
+| `-i`, `--ignore-case` | converte as palavras para minúsculas antes de contar. Sem a flag, `Casa` e `casa` são palavras diferentes. |
+| `-x PALAVRA`, `--excluir PALAVRA` | ignora essa palavra; pode ser repetida (`-x a -x o`). Com `-i`, a palavra excluída também passa por `str.lower()` antes da comparação; sem `-i`, a comparação é exata. |
+| `--formato {texto,json}` | formato de saída; padrão `texto`. |
+
+## Regras
+
+- **Palavra** = sequência máxima de letras Unicode (dígitos, `_` e pontuação separam palavras),
+  isto é, o que casa com a regex `[^\W\d_]+` aplicada ao texto **original** (sem normalização Unicode).
+- Ordem de processamento: (1) extrair as palavras do texto original; (2) com `-i`, aplicar `str.lower()`
+  a **cada palavra extraída** (não use `casefold`; `Straße` e `STRASSE` continuam diferentes); (3) descartar
+  as com menos de `K` caracteres e as excluídas por `-x`; (4) contar.
+- Ordenação: contagem decrescente; empate → palavra em ordem crescente (comparação simples de `str`).
+- Saída `texto`: uma linha por palavra no formato `palavra<TAB>contagem` (ex.: `casa\t3`), em stdout.
+- Saída `json`: uma lista JSON em stdout, ex.: `[{"palavra": "casa", "contagem": 3}]`.
+- Sem palavras a mostrar: saída `texto` vazia (nada impresso); `json` imprime `[]`. Código de saída 0.
+
+## Erros e códigos de saída
+
+- `0`: sucesso.
+- `2`: argumentos inválidos (opção desconhecida, `ARQUIVO` ausente, `N`/`K` não inteiros ou `< 1`,
+  formato inválido) — use os erros do próprio `argparse` (`parser.error`/`type=`), que imprimem a
+  mensagem de uso em stderr.
+- `1`: erro ao ler a entrada (arquivo inexistente, é um diretório, sem permissão, conteúdo que não é
+  UTF-8 válido — inclusive quando a entrada é a padrão, `-`). Imprima em **stderr** uma única linha
+  começando com `erro: ` e nada em stdout. O resultado não pode depender da codificação/locale do
+  terminal: a entrada (arquivo ou stdin) é sempre decodificada como UTF-8 estrito.
+
+Exemplo:
+
+```
+$ printf 'A casa, a CASA; a casa!\n' > t.txt
+$ python freq.py -i -n 2 t.txt
+a	3
+casa	3
+```
+enunciado.md
+
+apply patch
+patch: completed
+/tmp/bench-fs_1511x/freq.py
+diff --git a/freq.py b/freq.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..45389e7c7797ed6d72e5a3a5ce9d7535bb806fda
+--- /dev/null
++++ b/freq.py
+@@ -0,0 +1,71 @@
++#!/usr/bin/env python3
++"""Conta palavras de um arquivo UTF-8 ou da entrada padrão."""
++
++import argparse
++from collections import Counter
++import json
++import re
++import sys
++
++
++def inteiro_positivo(valor):
++    """Tipo de argumento para inteiros maiores ou iguais a um."""
++    try:
++        numero = int(valor)
++    except ValueError:
++        raise argparse.ArgumentTypeError("deve ser um inteiro >= 1") from None
++    if numero < 1:
++        raise argparse.ArgumentTypeError("deve ser um inteiro >= 1")
++    return numero
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("arquivo", metavar="ARQUIVO", help="arquivo UTF-8; - para stdin")
++    parser.add_argument("-n", "--top", type=inteiro_positivo, default=10, metavar="N")
++    parser.add_argument("-m", "--min-len", type=inteiro_positivo, default=1, metavar="K")
++    parser.add_argument("-i", "--ignore-case", action="store_true")
++    parser.add_argument("-x", "--excluir", action="append", default=[], metavar="PALAVRA")
++    parser.add_argument("--formato", choices=("texto", "json"), default="texto")
++    args = parser.parse_args(argv)
++
++    try:
++        # Ler bytes também em stdin evita a decodificação dependente do locale.
++        if args.arquivo == "-":
++            dados = sys.stdin.buffer.read()
++        else:
++            with open(args.arquivo, "rb") as entrada:
++                dados = entrada.read()
++        texto = dados.decode("utf-8", errors="strict")
++    except (OSError, UnicodeError, ValueError) as erro:
++        mensagem = " ".join(str(erro).splitlines())
++        print("erro: " + mensagem, file=sys.stderr)
++        return 1
++
++    excluidas = set(args.excluir)
++    if args.ignore_case:
++        excluidas = {palavra.lower() for palavra in excluidas}
++
++    contagens = Counter()
++    for resultado in re.finditer(r"[^\W\d_]+", texto):
++        palavra = resultado.group()
++        if args.ignore_case:
++            palavra = palavra.lower()
++        if len(palavra) >= args.min_len and palavra not in excluidas:
++            contagens[palavra] += 1
++
++    frequentes = sorted(contagens.items(), key=lambda item: (-item[1], item[0]))[:args.top]
++    if args.formato == "json":
++        saida = json.dumps(
++            [{"palavra": palavra, "contagem": total} for palavra, total in frequentes],
++            ensure_ascii=False,
++        ) + "\n"
++    else:
++        saida = "".join(f"{palavra}\t{total}\n" for palavra, total in frequentes)
++
++    sys.stdout.buffer.write(saida.encode("utf-8"))
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+

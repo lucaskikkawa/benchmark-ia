@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "medium",
+ "tarefa": "02-bug-claude",
+ "tipo": "02-bug",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 267.232,
+ "testes_passados": 26,
+ "testes_total": 26,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Corrige as bordas e preserva a API, mas usa sort() na lista local em vez de sorted() e não comenta a extensão do fim com max.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "If extra para vazio e extensão sem max deixam o laço menos direto. Bordas ok: vazio, ordem sem mutar, <=, contido, ValueError. Sem sorted/max; tipos saíram; docstring sem comentário.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.95
+}

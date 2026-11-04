@@ -1,0 +1,258 @@
+FFFFFFFF.FFFFFFFFFFF                                                     [100%]
+=================================== FAILURES ===================================
+________________________ test_instancias_independentes _________________________
+
+    def test_instancias_independentes():
+        c1 = CarrinhoDeCompras()
+        c2 = CarrinhoDeCompras()
+        c1.adicionar_item("Livro", 50.0, 1)
+        assert [item["nome"] for item in c1.listar_itens()] == ["Livro"]
+>       assert c2.listar_itens() == []
+E       AssertionError: assert [{'nome': 'Li...total': 50.0}] == []
+E         
+E         Left contains one more item: {'nome': 'Livro', 'preco': 50.0, 'quantidade': 1, 'total': 50.0}
+E         Use -v to get more diff
+
+testes_ocultos/test_carrinho.py:10: AssertionError
+___________________ test_adicionar_item_valido_e_atualizacao ___________________
+
+    def test_adicionar_item_valido_e_atualizacao():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Caneta", 2.50, 2)
+>       assert c.calcular_subtotal() == 5.0
+E       assert 55.0 == 5.0
+E        +  where 55.0 = calcular_subtotal()
+E        +    where calcular_subtotal = <carrinho.CarrinhoDeCompras object at 0x7f14feb8c6b0>.calcular_subtotal
+
+testes_ocultos/test_carrinho.py:16: AssertionError
+____________________ test_adicionar_item_valores_invalidos _____________________
+
+    def test_adicionar_item_valores_invalidos():
+        c = CarrinhoDeCompras()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+testes_ocultos/test_carrinho.py:28: Failed
+______________________ test_remover_item_parcial_e_total _______________________
+
+    def test_remover_item_parcial_e_total():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Borracha", 1.50, 5)
+        c.remover_item("Borracha", 2)
+>       assert c.listar_itens()[0]["quantidade"] == 3
+E       assert 1 == 3
+
+testes_ocultos/test_carrinho.py:42: AssertionError
+__________________ test_remover_quantidade_maior_que_estoque ___________________
+
+    def test_remover_quantidade_maior_que_estoque():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Livro", 10.0, 2)
+        c.remover_item("Livro", 3)
+>       assert c.listar_itens() == []
+E       AssertionError: assert [{'nome': 'Li...'total': 4.5}] == []
+E         
+E         Left contains 4 more items, first extra item: {'nome': 'Livro', 'preco': 10.0, 'quantidade': 0, 'total': 0.0}
+E         Use -v to get more diff
+
+testes_ocultos/test_carrinho.py:57: AssertionError
+______________ test_carrinho_vazio_e_remocao_de_cupom_inexistente ______________
+
+    def test_carrinho_vazio_e_remocao_de_cupom_inexistente():
+        c = CarrinhoDeCompras()
+        c.remover_cupom()
+>       assert c.listar_itens() == []
+E       AssertionError: assert [{'nome': 'Li...'total': 4.5}] == []
+E         
+E         Left contains 4 more items, first extra item: {'nome': 'Livro', 'preco': 10.0, 'quantidade': 0, 'total': 0.0}
+E         Use -v to get more diff
+
+testes_ocultos/test_carrinho.py:64: AssertionError
+______________________ test_cupom_zero_substitui_anterior ______________________
+
+    def test_cupom_zero_substitui_anterior():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Livro", 100.0)
+        c.aplicar_cupom("METADE", 50)
+        c.aplicar_cupom("ZERO", 0)
+        assert c.calcular_desconto() == 0.0
+>       assert c.calcular_total() == 100.0
+E       assert 109.5 == 100.0
+E        +  where 109.5 = calcular_total()
+E        +    where calcular_total = <carrinho.CarrinhoDeCompras object at 0x7f14febb0950>.calcular_total
+
+testes_ocultos/test_carrinho.py:76: AssertionError
+___________________ test_arredondamento_do_desconto_e_total ____________________
+
+    def test_arredondamento_do_desconto_e_total():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("A", 0.334)
+        c.adicionar_item("B", 0.334)
+>       assert c.calcular_subtotal() == 0.67
+E       assert 110.168 == 0.67
+E        +  where 110.168 = calcular_subtotal()
+E        +    where calcular_subtotal = <carrinho.CarrinhoDeCompras object at 0x7f14febb1790>.calcular_subtotal
+
+testes_ocultos/test_carrinho.py:85: AssertionError
+___________________________ test_remover_item_erros ____________________________
+
+    def test_remover_item_erros():
+        c = CarrinhoDeCompras()
+        with pytest.raises(KeyError):
+            c.remover_item("Inexistente")
+        c.adicionar_item("Régua", 4.0, 1)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+testes_ocultos/test_carrinho.py:103: Failed
+_________________________ test_aplicar_e_remover_cupom _________________________
+
+    def test_aplicar_e_remover_cupom():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Mochila", 100.0, 1)
+        c.aplicar_cupom("PROMO10", 10.0)
+>       assert c.calcular_subtotal() == 100.0
+E       assert 214.168 == 100.0
+E        +  where 214.168 = calcular_subtotal()
+E        +    where calcular_subtotal = <carrinho.CarrinhoDeCompras object at 0x7f14febb3a10>.calcular_subtotal
+
+testes_ocultos/test_carrinho.py:113: AssertionError
+_________________________ test_cupom_valores_invalidos _________________________
+
+    def test_cupom_valores_invalidos():
+        c = CarrinhoDeCompras()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+testes_ocultos/test_carrinho.py:124: Failed
+______________________ test_arredondamento_e_desconto_100 ______________________
+
+    def test_arredondamento_e_desconto_100():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Item 1", 10.333, 1)
+        c.adicionar_item("Item 2", 20.333, 2)
+>       assert c.calcular_subtotal() == 51.0
+E       assert 265.16700000000003 == 51.0
+E        +  where 265.16700000000003 = calcular_subtotal()
+E        +    where calcular_subtotal = <carrinho.CarrinhoDeCompras object at 0x7f14febdc770>.calcular_subtotal
+
+testes_ocultos/test_carrinho.py:134: AssertionError
+____________________ test_listar_itens_ordenacao_alfabetica ____________________
+
+    def test_listar_itens_ordenacao_alfabetica():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Zebra de Pelúcia", 50.0, 1)
+        c.adicionar_item("Apontador", 5.0, 2)
+        c.adicionar_item("Caderno", 15.0, 3)
+        itens = c.listar_itens()
+        nomes = [item["nome"] for item in itens]
+>       assert nomes == ["Apontador", "Caderno", "Zebra de Pelúcia"]
+E       AssertionError: assert ['Livro', 'Ca...'A', 'B', ...] == ['Apontador',...a de Pelúcia']
+E         
+E         At index 0 diff: 'Livro' != 'Apontador'
+E         Left contains 10 more items, first extra item: 'Borracha'
+E         Use -v to get more diff
+
+testes_ocultos/test_carrinho.py:146: AssertionError
+________________ test_isolamento_profundo_dicionario_construtor ________________
+
+    def test_isolamento_profundo_dicionario_construtor():
+        dict_externo = {"Caneta": {"preco": 2.5, "quantidade": 2}}
+        c = CarrinhoDeCompras(dict_externo)
+        # Modificações no dict original ou no dict aninhado não afetam o carrinho
+        dict_externo["Caneta"]["preco"] = 999.0
+        dict_externo["Caneta"]["quantidade"] = 100
+        dict_externo["Novo"] = {"preco": 10.0, "quantidade": 1}
+    
+        itens = c.listar_itens()
+>       assert len(itens) == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len([{'nome': 'Caneta', 'preco': 999.0, 'quantidade': 100, 'total': 99900.0}, {'nome': 'Novo', 'preco': 10.0, 'quantidade': 1, 'total': 10.0}])
+
+testes_ocultos/test_carrinho.py:158: AssertionError
+___________________ test_isolamento_dicionarios_listar_itens ___________________
+
+    def test_isolamento_dicionarios_listar_itens():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Lápis", 2.0, 5)
+        itens = c.listar_itens()
+        # Modifica o dict retornado
+        itens[0]["preco"] = 100.0
+        itens[0]["quantidade"] = 999
+        # Estado interno permanece inalterado
+>       assert c.calcular_subtotal() == 10.0
+E       assert 380.16700000000003 == 10.0
+E        +  where 380.16700000000003 = calcular_subtotal()
+E        +    where calcular_subtotal = <carrinho.CarrinhoDeCompras object at 0x7f14febb24b0>.calcular_subtotal
+
+testes_ocultos/test_carrinho.py:172: AssertionError
+_____________________ test_validacao_tipos_adicionar_item ______________________
+
+    def test_validacao_tipos_adicionar_item():
+        c = CarrinhoDeCompras()
+        # Tipos incorretos para nome
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+testes_ocultos/test_carrinho.py:179: Failed
+__________________________ test_validacao_tipos_cupom __________________________
+
+    def test_validacao_tipos_cupom():
+        c = CarrinhoDeCompras()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+testes_ocultos/test_carrinho.py:201: Failed
+__________________ test_remover_item_tipo_quantidade_invalido __________________
+
+    def test_remover_item_tipo_quantidade_invalido():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Livro", 30.0, 5)
+>       with pytest.raises(TypeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE TypeError
+
+testes_ocultos/test_carrinho.py:216: Failed
+_______________________ test_ordenacao_unicode_e_acentos _______________________
+
+    def test_ordenacao_unicode_e_acentos():
+        c = CarrinhoDeCompras()
+        c.adicionar_item("Óleo", 10.0, 1)
+        c.adicionar_item("Água", 3.0, 2)
+        c.adicionar_item("Café", 15.0, 1)
+        c.adicionar_item("Açúcar", 5.0, 2)
+        nomes = [it["nome"] for it in c.listar_itens()]
+>       assert nomes == sorted(["Óleo", "Água", "Café", "Açúcar"])
+E       AssertionError: assert ['Livro', 'Ca...'A', 'B', ...] == ['Açúcar', 'C...Água', 'Óleo']
+E         
+E         At index 0 diff: 'Livro' != 'Açúcar'
+E         Left contains 15 more items, first extra item: 'A'
+E         Use -v to get more diff
+
+testes_ocultos/test_carrinho.py:229: AssertionError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_carrinho.py::test_instancias_independentes - Asser...
+FAILED testes_ocultos/test_carrinho.py::test_adicionar_item_valido_e_atualizacao
+FAILED testes_ocultos/test_carrinho.py::test_adicionar_item_valores_invalidos
+FAILED testes_ocultos/test_carrinho.py::test_remover_item_parcial_e_total - a...
+FAILED testes_ocultos/test_carrinho.py::test_remover_quantidade_maior_que_estoque
+FAILED testes_ocultos/test_carrinho.py::test_carrinho_vazio_e_remocao_de_cupom_inexistente
+FAILED testes_ocultos/test_carrinho.py::test_cupom_zero_substitui_anterior - ...
+FAILED testes_ocultos/test_carrinho.py::test_arredondamento_do_desconto_e_total
+FAILED testes_ocultos/test_carrinho.py::test_remover_item_erros - Failed: DID...
+FAILED testes_ocultos/test_carrinho.py::test_aplicar_e_remover_cupom - assert...
+FAILED testes_ocultos/test_carrinho.py::test_cupom_valores_invalidos - Failed...
+FAILED testes_ocultos/test_carrinho.py::test_arredondamento_e_desconto_100 - ...
+FAILED testes_ocultos/test_carrinho.py::test_listar_itens_ordenacao_alfabetica
+FAILED testes_ocultos/test_carrinho.py::test_isolamento_profundo_dicionario_construtor
+FAILED testes_ocultos/test_carrinho.py::test_isolamento_dicionarios_listar_itens
+FAILED testes_ocultos/test_carrinho.py::test_validacao_tipos_adicionar_item
+FAILED testes_ocultos/test_carrinho.py::test_validacao_tipos_cupom - Failed: ...
+FAILED testes_ocultos/test_carrinho.py::test_remover_item_tipo_quantidade_invalido
+FAILED testes_ocultos/test_carrinho.py::test_ordenacao_unicode_e_acentos - As...
+19 failed, 1 passed in 0.09s

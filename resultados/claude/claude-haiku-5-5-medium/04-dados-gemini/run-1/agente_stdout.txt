@@ -1,0 +1,14 @@
+Implementei `processar_vendas` em `analisador_vendas.py`, na raiz deste diretório. Testei com um CSV de exemplo (BOM, espaços, linhas inválidas, status diferente), com um CSV vazio e com os casos de erro. Os resultados batem com a especificação.
+
+O que a função faz:
+- **Validação:** levanta `FileNotFoundError` se o caminho não for um arquivo regular, `TypeError` se `top_n` não for `int` exato e `ValueError` se `top_n < 1`. Na ordem em que o enunciado lista.
+- **Leitura:** UTF-8, remove BOM e espaços dos nomes de colunas, `cliente` e `categoria`. O filtro de `status` ignora maiúsculas e espaços nas pontas. Um arquivo de 0 bytes retorna métricas zeradas.
+- **Métricas:** totais arredondados a 2 casas, `por_categoria` em ordem alfabética, `top_clientes` ordenado por total decrescente e depois por nome crescente.
+- **Saída:** cria os diretórios pais que faltarem e grava o JSON com `indent=2` e `ensure_ascii=False`. Retorna o mesmo dicionário.
+
+Escolhas minhas onde o enunciado não definia:
+- Linhas com `cliente` ou `categoria` vazios são ignoradas, tratadas como inválidas.
+- Valores `nan` e `inf` são ignorados, além de não numéricos e negativos. Eles quebrariam as somas.
+- `ticket_medio` usa o `receita_total` já arredondado como numerador.
+
+Não criei arquivos de teste no diretório. Usei um subdiretório temporário e o removi, junto com o `__pycache__` gerado.

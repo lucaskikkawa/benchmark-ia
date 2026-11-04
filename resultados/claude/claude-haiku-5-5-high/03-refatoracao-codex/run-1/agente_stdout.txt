@@ -1,0 +1,21 @@
+Refatorei `pedidos.py` e a verificação passou. Não há git neste diretório, então não fiz commit.
+
+**O que mudou em `pedidos.py`:**
+- Nova função pública `subtotal(quantidade, preco_centavos, desconto_percentual=0)`, que calcula `quantidade * preco_centavos * (100 - desconto_percentual) // 100`.
+- `resumo_pedidos` chama `subtotal` uma vez por pedido, na ordem, inclusive com quantidade zero. A chamada usa o nome global, então substituir `subtotal` em tempo de execução afeta a função.
+- O valor retornado por `subtotal` alimenta tanto `total_centavos` quanto `por_categoria`. Não há agrupamento antes da delegação.
+- Os nomes opacos viraram `total_itens`, `total_centavos`, `subtotais_por_categoria`, `pedido` e `valor_linha`.
+- O iterável é percorrido uma única vez, então funciona com geradores. A entrada não é alterada, e cada chamada cria seus próprios acumuladores.
+
+**Escolhas que fiz:**
+- Mantive `pedido.get('desconto_percentual', 0)`, como no original.
+- Passei os argumentos de `subtotal` por posição.
+- Categorias são usadas exatamente como vêm, e as que somam zero continuam no dicionário, na ordem da primeira aparição.
+
+**Verificação** (script inline, sem arquivos novos no diretório):
+- Comparação com a versão original em 5.000 entradas aleatórias, com quantidade zero, desconto ausente, inteiros acima de 10^30 e categorias com espaço, caixa diferente ou Unicode não normalizado. Os resultados foram idênticos e a entrada não foi alterada.
+- Casos de borda da especificação: entrada vazia, categorias somando zero, truncamento por linha, gerador de passagem única.
+- Substituição de `subtotal` por um espião: foi chamada três vezes, na ordem dos pedidos, e o valor retornado foi usado nas duas agregações.
+- `python3 -I -m py_compile` passou no arquivo.
+
+Não criei um arquivo de testes permanente, já que a tarefa não pedia um. Se quiser, posso adicionar um `test_pedidos.py` com `unittest`.

@@ -1,0 +1,7 @@
+Implementado o módulo [cliente.py](file:///tmp/bench-bom5jzib/cliente.py) conforme especificado em [enunciado.md](file:///tmp/bench-bom5jzib/enunciado.md):
+
+- **Exceções**: [`ErroAPI`](file:///tmp/bench-bom5jzib/cliente.py#L14-L19), [`NaoEncontrado`](file:///tmp/bench-bom5jzib/cliente.py#L22-L26) (com `.status = 404`) e [`FalhaPermanente`](file:///tmp/bench-bom5jzib/cliente.py#L29-L39) (com `.tentativas` e encadeamento `__cause__` apenas quando a última falha foi exceção).
+- **[`ClienteAPI`](file:///tmp/bench-bom5jzib/cliente.py#L62-L192)**:
+  - Validação de parâmetros em [`__init__`](file:///tmp/bench-bom5jzib/cliente.py#L65-L108) e validação estrita de IDs inteiros (`>= 1`, rejeitando `bool`).
+  - [`obter_usuario`](file:///tmp/bench-bom5jzib/cliente.py#L134-L179) com retry para status `429`, `500`, `502`, `503`, `504` e exceções [`ErroConexao`](file:///tmp/bench-bom5jzib/fake_api.py#L26-L27) e [`TempoEsgotado`](file:///tmp/bench-bom5jzib/fake_api.py#L30-L31), cálculo de backoff exponencial sem overflow (`math.ldexp`), suporte a `Retry-After` (case-insensitive) em respostas `429` e controle de `orcamento_espera`.
+  - [`obter_varios`](file:///tmp/bench-bom5jzib/cliente.py#L181-L192) com validação prévia de todo o iterável antes de qualquer requisição, deduplicação mantendo a ordem de primeira aparição e mapeamento de `NaoEncontrado` para `None`.

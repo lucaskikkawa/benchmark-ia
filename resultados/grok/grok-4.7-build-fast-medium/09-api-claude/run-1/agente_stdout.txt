@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede um cliente com retentativa, backoff e orçamento de espera. Vou implementar `cliente.py` e conferir o comportamento contra a API simulada.`cliente.py` implementa `ClienteAPI` com retentativa, backoff e orçamento de espera em cima da `FakeAPI`.
+
+- `obter_usuario` repete apenas `429`, `500`, `502`, `503`, `504`, `ErroConexao` e `TempoEsgotado`, no máximo `max_tentativas` vezes. `404` vira `NaoEncontrado`; os outros status viram `ErroAPI` na hora, ambos com `.status`.
+- A espera é `min(backoff_max, backoff_base * 2 ** (n - 1))`, sem estourar com milhares de tentativas. Num `429`, um `Retry-After` numérico e finito substitui esse valor, também limitado por `backoff_max`.
+- Se a próxima espera ultrapassar `orcamento_espera`, a chamada desiste com `FalhaPermanente` (`.tentativas` é o número de requisições). A exceção da API só entra como causa quando a última falha foi uma exceção.
+- `obter_varios` valida todos os ids antes de qualquer requisição, pede cada id uma vez e mapeia `NaoEncontrado` para `None`.

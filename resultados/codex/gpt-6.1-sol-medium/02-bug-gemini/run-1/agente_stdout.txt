@@ -1,0 +1,3 @@
+Corrigi `carrinho.py` conforme o enunciado: isolamento dos dados, validações, remoção de itens, cupons, arredondamento e listagem ordenada.
+
+Criei `test_carrinho.py` e executei `python3 -m unittest -v`: os 8 testes passaram.

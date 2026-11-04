@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.Vou conferir como o `csv` trata linhas vazias e o BOM antes de escrever a solução.O exemplo fecha as regras de agregação. Vou implementar `solucao.py` e conferir o resultado contra o CSV.

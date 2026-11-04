@@ -1,0 +1,15 @@
+Criei `solucao.py` com `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão. Rodei casos manuais numa pasta temporária fora do diretório e todos deram o resultado esperado. Os testes não ficaram no repositório (apaguei a pasta e o `__pycache__`), e não deixei nenhuma amostra de entrada.
+
+**O que testei:**
+- O exemplo do enunciado gera a saída esperada: média 45 e `pior_id` igual a `a1`.
+- No empate de duração, `a10` vence `a2`.
+- Campos entre aspas com vírgula funcionam, assim como espaços em volta dos campos e chamados que atravessam a virada do ano.
+- Um CSV só com cabeçalho gera `{"equipes": []}`.
+- Dão `ValueError`: BOM no início, arquivo vazio, id duplicado depois do `strip`, data inexistente ou com formato errado, fechamento antes da abertura, prioridade `Alta`, número de colunas errado, e SLA com `bool`, `float`, vazio ou com chave extra.
+- Arquivo ausente dá `FileNotFoundError`.
+
+**Decisões onde o enunciado deixa margem:**
+- **Linhas vazias:** uma linha em que todos os campos ficam vazios depois do `strip` é ignorada mesmo que não tenha exatamente 5 colunas (por exemplo `,,,` ou uma linha só com espaços).
+- **Ordem dos erros:** os dois arquivos são lidos antes de qualquer validação. Assim, se um arquivo faltar, o erro é `FileNotFoundError`, mesmo que o outro seja inválido. Depois o SLA é validado antes do CSV.
+- **Cabeçalho:** precisa estar na primeira linha. Uma linha em branco antes dele dá `ValueError`.
+- **Erros e saída:** UTF-8 inválido e erros do módulo `csv` também viram `ValueError`. O arquivo de saída só é gravado se tudo for válido.

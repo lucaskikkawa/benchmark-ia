@@ -1,0 +1,5 @@
+O arquivo [solucao.py](file:///tmp/bench-o87s1trb/solucao.py) foi implementado com a função [`resumir_vendas`](file:///tmp/bench-o87s1trb/solucao.py#L16-L116), atendendo aos requisitos de [enunciado.md](file:///tmp/bench-o87s1trb/enunciado.md):
+
+- **Leitura e validação do cabeçalho**: suporte a UTF-8 com ou sem BOM (`utf-8-sig`), campos entre aspas no padrão CSV e verificação das colunas obrigatórias (`data`, `regiao`, `produto`, `quantidade`, `preco_unitario`, `status`), lançando `FileNotFoundError` para arquivo inexistente ou `ValueError` caso faltem colunas obrigatórias (sem criar ou alterar `saida`).
+- **Validação e filtragem por linha**: descarte de linhas totalmente vazias, contagem de `linhas_invalidas` independentemente do status, e filtragem de linhas válidas com `status` igual a `"concluida"` (case-insensitive).
+- **Agregação e saída**: cálculo por região ordenada alfabeticamente (`quantidade_total`, `total_vendas` arredondado em 2 casas e `produto_mais_vendido` com desempate alfabético), `total_geral` e escrita do JSON formatado (`ensure_ascii=False`, `indent=2`) criando diretórios pais se necessário.

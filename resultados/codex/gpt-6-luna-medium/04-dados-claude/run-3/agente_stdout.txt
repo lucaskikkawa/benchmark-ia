@@ -1,0 +1,3 @@
+Criei [solucao.py](/tmp/bench-ur5o9h1q/solucao.py) com a função `resumir_vendas`, incluindo leitura de CSV com BOM, validação e agregação por região, e gravação do JSON.
+
+Conferi o resultado com `vendas_exemplo.csv`; o resumo corresponde ao esperado no enunciado.

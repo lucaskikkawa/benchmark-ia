@@ -1,0 +1,13 @@
+{
+ "juiz_empresa": "grok",
+ "juiz_modelo": "grok-4.7-build-fast",
+ "itens": {
+  "legibilidade": 2,
+  "erros_bordas": 2,
+  "idiomatico": 2,
+  "manutenibilidade": 2,
+  "documentacao_instrucoes": 1
+ },
+ "rubrica_10": 9.0,
+ "nota_final_10": 9.7
+}

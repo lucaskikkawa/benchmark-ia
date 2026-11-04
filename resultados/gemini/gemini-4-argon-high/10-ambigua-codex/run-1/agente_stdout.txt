@@ -1,0 +1,4 @@
+A tarefa foi concluída:
+
+- Criado [organizador.py](file:///tmp/bench-7k9gmw16/organizador.py) com a função [`organizar_tarefas`](file:///tmp/bench-7k9gmw16/organizador.py#L20-L38), que filtra tarefas pendentes válidas (`concluida is False`), cria cópias rasas independentes para cada ocorrência (preservando campos extras e identidades de objetos internos sem mutar a entrada) e ordena por `prioridade` decrescente.
+- Criado [SUPOSICOES.md](file:///tmp/bench-7k9gmw16/SUPOSICOES.md) documentando as políticas de desempate (ordenação estável preservando a ordem de entrada) e de tratamento de entradas inválidas (filtragem de itens fora do domínio).

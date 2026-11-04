@@ -1,0 +1,509 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-3l6be0gc
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189c6-602b-77e0-854c-476273ef9e6b
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:27:24.064206Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para implementar e verificar a solução.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!.git'"'" in /tmp/bench-3l6be0gc
+ succeeded in 0ms:
+/tmp/bench-3l6be0gc
+carrinho.py
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-3l6be0gc
+ succeeded in 0ms:
+# 02 - Correção de Bugs no Carrinho de Compras
+
+Você recebeu o módulo `carrinho.py` que implementa a classe `CarrinhoDeCompras`. O código atual possui diversos bugs lógicos e falta de validações críticas.
+
+Sua tarefa é corrigir e refatorar o arquivo `carrinho.py` na raiz do diretório de trabalho, garantindo que ele passe em todos os testes e satisfaça as especificações abaixo.
+
+## Requisitos e Assinaturas
+
+A classe `CarrinhoDeCompras` deve conter os seguintes métodos:
+
+- `__init__(self, itens: dict | None = None) -> None`:
+  - Inicializa o carrinho. Instâncias diferentes NÃO devem compartilhar o dicionário de itens.
+  - Se `itens` for fornecido, deve criar uma cópia isolada (incluindo os dicionários internos de cada item) para garantir que alterações externas posteriores não modifiquem o carrinho.
+
+- `adicionar_item(self, nome: str, preco: float, quantidade: int = 1) -> None`:
+  - `nome` deve ser uma string não vazia (`isinstance(nome, str)` e `nome.strip() != ""`); caso contrário, levanta `ValueError` (se vazia/em branco) ou `TypeError` (se não for string).
+  - `preco` deve ser `int` ou `float` (rejeitando `bool`) estritamente positivo (`preco > 0`). Se `<= 0`, levanta `ValueError`; se não for numérico, levanta `TypeError`.
+  - `quantidade` deve ser um número inteiro (`type(quantidade) is int`) estritamente positivo (`quantidade > 0`). Se `<= 0`, levanta `ValueError`; se não for `int`, levanta `TypeError`.
+  - Se o item já existir no carrinho, incrementa a quantidade existente e atualiza o preço unitário para o novo valor informado.
+
+- `remover_item(self, nome: str, quantidade: int | None = None) -> None`:
+  - Se `nome` não estiver no carrinho, levanta `KeyError`.
+  - Se `quantidade` for informada e não for `int` (rejeitando `bool`), levanta `TypeError`.
+  - Se `quantidade` for informada e for `<= 0`, levanta `ValueError`.
+  - Se `quantidade is None` ou se `quantidade >= quantidade_atual`, remove completamente o item do carrinho.
+  - Se `quantidade < quantidade_atual`, subtrai a quantidade correspondente.
+
+- `aplicar_cupom(self, codigo: str, desconto_porcentagem: float) -> None`:
+  - `codigo` deve ser uma string não vazia (`isinstance(codigo, str)` e `codigo.strip() != ""`); caso contrário, levanta `ValueError` (se vazia/em branco) ou `TypeError` (se não for string).
+  - `desconto_porcentagem` deve ser `int` ou `float` (rejeitando `bool`) entre `0` e `100` (inclusive). Se menor que 0 ou maior que 100, levanta `ValueError`; se não for numérico, levanta `TypeError`.
+  - Substitui qualquer cupom anteriormente aplicado.
+
+- `remover_cupom(self) -> None`:
+  - Remove o cupom ativo (se não houver, não faz nada).
+
+- `calcular_subtotal(self) -> float`:
+  - Retorna a soma de `preco * quantidade` de todos os itens, arredondada para 2 casas decimais (`round(..., 2)`).
+
+- `calcular_desconto(self) -> float`:
+  - Se houver cupom ativo, retorna o valor do desconto calculado como `subtotal * (porcentagem / 100)`, arredondado para 2 casas decimais. Se não houver cupom, retorna `0.0`.
+
+- `calcular_total(self) -> float`:
+  - Retorna `subtotal - desconto`, arredondado para 2 casas decimais (nunca inferior a 0.0).
+
+- `listar_itens(self) -> list[dict]`:
+  - Retorna nova lista de novos dicionários com os itens presentes, **ordenados pelo nome do item usando a ordem lexicográfica padrão do Python (`sorted`, sem locale)**, inclusive para nomes com acentos:
+    ```python
+    [
+        {
+            "nome": "Caderno",
+            "preco": 15.5,
+            "quantidade": 2,
+            "total": 31.0,
+        },
+        ...
+    ]
+    ```
+  - Alterações nos dicionários retornados não devem impactar o estado interno do carrinho.
+
+exec
+/bin/bash -lc 'cat carrinho.py && ls -la' in /tmp/bench-3l6be0gc
+ succeeded in 0ms:
+class CarrinhoDeCompras:
+    # BUG 1: argumento mutável default compartilha estado entre instâncias
+    def __init__(self, itens={}):
+        self.itens = itens
+        self.cupom_desconto = None
+
+    def adicionar_item(self, nome: str, preco: float, quantidade: int = 1) -> None:
+        # BUG 2: não valida preço nem quantidade <= 0
+        if nome in self.itens:
+            self.itens[nome]["quantidade"] += quantidade
+            self.itens[nome]["preco"] = preco
+        else:
+            self.itens[nome] = {"preco": preco, "quantidade": quantidade}
+
+    def remover_item(self, nome: str, quantidade: int | None = None) -> None:
+        if nome not in self.itens:
+            raise KeyError(f"Item '{nome}' não encontrado no carrinho.")
+
+        # BUG 3: não valida quantidade <= 0 (deveria lançar ValueError)
+        # e não remove o item se quantidade for >= ao total atual
+        if quantidade is None:
+            del self.itens[nome]
+        else:
+            self.itens[nome]["quantidade"] -= quantidade
+            # BUG: não remove a chave se quantidade resultante for <= 0
+
+    def aplicar_cupom(self, codigo: str, desconto_porcentagem: float) -> None:
+        # BUG 4: não valida limites 0 a 100 de desconto_porcentagem
+        self.cupom_desconto = {"codigo": codigo, "porcentagem": desconto_porcentagem}
+
+    def remover_cupom(self) -> None:
+        self.cupom_desconto = None
+
+    def calcular_subtotal(self) -> float:
+        # BUG 5: ponto flutuante sem arredondamento
+        subtotal = 0.0
+        for item in self.itens.values():
+            subtotal += item["preco"] * item["quantidade"]
+        return subtotal
+
+    def calcular_desconto(self) -> float:
+        # BUG 6: lógica de desconto errada
+        if not self.cupom_desconto:
+            return 0.0
+        return self.calcular_subtotal() * self.cupom_desconto["porcentagem"]
+
+    def calcular_total(self) -> float:
+        return self.calcular_subtotal() - self.calcular_desconto()
+
+    def listar_itens(self) -> list[dict]:
+        resultado = []
+        for nome, dados in self.itens.items():
+            resultado.append({
+                "nome": nome,
+                "preco": dados["preco"],
+                "quantidade": dados["quantidade"],
+                "total": round(dados["preco"] * dados["quantidade"], 2)
+            })
+        return resultado
+total 12
+drwx------ 2 box box 4096 Oct 29 19:27 .
+drwxr-xr-x 3 box box   60 Oct 29 19:27 ..
+-rw-r--r-- 1 box box 2357 Oct 29 16:06 carrinho.py
+-rw-r--r-- 1 box box 3715 Oct 29 19:07 enunciado.md
+
+codex
+O módulo tem os problemas descritos: estado compartilhado, falta de validações e cálculo incorreto do desconto. Vou corrigir esses pontos e verificar também o isolamento dos dados e a ordenação dos nomes com acentos.
+apply patch
+patch: completed
+/tmp/bench-3l6be0gc/carrinho.py
+diff --git a/carrinho.py b/carrinho.py
+index 86b1de8c9d9db6df04d0b8e6f3bac60e03c72f24..d894f19c6a3e8baf914730b14833af19c5bca5d9
+--- a/carrinho.py
++++ b/carrinho.py
+@@ -1,11 +1,25 @@
++from copy import deepcopy
++
++
+ class CarrinhoDeCompras:
+-    # BUG 1: argumento mutável default compartilha estado entre instâncias
+-    def __init__(self, itens={}):
+-        self.itens = itens
++    def __init__(self, itens: dict | None = None) -> None:
++        self.itens = deepcopy(itens) if itens is not None else {}
+         self.cupom_desconto = None
+ 
+     def adicionar_item(self, nome: str, preco: float, quantidade: int = 1) -> None:
+-        # BUG 2: não valida preço nem quantidade <= 0
++        if not isinstance(nome, str):
++            raise TypeError("O nome deve ser uma string.")
++        if not nome.strip():
++            raise ValueError("O nome não pode ser vazio.")
++        if isinstance(preco, bool) or not isinstance(preco, (int, float)):
++            raise TypeError("O preço deve ser um número.")
++        if not preco > 0:
++            raise ValueError("O preço deve ser estritamente positivo.")
++        if type(quantidade) is not int:
++            raise TypeError("A quantidade deve ser um inteiro.")
++        if quantidade <= 0:
++            raise ValueError("A quantidade deve ser estritamente positiva.")
++
+         if nome in self.itens:
+             self.itens[nome]["quantidade"] += quantidade
+             self.itens[nome]["preco"] = preco
+@@ -16,40 +30,55 @@
+         if nome not in self.itens:
+             raise KeyError(f"Item '{nome}' não encontrado no carrinho.")
+ 
+-        # BUG 3: não valida quantidade <= 0 (deveria lançar ValueError)
+-        # e não remove o item se quantidade for >= ao total atual
+-        if quantidade is None:
++        if quantidade is not None:
++            if type(quantidade) is not int:
++                raise TypeError("A quantidade deve ser um inteiro.")
++            if quantidade <= 0:
++                raise ValueError("A quantidade deve ser estritamente positiva.")
++
++        if quantidade is None or quantidade >= self.itens[nome]["quantidade"]:
+             del self.itens[nome]
+         else:
+             self.itens[nome]["quantidade"] -= quantidade
+-            # BUG: não remove a chave se quantidade resultante for <= 0
+ 
+     def aplicar_cupom(self, codigo: str, desconto_porcentagem: float) -> None:
+-        # BUG 4: não valida limites 0 a 100 de desconto_porcentagem
++        if not isinstance(codigo, str):
++            raise TypeError("O código deve ser uma string.")
++        if not codigo.strip():
++            raise ValueError("O código não pode ser vazio.")
++        if isinstance(desconto_porcentagem, bool) or not isinstance(
++            desconto_porcentagem, (int, float)
++        ):
++            raise TypeError("O desconto deve ser um número.")
++        if not 0 <= desconto_porcentagem <= 100:
++            raise ValueError("O desconto deve estar entre 0 e 100.")
++
+         self.cupom_desconto = {"codigo": codigo, "porcentagem": desconto_porcentagem}
+ 
+     def remover_cupom(self) -> None:
+         self.cupom_desconto = None
+ 
+     def calcular_subtotal(self) -> float:
+-        # BUG 5: ponto flutuante sem arredondamento
+         subtotal = 0.0
+         for item in self.itens.values():
+             subtotal += item["preco"] * item["quantidade"]
+-        return subtotal
++        return round(subtotal, 2)
+ 
+     def calcular_desconto(self) -> float:
+-        # BUG 6: lógica de desconto errada
+         if not self.cupom_desconto:
+             return 0.0
+-        return self.calcular_subtotal() * self.cupom_desconto["porcentagem"]
++        return round(
++            self.calcular_subtotal() * (self.cupom_desconto["porcentagem"] / 100),
++            2,
++        )
+ 
+     def calcular_total(self) -> float:
+-        return self.calcular_subtotal() - self.calcular_desconto()
++        return max(0.0, round(self.calcular_subtotal() - self.calcular_desconto(), 2))
+ 
+     def listar_itens(self) -> list[dict]:
+         resultado = []
+-        for nome, dados in self.itens.items():
++        for nome in sorted(self.itens):
++            dados = self.itens[nome]
+             resultado.append({
+                 "nome": nome,
+                 "preco": dados["preco"],
+
+apply patch
+patch: completed
+/tmp/bench-3l6be0gc/test_carrinho.py
+diff --git a/carrinho.py b/carrinho.py
+index 86b1de8c9d9db6df04d0b8e6f3bac60e03c72f24..d894f19c6a3e8baf914730b14833af19c5bca5d9
+--- a/carrinho.py
++++ b/carrinho.py
+@@ -1,11 +1,25 @@
++from copy import deepcopy
++
++
+ class CarrinhoDeCompras:
+-    # BUG 1: argumento mutável default compartilha estado entre instâncias
+-    def __init__(self, itens={}):
+-        self.itens = itens
++    def __init__(self, itens: dict | None = None) -> None:
++        self.itens = deepcopy(itens) if itens is not None else {}
+         self.cupom_desconto = None
+ 
+     def adicionar_item(self, nome: str, preco: float, quantidade: int = 1) -> None:
+-        # BUG 2: não valida preço nem quantidade <= 0
++        if not isinstance(nome, str):
++            raise TypeError("O nome deve ser uma string.")
++        if not nome.strip():
++            raise ValueError("O nome não pode ser vazio.")
++        if isinstance(preco, bool) or not isinstance(preco, (int, float)):
++            raise TypeError("O preço deve ser um número.")
++        if not preco > 0:
++            raise ValueError("O preço deve ser estritamente positivo.")
++        if type(quantidade) is not int:
++            raise TypeError("A quantidade deve ser um inteiro.")
++        if quantidade <= 0:
++            raise ValueError("A quantidade deve ser estritamente positiva.")
++
+         if nome in self.itens:
+             self.itens[nome]["quantidade"] += quantidade
+             self.itens[nome]["preco"] = preco
+@@ -16,40 +30,55 @@
+         if nome not in self.itens:
+             raise KeyError(f"Item '{nome}' não encontrado no carrinho.")
+ 
+-        # BUG 3: não valida quantidade <= 0 (deveria lançar ValueError)
+-        # e não remove o item se quantidade for >= ao total atual
+-        if quantidade is None:
++        if quantidade is not None:
++            if type(quantidade) is not int:
++                raise TypeError("A quantidade deve ser um inteiro.")
++            if quantidade <= 0:
++                raise ValueError("A quantidade deve ser estritamente positiva.")
++
++        if quantidade is None or quantidade >= self.itens[nome]["quantidade"]:
+             del self.itens[nome]
+         else:
+             self.itens[nome]["quantidade"] -= quantidade
+-            # BUG: não remove a chave se quantidade resultante for <= 0
+ 
+     def aplicar_cupom(self, codigo: str, desconto_porcentagem: float) -> None:
+-        # BUG 4: não valida limites 0 a 100 de desconto_porcentagem
++        if not isinstance(codigo, str):
++            raise TypeError("O código deve ser uma string.")
++        if not codigo.strip():
++            raise ValueError("O código não pode ser vazio.")
++        if isinstance(desconto_porcentagem, bool) or not isinstance(
++            desconto_porcentagem, (int, float)
++        ):
++            raise TypeError("O desconto deve ser um número.")
++        if not 0 <= desconto_porcentagem <= 100:
++            raise ValueError("O desconto deve estar entre 0 e 100.")
++
+         self.cupom_desconto = {"codigo": codigo, "porcentagem": desconto_porcentagem}
+ 
+     def remover_cupom(self) -> None:
+         self.cupom_desconto = None
+ 
+     def calcular_subtotal(self) -> float:
+-        # BUG 5: ponto flutuante sem arredondamento
+         subtotal = 0.0
+         for item in self.itens.values():
+             subtotal += item["preco"] * item["quantidade"]
+-        return subtotal
++        return round(subtotal, 2)
+ 
+     def calcular_desconto(self) -> float:
+-        # BUG 6: lógica de desconto errada
+         if not self.cupom_desconto:
+             return 0.0
+-        return self.calcular_subtotal() * self.cupom_desconto["porcentagem"]
++        return round(
++            self.calcular_subtotal() * (self.cupom_desconto["porcentagem"] / 100),
++            2,
++        )
+ 
+     def calcular_total(self) -> float:
+-        return self.calcular_subtotal() - self.calcular_desconto()
++        return max(0.0, round(self.calcular_subtotal() - self.calcular_desconto(), 2))
+ 
+     def listar_itens(self) -> list[dict]:
+         resultado = []
+-        for nome, dados in self.itens.items():
++        for nome in sorted(self.itens):
++            dados = self.itens[nome]
+             resultado.append({
+                 "nome": nome,
+                 "preco": dados["preco"],
+diff --git a/test_carrinho.py b/test_carrinho.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5a436d35ba3962fca4ef58090a50fed18fbaa8f4
+--- /dev/null
++++ b/test_carrinho.py
+@@ -0,0 +1,109 @@
++import unittest
++from copy import deepcopy
++
++from carrinho import CarrinhoDeCompras
++
++
++class TestCarrinhoDeCompras(unittest.TestCase):
++    def test_isolamento_das_instancias_e_dos_dados_iniciais(self):
++        primeiro = CarrinhoDeCompras()
++        segundo = CarrinhoDeCompras()
++        primeiro.adicionar_item("Caderno", 15.5)
++        self.assertEqual(segundo.itens, {})
++
++        origem = {"Caderno": {"preco": 15.5, "quantidade": 2}}
++        carrinho = CarrinhoDeCompras(origem)
++        origem["Caderno"]["preco"] = 100
++        origem.clear()
++        self.assertEqual(carrinho.calcular_subtotal(), 31.0)
++
++    def test_adicao_acumula_quantidade_e_atualiza_preco(self):
++        carrinho = CarrinhoDeCompras()
++        carrinho.adicionar_item("Caderno", 15.5, 2)
++        carrinho.adicionar_item("Caderno", 20)
++        self.assertEqual(carrinho.itens["Caderno"], {"preco": 20, "quantidade": 3})
++
++    def test_validacoes_na_adicao_preservam_estado(self):
++        carrinho = CarrinhoDeCompras({"Caderno": {"preco": 15.5, "quantidade": 2}})
++        anterior = deepcopy(carrinho.itens)
++        casos = [
++            ((None, 10, 1), TypeError),
++            ((123, 10, 1), TypeError),
++            (("", 10, 1), ValueError),
++            ((" \t\n", 10, 1), ValueError),
++        ]
++        casos += [(("Caderno", valor, 1), TypeError) for valor in (True, False, "10", None)]
++        casos += [(("Caderno", valor, 1), ValueError) for valor in (0, -1, float("nan"))]
++        casos += [(("Caderno", 10, valor), TypeError) for valor in (True, False, 1.0, "1", None)]
++        casos += [(("Caderno", 10, valor), ValueError) for valor in (0, -1)]
++        for argumentos, erro in casos:
++            with self.subTest(argumentos=argumentos):
++                with self.assertRaises(erro):
++                    carrinho.adicionar_item(*argumentos)
++                self.assertEqual(carrinho.itens, anterior)
++
++    def test_remocao_parcial_e_completa(self):
++        for quantidade in (None, 2, 3):
++            with self.subTest(quantidade=quantidade):
++                carrinho = CarrinhoDeCompras({"A": {"preco": 10, "quantidade": 3}})
++                carrinho.remover_item("A", 1)
++                self.assertEqual(carrinho.itens["A"]["quantidade"], 2)
++                carrinho.remover_item("A", quantidade)
++                self.assertEqual(carrinho.itens, {})
++        with self.assertRaises(KeyError):
++            carrinho.remover_item("ausente")
++
++    def test_validacoes_na_remocao(self):
++        carrinho = CarrinhoDeCompras({"A": {"preco": 10, "quantidade": 3}})
++        for valor, erro in [(True, TypeError), (False, TypeError), (1.0, TypeError),
++                            ("1", TypeError), (0, ValueError), (-1, ValueError)]:
++            with self.subTest(valor=valor):
++                with self.assertRaises(erro):
++                    carrinho.remover_item("A", valor)
++                self.assertEqual(carrinho.itens["A"]["quantidade"], 3)
++
++    def test_cupons_arredondamento_substituicao_e_remocao(self):
++        carrinho = CarrinhoDeCompras()
++        self.assertEqual(carrinho.calcular_subtotal(), 0.0)
++        self.assertEqual(carrinho.calcular_total(), 0.0)
++        self.assertEqual(carrinho.calcular_desconto(), 0.0)
++        carrinho.adicionar_item("A", 10.125, 3)
++        self.assertEqual(carrinho.calcular_subtotal(), 30.38)
++        for percentual in (0, 12.5, 100):
++            carrinho.aplicar_cupom("PROMO", percentual)
++            desconto = round(30.38 * (percentual / 100), 2)
++            self.assertEqual(carrinho.calcular_desconto(), desconto)
++            self.assertEqual(carrinho.calcular_total(), round(30.38 - desconto, 2))
++        carrinho.remover_cupom()
++        carrinho.remover_cupom()
++        self.assertEqual(carrinho.calcular_total(), 30.38)
++
++    def test_validacoes_do_cupom_preservam_cupom_anterior(self):
++        carrinho = CarrinhoDeCompras()
++        carrinho.aplicar_cupom("VALIDO", 20)
++        casos = [(None, 10, TypeError), (1, 10, TypeError),
++                 ("", 10, ValueError), (" \t", 10, ValueError)]
++        casos += [("NOVO", valor, TypeError) for valor in (True, False, None, "10")]
++        casos += [("NOVO", valor, ValueError) for valor in (-1, 101, float("nan"))]
++        for codigo, percentual, erro in casos:
++            with self.subTest(codigo=codigo, percentual=percentual):
++                with self.assertRaises(erro):
++                    carrinho.aplicar_cupom(codigo, percentual)
++                self.assertEqual(carrinho.cupom_desconto, {"codigo": "VALIDO", "porcentagem": 20})
++
++    def test_listagem_ordenada_e_independente(self):
++        carrinho = CarrinhoDeCompras()
++        nomes = ["Água", "Zebra", "Caderno", "banana", "arroz"]
++        for nome in nomes:
++            carrinho.adicionar_item(nome, 15.5, 2)
++        itens = carrinho.listar_itens()
++        self.assertEqual([item["nome"] for item in itens], sorted(nomes))
++        self.assertEqual(itens[0], {"nome": "Caderno", "preco": 15.5, "quantidade": 2, "total": 31.0})
++        itens[0]["preco"] = 999
++        itens.clear()
++        self.assertEqual(len(carrinho.listar_itens()), 5)
++        self.assertEqual(carrinho.itens["Caderno"]["preco"], 15.5)
++
++
++if __name__ == "__main__":
++    unittest.main()
+
+exec
+/bin/bash -lc 'python -m unittest -v' in /tmp/bench-3l6be0gc
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc 'python3 -m unittest -v' in /tmp/bench-3l6be0gc
+ succeeded in 0ms:
+test_adicao_acumula_quantidade_e_atualiza_preco (test_carrinho.TestCarrinhoDeCompras.test_adicao_acumula_quantidade_e_atualiza_preco) ... ok
+test_cupons_arredondamento_substituicao_e_remocao (test_carrinho.TestCarrinhoDeCompras.test_cupons_arredondamento_substituicao_e_remocao) ... ok
+test_isolamento_das_instancias_e_dos_dados_iniciais (test_carrinho.TestCarrinhoDeCompras.test_isolamento_das_instancias_e_dos_dados_iniciais) ... ok
+test_listagem_ordenada_e_independente (test_carrinho.TestCarrinhoDeCompras.test_listagem_ordenada_e_independente) ... ok
+test_remocao_parcial_e_completa (test_carrinho.TestCarrinhoDeCompras.test_remocao_parcial_e_completa) ... ok
+test_validacoes_do_cupom_preservam_cupom_anterior (test_carrinho.TestCarrinhoDeCompras.test_validacoes_do_cupom_preservam_cupom_anterior) ... ok
+test_validacoes_na_adicao_preservam_estado (test_carrinho.TestCarrinhoDeCompras.test_validacoes_na_adicao_preservam_estado) ... ok
+test_validacoes_na_remocao (test_carrinho.TestCarrinhoDeCompras.test_validacoes_na_remocao) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK
+
+codex
+Corrigi `carrinho.py` conforme o enunciado: isolamento dos dados, validações, remoção de itens, cupons, arredondamento e listagem ordenada.
+
+Criei `test_carrinho.py` e executei `python3 -m unittest -v`: os 8 testes passaram.
+tokens used
+14,875

@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/10-ambigua-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "10-ambigua-claude",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 29.616,
+ "testes_passados": 40,
+ "testes_total": 42,
+ "pct_testes": 95.24,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Código claro e idiomático com SUPOSICOES.md completo. Delega extração, mas regras de dígitos e separadores estão espalhadas como literais.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Clareza e bordas boas, coerentes com o doc; extrair delega a normalizar. Falta concentrar 55, tamanhos e separadores. SUPOSICOES omite ramal, prefixo 0, outros países e celular de 8 dígitos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.5,
+ "nota_final_10": 9.22,
+ "reexecucao_testes": {
+  "total": 42,
+  "passados": 40,
+  "pct": 95.24
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.37,
+ "nota_antiga_com_penalidade": 9.37
+}

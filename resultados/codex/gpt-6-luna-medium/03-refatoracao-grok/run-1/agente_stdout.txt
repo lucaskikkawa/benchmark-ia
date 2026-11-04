@@ -1,0 +1,1 @@
+Refatorei [frete.py](/tmp/bench-w64d4nyu/frete.py) para expor `TabelaFrete` e `faixa_de_peso`. `cotar` delega à classe, e ambas as funções consultam `TabelaFrete.FAIXAS` a cada chamada. Mantive as validações, os cálculos e o formato do retorno.

@@ -1,0 +1,21 @@
+Criei a suíte de testes em `tests/test_validador.py`. Ela tem 95 testes, todos passando contra o `validador.py` original.
+
+Para checar se ela pega bugs, criei 15 mutantes (cópias do módulo com um defeito cada) e rodei a suíte contra eles. Todos foram eliminados (pytest saiu com código 1). Os mutantes cobriram:
+- **Limites inclusivos** de `min_tam` e `max_tam`, incluindo "aceita um a mais/a menos".
+- **Regras faltando ou trocadas**: maiúscula, minúscula, dígito, conjunto de especiais (sem `_`), uso de `ispunct`, espaços (só ` ` em vez de todos os brancos).
+- **Triplas**: janela final ignorada e detecção de só duas repetições.
+- **Acúmulo de erros**: retorno após o primeiro erro.
+- **`calcular_forca`**: fronteiras 10 e 14 e ignorar a validade.
+
+A suíte cobre também:
+- Cada um dos 14 especiais permitidos aceito individualmente e 18 caracteres de pontuação fora do conjunto rejeitados.
+- Espaço, tabulação, quebra de linha, `\r`, `\x0b` e `\x0c` rejeitados.
+- Triplas no início, meio e fim, e pares/alternâncias aceitos.
+- Contagem exata de erros em casos como `"abc"` (4), `"aaa"` (5) e `""` (5).
+- Limites customizados de `min_tam`/`max_tam`.
+
+Decisões que tomei:
+- Os testes não dependem do texto das mensagens de erro, só da quantidade e do booleano, como pede o enunciado.
+- O arquivo inclui `sys.path` apontando para a raiz do projeto e para `tests/`. Assim o `import validador` funciona tanto no layout atual quanto numa cópia isolada feita pelo executor.
+
+Não há repositório git neste diretório, então não fiz commit. Removi a pasta temporária de mutantes e os caches gerados; a pasta contém apenas `enunciado.md`, `validador.py` e `tests/`.

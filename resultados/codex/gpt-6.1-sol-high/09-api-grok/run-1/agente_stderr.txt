@@ -1,0 +1,422 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-0w054ea3
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189fd-ce59-7311-9739-6306840b4084
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:27:56.084605Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos deste diretório, implementar a solução e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g 'AGENTS.md' -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-0w054ea3
+ succeeded in 0ms:
+/tmp/bench-0w054ea3
+enunciado.md
+
+exec
+/bin/bash -lc "cat enunciado.md && rg --files -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-0w054ea3
+ succeeded in 0ms:
+# Tarefa: cliente com retry, backoff e timeout
+
+O arquivo `loja_api.py` já está no diretório de trabalho. É uma API **em processo**, sem socket e sem rede. Não altere `loja_api.py`. Crie `cliente.py` com:
+
+```python
+class TempoEsgotado(Exception):
+    ...
+
+def baixar_pedidos(
+    api,
+    ids: list[str],
+    *,
+    max_tentativas: int = 5,
+    backoff_s: float = 0.0,
+    timeout_s: float = 1.0,
+) -> list[dict]:
+    ...
+```
+
+Só a biblioteca padrão.
+
+## O que a API faz
+
+`LojaAPI(seed)` guarda a seed. `obter_pedido(pedido_id)` devolve o dict de `payload_pedido(seed, pedido_id)` ou levanta:
+
+- `LojaErroCliente` — erro definitivo (o id começa com `missing-`, ou o id não é uma string não vazia, inclusive `""`). **Não tente de novo** e não durma backoff.
+- `LojaIndisponivel` — falha transitória.
+
+A lentidão é `LojaAPI.ATRASO_S` segundos (também exposto como `loja_api.ATRASO_S`). A contagem de tentativas começa em 1.
+
+| prefixo do id | comportamento |
+|---|---|
+| `missing-` | sempre `LojaErroCliente` |
+| `down-` | sempre `LojaIndisponivel` |
+| `flaky-` | as primeiras `(seed % 3) + 1` tentativas são `LojaIndisponivel`; a próxima devolve o pedido |
+| `slow-` | as primeiras `(seed % 2) + 1` tentativas dormem `ATRASO_S` e só então devolveriam o pedido |
+| `timeout-` | toda tentativa dorme `ATRASO_S` e só então devolveria o pedido |
+| outro | devolve o pedido na hora |
+
+O prefixo é o começo do id, nesta ordem. `missing-down-x` é `LojaErroCliente`. `flaky-missing-x` segue a regra de `flaky-`, não a de `missing-`. O cliente não precisa reimplementar a tabela: chame `obter_pedido` e reaja à exceção.
+
+`api.tentativas(pedido_id)` diz quantas vezes aquele id foi chamado. A seed entra no total do pedido; não invente o corpo, use o que a API devolver.
+
+## O que o cliente faz
+
+Para cada id, **na ordem da lista**:
+
+1. Chame `api.obter_pedido(id)` com prazo de `timeout_s` segundos. Se a chamada passar disso, **abandone a espera** (não fique bloqueado os `ATRASO_S` segundos) e trate como timeout.
+2. `LojaErroCliente` propaga na hora, sem nova tentativa e sem backoff.
+3. `LojaIndisponivel` ou timeout contam como falha retentável.
+4. Há no máximo `max_tentativas` chamadas daquele id. Se a última for `LojaIndisponivel`, propague essa exceção. Se a última for timeout, levante `TempoEsgotado`.
+5. Depois de uma falha retentável que ainda terá outra tentativa, durma `backoff_s * 2 ** (i - 1)` segundos, onde `i` é o número da tentativa que acabou de falhar (1 na primeira). Não durma depois da última tentativa nem depois de sucesso. `backoff_s == 0` não dorme.
+6. No sucesso, guarde o dict devolvido.
+
+Se um id falha de vez (`LojaErroCliente`, `LojaIndisponivel` na última tentativa ou `TempoEsgotado`), não chame os ids seguintes. Lista vazia devolve `[]` sem chamar a API.
+
+`slow-` com seed ímpar dorme nas duas primeiras tentativas (`(seed % 2) + 1 == 2`). Com `timeout_s` menor que `ATRASO_S`, essas duas contam como timeout e a terceira devolve o pedido, se `max_tentativas` alcançar.
+
+Validação, antes de qualquer chamada:
+
+- `ids` tem de ser exatamente `list` (`str` e `tuple` → `TypeError`). Não há cache: o mesmo id repetido na lista é baixado de novo e soma em `tentativas`.
+- `max_tentativas` é `int` ≥ 1 (`bool` → `TypeError`; menor que 1 → `ValueError`).
+- `backoff_s` é `int` ou `float` ≥ 0 (`bool` → `TypeError`; negativo → `ValueError`).
+- `timeout_s` é `int` ou `float` > 0 (`bool` → `TypeError`; não positivo → `ValueError`).
+
+O resultado conserva a ordem dos ids. Cada item é o dict da API (`id`, `total_centavos`, `status`).
+loja_api.py
+enunciado.md
+
+exec
+/bin/bash -lc 'cat loja_api.py && ls -la' in /tmp/bench-0w054ea3
+ succeeded in 0ms:
+"""API local em processo, sem rede.
+
+As falhas dependem só do prefixo do id e da seed. O relógio de lentidão é
+fixo (ATRASO_S), para o cliente conseguir impor timeout.
+"""
+
+import hashlib
+import time
+
+ATRASO_S = 1.2
+
+
+class LojaErro(Exception):
+    """Base dos erros simulados da loja."""
+
+
+class LojaIndisponivel(LojaErro):
+    """Falha transitória (equivalente a HTTP 503). Vale tentar de novo."""
+
+
+class LojaErroCliente(LojaErro):
+    """Pedido impossível (equivalente a HTTP 404). Não vale tentar de novo."""
+
+
+def payload_pedido(seed: int, pedido_id: str) -> dict:
+    """Corpo estável de um pedido pago. Não altera contadores."""
+    digest = hashlib.sha256(f"{seed}:{pedido_id}".encode()).hexdigest()
+    return {
+        "id": pedido_id,
+        "total_centavos": int(digest[:8], 16) % 100_000,
+        "status": "pago",
+    }
+
+
+class LojaAPI:
+    """Cliente falso. Cada chamada a obter_pedido conta uma tentativa.
+
+    Regras, nesta ordem, com n = número da tentativa (1 na primeira):
+
+    - id que começa com ``missing-``: sempre LojaErroCliente.
+    - id que começa com ``down-``: sempre LojaIndisponivel.
+    - id que começa com ``flaky-``: as primeiras ``(seed % 3) + 1`` tentativas
+      levantam LojaIndisponivel; a seguinte devolve o pedido.
+    - id que começa com ``slow-``: as primeiras ``(seed % 2) + 1`` tentativas
+      dormem ATRASO_S segundos e só então devolvem o pedido. As demais
+      devolvem na hora.
+    - id que começa com ``timeout-``: toda tentativa dorme ATRASO_S e só
+      então devolveria o pedido.
+    - qualquer outro id: devolve o pedido na hora.
+
+    ``tentativas(pedido_id)`` informa quantas vezes aquele id foi chamado.
+    """
+
+    ATRASO_S = ATRASO_S
+
+    def __init__(self, seed: int) -> None:
+        self.seed = seed
+        self._contagens: dict[str, int] = {}
+
+    def tentativas(self, pedido_id: str) -> int:
+        return self._contagens.get(pedido_id, 0)
+
+    def obter_pedido(self, pedido_id: str) -> dict:
+        if not isinstance(pedido_id, str) or pedido_id == "":
+            raise LojaErroCliente("id invalido")
+        self._contagens[pedido_id] = self._contagens.get(pedido_id, 0) + 1
+        n = self._contagens[pedido_id]
+        if pedido_id.startswith("missing-"):
+            raise LojaErroCliente(f"404 {pedido_id}")
+        if pedido_id.startswith("down-"):
+            raise LojaIndisponivel("503")
+        if pedido_id.startswith("flaky-"):
+            if n <= (self.seed % 3) + 1:
+                raise LojaIndisponivel("503")
+            return payload_pedido(self.seed, pedido_id)
+        if pedido_id.startswith("slow-"):
+            if n <= (self.seed % 2) + 1:
+                time.sleep(self.ATRASO_S)
+            return payload_pedido(self.seed, pedido_id)
+        if pedido_id.startswith("timeout-"):
+            time.sleep(self.ATRASO_S)
+            return payload_pedido(self.seed, pedido_id)
+        return payload_pedido(self.seed, pedido_id)
+total 12
+drwx------ 2 box box 4096 Oct 29 20:27 .
+drwxr-xr-x 3 box box   60 Oct 29 20:27 ..
+-rw-r--r-- 1 box box 3641 Oct 29 19:07 enunciado.md
+-rw-r--r-- 1 box box 2949 Oct 29 16:06 loja_api.py
+
+codex
+A API registra cada tentativa antes de dormir. Vou usar threads daemon para abandonar a espera no timeout e preservar os contadores, além de testar retries, backoff, validação e ordem dos resultados.
+
+apply patch
+patch: completed
+/tmp/bench-0w054ea3/cliente.py
+/tmp/bench-0w054ea3/test_cliente.py
+diff --git a/cliente.py b/cliente.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..8a222e39a2dd9e4f314d3aa992e428fdb03f7dba
+--- /dev/null
++++ b/cliente.py
+@@ -0,0 +1,75 @@
++"""Cliente da loja com tentativas limitadas e timeout por chamada."""
++
++import math
++import queue
++import threading
++import time
++
++from loja_api import LojaIndisponivel
++
++
++class TempoEsgotado(Exception):
++    """Uma chamada à API excedeu o prazo de espera."""
++
++
++def _chamar_com_timeout(api, pedido_id, timeout_s):
++    resultado = queue.Queue(maxsize=1)
++
++    def executar():
++        try:
++            pedido = api.obter_pedido(pedido_id)
++        except BaseException as erro:
++            resultado.put((False, erro))
++        else:
++            resultado.put((True, pedido))
++
++    # A chamada abandonada pode terminar em segundo plano, sem bloquear a
++    # próxima tentativa nem impedir o encerramento do processo.
++    threading.Thread(target=executar, daemon=True).start()
++    prazo = None if timeout_s == math.inf else timeout_s
++    try:
++        sucesso, valor = resultado.get(timeout=prazo)
++    except queue.Empty:
++        raise TempoEsgotado(f"Tempo esgotado ao obter {pedido_id!r}") from None
++    if sucesso:
++        return valor
++    raise valor
++
++
++def baixar_pedidos(
++    api,
++    ids: list[str],
++    *,
++    max_tentativas: int = 5,
++    backoff_s: float = 0.0,
++    timeout_s: float = 1.0,
++) -> list[dict]:
++    """Baixa os pedidos em ordem, repetindo falhas transitórias e timeouts."""
++    if type(ids) is not list:
++        raise TypeError("ids deve ser exatamente uma list")
++    if isinstance(max_tentativas, bool) or not isinstance(max_tentativas, int):
++        raise TypeError("max_tentativas deve ser int")
++    if max_tentativas < 1:
++        raise ValueError("max_tentativas deve ser pelo menos 1")
++    for nome, valor in (("backoff_s", backoff_s), ("timeout_s", timeout_s)):
++        if isinstance(valor, bool) or not isinstance(valor, (int, float)):
++            raise TypeError(f"{nome} deve ser int ou float")
++    if not backoff_s >= 0:
++        raise ValueError("backoff_s deve ser não negativo")
++    if not timeout_s > 0:
++        raise ValueError("timeout_s deve ser positivo")
++
++    pedidos = []
++    for pedido_id in ids:
++        for tentativa in range(1, max_tentativas + 1):
++            try:
++                pedido = _chamar_com_timeout(api, pedido_id, timeout_s)
++            except (LojaIndisponivel, TempoEsgotado):
++                if tentativa == max_tentativas:
++                    raise
++                if backoff_s:
++                    time.sleep(backoff_s * 2 ** (tentativa - 1))
++            else:
++                pedidos.append(pedido)
++                break
++    return pedidos
+diff --git a/test_cliente.py b/test_cliente.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4ca4c738308367dbbc09ad8db44177d2d4235d89
+--- /dev/null
++++ b/test_cliente.py
+@@ -0,0 +1,110 @@
++import time
++import unittest
++from unittest.mock import Mock, call, patch
++
++from cliente import TempoEsgotado, baixar_pedidos
++from loja_api import LojaAPI, LojaErroCliente, LojaIndisponivel, payload_pedido
++
++
++class ClienteTests(unittest.TestCase):
++    def test_ordem_payload_e_repeticoes(self):
++        api = LojaAPI(7)
++        ids = ["b", "a", "b", "flaky-missing-x"]
++        self.assertEqual(
++            baixar_pedidos(api, ids), [payload_pedido(7, id_) for id_ in ids]
++        )
++        self.assertEqual(api.tentativas("b"), 2)
++        self.assertEqual(api.tentativas("flaky-missing-x"), 3)
++
++    def test_backoff_exponencial_ate_sucesso(self):
++        api = LojaAPI(2)
++        with patch("cliente.time.sleep") as dormir:
++            baixar_pedidos(api, ["flaky-x"], backoff_s=0.25)
++        self.assertEqual(dormir.call_args_list, [call(0.25), call(0.5), call(1.0)])
++        self.assertEqual(api.tentativas("flaky-x"), 4)
++
++    def test_indisponibilidade_final_interrompe_lista(self):
++        api = LojaAPI(0)
++        with patch("cliente.time.sleep") as dormir:
++            with self.assertRaises(LojaIndisponivel):
++                baixar_pedidos(api, ["down-x", "seguinte"], max_tentativas=3,
++                              backoff_s=0.1)
++        self.assertEqual(dormir.call_args_list, [call(0.1), call(0.2)])
++        self.assertEqual(api.tentativas("down-x"), 3)
++        self.assertEqual(api.tentativas("seguinte"), 0)
++
++    def test_erro_cliente_nao_repete_nem_dorme(self):
++        for pedido_id in ("missing-down-x", "", None, 42, []):
++            with self.subTest(pedido_id=pedido_id):
++                api = Mock(wraps=LojaAPI(0))
++                with patch("cliente.time.sleep") as dormir:
++                    with self.assertRaises(LojaErroCliente):
++                        baixar_pedidos(api, [pedido_id, "seguinte"], backoff_s=1)
++                api.obter_pedido.assert_called_once_with(pedido_id)
++                dormir.assert_not_called()
++
++    def test_timeout_abandona_espera(self):
++        api = LojaAPI(1)
++        api.ATRASO_S = 0.5
++        inicio = time.monotonic()
++        with self.assertRaises(TempoEsgotado):
++            baixar_pedidos(api, ["timeout-x", "seguinte"],
++                          max_tentativas=2, timeout_s=0.02)
++        self.assertLess(time.monotonic() - inicio, 0.3)
++        self.assertEqual(api.tentativas("timeout-x"), 2)
++        self.assertEqual(api.tentativas("seguinte"), 0)
++
++    def test_slow_impar_sucesso_na_terceira_tentativa(self):
++        api = LojaAPI(1)
++        api.ATRASO_S = 0.5
++        self.assertEqual(
++            baixar_pedidos(api, ["slow-x"], timeout_s=0.02, max_tentativas=3),
++            [payload_pedido(1, "slow-x")],
++        )
++        self.assertEqual(api.tentativas("slow-x"), 3)
++
++    def test_ultima_falha_define_excecao(self):
++        for falhas, esperado in (
++            ([TempoEsgotado(), LojaIndisponivel()], LojaIndisponivel),
++            ([LojaIndisponivel(), TempoEsgotado()], TempoEsgotado),
++        ):
++            with self.subTest(esperado=esperado):
++                with patch("cliente._chamar_com_timeout", side_effect=falhas):
++                    with self.assertRaises(esperado):
++                        baixar_pedidos(Mock(), ["x"], max_tentativas=2)
++
++    def test_validacao_antes_de_chamar_api(self):
++        casos = [
++            ({"ids": "x"}, TypeError),
++            ({"ids": ("x",)}, TypeError),
++            ({"ids": type("Lista", (list,), {})(["x"])}, TypeError),
++            ({"max_tentativas": True}, TypeError),
++            ({"max_tentativas": 1.5}, TypeError),
++            ({"max_tentativas": 0}, ValueError),
++            ({"backoff_s": True}, TypeError),
++            ({"backoff_s": "0"}, TypeError),
++            ({"backoff_s": -1}, ValueError),
++            ({"timeout_s": False}, TypeError),
++            ({"timeout_s": "1"}, TypeError),
++            ({"timeout_s": 0}, ValueError),
++            ({"timeout_s": -1}, ValueError),
++        ]
++        for argumentos, erro in casos:
++            with self.subTest(argumentos=argumentos):
++                api = Mock()
++                kwargs = {"ids": ["x"], **argumentos}
++                with self.assertRaises(erro):
++                    baixar_pedidos(api, **kwargs)
++                api.obter_pedido.assert_not_called()
++
++    def test_lista_vazia_e_backoff_zero_nao_dormem(self):
++        api = Mock()
++        with patch("cliente.time.sleep") as dormir:
++            self.assertEqual(baixar_pedidos(api, []), [])
++            api.obter_pedido.assert_not_called()
++            baixar_pedidos(LojaAPI(0), ["flaky-x"])
++        dormir.assert_not_called()
++
++
++if __name__ == "__main__":
++    unittest.main()
+
+exec
+/bin/bash -lc 'python -m unittest -v' in /tmp/bench-0w054ea3
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc 'python3 -m unittest -v' in /tmp/bench-0w054ea3
+ succeeded in 33ms:
+test_backoff_exponencial_ate_sucesso (test_cliente.ClienteTests.test_backoff_exponencial_ate_sucesso) ... ok
+test_erro_cliente_nao_repete_nem_dorme (test_cliente.ClienteTests.test_erro_cliente_nao_repete_nem_dorme) ... ok
+test_indisponibilidade_final_interrompe_lista (test_cliente.ClienteTests.test_indisponibilidade_final_interrompe_lista) ... ok
+test_lista_vazia_e_backoff_zero_nao_dormem (test_cliente.ClienteTests.test_lista_vazia_e_backoff_zero_nao_dormem) ... ok
+test_ordem_payload_e_repeticoes (test_cliente.ClienteTests.test_ordem_payload_e_repeticoes) ... ok
+test_slow_impar_sucesso_na_terceira_tentativa (test_cliente.ClienteTests.test_slow_impar_sucesso_na_terceira_tentativa) ... ok
+test_timeout_abandona_espera (test_cliente.ClienteTests.test_timeout_abandona_espera) ... ok
+test_ultima_falha_define_excecao (test_cliente.ClienteTests.test_ultima_falha_define_excecao) ... ok
+test_validacao_antes_de_chamar_api (test_cliente.ClienteTests.test_validacao_antes_de_chamar_api) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.090s
+
+OK
+
+codex
+Criei [cliente.py](cliente.py) com validação, retry, backoff exponencial e timeout sem bloquear a espera. Mantive `loja_api.py` intacto.
+
+Adicionei 9 testes em [test_cliente.py](test_cliente.py), todos aprovados com `python3 -m unittest -v`.
+tokens used
+21,749

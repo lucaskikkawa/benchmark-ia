@@ -1,0 +1,19 @@
+Reescrevi `boletim.py` seguindo o enunciado e mantive o nome e a assinatura de `fechar_boletim(provas)`. Rodei todos os exemplos do enunciado e todos deram o resultado esperado, inclusive os erros. Também testei `nan`, `inf`, `10.01`, `-0.0`, string como nota e `provas` que não é lista, e confirmei que a lista recebida continua igual depois da chamada.
+
+O que mudou em relação à versão anterior:
+
+- **A lista recebida:** antes ela era invertida com `provas.reverse()`. Agora não é mais alterada.
+- **Validação:**
+  - `provas` que não é `list` → `TypeError`.
+  - Lista vazia ou com mais de 4 posições → `ValueError`. Antes, a lista vazia devolvia média 0.
+  - Nota `bool` ou de outro tipo → `TypeError`.
+  - Nota não finita ou fora de `[0, 10]` → `ValueError`. O 10 agora é aceito; antes era recusado.
+  - Lista só com `None` → `ValueError`.
+- **Ausências:** `None` agora fica fora da conta. Antes valia zero.
+- **Descarte:** só acontece com exatamente 4 notas válidas e tira uma única ocorrência do menor valor. `descartada` vem como `float` ou `None`. Antes descartava sempre que havia 2 ou mais notas.
+- **Média:** as notas restantes são somadas como `Decimal(str(nota))` e a soma é dividida pela quantidade. O resultado é arredondado uma única vez, para duas casas, com `ROUND_HALF_UP`. Antes o valor era truncado.
+- **Conceitos:** os limites agora incluem o próprio valor (`>= 9`, `>= 7`, `>= 5`), e `aprovado` só é `False` com conceito `"D"`.
+
+Acrescentei por conta própria uma coisa que o enunciado não pede: uma média zero sai como `0.0`, e não `-0.0`, quando a entrada é `-0.0`.
+
+Uma ordem de checagem que o enunciado não define: o tamanho da lista é verificado antes dos tipos das notas. Por isso, uma lista com 5 posições que contém um `bool` dá `ValueError`, e não `TypeError`.

@@ -1,0 +1,22 @@
+Escrevi a suíte em `tests/test_descontos.py`. Ela tem 447 testes e todos passam contra o `descontos.py` original, que não foi alterado.
+
+Para conferir que a suíte pega erros, criei 22 versões com um bug cada, numa pasta temporária fora deste diretório. Ela falhou em 21. A que passou (`desconto` com `max(0, ...)`) não é um bug de verdade: o preço final nunca passa do original, então o resultado é sempre o mesmo do código correto. Os bugs que ela pega incluem:
+- as contas erradas dos percentuais (por exemplo `preco - preco // 10` no lugar de `(preco * 90) // 100`);
+- falta do piso no `FIXO500`;
+- janela do `BEMVINDO` sem o primeiro ou o último dia;
+- `NATAL` só no dia 24 ou só no dia 25;
+- aceitar `bool` como preço;
+- fazer `strip` ou ignorar maiúsculas no código do cupom;
+- cupom desconhecido sem erro;
+- tirar a checagem de tamanho da data;
+- trocar `TypeError` por `ValueError`.
+
+O que a suíte cobre:
+- **Resultado:** o dict tem exatamente as três chaves, os valores são `int`, e `desconto` é sempre `preco_centavos - preco_final`.
+- **Percentuais:** cada fórmula é comparada com a conta certa para todos os preços de 0 a 1200, mais alguns valores grandes. Há casos em que a conta errada dá outro número (por exemplo 19 → 17 no `OFF10`), e o piso que zera o preço, como 1 → 0.
+- **`FIXO500`:** o piso em 0, incluindo os casos 100 → 0 e preço 0 com o cupom contando como aplicado.
+- **`BEMVINDO`:** os dois extremos (`2024-01-01` e `2024-12-31`) e os dias logo fora (`2023-12-31` e `2025-01-01`), quando o preço não muda e `cupom_aplicado` fica `None`.
+- **`NATAL`:** 24 e 25 de dezembro em vários anos, inclusive 0001 e 9999, e os dias vizinhos e parecidos, sem desconto.
+- **Cupom:** `None` e `""` não dão desconto; `" "`, `"\t"`, `"off10"`, `" OFF10"` e outros códigos parecidos levantam `ValueError`.
+- **Tipos:** `bool`, `float` e outros tipos levantam `TypeError` em preço, cupom e data; preço negativo levanta `ValueError`.
+- **Datas:** a regra do século no 29 de fevereiro (1900 e 2100 inválidos, 2000 e 2400 válidos), meses e dias fora do calendário, o ano 0000 e formatos errados.

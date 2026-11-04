@@ -1,0 +1,3 @@
+Corrigido apenas [boletim.py](/tmp/bench-d_lwcmc5/boletim.py), conforme o contrato: validação, ausências, descarte, arredondamento decimal, conceitos e preservação da lista.
+
+Verificação concluída com sucesso: 19 casos válidos e 16 inválidos.

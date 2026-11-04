@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-argon",
+ "esforco": "medium",
+ "tarefa": "06-multiarquivo-claude",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 75.314,
+ "testes_passados": 40,
+ "testes_total": 40,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Código organizado e idiomático, mas Livro omite o campo autor e a estrutura não inclui .gitkeep como arquivo exigido; faltam docstrings em módulos e classes.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Livro não declara autor; __post_init__ gera AttributeError. Empréstimos, ordem, multa e estado estão corretos. Faltam docstrings de módulo e das classes principais. Código modular e idiomático.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.25
+}

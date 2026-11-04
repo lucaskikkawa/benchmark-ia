@@ -1,0 +1,3 @@
+Vou ler o enunciado e ver o que já existe neste diretório para resolver a tarefa aqui.O módulo tem estado compartilhado, validações faltando e cálculos de desconto errados. Vou reescrever `carrinho.py` conforme o enunciado.A classe `CarrinhoDeCompras` em `carrinho.py` foi corrigida e agora segue o enunciado.
+
+- Cada carrinho tem o próprio dicionário de itens. Se `itens` for passado, a cópia inclui os

@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede uma contagem O(n) de subarrays contíguos com soma `k` e comprimento limitado. Vou implementar isso com somas de prefixo e uma janela deslizante.`solucao.py` define `contar_subarrays_soma`, que conta os subarrays contíguos cuja soma é `k` e cujo comprimento está entre `comprimento_min` e `comprimento_max`.
+
+A contagem usa somas de prefixo e uma janela deslizante de frequências. Cada índice entra e sai no máximo uma vez, então o tempo é linear. Isso cobre negativos, zero, inteiros grandes e lista vazia. Comprimento inválido (`< 1`) gera `ValueError`. Se o intervalo de comprimento é impossível, o resultado é `0`. A lista de entrada não é alterada.
+
+Os exemplos do enunciado batem com uma versão de força bruta em casos aleatórios. Com `n = 300_000`, as chamadas terminam em cerca de 0,1 s.

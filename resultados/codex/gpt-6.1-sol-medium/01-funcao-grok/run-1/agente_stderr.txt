@@ -1,0 +1,289 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-jjqboq_m
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a189c5-ed25-7942-99d8-7b5e6c5017fa
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T22:26:54.100130Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório para implementar e verificar a solução.
+exec
+/bin/bash -lc "pwd && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!*lock*'"' -g 'AGENTS.md' -g 'enunciado.md' -g '*'" in /tmp/bench-jjqboq_m
+ succeeded in 0ms:
+/tmp/bench-jjqboq_m
+.gitkeep
+enunciado.md
+
+exec
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-jjqboq_m
+ succeeded in 0ms:
+# Tarefa: horários livres em uma janela
+
+Crie o arquivo `solucao.py` no diretório de trabalho com a função abaixo. Use apenas a biblioteca padrão do Python 3.11. Não crie outros arquivos.
+
+```python
+def horas_livres(
+    ocupados: list[tuple[str, str]],
+    inicio: str,
+    fim: str,
+) -> list[tuple[str, str]]:
+    """Intervalos livres dentro da janela [inicio, fim)."""
+```
+
+## Horários
+
+- Todo horário é uma string `HH:MM` com exatamente 5 caracteres, horas e minutos com dois dígitos ASCII (`0123456789`). O separador é o caractere `:` (U+003A).
+- Minutos vão de `00` a `59`.
+- Horas vão de `00` a `23`. O único valor extra aceito é `24:00` (fim do dia, equivalente a 1440 minutos). Na saída, 1440 minutos é `"24:00"`, nunca `"00:00"`.
+- Qualquer outro texto é `ValueError`. Isso inclui `9:00`, `24:30`, `23:60`, `09-00`, `""`, `09:00:00`, `09:00 `, dígitos de largura cheia (`０９:００`), dois-pontos de largura cheia (`09：00`) e qualquer caractere que `str.isdigit` aceitaria mas não está em `0123456789`.
+- Se um horário não for `str`, levante `TypeError`.
+
+A janela e cada intervalo são semiabertos: o instante inicial entra e o final não entra. Na prática basta tratar os limites em minutos inteiros e devolver os trechos livres no mesmo formato.
+
+## Janela
+
+- `inicio` e `fim` formam a janela em que se busca disponibilidade.
+- Exija `inicio` estritamente anterior a `fim`. Caso contrário, `ValueError`.
+- `24:00` pode ser `fim`. Como início da janela ele nunca deixa a janela válida, então também é `ValueError`.
+
+## Ocupados
+
+- `ocupados` é exatamente uma `list`. `tuple`, `str`, gerador ou outro tipo: `TypeError`. Não itere uma string achando que cada caractere é um horário.
+- Cada item é um `tuple` ou `list` de exatamente duas strings `(ini, fim)`. Forma errada: `TypeError`.
+- Valide os dois horários e a ordem **antes** de ignorar ou recortar. Formato inválido ou `ini > fim` é erro mesmo que o intervalo caia fora da janela ou tenha duração zero (`("24:99", "24:99")` é `ValueError`, não é ignorado).
+- `ini == fim` com horários válidos (duração zero): ignore esse item.
+- Intervalos podem vir fora de ordem, sobrepostos, encostados, contidos uns nos outros, duplicados ou parcialmente fora da janela.
+- Recorte cada ocupado para a janela. O que ficar inteiramente fora some.
+- Una ocupados que se sobrepõem ou que se encostam (o fim de um é o início do outro), **depois do recorte**. Dois intervalos que só passam a se encostar dentro da janela também se unem. A união é transitiva.
+- Não altere a lista recebida nem as listas internas que representam pares.
+
+## Retorno
+
+Lista de pares `(ini, fim)` em `HH:MM`, ordenada, sem sobreposição e sem duração zero, cobrindo exatamente o que sobrou da janela. `1440` minutos vira `"24:00"`. Se não houver folga, devolva `[]`.
+
+## Exemplos
+
+```python
+horas_livres([], "09:00", "12:00")
+# [("09:00", "12:00")]
+
+horas_livres([("10:00", "11:00")], "09:00", "12:00")
+# [("09:00", "10:00"), ("11:00", "12:00")]
+
+horas_livres([("09:00", "10:00"), ("10:00", "11:00")], "09:00", "12:00")
+# [("11:00", "12:00")]
+
+horas_livres([("08:00", "09:30"), ("13:00", "15:00")], "09:00", "12:00")
+# [("09:30", "12:00")]
+
+horas_livres([("23:30", "24:00")], "23:00", "24:00")
+# [("23:00", "23:30")]
+
+horas_livres([("08:00", "11:00"), ("11:00", "13:00")], "10:00", "14:00")
+# [("13:00", "14:00")]  recorte encosta 11:00 com 11:00 e funde
+```
+
+apply patch
+patch: completed
+/tmp/bench-jjqboq_m/solucao.py
+diff --git a/solucao.py b/solucao.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..979c80ce1a2f60a4419b9e5ce9a7079083bea7dd
+--- /dev/null
++++ b/solucao.py
+@@ -0,0 +1,60 @@
++"""Cálculo de intervalos livres dentro de uma janela diária."""
++
++
++def _minutos(horario: str) -> int:
++    if not isinstance(horario, str):
++        raise TypeError("O horário deve ser uma string.")
++    if (
++        len(horario) != 5
++        or horario[2] != ":"
++        or any(c not in "0123456789" for c in horario[:2] + horario[3:])
++    ):
++        raise ValueError("Horário inválido: esperado HH:MM com dígitos ASCII.")
++    horas = int(horario[:2])
++    minutos = int(horario[3:])
++    if minutos > 59 or horas > 24 or (horas == 24 and minutos != 0):
++        raise ValueError("Horário fora dos limites do dia.")
++    return horas * 60 + minutos
++
++
++def _horario(minutos: int) -> str:
++    horas, minutos = divmod(minutos, 60)
++    return f"{horas:02d}:{minutos:02d}"
++
++
++def horas_livres(
++    ocupados: list[tuple[str, str]],
++    inicio: str,
++    fim: str,
++) -> list[tuple[str, str]]:
++    """Intervalos livres dentro da janela [inicio, fim)."""
++    if type(ocupados) is not list:
++        raise TypeError("Ocupados deve ser exatamente uma lista.")
++    inicio_janela = _minutos(inicio)
++    fim_janela = _minutos(fim)
++    if inicio_janela >= fim_janela:
++        raise ValueError("O início da janela deve ser anterior ao fim.")
++
++    recortados = []
++    for par in ocupados:
++        if not isinstance(par, (tuple, list)) or len(par) != 2:
++            raise TypeError("Cada ocupado deve ser um par de horários.")
++        ini_ocupado = _minutos(par[0])
++        fim_ocupado = _minutos(par[1])
++        if ini_ocupado > fim_ocupado:
++            raise ValueError("O início do ocupado não pode ser posterior ao fim.")
++        ini_recortado = max(ini_ocupado, inicio_janela)
++        fim_recortado = min(fim_ocupado, fim_janela)
++        if ini_recortado < fim_recortado:
++            recortados.append((ini_recortado, fim_recortado))
++
++    recortados.sort()
++    livres = []
++    cursor = inicio_janela
++    for ini_ocupado, fim_ocupado in recortados:
++        if cursor < ini_ocupado:
++            livres.append((_horario(cursor), _horario(ini_ocupado)))
++        cursor = max(cursor, fim_ocupado)
++    if cursor < fim_janela:
++        livres.append((_horario(cursor), _horario(fim_janela)))
++    return livres
+
+exec
+/bin/bash -lc "python -B - <<'PY'
+from solucao import horas_livres
+import random
+
+assert horas_livres([], '09:00', '12:00') == [('09:00', '12:00')]
+assert horas_livres([('10:00', '11:00')], '09:00', '12:00') == [('09:00', '10:00'), ('11:00', '12:00')]
+assert horas_livres([('09:00', '10:00'), ('10:00', '11:00')], '09:00', '12:00') == [('11:00', '12:00')]
+assert horas_livres([('08:00', '09:30'), ('13:00', '15:00')], '09:00', '12:00') == [('09:30', '12:00')]
+assert horas_livres([('23:30', '24:00')], '23:00', '24:00') == [('23:00', '23:30')]
+assert horas_livres([('08:00', '11:00'), ('11:00', '13:00')], '10:00', '14:00') == [('13:00', '14:00')]
+
+def raises(exc, *args):
+    try:
+        horas_livres(*args)
+    except exc:
+        return
+    raise AssertionError((exc, args))
+
+for value in ['9:00', '24:30', '23:60', '09-00', '', '09:00:00', '09:00 ', '０９:００', '09：00', '²9:00']:
+    raises(ValueError, [], value, '24:00')
+    raises(ValueError, [(value, value)], '09:00', '12:00')
+for value in [None, 900, b'09:00']:
+    raises(TypeError, [], value, '24:00')
+    raises(TypeError, [(value, '10:00')], '09:00', '12:00')
+for value in [(), '', iter([]), None]:
+    raises(TypeError, value, '09:00', '12:00')
+for pair in ['09:00', (), ['09:00'], ['09:00', '10:00', '11:00'], 1]:
+    raises(TypeError, [pair], '09:00', '12:00')
+raises(ValueError, [], '24:00', '24:00')
+raises(ValueError, [], '12:00', '09:00')
+raises(ValueError, [('08:00', '07:00')], '09:00', '12:00')
+raises(ValueError, [('00:00', '24:00'), ('24:99', '24:99')], '09:00', '12:00')
+assert horas_livres([('24:00', '24:00')], '00:00', '24:00') == [('00:00', '24:00')]
+
+fmt = lambda n: f'{n // 60:02d}:{n % 60:02d}'
+rng = random.Random(42)
+for _ in range(1000):
+    start, end = sorted(rng.sample(range(1441), 2))
+    intervals = [sorted((rng.randrange(1441), rng.randrange(1441))) for _ in range(rng.randrange(20))]
+    pairs = [[fmt(a), fmt(b)] for a, b in intervals]
+    snapshot = [p[:] for p in pairs]
+    actual = horas_livres(pairs, fmt(start), fmt(end))
+    expected = []
+    run = None
+    for minute in range(start, end):
+        free = not any(a <= minute < b for a, b in intervals)
+        if free and run is None:
+            run = minute
+        if not free and run is not None:
+            expected.append((fmt(run), fmt(minute)))
+            run = None
+    if run is not None:
+        expected.append((fmt(run), fmt(end)))
+    assert actual == expected, (pairs, actual, expected)
+    assert pairs == snapshot
+print('Verificação concluída: exemplos, validações e 1000 casos aleatórios passaram.')
+PY" in /tmp/bench-jjqboq_m
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from solucao import horas_livres
+import random
+
+def erro(tipo, ocupados, inicio='09:00', fim='12:00'):
+    try:
+        horas_livres(ocupados, inicio, fim)
+    except tipo:
+        return
+    raise AssertionError((tipo, ocupados, inicio, fim))
+
+assert horas_livres([], '09:00', '12:00') == [('09:00', '12:00')]
+assert horas_livres([('10:00', '11:00')], '09:00', '12:00') == [('09:00', '10:00'), ('11:00', '12:00')]
+assert horas_livres([('09:00', '10:00'), ('10:00', '11:00')], '09:00', '12:00') == [('11:00', '12:00')]
+assert horas_livres([('08:00', '09:30'), ('13:00', '15:00')], '09:00', '12:00') == [('09:30', '12:00')]
+assert horas_livres([('23:30', '24:00')], '23:00', '24:00') == [('23:00', '23:30')]
+assert horas_livres([('08:00', '11:00'), ('11:00', '13:00')], '10:00', '14:00') == [('13:00', '14:00')]
+for value in ['9:00', '24:30', '23:60', '09-00', '', '09:00:00', '09:00 ', '０９:００', '09：00', '²9:00']:
+    erro(ValueError, [], value, '24:00')
+    erro(ValueError, [(value, value)])
+for value in [None, 900, b'09:00']:
+    erro(TypeError, [], value, '24:00')
+    erro(TypeError, [(value, '10:00')])
+for value in [(), '', iter([]), None]:
+    erro(TypeError, value)
+for pair in ['09:00', (), ['09:00'], ['09:00', '10:00', '11:00'], 1]:
+    erro(TypeError, [pair])
+erro(ValueError, [], '24:00', '24:00')
+erro(ValueError, [], '12:00', '09:00')
+erro(ValueError, [('08:00', '07:00')])
+erro(ValueError, [('00:00', '24:00'), ('24:99', '24:99')])
+assert horas_livres([('24:00', '24:00')], '00:00', '24:00') == [('00:00', '24:00')]
+fmt = lambda n: f'{n // 60:02d}:{n % 60:02d}'
+rng = random.Random(42)
+for _ in range(1000):
+    start, end = sorted(rng.sample(range(1441), 2))
+    intervals = [sorted((rng.randrange(1441), rng.randrange(1441))) for _ in range(rng.randrange(20))]
+    pairs = [[fmt(a), fmt(b)] for a, b in intervals]
+    snapshot = [p[:] for p in pairs]
+    actual = horas_livres(pairs, fmt(start), fmt(end))
+    expected = []
+    run = None
+    for minute in range(start, end):
+        free = not any(a <= minute < b for a, b in intervals)
+        if free and run is None:
+            run = minute
+        if not free and run is not None:
+            expected.append((fmt(run), fmt(minute)))
+            run = None
+    if run is not None:
+        expected.append((fmt(run), fmt(end)))
+    assert actual == expected
+    assert pairs == snapshot
+print('Exemplos, validações e 1000 casos aleatórios passaram.')
+PY" in /tmp/bench-jjqboq_m
+ succeeded in 12ms:
+Exemplos, validações e 1000 casos aleatórios passaram.
+
+codex
+Criado [solucao.py](/tmp/bench-jjqboq_m/solucao.py) com a função `horas_livres`, conforme o enunciado.
+
+Verificação concluída: exemplos, validações de erros e 1.000 casos aleatórios passaram. Nenhum outro arquivo foi criado.
+tokens used
+19,155

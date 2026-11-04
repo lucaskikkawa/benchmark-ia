@@ -59,7 +59,10 @@ def nota_de(out, ids):
         except ValueError:
             continue
         if all(i in d for i in ids):
-            return {i: min(2.0, max(0.0, float(d[i]))) for i in ids}
+            try:
+                return {i: min(2.0, max(0.0, float(d[i]))) for i in ids}
+            except (TypeError, ValueError):
+                continue
     return None
 
 

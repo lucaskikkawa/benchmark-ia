@@ -1,0 +1,25 @@
+Criei `tests/test_validador.py` com 109 testes pytest. Todos passam contra o `validador.py` correto.
+
+Verifiquei a suíte com 13 mutantes que eu mesmo escrevi (não os 12 do executor, que não conheço). Todos foram eliminados:
+- limites de tamanho com `<` e `<=` trocados (mínimo e máximo);
+- cada regra de maiúscula, minúscula, dígito, especial e espaço desativada;
+- conjunto de especiais com um caractere faltando (`=`);
+- detecção de triplicação deslocada em um índice;
+- detecção de quatro caracteres repetidos (com `==` estendido);
+- limites de força `10` e `14` com comparação inclusiva;
+- `calcular_forca` ignorando a validação.
+
+A suíte cobre:
+- **Limites exatos:** 7/8 e 64/65 no padrão, e os valores customizados; os limites de força em 9/10, 13/14 e 64.
+- **Regras isoladas:** cada uma das 8 regras com caso de falha que gera exatamente um erro.
+- **Especiais:** os 14 caracteres do conjunto são aceitos; pontuação fora do conjunto (`~`, `.`, `?`, etc.) não conta.
+- **Espaços:** espaço, tab, quebra de linha, `\r`, `\v` e `\f`, no início, meio e fim.
+- **Triplicação:** no início, meio e fim, com letras, maiúsculas, dígitos e especiais; duas repetições e sequências crescentes são aceitas.
+- **Acúmulo de erros:** contagem exata em `"a"` (4 erros) e `"aaa"` (5 erros).
+- **Construtor:** defaults 8/64 e confirmação de que `min_tam` e `max_tam` não se trocam.
+
+Decisões que tomei:
+- Os testes não dependem do texto das mensagens de erro, conforme o enunciado; só verificam quantidade de erros e o booleano.
+- A suíte insere o diretório pai de `tests/` no `sys.path`, para importar `validador.py` tanto na raiz quanto ao lado de `tests/`.
+
+Limpei os caches do pytest e a pasta temporária de mutantes; o diretório tem apenas `enunciado.md`, `validador.py` e `tests/`.

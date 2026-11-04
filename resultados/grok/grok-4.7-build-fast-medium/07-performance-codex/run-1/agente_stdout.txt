@@ -1,0 +1,5 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui mesmo.A contagem precisa ser uma passagem com mapa de frequências, para ficar em tempo linear e memória proporcional aos valores distintos. Vou implementar isso em `pares.py`.`pares.py` define `contar_pares(valores, alvo)`. A função percorre a entrada uma vez e, para cada valor, soma as ocorrências já vistas do complemento `alvo - valor` antes de registrá-lo.
+
+Isso conta cada par de índices `i < j` uma única vez, inclusive duplicatas como `[2, 2, 2]` com alvo `4` (3 pares). O exemplo `[1, 3, 2, 2]` com alvo `4` retorna `2`. Listas e geradores não são materializados nem alterados, e não fica estado entre chamadas.
+
+O tempo esperado é O(n) e a memória é O(k). Em um gerador de 1.000.000 de itens com quatro valores distintos, a chamada levou cerca de 0,8 s e o pico extra de memória ficou bem abaixo de 4 MiB.

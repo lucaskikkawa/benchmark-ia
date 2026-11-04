@@ -1,0 +1,3 @@
+Criei [agenda_cli.py](/tmp/bench-efpn_jxr/agenda_cli.py) com os subcomandos `adicionar`, `listar` e `concluir`, validação do arquivo JSON e as saídas e códigos de erro especificados.
+
+Não executei testes.

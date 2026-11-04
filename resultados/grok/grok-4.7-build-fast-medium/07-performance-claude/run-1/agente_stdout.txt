@@ -1,0 +1,3 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com arquivos daqui.O enunciado pede contagem de subarrays com soma `k` e comprimento limitado em tempo quase linear. Vou conferir o diretório e implementar isso.A função `contar_subarrays_soma` está em `solucao.py`. Ela conta os subarrays contíguos cuja soma é exatamente `k` e cujo comprimento fica entre `comprimento_min` e `comprimento_max`.
+
+A contagem usa somas de prefixo e uma janela deslizante de inícios válidos. Para cada fim, entram e saem no máximo um prefixo, então o tempo é O(n) mesmo com números negativos e com `comprimento_max` na casa dos milhares. Nos exemplos do enunciado o resultado confere, e com `n = 300_000` cada chamada ficou abaixo de 0,1 s.

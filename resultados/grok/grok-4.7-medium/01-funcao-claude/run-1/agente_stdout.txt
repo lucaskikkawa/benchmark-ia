@@ -1,0 +1,6 @@
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede um parser exato e linear de durações. Vou implementar `parse_duracao` em `solucao.py` e testar os casos do enunciado.A função `parse_duracao` está em `solucao.py` e converte durações no formato `w`/`d`/`h`/`m`/`s` para segundos inteiros exatos.
+
+- A entrada que não é `str` gera `TypeError`. Subclasses de `str` são aceitas.
+- A string vazia, a unidade repetida ou fora de ordem, o número sem unidade e qualquer texto extra geram `ValueError`.
+- Os componentes podem ficar colados ou separados por espaços em branco, e inteiros com milhares de dígitos continuam exatos.
+- Entradas de cerca de 1 MB feitas só de espaços são processadas em menos de 1 ms.

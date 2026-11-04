@@ -1,0 +1,1 @@
+Implementei a CLI em [contatexto.py](/tmp/bench-_7d98wr8/contatexto.py). Ela calcula as métricas selecionadas, formata a saída como texto ou JSON e cria as pastas necessárias ao salvar em arquivo. Erros de leitura e gravação retornam código 1; erros de argumentos ficam a cargo do `argparse` e retornam código 2.

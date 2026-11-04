@@ -1,0 +1,11 @@
+A tarefa foi implementada no arquivo [`solucao.py`](file:///tmp/bench-718u3eur/solucao.py).
+
+### Detalhes da Implementação
+
+- **Algoritmo:** Utiliza somas de prefixo combinadas com uma janela deslizante e tabela hash de frequências ($O(N)$ em tempo e memória). Para cada índice final $j$, os prefixos válidos $i$ estão no intervalo $[\max(0, j - \text{comprimento\_max}), j - \text{comprimento\_min}]$, entrando e saindo da tabela de frequências no máximo uma vez.
+- **Desempenho:** Executa em $\approx 0.12\text{s}$ para $N = 300.000$, cumprindo amplamente o limite de 2 segundos.
+- **Validações e Casos Limite:**
+  - `ValueError` se `comprimento_min < 1` ou se `comprimento_max < 1`.
+  - Retorna `0` se `comprimento_min > comprimento_max` ou se `comprimento_min > len(nums)`.
+  - Suporta inteiros negativos, zeros, positivos e valores maiores que $2^{63}$.
+  - Lista de entrada `nums` não é modificada.

@@ -1,48 +1,80 @@
+"""Parser de durações humanas para segundos."""
+
+
+_UNIDADES = {
+    "w": (0, 604800),
+    "d": (1, 86400),
+    "h": (2, 3600),
+    "m": (3, 60),
+    "s": (4, 1),
+}
+
+
+def _valor_decimal(texto: str, inicio: int, fim: int) -> int:
+    """Converte os dígitos ASCII do intervalo sem limite de tamanho textual."""
+    valor = 0
+    posicao = inicio
+    while posicao < fim:
+        # Cada conversão abaixo contém no máximo nove dígitos, abaixo do
+        # limite de segurança de conversão decimal de int do Python.
+        proximo = min(posicao + 9, fim)
+        bloco = int(texto[posicao:proximo])
+        tamanho = proximo - posicao
+        valor = valor * (10 ** tamanho) + bloco
+        posicao = proximo
+    return valor
+
+
 def parse_duracao(texto: str) -> int:
-    """Converte uma duração como ``1h30m`` no total de segundos."""
+    """Interpreta uma duração como ``1w 2d3h`` e retorna seus segundos."""
     if not isinstance(texto, str):
         raise TypeError("texto deve ser uma string")
 
-    texto = texto.strip()
-    if not texto:
-        raise ValueError("a duração não pode ser vazia")
-
-    unidades = {"d": (0, 86_400), "h": (1, 3_600), "m": (2, 60), "s": (3, 1)}
+    tamanho = len(texto)
+    i = 0
+    anterior = -1
+    quantidade = 0
     total = 0
-    ultima_ordem = -1
-    posicao = 0
-    componentes = 0
 
-    while posicao < len(texto):
-        inicio_numero = posicao
-        while posicao < len(texto) and "0" <= texto[posicao] <= "9":
-            posicao += 1
-        if posicao == inicio_numero:
-            raise ValueError("componente inválido")
+    while i < tamanho:
+        # Espaços em branco só podem separar componentes ou envolver a duração.
+        while i < tamanho and texto[i].isspace():
+            i += 1
+        if i == tamanho:
+            break
 
-        if posicao == len(texto):
+        inicio_digitos = i
+        while i < tamanho and "0" <= texto[i] <= "9":
+            i += 1
+        if i == inicio_digitos:
+            raise ValueError("esperado um número ASCII seguido de uma unidade")
+
+        fim_digitos = i
+        if i == tamanho:
             raise ValueError("número sem unidade")
 
-        unidade = texto[posicao].lower()
-        if unidade not in unidades:
-            raise ValueError("unidade inválida")
-        ordem, fator = unidades[unidade]
-        if ordem <= ultima_ordem:
+        unidade = texto[i]
+        # Comparações explícitas impedem que letras Unicode parecidas sejam aceitas.
+        if "A" <= unidade <= "Z":
+            unidade = chr(ord(unidade) + (ord("a") - ord("A")))
+        info = _UNIDADES.get(unidade)
+        if info is None:
+            raise ValueError("unidade desconhecida")
+
+        ordem, multiplicador = info
+        if ordem <= anterior:
             raise ValueError("unidades fora de ordem ou repetidas")
 
-        valor = 0
-        for digito in texto[inicio_numero:posicao]:
-            valor = valor * 10 + (ord(digito) - ord("0"))
-        total += valor * fator
-        ultima_ordem = ordem
-        componentes += 1
-        posicao += 1
+        valor = _valor_decimal(texto, inicio_digitos, fim_digitos)
+        total += valor * multiplicador
+        anterior = ordem
+        quantidade += 1
+        i += 1
 
-        # Espaços são permitidos apenas entre componentes.
-        while posicao < len(texto) and texto[posicao].isspace():
-            posicao += 1
+        # Próximo caractere deve iniciar outro componente ou ser espaço.
+        if i < tamanho and not texto[i].isspace() and not ("0" <= texto[i] <= "9"):
+            raise ValueError("texto extra após componente")
 
-    if componentes == 0:
-        raise ValueError("a duração deve conter ao menos um componente")
-
+    if quantidade == 0:
+        raise ValueError("duração vazia")
     return total

@@ -1,0 +1,15 @@
+Criei `solucao.py` com a função `consolidar(caminho_csv, caminho_sla, caminho_saida)`, usando só a biblioteca padrão.
+
+Testei com arquivos temporários fora do diretório, que já apaguei; não deixei nenhuma amostra no repositório.
+- **Exemplo do enunciado:** a equipe `n1` sai com média 45, 1 estourado e `pior_id` `a1`.
+- **Desempate:** `a10` ganha de `a2`.
+- **Formato aceito:** `\r\n`, campo `"São, Paulo"` entre aspas, linha `,,,,` e linhas em branco ignoradas, e prioridade `" alta "` com espaços.
+- **Erros (`ValueError`):** cabeçalho com BOM, data inexistente (`2024-02-30`), data fora do formato (`2024-3-01`), prioridade `Alta`, id duplicado depois do strip e CSV vazio.
+
+O arquivo de saída ficou exatamente no formato pedido. As validações do JSON de SLA (`bool`, `float`, chaves extras) e o `FileNotFoundError` estão no código, mas não foram testadas.
+
+Decisões em pontos que o enunciado não fixa:
+- **Datas:** exijo exatamente `YYYY-MM-DDTHH:MM` com dígitos ASCII. Sem essa checagem, o `strptime` aceitaria datas sem zeros à esquerda, como `2024-3-1T1:0`.
+- **CSV malformado:** aspas inválidas ou outros erros do módulo `csv` viram `ValueError`.
+- **Linha vazia com menos colunas:** uma linha como `,,` é ignorada como linha em branco, sem gerar erro de número de colunas.
+- **Ordem das validações:** tudo é validado antes de gravar, então em caso de erro o arquivo de saída não é criado.

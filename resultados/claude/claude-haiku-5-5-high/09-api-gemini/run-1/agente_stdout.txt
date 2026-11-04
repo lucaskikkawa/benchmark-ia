@@ -1,0 +1,8 @@
+Criei `cliente_resiliente.py` com a exceção `ApiError` e a classe `ClienteResiliente`, conforme o enunciado. Não o commitei, pois o diretório não é um repositório git.
+
+Verifiquei com um script ad-hoc contra o `FakeApiServer`, usando um `sleep_fn` que só registra os delays. Passaram os casos de sucesso, retry com rede e timeout, 429 e 503 recuperados e esgotados, 500/502/504 esgotados, 400/401/403/404/301 sem retry, `max_tentativas=1` sem sleep, a fórmula de backoff com outros fatores e as validações de parâmetros. Não há suíte de testes no diretório, então o script não ficou salvo.
+
+Escolhas que tomei onde o enunciado deixava margem:
+- **5xx:** tratei qualquer status de 500 a 599 como retentável, já que o enunciado diz "5xx". Só os exemplos 500, 502, 503 e 504 foram testados.
+- **Validação numérica:** `backoff_base`, `backoff_fator` e `timeout` precisam ser `int` ou `float`, não `bool`, e maiores que zero. NaN também é rejeitado.
+- **Mensagem:** `ApiError` guarda a mensagem em `mensagem` e também a passa ao `Exception`, então `str(erro)` funciona. Quando o erro vem de rede ou timeout, a exceção original fica encadeada via `from`.

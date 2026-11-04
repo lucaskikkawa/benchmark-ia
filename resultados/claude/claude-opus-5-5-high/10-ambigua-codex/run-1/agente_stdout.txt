@@ -1,0 +1,14 @@
+Criei os dois arquivos pedidos e testei com alguns casos que escrevi na hora; todos passaram. Não havia testes prontos no diretório para rodar.
+
+- **`organizador.py`**: `organizar_tarefas` devolve só as tarefas pendentes (`concluida == False`), da maior para a menor prioridade.
+  - Cada item da saída é uma cópia rasa nova, mesmo quando o mesmo dicionário aparece várias vezes na entrada.
+  - Campos extras são mantidos, e objetos dentro deles (como a lista em `etiquetas`) continuam sendo os mesmos objetos.
+  - A lista e os dicionários recebidos não são alterados, e duplicatas não são removidas.
+- **`SUPOSICOES.md`**: registra as decisões que estavam em aberto.
+  - **Empates:** tarefas com a mesma prioridade ficam na ordem em que vieram na entrada.
+  - **Entradas inválidas:** a função falha com `ValueError` (informando a posição e o motivo) em vez de descartar a tarefa sem aviso. Isso vale também para tarefas concluídas.
+    - Uma tarefa é inválida se não for `dict`, se faltar algum dos três campos, ou se `titulo` não for texto não vazio.
+    - Também é inválida se `prioridade` não for inteiro de 0 a 5; `True`/`False` e números como `3.0` não são aceitos.
+    - E é inválida se `concluida` não for `True`/`False`.
+
+Nos testes, conferi a ordem e os empates, as cópias e os campos extras, a entrada vazia e a com só tarefas concluídas, e os erros para entradas inválidas. Com 30.000 tarefas, a função levou cerca de 14 ms.

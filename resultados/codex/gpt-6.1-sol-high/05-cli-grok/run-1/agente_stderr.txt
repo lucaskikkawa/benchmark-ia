@@ -1,0 +1,574 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: /tmp/bench-qlwezv00
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a189f0-8b51-7e13-b2f4-407cf7b3b06a
+--------
+user
+Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
+2026-10-29T23:13:27.524390Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+codex
+Vou ler o enunciado e os arquivos do diretório, implementar a solução e verificar o resultado.
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'enunciado.md' -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!'"\\.git'" in /tmp/bench-qlwezv00
+ succeeded in 0ms:
+/tmp/bench-qlwezv00
+enunciado.md
+
+exec
+/bin/bash -lc "cat enunciado.md && rg --files -g '"'!node_modules'"' -g '"'!vendor'"' -g '"'!'"\\.git'" in /tmp/bench-qlwezv00
+ succeeded in 0ms:
+# Tarefa: CLI de agenda pessoal
+
+Crie `agenda_cli.py` no diretório de trabalho. Ele é o programa completo: `argparse`, subcomandos, arquivo JSON e códigos de saída. Só a biblioteca padrão. Os testes chamam o script com `subprocess`.
+
+```text
+python agenda_cli.py adicionar --titulo TEXTO --prioridade baixa|media|alta [--prazo YYYY-MM-DD] --arquivo CAMINHO
+python agenda_cli.py listar --arquivo CAMINHO [--prioridade baixa|media|alta] [--somente-abertas]
+python agenda_cli.py concluir --id N --arquivo CAMINHO
+```
+
+`--arquivo` é obrigatório em todos. Sem subcomando, argumento desconhecido ou escolha inválida de prioridade: o `argparse` encerra com código 2.
+
+## Arquivo JSON
+
+Se `adicionar` receber um caminho que não existe, crie o arquivo. `listar` e `concluir` num caminho que não existe: código 2, stderr exatamente `erro: arquivo inexistente\n`, stdout vazio.
+
+Formato (UTF-8, `indent=2`, `ensure_ascii=False`, quebra de linha final):
+
+```json
+{
+  "proximo_id": 1,
+  "tarefas": [
+    {
+      "id": 1,
+      "titulo": "Comprar leite",
+      "prioridade": "alta",
+      "prazo": null,
+      "concluida": false
+    }
+  ]
+}
+```
+
+Na leitura, qualquer JSON que não siga esse formato gera `erro: arquivo invalido` (código 2). Exija:
+
+- objeto com exatamente as chaves `proximo_id` e `tarefas`;
+- `proximo_id` inteiro ≥ 1 (`bool` não vale; `1.0` também não) e **maior** que todo `id` já usado (se não houver tarefas, só ≥ 1). Buracos são válidos: ids `1` e `3` com `proximo_id` `5` podem ser listados. O próximo `adicionar` grava id `5`, não `4` e não `max+1`;
+- `tarefas` é uma lista de objetos com exatamente `id`, `titulo`, `prioridade`, `prazo`, `concluida`;
+- `id` inteiro ≥ 1, único, não `bool`;
+- `titulo` string não vazia depois das regras abaixo, sem `\n`, `\r` ou `\t`, e sem espaço nas pontas (o arquivo já deve estar normalizado; título `"  a  "` ou `"\n"` é inválido);
+- `prioridade` é `baixa`, `media` ou `alta`;
+- `prazo` é `null` ou `YYYY-MM-DD` de um dia real no calendário gregoriano de `datetime.date` (anos 1 a 9999). `2000-02-29` existe; `1900-02-29` e `2100-02-29` não;
+- `concluida` é bool (`0` e `1` não valem).
+- `id` duplicado, chave a mais ou chave a menos torna o arquivo inválido.
+
+## adicionar
+
+- `--titulo` é obrigatório. Vale o texto depois de `str.strip` (isso inclui espaços Unicode, como `\u00a0`). Se ficar vazio: `erro: titulo vazio`.
+- `adicionar` em arquivo que já existe e é inválido: `erro: arquivo invalido`, e o arquivo **permanece byte a byte** como estava.
+- `listar` não reescreve o arquivo.
+- Se o título (já sem espaços das pontas) contiver `\n`, `\r` ou `\t`: `erro: titulo invalido`.
+- `--prioridade` obrigatória, uma das três opções.
+- `--prazo` opcional. Se vier, tem de ser uma data real `YYYY-MM-DD`; senão `erro: prazo invalido`. Ausente grava `null`.
+- O id novo é o `proximo_id` atual. Depois grave `proximo_id` incrementado em 1 e `concluida` false.
+- Sucesso: stdout exatamente `ok id=N\n`, stderr vazio, código 0. Nada além disso.
+
+## listar
+
+Imprima uma tarefa por linha, sem cabeçalho, separador tab (`\t`), nesta ordem de colunas:
+
+```text
+id	prioridade	estado	prazo	titulo
+```
+
+- `estado` é `aberta` ou `concluida`.
+- `prazo` nulo vira `-`.
+- Ordem: prioridade `alta`, depois `media`, depois `baixa`; dentro da mesma prioridade, `id` crescente.
+- `--prioridade` filtra uma prioridade. `--somente-abertas` tira as concluídas. Os dois filtros juntos são um E.
+- Nenhuma tarefa (ou nenhuma após o filtro): stdout vazio (zero bytes), código 0.
+- Cada linha impressa termina com `\n`.
+
+## concluir
+
+- `--id` inteiro (`01` é o id `1`). Se não existir: `erro: id inexistente`.
+- Se já estiver concluída: `erro: ja concluida`.
+- Senão marque `concluida` true, grave o arquivo e imprima `ok id=N\n` com código 0.
+
+## Erros de regra
+
+Código 2, stdout vazio, stderr exatamente `erro: MENSAGEM\n` (sem traceback), com uma destas mensagens:
+
+- `titulo vazio`
+- `titulo invalido`
+- `prazo invalido`
+- `arquivo inexistente`
+- `arquivo invalido`
+- `id inexistente`
+- `ja concluida`
+enunciado.md
+
+apply patch
+patch: completed
+/tmp/bench-qlwezv00/agenda_cli.py
+diff --git a/agenda_cli.py b/agenda_cli.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..97cb1a5d327a80e5c2932ca2839cdb76419d3038
+--- /dev/null
++++ b/agenda_cli.py
+@@ -0,0 +1,200 @@
++"""Agenda pessoal com subcomandos e armazenamento em JSON."""
++
++import argparse
++import datetime
++import json
++import re
++import sys
++from pathlib import Path
++
++
++PRIORIDADES = ("baixa", "media", "alta")
++ORDEM_PRIORIDADE = {"alta": 0, "media": 1, "baixa": 2}
++CHAVES_TAREFA = {"id", "titulo", "prioridade", "prazo", "concluida"}
++
++
++class ErroAgenda(Exception):
++    """Erro de regra apresentado sem traceback."""
++
++
++def prazo_valido(prazo):
++    if not isinstance(prazo, str):
++        return False
++    if re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", prazo) is None:
++        return False
++    try:
++        datetime.date.fromisoformat(prazo)
++    except ValueError:
++        return False
++    return True
++
++
++def titulo_valido(titulo):
++    return (
++        isinstance(titulo, str)
++        and bool(titulo)
++        and titulo == titulo.strip()
++        and not any(caractere in titulo for caractere in "\n\r\t")
++    )
++
++
++def validar_agenda(agenda):
++    if not isinstance(agenda, dict) or set(agenda) != {"proximo_id", "tarefas"}:
++        return False
++    proximo_id = agenda["proximo_id"]
++    if type(proximo_id) is not int or proximo_id < 1:
++        return False
++    if not isinstance(agenda["tarefas"], list):
++        return False
++
++    ids = set()
++    for tarefa in agenda["tarefas"]:
++        if not isinstance(tarefa, dict) or set(tarefa) != CHAVES_TAREFA:
++            return False
++        identificador = tarefa["id"]
++        if (
++            type(identificador) is not int
++            or identificador < 1
++            or identificador >= proximo_id
++            or identificador in ids
++        ):
++            return False
++        ids.add(identificador)
++        if not titulo_valido(tarefa["titulo"]):
++            return False
++        if tarefa["prioridade"] not in PRIORIDADES:
++            return False
++        if tarefa["prazo"] is not None and not prazo_valido(tarefa["prazo"]):
++            return False
++        if type(tarefa["concluida"]) is not bool:
++            return False
++    return True
++
++
++def objeto_sem_duplicatas(pares):
++    objeto = {}
++    for chave, valor in pares:
++        if chave in objeto:
++            raise ValueError("chave duplicada")
++        objeto[chave] = valor
++    return objeto
++
++
++def carregar(caminho, criar=False):
++    try:
++        with caminho.open("r", encoding="utf-8") as arquivo:
++            agenda = json.load(arquivo, object_pairs_hook=objeto_sem_duplicatas)
++    except FileNotFoundError:
++        if criar:
++            return {"proximo_id": 1, "tarefas": []}
++        raise ErroAgenda("arquivo inexistente") from None
++    except (OSError, UnicodeError, ValueError, RecursionError):
++        raise ErroAgenda("arquivo invalido") from None
++    if not validar_agenda(agenda):
++        raise ErroAgenda("arquivo invalido")
++    return agenda
++
++
++def salvar(caminho, agenda):
++    try:
++        with caminho.open("w", encoding="utf-8", newline="\n") as arquivo:
++            json.dump(agenda, arquivo, indent=2, ensure_ascii=False)
++            arquivo.write("\n")
++    except (OSError, UnicodeError):
++        raise ErroAgenda("arquivo invalido") from None
++
++
++def adicionar(args, caminho, agenda):
++    titulo = args.titulo.strip()
++    if not titulo:
++        raise ErroAgenda("titulo vazio")
++    if not titulo_valido(titulo):
++        raise ErroAgenda("titulo invalido")
++    if args.prazo is not None and not prazo_valido(args.prazo):
++        raise ErroAgenda("prazo invalido")
++
++    identificador = agenda["proximo_id"]
++    agenda["tarefas"].append(
++        {
++            "id": identificador,
++            "titulo": titulo,
++            "prioridade": args.prioridade,
++            "prazo": args.prazo,
++            "concluida": False,
++        }
++    )
++    agenda["proximo_id"] += 1
++    salvar(caminho, agenda)
++    print(f"ok id={identificador}")
++
++
++def listar(args, agenda):
++    tarefas = sorted(
++        agenda["tarefas"],
++        key=lambda tarefa: (ORDEM_PRIORIDADE[tarefa["prioridade"]], tarefa["id"]),
++    )
++    for tarefa in tarefas:
++        if args.prioridade is not None and tarefa["prioridade"] != args.prioridade:
++            continue
++        if args.somente_abertas and tarefa["concluida"]:
++            continue
++        estado = "concluida" if tarefa["concluida"] else "aberta"
++        prazo = tarefa["prazo"] if tarefa["prazo"] is not None else "-"
++        print(
++            f"{tarefa['id']}\t{tarefa['prioridade']}\t{estado}\t"
++            f"{prazo}\t{tarefa['titulo']}"
++        )
++
++
++def concluir(args, caminho, agenda):
++    for tarefa in agenda["tarefas"]:
++        if tarefa["id"] == args.id:
++            if tarefa["concluida"]:
++                raise ErroAgenda("ja concluida")
++            tarefa["concluida"] = True
++            salvar(caminho, agenda)
++            print(f"ok id={tarefa['id']}")
++            return
++    raise ErroAgenda("id inexistente")
++
++
++def criar_parser():
++    parser = argparse.ArgumentParser(description=__doc__)
++    subcomandos = parser.add_subparsers(dest="comando", required=True)
++
++    parser_adicionar = subcomandos.add_parser("adicionar")
++    parser_adicionar.add_argument("--titulo", required=True)
++    parser_adicionar.add_argument("--prioridade", choices=PRIORIDADES, required=True)
++    parser_adicionar.add_argument("--prazo")
++
++    parser_listar = subcomandos.add_parser("listar")
++    parser_listar.add_argument("--prioridade", choices=PRIORIDADES)
++    parser_listar.add_argument("--somente-abertas", action="store_true")
++
++    parser_concluir = subcomandos.add_parser("concluir")
++    parser_concluir.add_argument("--id", type=int, required=True)
++
++    for subparser in (parser_adicionar, parser_listar, parser_concluir):
++        subparser.add_argument("--arquivo", required=True)
++    return parser
++
++
++def main(argv=None):
++    args = criar_parser().parse_args(argv)
++    caminho = Path(args.arquivo)
++    try:
++        agenda = carregar(caminho, criar=args.comando == "adicionar")
++        if args.comando == "adicionar":
++            adicionar(args, caminho, agenda)
++        elif args.comando == "listar":
++            listar(args, agenda)
++        else:
++            concluir(args, caminho, agenda)
++    except ErroAgenda as erro:
++        print(f"erro: {erro}", file=sys.stderr)
++        return 2
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+
+codex
+O programa está implementado. Vou verificar por subprocessos a validação do JSON, as saídas exatas, a ordenação, os filtros e a preservação de arquivos inválidos.
+
+exec
+/bin/bash -lc "python - <<'PY'
+import copy
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+
+script = Path('agenda_cli.py').resolve()
+checks = 0
+with tempfile.TemporaryDirectory(dir='.') as directory:
+    path = Path(directory) / 'agenda.json'
+    def run(command, *args, expected=(0, '', '')):
+        global checks
+        result = subprocess.run([sys.executable, str(script), command, '--arquivo', str(path), *args], capture_output=True, text=True)
+        actual = (result.returncode, result.stdout, result.stderr)
+        assert actual == expected, (command, args, actual, expected)
+        checks += 1
+    def error(command, message, *args):
+        run(command, *args, expected=(2, '', f'erro: {message}\\n'))
+    def write(data):
+        path.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
+    def add(title='Tarefa', priority='alta', *extra, expected=(0, 'ok id=1\\n', '')):
+        run('adicionar', '--titulo', title, '--prioridade', priority, *extra, expected=expected)
+
+    error('listar', 'arquivo inexistente')
+    error('concluir', 'arquivo inexistente', '--id', '1')
+    for title, message in [('', 'titulo vazio'), (' \\u00a0\\t\\n', 'titulo vazio'), ('a\\nb', 'titulo invalido'), ('a\\rb', 'titulo invalido'), ('a\\tb', 'titulo invalido')]:
+        add(title, expected=(2, '', f'erro: {message}\\n'))
+        assert not path.exists()
+    for date in ['1900-02-29', '2100-02-29', '2024-2-29', '2024-02-30', '0000-01-01', '10000-01-01', '2024-02-29\\n', '２０２４-02-29', '']:
+        add('Tarefa', 'alta', '--prazo', date, expected=(2, '', 'erro: prazo invalido\\n'))
+        assert not path.exists()
+    add(' \\u00a0Comprar pão\\u00a0 ', 'baixa')
+    initial = {'proximo_id': 2, 'tarefas': [{'id': 1, 'titulo': 'Comprar pão', 'prioridade': 'baixa', 'prazo': None, 'concluida': False}]}
+    assert path.read_bytes() == (json.dumps(initial, indent=2, ensure_ascii=False) + '\\n').encode('utf-8')
+    add('Consulta', 'alta', '--prazo', '2000-02-29', expected=(0, 'ok id=2\\n', ''))
+    add('Estudar', 'media', expected=(0, 'ok id=3\\n', ''))
+    add('Revisar', 'alta', '--prazo', '0001-01-01', expected=(0, 'ok id=4\\n', ''))
+    before = path.read_bytes()
+    run('listar', expected=(0, '2\\talta\\taberta\\t2000-02-29\\tConsulta\\n4\\talta\\taberta\\t0001-01-01\\tRevisar\\n3\\tmedia\\taberta\\t-\\tEstudar\\n1\\tbaixa\\taberta\\t-\\tComprar pão\\n', ''))
+    assert path.read_bytes() == before
+    run('concluir', '--id', '01', expected=(0, 'ok id=1\\n', ''))
+    error('concluir', 'ja concluida', '--id', '1')
+    error('concluir', 'id inexistente', '--id', '999')
+    error('concluir', 'id inexistente', '--id', '-1')
+    run('listar', '--prioridade', 'baixa', expected=(0, '1\\tbaixa\\tconcluida\\t-\\tComprar pão\\n', ''))
+    run('listar', '--prioridade', 'baixa', '--somente-abertas')
+    run('listar', '--prioridade', 'media', '--somente-abertas', expected=(0, '3\\tmedia\\taberta\\t-\\tEstudar\\n', ''))
+
+    base = copy.deepcopy(initial)
+    invalid = [None, [], {}, {'proximo_id': 1, 'tarefas': [] , 'extra': 1}]
+    for key in base:
+        case = copy.deepcopy(base)
+        del case[key]
+        invalid.append(case)
+    for value in [True, False, 1.0, 0, -1, None, '2', 1, [], {}]:
+        case = copy.deepcopy(base)
+        case['proximo_id'] = value
+        invalid.append(case)
+    for value in [None, {}, 'tarefas', 1, True]:
+        case = copy.deepcopy(base)
+        case['tarefas'] = value
+        invalid.append(case)
+    for value in [None, [], 'tarefa', 1, True]:
+        case = copy.deepcopy(base)
+        case['tarefas'] = [value]
+        invalid.append(case)
+    for key in base['tarefas'][0]:
+        case = copy.deepcopy(base)
+        del case['tarefas'][0][key]
+        invalid.append(case)
+    fields = {
+        'id': [True, False, 1.0, 0, -1, '1', None, 2, [], {}],
+        'titulo': ['', '  a  ', '\\n', 'a\\nb', 'a\\rb', 'a\\tb', '\\u00a0a', 'a\\u00a0', None, 1, [], {}],
+        'prioridade': ['Alta', '', None, 1, True, [], {}],
+        'prazo': ['1900-02-29', '2100-02-29', '2024-1-01', '0000-01-01', '2024-02-30', '', True, 1, [], {}],
+        'concluida': [0, 1, None, 'false', [], {}],
+    }
+    for key, values in fields.items():
+        for value in values:
+            case = copy.deepcopy(base)
+            case['tarefas'][0][key] = value
+            invalid.append(case)
+    case = copy.deepcopy(base)
+    case['tarefas'][0]['extra'] = 1
+    invalid.append(case)
+    case = copy.deepcopy(base)
+    case['tarefas'].append(copy.deepcopy(case['tarefas'][0]))
+    invalid.append(case)
+    for data in invalid:
+        write(data)
+        before = path.read_bytes()
+        error('listar', 'arquivo invalido')
+        add(expected=(2, '', 'erro: arquivo invalido\\n'))
+        error('concluir', 'arquivo invalido', '--id', '1')
+        assert path.read_bytes() == before
+    for raw in [b'', b'{', b'\\xff', b'{\"proximo_id\":1,\"proximo_id\":2,\"tarefas\":[]}', b'{\"proximo_id\":NaN,\"tarefas\":[]}']:
+        path.write_bytes(raw)
+        error('listar', 'arquivo invalido')
+        add(expected=(2, '', 'erro: arquivo invalido\\n'))
+        assert path.read_bytes() == raw
+
+    write({'proximo_id': 5, 'tarefas': [base['tarefas'][0], dict(base['tarefas'][0], id=3)]})
+    add(expected=(0, 'ok id=5\\n', ''))
+    assert json.loads(path.read_text(encoding='utf-8'))['proximo_id'] == 6
+    write({'proximo_id': 99, 'tarefas': []})
+    run('listar')
+    add('Fim', 'alta', '--prazo', '9999-12-31', expected=(0, 'ok id=99\\n', ''))
+    for args in [[], ['listar'], ['listar', '--arquivo', str(path), '--desconhecido'], ['listar', '--arquivo', str(path), '--prioridade', 'urgente'], ['concluir', '--arquivo', str(path), '--id', '1.0'], ['adicionar', '--arquivo', str(path), '--titulo', 'a']]:
+        result = subprocess.run([sys.executable, str(script), *args], capture_output=True, text=True)
+        assert result.returncode == 2 and result.stdout == '' and result.stderr
+        checks += 1
+print(f'{checks} verificações por subprocesso passaram.')
+PY" in /tmp/bench-qlwezv00
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+import copy
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+
+script = Path('agenda_cli.py').resolve()
+checks = 0
+with tempfile.TemporaryDirectory(dir='.') as directory:
+    path = Path(directory) / 'agenda.json'
+    def run(command, *args, expected=(0, '', '')):
+        global checks
+        result = subprocess.run([sys.executable, str(script), command, '--arquivo', str(path), *args], capture_output=True, text=True)
+        actual = (result.returncode, result.stdout, result.stderr)
+        assert actual == expected, (command, args, actual, expected)
+        checks += 1
+    def error(command, message, *args):
+        run(command, *args, expected=(2, '', f'erro: {message}\\n'))
+    def write(data):
+        path.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
+    def add(title='Tarefa', priority='alta', *extra, expected=(0, 'ok id=1\\n', '')):
+        run('adicionar', '--titulo', title, '--prioridade', priority, *extra, expected=expected)
+
+    error('listar', 'arquivo inexistente')
+    error('concluir', 'arquivo inexistente', '--id', '1')
+    for title, message in [('', 'titulo vazio'), (' \\u00a0\\t\\n', 'titulo vazio'), ('a\\nb', 'titulo invalido'), ('a\\rb', 'titulo invalido'), ('a\\tb', 'titulo invalido')]:
+        add(title, expected=(2, '', f'erro: {message}\\n'))
+        assert not path.exists()
+    for date in ['1900-02-29', '2100-02-29', '2024-2-29', '2024-02-30', '0000-01-01', '10000-01-01', '2024-02-29\\n', '２０２４-02-29', '']:
+        add('Tarefa', 'alta', '--prazo', date, expected=(2, '', 'erro: prazo invalido\\n'))
+        assert not path.exists()
+    add(' \\u00a0Comprar pão\\u00a0 ', 'baixa')
+    initial = {'proximo_id': 2, 'tarefas': [{'id': 1, 'titulo': 'Comprar pão', 'prioridade': 'baixa', 'prazo': None, 'concluida': False}]}
+    assert path.read_bytes() == (json.dumps(initial, indent=2, ensure_ascii=False) + '\\n').encode('utf-8')
+    add('Consulta', 'alta', '--prazo', '2000-02-29', expected=(0, 'ok id=2\\n', ''))
+    add('Estudar', 'media', expected=(0, 'ok id=3\\n', ''))
+    add('Revisar', 'alta', '--prazo', '0001-01-01', expected=(0, 'ok id=4\\n', ''))
+    before = path.read_bytes()
+    run('listar', expected=(0, '2\\talta\\taberta\\t2000-02-29\\tConsulta\\n4\\talta\\taberta\\t0001-01-01\\tRevisar\\n3\\tmedia\\taberta\\t-\\tEstudar\\n1\\tbaixa\\taberta\\t-\\tComprar pão\\n', ''))
+    assert path.read_bytes() == before
+    run('concluir', '--id', '01', expected=(0, 'ok id=1\\n', ''))
+    error('concluir', 'ja concluida', '--id', '1')
+    error('concluir', 'id inexistente', '--id', '999')
+    error('concluir', 'id inexistente', '--id', '-1')
+    run('listar', '--prioridade', 'baixa', expected=(0, '1\\tbaixa\\tconcluida\\t-\\tComprar pão\\n', ''))
+    run('listar', '--prioridade', 'baixa', '--somente-abertas')
+    run('listar', '--prioridade', 'media', '--somente-abertas', expected=(0, '3\\tmedia\\taberta\\t-\\tEstudar\\n', ''))
+
+    base = copy.deepcopy(initial)
+    invalid = [None, [], {}, {'proximo_id': 1, 'tarefas': [] , 'extra': 1}]
+    for key in base:
+        case = copy.deepcopy(base)
+        del case[key]
+        invalid.append(case)
+    for value in [True, False, 1.0, 0, -1, None, '2', 1, [], {}]:
+        case = copy.deepcopy(base)
+        case['proximo_id'] = value
+        invalid.append(case)
+    for value in [None, {}, 'tarefas', 1, True]:
+        case = copy.deepcopy(base)
+        case['tarefas'] = value
+        invalid.append(case)
+    for value in [None, [], 'tarefa', 1, True]:
+        case = copy.deepcopy(base)
+        case['tarefas'] = [value]
+        invalid.append(case)
+    for key in base['tarefas'][0]:
+        case = copy.deepcopy(base)
+        del case['tarefas'][0][key]
+        invalid.append(case)
+    fields = {
+        'id': [True, False, 1.0, 0, -1, '1', None, 2, [], {}],
+        'titulo': ['', '  a  ', '\\n', 'a\\nb', 'a\\rb', 'a\\tb', '\\u00a0a', 'a\\u00a0', None, 1, [], {}],
+        'prioridade': ['Alta', '', None, 1, True, [], {}],
+        'prazo': ['1900-02-29', '2100-02-29', '2024-1-01', '0000-01-01', '2024-02-30', '', True, 1, [], {}],
+        'concluida': [0, 1, None, 'false', [], {}],
+    }
+    for key, values in fields.items():
+        for value in values:
+            case = copy.deepcopy(base)
+            case['tarefas'][0][key] = value
+            invalid.append(case)
+    case = copy.deepcopy(base)
+    case['tarefas'][0]['extra'] = 1
+    invalid.append(case)
+    case = copy.deepcopy(base)
+    case['tarefas'].append(copy.deepcopy(case['tarefas'][0]))
+    invalid.append(case)
+    for data in invalid:
+        write(data)
+        before = path.read_bytes()
+        error('listar', 'arquivo invalido')
+        add(expected=(2, '', 'erro: arquivo invalido\\n'))
+        error('concluir', 'arquivo invalido', '--id', '1')
+        assert path.read_bytes() == before
+    for raw in [b'', b'{', b'\\xff', b'{\"proximo_id\":1,\"proximo_id\":2,\"tarefas\":[]}', b'{\"proximo_id\":NaN,\"tarefas\":[]}']:
+        path.write_bytes(raw)
+        error('listar', 'arquivo invalido')
+        add(expected=(2, '', 'erro: arquivo invalido\\n'))
+        assert path.read_bytes() == raw
+
+    write({'proximo_id': 5, 'tarefas': [base['tarefas'][0], dict(base['tarefas'][0], id=3)]})
+    add(expected=(0, 'ok id=5\\n', ''))
+    assert json.loads(path.read_text(encoding='utf-8'))['proximo_id'] == 6
+    write({'proximo_id': 99, 'tarefas': []})
+    run('listar')
+    add('Fim', 'alta', '--prazo', '9999-12-31', expected=(0, 'ok id=99\\n', ''))
+    for args in [[], ['listar'], ['listar', '--arquivo', str(path), '--desconhecido'], ['listar', '--arquivo', str(path), '--prioridade', 'urgente'], ['concluir', '--arquivo', str(path), '--id', '1.0'], ['adicionar', '--arquivo', str(path), '--titulo', 'a']]:
+        result = subprocess.run([sys.executable, str(script), *args], capture_output=True, text=True)
+        assert result.returncode == 2 and result.stdout == '' and result.stderr
+        checks += 1
+print(f'{checks} verificações por subprocesso passaram.')
+PY" in /tmp/bench-qlwezv00
+ succeeded in 7877ms:
+281 verificações por subprocesso passaram.
+
+codex
+Criei [agenda_cli.py](/tmp/bench-qlwezv00/agenda_cli.py) com os três subcomandos, validação rigorosa do JSON e saídas conforme o enunciado.
+
+As 281 verificações por subprocesso passaram.
+tokens used
+12,930

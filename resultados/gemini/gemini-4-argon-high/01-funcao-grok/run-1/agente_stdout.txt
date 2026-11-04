@@ -1,0 +1,1 @@
+Implementei a função [`horas_livres`](file:///tmp/bench-fd_b16zd/solucao.py#L30-L92) em [solucao.py](file:///tmp/bench-fd_b16zd/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-fd_b16zd/enunciado.md).

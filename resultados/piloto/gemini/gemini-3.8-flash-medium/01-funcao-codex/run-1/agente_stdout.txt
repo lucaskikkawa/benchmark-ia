@@ -1,0 +1,7 @@
+A tarefa foi concluída com a criação do arquivo [`solucao.py`](file:///tmp/bench-7cxplil5/solucao.py) contendo a função [`unir_intervalos`](file:///tmp/bench-7cxplil5/solucao.py#L1-L26).
+
+A implementação:
+- Valida pares com `inicio > fim`, lançando `ValueError`.
+- Suporta qualquer iterável finito (incluindo geradores consumidos em passagem única) sem mutar listas recebidas.
+- Une intervalos que se sobrepõem ou compartilham extremidades, mantendo separados os intervalos com distância $\ge 1$.
+- Retorna lista de tuplas ordenada pelo início do intervalo, devolvendo `[]` para entradas vazias.
