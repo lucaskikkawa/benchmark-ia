@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="14" skipped="0" tests="16" time="0.066" timestamp="2026-10-29T20:12:31.610183-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_boletim" name="test_conceitos_nas_fronteiras" time="0.000"><failure message="AssertionError: assert 'B' == 'A'&#10;  &#10;  - A&#10;  + B">def test_conceitos_nas_fronteiras():
+&gt;       _assert_boletim([9], 9.0, "A", True, None)
+
+testes_ocultos/test_boletim.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [9], media = 9.0, conceito = 'A', aprovado = True, descartada = None
+
+    def _assert_boletim(provas, media, conceito, aprovado, descartada):
+        original = list(provas)
+        resultado = fechar_boletim(provas)
+        assert provas == original
+        assert set(resultado) == CHAVES
+        assert isinstance(resultado["media"], float)
+        assert resultado["media"] == media
+&gt;       assert resultado["conceito"] == conceito
+E       AssertionError: assert 'B' == 'A'
+E         
+E         - A
+E         + B
+
+testes_ocultos/test_boletim.py:15: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_nota_dez_e_valida" time="0.000"><failure message="ValueError: nota invalida">def test_nota_dez_e_valida():
+&gt;       _assert_boletim([10], 10.0, "A", True, None)
+
+testes_ocultos/test_boletim.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_boletim.py:10: in _assert_boletim
+    resultado = fechar_boletim(provas)
+                ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [10]
+
+    def fechar_boletim(provas):
+        if type(provas) is not list:
+            raise TypeError("provas deve ser list")
+        provas.reverse()
+        if len(provas) == 0:
+            return {
+                "media": 0.0,
+                "conceito": "D",
+                "aprovado": False,
+                "descartada": None,
+            }
+        nums = []
+        for nota in provas:
+            if nota is None:
+                nums.append(0.0)
+                continue
+            if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+                raise TypeError("nota invalida")
+            if nota &lt; 0 or nota &gt;= 10:
+&gt;               raise ValueError("nota invalida")
+E               ValueError: nota invalida
+
+boletim.py:23: ValueError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_arredondamento_half_up" time="0.000"><failure message="assert 1.0 == 1.01">def test_arredondamento_half_up():
+&gt;       _assert_boletim([1.005], 1.01, "D", False, None)
+
+testes_ocultos/test_boletim.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [1.005], media = 1.01, conceito = 'D', aprovado = False
+descartada = None
+
+    def _assert_boletim(provas, media, conceito, aprovado, descartada):
+        original = list(provas)
+        resultado = fechar_boletim(provas)
+        assert provas == original
+        assert set(resultado) == CHAVES
+        assert isinstance(resultado["media"], float)
+&gt;       assert resultado["media"] == media
+E       assert 1.0 == 1.01
+
+testes_ocultos/test_boletim.py:14: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_nao_descarta_com_menos_de_quatro_notas" time="0.000"><failure message="assert [3, 2, 1] == [1, 2, 3]&#10;  &#10;  At index 0 diff: 3 != 1&#10;  Use -v to get more diff">def test_nao_descarta_com_menos_de_quatro_notas():
+&gt;       _assert_boletim([1, 2, 3], 2.0, "D", False, None)
+
+testes_ocultos/test_boletim.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [3, 2, 1], media = 2.0, conceito = 'D', aprovado = False
+descartada = None
+
+    def _assert_boletim(provas, media, conceito, aprovado, descartada):
+        original = list(provas)
+        resultado = fechar_boletim(provas)
+&gt;       assert provas == original
+E       assert [3, 2, 1] == [1, 2, 3]
+E         
+E         At index 0 diff: 3 != 1
+E         Use -v to get more diff
+
+testes_ocultos/test_boletim.py:11: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_descarta_uma_menor_somente_com_quatro_validas" time="0.000"><failure message="assert [4, 3, 2, 1] == [1, 2, 3, 4]&#10;  &#10;  At index 0 diff: 4 != 1&#10;  Use -v to get more diff">def test_descarta_uma_menor_somente_com_quatro_validas():
+&gt;       _assert_boletim([1, 2, 3, 4], 3.0, "D", False, 1.0)
+
+testes_ocultos/test_boletim.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [4, 3, 2, 1], media = 3.0, conceito = 'D', aprovado = False
+descartada = 1.0
+
+    def _assert_boletim(provas, media, conceito, aprovado, descartada):
+        original = list(provas)
+        resultado = fechar_boletim(provas)
+&gt;       assert provas == original
+E       assert [4, 3, 2, 1] == [1, 2, 3, 4]
+E         
+E         At index 0 diff: 4 != 1
+E         Use -v to get more diff
+
+testes_ocultos/test_boletim.py:11: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_ausencia_nao_vira_zero" time="0.000"><failure message="assert [8, None] == [None, 8]&#10;  &#10;  At index 0 diff: 8 != None&#10;  Use -v to get more diff">def test_ausencia_nao_vira_zero():
+&gt;       _assert_boletim([None, 8], 8.0, "B", True, None)
+
+testes_ocultos/test_boletim.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [8, None], media = 8.0, conceito = 'B', aprovado = True
+descartada = None
+
+    def _assert_boletim(provas, media, conceito, aprovado, descartada):
+        original = list(provas)
+        resultado = fechar_boletim(provas)
+&gt;       assert provas == original
+E       assert [8, None] == [None, 8]
+E         
+E         At index 0 diff: 8 != None
+E         Use -v to get more diff
+
+testes_ocultos/test_boletim.py:11: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_lista_vazia_e_so_ausencias" time="0.000"><failure message="Failed: DID NOT RAISE ValueError">def test_lista_vazia_e_so_ausencias():
+&gt;       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+testes_ocultos/test_boletim.py:64: Failed</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_mais_de_quatro_posicoes" time="0.000"><failure message="Failed: DID NOT RAISE ValueError">def test_mais_de_quatro_posicoes():
+&gt;       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+testes_ocultos/test_boletim.py:73: Failed</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_notas_fora_do_intervalo" time="0.000" /><testcase classname="testes_ocultos.test_boletim" name="test_tipos_invalidos" time="0.000" /><testcase classname="testes_ocultos.test_boletim" name="test_nao_muta_a_entrada" time="0.000"><failure message="ValueError: nota invalida">def test_nao_muta_a_entrada():
+        provas = [None, 10, 1, 2]
+        copia = list(provas)
+&gt;       fechar_boletim(provas)
+
+testes_ocultos/test_boletim.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [2, 1, 10, None]
+
+    def fechar_boletim(provas):
+        if type(provas) is not list:
+            raise TypeError("provas deve ser list")
+        provas.reverse()
+        if len(provas) == 0:
+            return {
+                "media": 0.0,
+                "conceito": "D",
+                "aprovado": False,
+                "descartada": None,
+            }
+        nums = []
+        for nota in provas:
+            if nota is None:
+                nums.append(0.0)
+                continue
+            if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+                raise TypeError("nota invalida")
+            if nota &lt; 0 or nota &gt;= 10:
+&gt;               raise ValueError("nota invalida")
+E               ValueError: nota invalida
+
+boletim.py:23: ValueError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_half_up_quebra_round_e_decimal_do_float" time="0.000"><failure message="assert 0.01 == 0.02">def test_half_up_quebra_round_e_decimal_do_float():
+&gt;       _assert_boletim([0.015], 0.02, "D", False, None)
+
+testes_ocultos/test_boletim.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [0.015], media = 0.02, conceito = 'D', aprovado = False
+descartada = None
+
+    def _assert_boletim(provas, media, conceito, aprovado, descartada):
+        original = list(provas)
+        resultado = fechar_boletim(provas)
+        assert provas == original
+        assert set(resultado) == CHAVES
+        assert isinstance(resultado["media"], float)
+&gt;       assert resultado["media"] == media
+E       assert 0.01 == 0.02
+
+testes_ocultos/test_boletim.py:14: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_arredonda_so_a_media_final" time="0.000"><failure message="assert [1.004, 1.005] == [1.005, 1.004]&#10;  &#10;  At index 0 diff: 1.004 != 1.005&#10;  Use -v to get more diff">def test_arredonda_so_a_media_final():
+&gt;       _assert_boletim([1.005, 1.004], 1.0, "D", False, None)
+
+testes_ocultos/test_boletim.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [1.004, 1.005], media = 1.0, conceito = 'D', aprovado = False
+descartada = None
+
+    def _assert_boletim(provas, media, conceito, aprovado, descartada):
+        original = list(provas)
+        resultado = fechar_boletim(provas)
+&gt;       assert provas == original
+E       assert [1.004, 1.005] == [1.005, 1.004]
+E         
+E         At index 0 diff: 1.004 != 1.005
+E         Use -v to get more diff
+
+testes_ocultos/test_boletim.py:11: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_descarte_so_a_primeira_ocorrencia" time="0.000"><failure message="assert [9, 1, 1, 5] == [5, 1, 1, 9]&#10;  &#10;  At index 0 diff: 9 != 5&#10;  Use -v to get more diff">def test_descarte_so_a_primeira_ocorrencia():
+&gt;       _assert_boletim([5, 1, 1, 9], 5.0, "C", True, 1.0)
+
+testes_ocultos/test_boletim.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [9, 1, 1, 5], media = 5.0, conceito = 'C', aprovado = True
+descartada = 1.0
+
+    def _assert_boletim(provas, media, conceito, aprovado, descartada):
+        original = list(provas)
+        resultado = fechar_boletim(provas)
+&gt;       assert provas == original
+E       assert [9, 1, 1, 5] == [5, 1, 1, 9]
+E         
+E         At index 0 diff: 9 != 5
+E         Use -v to get more diff
+
+testes_ocultos/test_boletim.py:11: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_ausencia_no_meio_nao_completa_quatro" time="0.000"><failure message="ValueError: nota invalida">def test_ausencia_no_meio_nao_completa_quatro():
+&gt;       _assert_boletim([None, 10, 0, None], 5.0, "C", True, None)
+
+testes_ocultos/test_boletim.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_boletim.py:10: in _assert_boletim
+    resultado = fechar_boletim(provas)
+                ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [None, 0, 10, None]
+
+    def fechar_boletim(provas):
+        if type(provas) is not list:
+            raise TypeError("provas deve ser list")
+        provas.reverse()
+        if len(provas) == 0:
+            return {
+                "media": 0.0,
+                "conceito": "D",
+                "aprovado": False,
+                "descartada": None,
+            }
+        nums = []
+        for nota in provas:
+            if nota is None:
+                nums.append(0.0)
+                continue
+            if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+                raise TypeError("nota invalida")
+            if nota &lt; 0 or nota &gt;= 10:
+&gt;               raise ValueError("nota invalida")
+E               ValueError: nota invalida
+
+boletim.py:23: ValueError</failure></testcase><testcase classname="testes_ocultos.test_boletim" name="test_fronteiras_fechadas_e_tipos_limite" time="0.000"><failure message="ValueError: nota invalida">def test_fronteiras_fechadas_e_tipos_limite():
+&gt;       _assert_boletim([0, 10], 5.0, "C", True, None)
+
+testes_ocultos/test_boletim.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+testes_ocultos/test_boletim.py:10: in _assert_boletim
+    resultado = fechar_boletim(provas)
+                ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provas = [10, 0]
+
+    def fechar_boletim(provas):
+        if type(provas) is not list:
+            raise TypeError("provas deve ser list")
+        provas.reverse()
+        if len(provas) == 0:
+            return {
+                "media": 0.0,
+                "conceito": "D",
+                "aprovado": False,
+                "descartada": None,
+            }
+        nums = []
+        for nota in provas:
+            if nota is None:
+                nums.append(0.0)
+                continue
+            if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+                raise TypeError("nota invalida")
+            if nota &lt; 0 or nota &gt;= 10:
+&gt;               raise ValueError("nota invalida")
+E               ValueError: nota invalida
+
+boletim.py:23: ValueError</failure></testcase></testsuite></testsuites>

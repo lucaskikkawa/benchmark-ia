@@ -1,0 +1,24 @@
+{
+ "autora": "claude",
+ "resolvedora": "codex",
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": null,
+   "rubrica_10": null
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": null,
+   "rubrica_10": null
+  }
+ },
+ "obs": [
+  "gemini tentativa 1 falhou: timeout",
+  "gemini tentativa 2 falhou: timeout",
+  "grok tentativa 1 falhou: JSON inválido",
+  "grok tentativa 2 falhou: JSON inválido"
+ ],
+ "rubrica_10": null,
+ "nota_final_10": null
+}

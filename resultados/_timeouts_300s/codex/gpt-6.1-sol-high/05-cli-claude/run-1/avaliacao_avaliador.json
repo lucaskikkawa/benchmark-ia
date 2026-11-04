@@ -1,0 +1,36 @@
+{
+ "pasta": "resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6.1-sol",
+ "esforco": "high",
+ "tarefa": "05-cli-claude",
+ "tipo": "05-cli",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "timeout",
+ "duracao_agente_s": 300.118,
+ "testes_passados": 27,
+ "testes_total": 27,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {},
+ "obs": [
+  "timeout: nota 0 (rubrica não julgada)"
+ ],
+ "rubrica_media_10": null,
+ "nota_final_10": 0.0,
+ "reexecucao_testes": {
+  "total": 27,
+  "passados": 27,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "timeout com entrega parcial: 27/27 testes passam (100%), mas a regra zera a nota"
+ ],
+ "nota_antiga_avaliacao_json": null,
+ "nota_antiga_com_penalidade": 0.0
+}
