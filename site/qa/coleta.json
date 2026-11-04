@@ -1,0 +1,808 @@
+{
+ "mobile": {
+  "estados": {
+   "A-ranking": {
+    "scrollW": 390,
+    "lista": [
+     "claude-haiku-5-5-high 9.75",
+     "claude-opus-5-5-medium 9.70",
+     "claude-haiku-5-5-medium 9.66",
+     "claude-opus-5-5-high 9.39",
+     "gpt-6-luna-medium 9.09",
+     "gpt-6-luna-high 9.00",
+     "gpt-6.1-sol-medium 8.79",
+     "gpt-6.1-sol-high 8.16",
+     "grok-4.7-build-fast-medium 7.68",
+     "gemini-4-argon-medium 7.22",
+     "gemini-4-argon-high 6.96",
+     "grok-4.7-medium 6.72",
+     "grok-4.7-build-fast-high 3.86",
+     "grok-4.7-high 3.83 SELO:⚖️ ×0,7/×0,5",
+     "gemini-3.8-flash-medium 2.85",
+     "gemini-3.8-flash-high 1.31"
+    ],
+    "nvSegVisivel": false,
+    "selosVisiveis": [
+     "⚖️ ×0,7/×0,5"
+    ],
+    "texto": "480\nexecuções na nota\n120\n⏱ timeouts\n48\n🔁 consistência (fora)\n⚖️ Peso da nota\n70% testes · 30% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nPenalidades do grok-4.7-high (×0,7 / ×0,5)\n👻 Mostrar nota antiga\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\npadrão do Avaliador\n1\n👑\nclaude-haiku-5-5high\n9.75\n–\n2\nclaude-opus-5-5medium\n9.70\n–\n3\nclaude-haiku-5-5medium\n9.66\n–\n4\nclaude-opus-5-5high\n9.39\n–\n⏱1\n5\ngpt-6-lunamedium\n9.09\n–\n6\ngpt-6-lunahigh\n9.00\n–\n⏱1\n7\ngpt-6.1-solmedium\n8.79\n–\n⏱2\n8\ngpt-6.1-solhigh\n8.16\n–\n⏱4\n9\ngrok-4.7-build-fastmedium\n7.68\n–\n⏱6\n10\ngemini-4-argonmedium\n7.22\n–\n⏱7\n11\ngemini-4-argonhigh\n6.96\n–\n⏱8\n12\ngrok-4.7medium\n6.72\n–\n⏱9\n13\ngrok-4.7-build-fasthigh\n3.86\n–\n⏱18\n14\ngrok-4.7high⚖️ ×0,7/×0,5\n3.83\n–\n⏱17\n15\ngemini-3.8-flashmedium\n2.85\n–\n⏱21\n16\ngemini-3.8-flashhigh\n1.31\n–\n⏱26\n⚖️ grok-4.7-high tem regra especial: 13 execuções refeitas (10 delas no ranking) com limite maior; as entregues na 2ª tentativa valem ×0,7 ou ×0,5 por atraso. Com penalidades 3.83, sem 4.19. As outras 15 combinações não têm essa regra (lá, timeout = 0). Letras miúdas ↓\nDesligue “Penalidades do grok-4.7-high”: ele vai de 3.83 para 4.19 (14º → 13º) e passa grok-4.7-build-fast-high!\n🏢 Média por empresa\nRanking A · média das combinações\nclaude\n9.62\ncodex\n8.76\ngrok\n5.52\ngemini\n4.58\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "TABLE#. [31,490]",
+     "THEAD#. [31,490]",
+     "TR#. [31,490]",
+     "TH#. [343,397]",
+     "TH#. [397,442]",
+     "TH#. [442,466]",
+     "TH#. [466,490]",
+     "TBODY#. [31,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]"
+    ]
+   },
+   "A-comparar": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "⚖️ Duelo de modelos\nModelo A\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-medium (9.70)\n3. claude-haiku-5-5-medium (9.66)\n4. claude-opus-5-5-high (9.39)\n5. gpt-6-luna-medium (9.09)\n6. gpt-6-luna-high (9.00)\n7. gpt-6.1-sol-medium (8.79)\n8. gpt-6.1-sol-high (8.16)\n9. grok-4.7-build-fast-medium (7.68)\n10. gemini-4-argon-medium (7.22)\n11. gemini-4-argon-high (6.96)\n12. grok-4.7-medium (6.72)\n13. grok-4.7-build-fast-high (3.86)\n14. grok-4.7-high (3.83)\n15. gemini-3.8-flash-medium (2.85)\n16. gemini-3.8-flash-high (1.31)\nclaude-haiku-5-5\nhigh\nA · 9.75 · 1º\n×\nModelo B\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-medium (9.70)\n3. claude-haiku-5-5-medium (9.66)\n4. claude-opus-5-5-high (9.39)\n5. gpt-6-luna-medium (9.09)\n6. gpt-6-luna-high (9.00)\n7. gpt-6.1-sol-medium (8.79)\n8. gpt-6.1-sol-high (8.16)\n9. grok-4.7-build-fast-medium (7.68)\n10. gemini-4-argon-medium (7.22)\n11. gemini-4-argon-high (6.96)\n12. grok-4.7-medium (6.72)\n13. grok-4.7-build-fast-high (3.86)\n14. grok-4.7-high (3.83)\n15. gemini-3.8-flash-medium (2.85)\n16. gemini-3.8-flash-high (1.31)\ngpt-6-luna\nmedium\nB · 9.09 · 5º\nRubrica, testes e pontualidade\n0–100%\n50%\nLegível\nBordas\nIdiomático\nManutenção\nDocs\nTestes\nPontual\nToque num eixo para ver os valores\nA — linha cheia\nB — tracejada\n+ testes e pontual\nNota por tipo de tarefa\n◀ A · B ▶ · toque = execuções\n★ 9.70\n01 função\n9.00\n★ 9.60\n02 bug\n9.40\n★ 9.75\n03 refator.\n9.23\n★ 9.75\n04 dados\n9.40\n★ 9.65\n05 cli\n9.35\n★ 9.80\n06 multiarq.\n9.50\n★ 9.65\n07 perf.\n9.25\n★ 9.95\n08 testes\n6.76\n★ 9.75\n09 api\n9.55\n★ 9.95\n10 ambígua\n9.49\nver como tabela\n🏅 A vence em\n10 de 10 tipos\n⏱ tempo médio\n50 s × 20 s",
+    "overflow": [
+     "CORTADO SPAN.sr: Modelo A",
+     "CORTADO SPAN.sr: Modelo B",
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-esforco": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🔥 Mais esforço ajuda?\nmedium → high\nNota medium × high\n0–10 · toque = detalhes\n0\n2.5\n5\n7.5\n10\nclaude-haiku-5-5\n▲ +0.09\ngpt-6-luna\n▼ −0.09\ngemini-4-argon\n▼ −0.26\nclaude-opus-5-5\n▼ −0.31\ngpt-6.1-sol\n▼ −0.63\ngemini-3.8-flash\n▼ −1.54\ngrok-4.7\n▼ −2.89\ngrok-4.7-b-fast\n▼ −3.82\nmedium (cor cheia)\nhigh (hachurada)\n▲ melhorou ▼ piorou\nver como tabela\nTempo médio medium → high\nsegundos\n0s\n60s\n120s\n180s\n240s\n300s\n360s\ngpt-6-luna\n20→33\nclaude-haiku-5-5\n28→50\nclaude-opus-5-5\n43→51\ngpt-6.1-sol\n63→87\ngrok-4.7-b-fast\n103→171\ngemini-4-argon\n121→134\ngrok-4.7\n142→302\ngemini-3.8-flash\n195→209\nHigh piorou em 7 de 8 modelos 😬\nMaior queda: grok-4.7-build-fast, de 7.68 para 3.86 (▼ −3.82). Sem as penalidades do grok-4.7-high, o high dele iria a 4.19 (ainda ▼ −2.54).\n⚖️ Ranking A × Ranking B\nhigh − medium lado a lado\nhigh − medium por modelo\npontos · toque = detalhes\n-4\n-3\n-2\n-1\n0\n+1\ngpt-6-luna\nA\n▼−0.09\nB i\n▲+0.19\nB ii\n▲+0.19\nclaude-haiku-5-5\nA\n▲+0.09\nB i\n▲+0.10\nB ii\n▲+0.10\nclaude-opus-5-5\nA\n▼−0.31\nB i\n▲+0.01\nB ii\n▲+0.01\ngpt-6.1-sol\nA\n▼−0.63\nB i\n▼−0.02\nB ii\n▼−0.02\ngemini-4-argon\nA\n▼−0.26\nB i\n▼−0.57\nB ii\n▲+0.08\ngemini-3.8-flash\nA\n▼−1.54\nB i\n▼−2.80\nB ii\n▼−1.71\ngrok-4.7\nA\n▼−2.89\nB i\nsem Grok no B\nB ii\nsem Grok no B\ngrok-4.7-b-fast\nA\n▼−3.82\nB i\nsem Grok no B\nB ii\nsem Grok no B\nA (3/5 min)\nB nota_i\nB nota_ii\nver como tabela\nConclusão: com 7 min, o high empata ou ganha no Claude e no Codex; no argon só ganha julgando a entrega; o flash-high continua pior.\nRanking B, nota_i: haiku +0.10 · opus +0.01 · luna +0.19 · sol −0.02 (igual na nota_ii). argon −0.57 na nota_i e +0.08 na nota_ii. flash −2.80 na nota_i e −1.71 na nota_ii. No Ranking A o high piorava em 7 de 8.",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-tarefas": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧩 Mapa de tarefas\ntipo × empresa\nempresa resolvedora\nmodelo × esforço\nempresa autora\nNota média · Ranking A (N=30 por modelo)\n★ = melhor da linha · toque = execuções\nclaude\ncodex\ngemini\ngrok\n01 função\n9.6\n★\n9.1\n4.8\n7.1\n02 bug\n9.7\n★\n9.4\n6.4\n7.2\n03 refatoração\n9.7\n★\n9.5\n4.0\n5.6\n04 dados\n9.6\n★\n9.3\n3.1\n1.6\n05 cli\n8.9\n★\n7.9\n4.6\n5.7\n06 multiarquivo\n9.6\n★\n9.4\n4.6\n5.6\n07 performance\n9.6\n★\n8.5\n5.3\n9.5\n08 testes\n9.9\n★\n7.1\n0.8\n1.2\n09 api\n9.7\n★\n7.9\n5.6\n6.3\n10 ambígua\n10.0\n★\n9.4\n6.5\n5.4\n0\n10 · claro = pior\nver como tabela\nclaude lidera todos os tipos. Em 08 testes, claude tem 9.9 e gemini só 0.8.\n🧩 10-ambigua-claude\n0% continua na nota\n\n⏱ timeout sem entrega (Gemini e Grok); tarefa validada\n\nOs 8 Gemini e Grok deram timeout sem gravar nenhum arquivo, por isso 0%. Os 4 Codex resolvem com 40 a 42 de 42 testes. O Avaliador conferiu enunciado, conftest e testes ocultos: sem defeito na tarefa (_avaliador/analise_10_ambigua_claude.md). O Claude é a autora e não a resolve.\n\ngpt-6-lunahigh\n✅ 40/42 · 8.62\ngpt-6-lunamedium\n✅ 40/42 · 9.22\ngpt-6.1-solhigh\n✅ 42/42 · 9.70\ngpt-6.1-solmedium\n✅ 42/42 · 9.40\ngemini-3.8-flashhigh\n⏱ 180 s · 0/1 · 0.00\ngemini-3.8-flashmedium\n⏱ 180 s · 0/1 · 0.00\ngemini-4-argonhigh\n⏱ 180 s · 0/1 · 0.00\ngemini-4-argonmedium\n⏱ 180 s · 0/1 · 0.00\ngrok-4.7-build-fasthigh\n⏱ 186 s · 0/1 · 0.00\ngrok-4.7-build-fastmedium\n⏱ 180 s · 0/1 · 0.00\ngrok-4.7high\n⏱ 900 s · 0/1 · 0.00\ngrok-4.7medium\n⏱ 180 s · 0/1 · 0.00\n✅ Todo mundo gabaritou\n100% dos testes\n01-funcao-gemini02-bug-codex07-performance-gemini09-api-codex10-ambigua-codex10-ambigua-grok\ne mais 10 quase (≥90% das execuções com 100%)\nConsistência: 4 runs da mesma tarefa\nordem: mais instável primeiro\n\n04-dados-claude (o Claude resolve 04-dados-grok). Runs 2–4 não entram no ranking. ⏱ = timeout (vale 0) · ⚖️ = regra especial do grok-4.7-high\n\ngpt-6.1-solhigh\n9.1\n9.1\n9.1\n⏱\nσ 3.94\ngrok-4.7-build-fastmedium\n8.9\n⏱\n⏱\n⏱\nσ 3.88\ngrok-4.7medium\n⏱\n⏱\n⏱\n8.9\nσ 3.88\ngemini-4-argonhigh\n⏱\n8.8\n⏱\n⏱\nσ 3.81\ngrok-4.7high\n⏱\n4.4\n4.7\n4.7\nσ 2.00\ngpt-6.1-solmedium\n9.1\n9.4\n9.1\n8.9\nσ 0.16\nclaude-haiku-5-5high\n9.8\n9.8\n9.8\n9.6\nσ 0.13\ngpt-6-lunahigh\n8.9\n8.7\n9.0\n8.7\nσ 0.12\ngpt-6-lunamedium\n9.3\n9.3\n9.2\n9.4\nσ 0.08\nclaude-haiku-5-5medium\n9.8\n10.0\n10.0\n9.8\nσ 0.08\nclaude-opus-5-5high\n9.7\n9.7\n9.7\n9.8\nσ 0.06\nclaude-opus-5-5medium\n9.8\n9.8\n9.7\n9.8\nσ 0.06\ngemini-4-argonmedium\n8.8\n8.9\n8.8\n8.8\nσ 0.06\ngemini-3.8-flashhigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngemini-3.8-flashmedium\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngrok-4.7-build-fasthigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-juizes": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧑‍⚖️ O Avaliador\nreavaliação independente\nPor que “Avaliador”? As notas da rodada vinham dos juízes do julgar.py, com falhas: execuções sem juiz válido entravam com rubrica 0 e o ranking antigo usava N=33. O Avaliador independente rejulgou tudo com código anonimizado, 2 juízes neutros por solução (nem a empresa resolvedora nem a autora da tarefa), reexecutou os testes ocultos e auditou cada execução. Esta aba mostra os juízes dele e o que mudou.\nmais severo\n8.28\nclaude · n=175\n8.40\ncodex · n=174\n8.34\ngemini · n=232\nmais bonzinho\n8.60\ngrok · n=207\nNota antiga × nota do Avaliador\nmesmas 30 execuções · toque = execuções\n0\n2.5\n5\n7.5\n10\nclaude-haiku-5-5 H\n−0.02\nclaude-opus-5-5 M\n+0.04\nclaude-haiku-5-5 M\n−0.02\nclaude-opus-5-5 H\n+0.01\ngpt-6-luna M\n+0.14\ngpt-6-luna H\n+0.17\ngpt-6.1-sol M\n+0.05\ngpt-6.1-sol H\n+0.12\ngrok-4.7-bf M\n−0.02\ngemini-4-argon M\n−0.02\ngemini-4-argon H\n−0.03\ngrok-4.7 M\n−0.03\ngrok-4.7-bf H\n+0.01\ngrok-4.7 H ⚖️\n+1.57\ngemini-3.8-flash M\n−0.04\ngemini-3.8-flash H\n+0.00\nantiga (juízes da rodada)\nAvaliador\n\nMaior mudança: grok-4.7-high (2.26 → 3.83): 6 execuções refeitas dele contavam 0 na nota antiga e agora valem pela regra especial. Por empresa: claude 9.62 → 9.62 · codex 8.64 → 8.76 · grok 5.14 → 5.52 · gemini 4.61 → 4.58.\n\nver como tabela\nMaiores mudanças por execução\ntoque = detalhes\ngrok-4.7high 09-api-gemini\n0.00 → 10.00\ngrok-4.7high 06-multiarquivo-codex\n0.00 → 9.70\ngrok-4.7high 07-performance-claude\n0.00 → 8.65\ngrok-4.7high 09-api-codex\n0.00 → 7.00\ngrok-4.7high 10-ambigua-gemini\n0.00 → 6.58\ngrok-4.7high 08-testes-codex\n0.00 → 4.92\ngpt-6-lunamedium 04-dados-grok\n7.00 → 9.55\ngpt-6.1-solhigh 07-performance-claude\n7.00 → 9.40\nJuiz 1 × juiz 2\n394 execuções\n0\n0\n5\n5\n10\n10\njuiz 1 (ordem alfabética)\njuiz 2\n!\n!\n!\n\nTodas as 394 execuções julgadas tiveram os 2 juízes válidos (1 tentativa com falha, refeita). Bolha = nº de execuções com o mesmo par de notas; na linha verde os juízes concordam. |diferença| média 0.63 pt · mediana 0.00. ○ ! 3 casos com mais de 3 pts de briga.\n\nCorrigir viés dos juízes (experimento, não é o critério oficial) — muda as notas\n🔍 Auditoria\ntoque = execuções\n✅\nTestes ocultos reexecutados sobre o código entregue; contagem igual à usada na nota\n528/528\n🔒\nTestes ocultos idênticos ao git; nenhum indício de edição manual de nota/resultado (relatório do Avaliador)\n✔\n🧪\nTestes reexecutados deram contagem diferente do resultado.json (o Avaliador usa a reexecução)\n1\n⏱\nTimeout com entrega parcial que passa testes: nota 0 pela regra geral\n71\n📁\nresultado.json da rodada sobrescreveu o do piloto no mesmo caminho (benigno)\n16\n🔁\nExecução refeita por erro de cota (claude-opus-5-5-high, documentado em commit)\n7\n📝\nresultado.json alterado em 2 commits (grok-4.7-high refeito)\n16\n✏️\nArquivos com mudanças não commitadas (grok-4.7-high refeito)\n13\n👻\nSem avaliação antiga: a nota antiga conta 0\n10",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-ranking": {
+    "scrollW": 390,
+    "lista": [
+     "claude-haiku-5-5-high 9.75",
+     "claude-opus-5-5-high 9.71",
+     "claude-opus-5-5-medium 9.70",
+     "claude-haiku-5-5-medium 9.66",
+     "gpt-6.1-sol-medium 9.41",
+     "gpt-6.1-sol-high 9.39",
+     "gpt-6-luna-high 9.29",
+     "gpt-6-luna-medium 9.09",
+     "gemini-4-argon-medium 9.09",
+     "gemini-4-argon-high 8.52",
+     "gemini-3.8-flash-medium 7.85",
+     "gemini-3.8-flash-high 5.05"
+    ],
+    "nvSegVisivel": true,
+    "selosVisiveis": [],
+    "texto": "360\nexecuções na nota\n23\n⏱ timeouts\n70\n🔁 refeitas com 420 s\n⚖️ Peso da nota\n70% testes · 30% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nnota_i\ntimeout = 0\nnota_ii\nentrega parcial julgada\nPenalidades do grok-4.7-high: não há Grok no Ranking B\n👻 Mostrar nota do Ranking A\n\nnota_i: timeout = 0 (regra padrão, vale mesmo mexendo no peso). nota_ii: os 23 timeouts de novo são julgados pelo que ficou em codigo/. O peso testes × rubrica funciona no B: as 360 execuções têm %testes e rubrica do Avaliador. ⚖️ Penalidades do grok: desligado, o B não tem Grok. 👻 Nota antiga dos juízes da rodada não existe para as 70 refeitas; no lugar, o fantasma mostra a nota do Ranking A.\n\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\npadrão do Avaliador\n1\n👑\nclaude-haiku-5-5high\n9.75\n–\n2\nclaude-opus-5-5high\n9.71\n–\n3\nclaude-opus-5-5medium\n9.70\n–\n4\nclaude-haiku-5-5medium\n9.66\n–\n5\ngpt-6.1-solmedium\n9.41\n–\n6\ngpt-6.1-solhigh\n9.39\n–\n7\ngpt-6-lunahigh\n9.29\n–\n8\ngpt-6-lunamedium\n9.09\n–\n9\ngemini-4-argonmedium\n9.09\n–\n⏱1\n10\ngemini-4-argonhigh\n8.52\n–\n⏱3\n11\ngemini-3.8-flashmedium\n7.85\n–\n⏱5\n12\ngemini-3.8-flashhigh\n5.05\n–\n⏱14\nCom 7 min, claude-opus-5-5-high sai do 4º (entre estas 12) do Ranking A para o 2º. Troque para nota_ii: gemini-4-argon-high vai de 8.52 para 9.18 (10º → 8º).\n🏢 Média por empresa\nRanking B i · média das combinações\nclaude\n9.71\ncodex\n9.30\ngemini\n7.63\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "TABLE#. [31,503]",
+     "THEAD#. [31,503]",
+     "TR#. [31,503]",
+     "TH#. [357,410]",
+     "TH#. [410,455]",
+     "TH#. [455,479]",
+     "TH#. [479,503]",
+     "TBODY#. [31,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]"
+    ]
+   },
+   "B-i-comparar": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "⚖️ Duelo de modelos\nModelo A\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-high (9.71)\n3. claude-opus-5-5-medium (9.70)\n4. claude-haiku-5-5-medium (9.66)\n5. gpt-6.1-sol-medium (9.41)\n6. gpt-6.1-sol-high (9.39)\n7. gpt-6-luna-high (9.29)\n8. gpt-6-luna-medium (9.09)\n9. gemini-4-argon-medium (9.09)\n10. gemini-4-argon-high (8.52)\n11. gemini-3.8-flash-medium (7.85)\n12. gemini-3.8-flash-high (5.05)\nclaude-haiku-5-5\nhigh\nA · 9.75 · 1º\n×\nModelo B\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-high (9.71)\n3. claude-opus-5-5-medium (9.70)\n4. claude-haiku-5-5-medium (9.66)\n5. gpt-6.1-sol-medium (9.41)\n6. gpt-6.1-sol-high (9.39)\n7. gpt-6-luna-high (9.29)\n8. gpt-6-luna-medium (9.09)\n9. gemini-4-argon-medium (9.09)\n10. gemini-4-argon-high (8.52)\n11. gemini-3.8-flash-medium (7.85)\n12. gemini-3.8-flash-high (5.05)\ngpt-6-luna\nmedium\nB · 9.09 · 8º\nRubrica, testes e pontualidade\n0–100%\n50%\nLegível\nBordas\nIdiomático\nManutenção\nDocs\nTestes\nPontual\nToque num eixo para ver os valores\nA — linha cheia\nB — tracejada\n+ testes e pontual\nNota por tipo de tarefa\n◀ A · B ▶ · toque = execuções\n★ 9.70\n01 função\n9.00\n★ 9.60\n02 bug\n9.40\n★ 9.75\n03 refator.\n9.23\n★ 9.75\n04 dados\n9.40\n★ 9.65\n05 cli\n9.35\n★ 9.80\n06 multiarq.\n9.50\n★ 9.65\n07 perf.\n9.25\n★ 9.95\n08 testes\n6.76\n★ 9.75\n09 api\n9.55\n★ 9.95\n10 ambígua\n9.49\nver como tabela\n🏅 A vence em\n10 de 10 tipos\n⏱ tempo médio\n50 s × 20 s",
+    "overflow": [
+     "CORTADO SPAN.sr: Modelo A",
+     "CORTADO SPAN.sr: Modelo B",
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-esforco": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🔥 Mais esforço ajuda?\nmedium → high\nNota medium × high\n0–10 · toque = detalhes\n0\n2.5\n5\n7.5\n10\ngpt-6-luna\n▲ +0.19\nclaude-haiku-5-5\n▲ +0.10\nclaude-opus-5-5\n▲ +0.01\ngpt-6.1-sol\n▼ −0.02\ngemini-4-argon\n▼ −0.57\ngemini-3.8-flash\n▼ −2.80\nmedium (cor cheia)\nhigh (hachurada)\n▲ melhorou ▼ piorou\nver como tabela\nTempo médio medium → high\nsegundos\n0s\n60s\n120s\n180s\n240s\n300s\n360s\ngpt-6-luna\n20→28\nclaude-haiku-5-5\n28→50\nclaude-opus-5-5\n43→46\ngpt-6.1-sol\n51→72\ngemini-4-argon\n106→171\ngemini-3.8-flash\n268→350\nRanking B (nota_i): high ganha em 2, empata (|Δ| < 0,05) em 2 e piora em 2 de 6\nMaior queda: gemini-3.8-flash, de 7.85 para 5.05 (▼ −2.80).\n⚖️ Ranking A × Ranking B\nhigh − medium lado a lado\nhigh − medium por modelo\npontos · toque = detalhes\n-4\n-3\n-2\n-1\n0\n+1\ngpt-6-luna\nA\n▼−0.09\nB i\n▲+0.19\nB ii\n▲+0.19\nclaude-haiku-5-5\nA\n▲+0.09\nB i\n▲+0.10\nB ii\n▲+0.10\nclaude-opus-5-5\nA\n▼−0.31\nB i\n▲+0.01\nB ii\n▲+0.01\ngpt-6.1-sol\nA\n▼−0.63\nB i\n▼−0.02\nB ii\n▼−0.02\ngemini-4-argon\nA\n▼−0.26\nB i\n▼−0.57\nB ii\n▲+0.08\ngemini-3.8-flash\nA\n▼−1.54\nB i\n▼−2.80\nB ii\n▼−1.71\ngrok-4.7\nA\n▼−2.89\nB i\nsem Grok no B\nB ii\nsem Grok no B\ngrok-4.7-b-fast\nA\n▼−3.82\nB i\nsem Grok no B\nB ii\nsem Grok no B\nA (3/5 min)\nB nota_i\nB nota_ii\nver como tabela\nConclusão: com 7 min, o high empata ou ganha no Claude e no Codex; no argon só ganha julgando a entrega; o flash-high continua pior.\nRanking B, nota_i: haiku +0.10 · opus +0.01 · luna +0.19 · sol −0.02 (igual na nota_ii). argon −0.57 na nota_i e +0.08 na nota_ii. flash −2.80 na nota_i e −1.71 na nota_ii. No Ranking A o high piorava em 7 de 8.",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-tarefas": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧩 Mapa de tarefas\ntipo × empresa\nempresa resolvedora\nmodelo × esforço\nempresa autora\nNota média · Ranking B i (N=30 por modelo)\n★ = melhor da linha · toque = execuções\nclaude\ncodex\ngemini\n01 função\n9.6\n★\n9.1\n8.6\n02 bug\n9.7\n★\n9.4\n9.5\n03 refatoração\n9.7\n★\n9.5\n7.2\n04 dados\n9.6\n★\n9.3\n6.9\n05 cli\n9.7\n★\n9.4\n6.2\n06 multiarquivo\n9.6\n★\n9.4\n9.3\n07 performance\n9.6\n★\n9.2\n9.1\n08 testes\n9.9\n★\n8.7\n5.8\n09 api\n9.7\n★\n9.5\n7.2\n10 ambígua\n10.0\n★\n9.4\n6.5\n0\n10 · claro = pior\nver como tabela\nclaude lidera todos os tipos. Em 08 testes, claude tem 9.9 e gemini só 5.8.\n🧩 10-ambigua-claude\n0% continua na nota\n\n⏱ timeout sem entrega (Gemini e Grok); tarefa validada\n\nOs 4 Gemini deram timeout (420 s) sem gravar nenhum arquivo, por isso 0%. Os 4 Codex resolvem com 40 a 42 de 42 testes. O Avaliador conferiu enunciado, conftest e testes ocultos: sem defeito na tarefa (_avaliador/analise_10_ambigua_claude.md). O Claude é a autora e não a resolve.\n\ngpt-6-lunahigh\n✅ 40/42 · 8.62\ngpt-6-lunamedium\n✅ 40/42 · 9.22\ngpt-6.1-solhigh\n✅ 42/42 · 9.70\ngpt-6.1-solmedium\n✅ 42/42 · 9.40\ngemini-3.8-flashhigh\n⏱ 420 s · 0/1 · 0.00\ngemini-3.8-flashmedium\n⏱ 420 s · 0/1 · 0.00\ngemini-4-argonhigh\n⏱ 420 s · 0/1 · 0.00\ngemini-4-argonmedium\n⏱ 420 s · 0/1 · 0.00\n✅ Todo mundo gabaritou\n100% dos testes\n01-funcao-codex01-funcao-gemini01-funcao-grok02-bug-claude02-bug-codex02-bug-gemini02-bug-grok03-refatoracao-gemini03-refatoracao-grok04-dados-codex04-dados-gemini05-cli-claude05-cli-gemini06-multiarquivo-claude06-multiarquivo-codex06-multiarquivo-gemini07-performance-claude07-performance-codex07-performance-gemini07-performance-grok09-api-claude09-api-codex09-api-gemini09-api-grok10-ambigua-codex10-ambigua-gemini10-ambigua-grok\ne mais 4 quase (≥90% das execuções com 100%)\nConsistência: 4 runs da mesma tarefa\nordem: mais instável primeiro\n\nRanking A: o cenário de 7 min só refez run-1, então as runs 2–4 vêm do limite original.\n\n04-dados-claude (o Claude resolve 04-dados-grok). Runs 2–4 não entram no ranking. ⏱ = timeout (vale 0) · ⚖️ = regra especial do grok-4.7-high\n\ngpt-6.1-solhigh\n9.1\n9.1\n9.1\n⏱\nσ 3.94\ngrok-4.7-build-fastmedium\n8.9\n⏱\n⏱\n⏱\nσ 3.88\ngrok-4.7medium\n⏱\n⏱\n⏱\n8.9\nσ 3.88\ngemini-4-argonhigh\n⏱\n8.8\n⏱\n⏱\nσ 3.81\ngrok-4.7high\n⏱\n4.4\n4.7\n4.7\nσ 2.00\ngpt-6.1-solmedium\n9.1\n9.4\n9.1\n8.9\nσ 0.16\nclaude-haiku-5-5high\n9.8\n9.8\n9.8\n9.6\nσ 0.13\ngpt-6-lunahigh\n8.9\n8.7\n9.0\n8.7\nσ 0.12\ngpt-6-lunamedium\n9.3\n9.3\n9.2\n9.4\nσ 0.08\nclaude-haiku-5-5medium\n9.8\n10.0\n10.0\n9.8\nσ 0.08\nclaude-opus-5-5high\n9.7\n9.7\n9.7\n9.8\nσ 0.06\nclaude-opus-5-5medium\n9.8\n9.8\n9.7\n9.8\nσ 0.06\ngemini-4-argonmedium\n8.8\n8.9\n8.8\n8.8\nσ 0.06\ngemini-3.8-flashhigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngemini-3.8-flashmedium\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngrok-4.7-build-fasthigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-juizes": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧑‍⚖️ O Avaliador\nreavaliação independente\nVocê está no Ranking B. Esta aba mostra o Avaliador do Ranking A (528 execuções). No B, as 70 refeitas com 420 s foram julgadas pelo mesmo Avaliador (2 juízes neutros, código anonimizado) e auditadas sem divergência; 23 delas deram timeout de novo. O “corrigir viés” vale nos dois rankings (no B, com a média de cada juiz nas 360 execuções).\nPor que “Avaliador”? As notas da rodada vinham dos juízes do julgar.py, com falhas: execuções sem juiz válido entravam com rubrica 0 e o ranking antigo usava N=33. O Avaliador independente rejulgou tudo com código anonimizado, 2 juízes neutros por solução (nem a empresa resolvedora nem a autora da tarefa), reexecutou os testes ocultos e auditou cada execução. Esta aba mostra os juízes dele e o que mudou.\nmais severo\n8.28\nclaude · n=175\n8.40\ncodex · n=174\n8.34\ngemini · n=232\nmais bonzinho\n8.60\ngrok · n=207\nNota antiga × nota do Avaliador\nmesmas 30 execuções · toque = execuções\n0\n2.5\n5\n7.5\n10\nclaude-haiku-5-5 H\n−0.02\nclaude-opus-5-5 M\n+0.04\nclaude-haiku-5-5 M\n−0.02\nclaude-opus-5-5 H\n+0.01\ngpt-6-luna M\n+0.14\ngpt-6-luna H\n+0.17\ngpt-6.1-sol M\n+0.05\ngpt-6.1-sol H\n+0.12\ngrok-4.7-bf M\n−0.02\ngemini-4-argon M\n−0.02\ngemini-4-argon H\n−0.03\ngrok-4.7 M\n−0.03\ngrok-4.7-bf H\n+0.01\ngrok-4.7 H ⚖️\n+1.57\ngemini-3.8-flash M\n−0.04\ngemini-3.8-flash H\n+0.00\nantiga (juízes da rodada)\nAvaliador\n\nMaior mudança: grok-4.7-high (2.26 → 3.83): 6 execuções refeitas dele contavam 0 na nota antiga e agora valem pela regra especial. Por empresa: claude 9.62 → 9.62 · codex 8.64 → 8.76 · grok 5.14 → 5.52 · gemini 4.61 → 4.58.\n\nver como tabela\nMaiores mudanças por execução\ntoque = detalhes\ngrok-4.7high 09-api-gemini\n0.00 → 10.00\ngrok-4.7high 06-multiarquivo-codex\n0.00 → 9.70\ngrok-4.7high 07-performance-claude\n0.00 → 8.65\ngrok-4.7high 09-api-codex\n0.00 → 7.00\ngrok-4.7high 10-ambigua-gemini\n0.00 → 6.58\ngrok-4.7high 08-testes-codex\n0.00 → 4.92\ngpt-6-lunamedium 04-dados-grok\n7.00 → 9.55\ngpt-6.1-solhigh 07-performance-claude\n7.00 → 9.40\nJuiz 1 × juiz 2\n394 execuções\n0\n0\n5\n5\n10\n10\njuiz 1 (ordem alfabética)\njuiz 2\n!\n!\n!\n\nTodas as 394 execuções julgadas tiveram os 2 juízes válidos (1 tentativa com falha, refeita). Bolha = nº de execuções com o mesmo par de notas; na linha verde os juízes concordam. |diferença| média 0.63 pt · mediana 0.00. ○ ! 3 casos com mais de 3 pts de briga.\n\nCorrigir viés dos juízes (experimento, não é o critério oficial) — muda as notas\n🔍 Auditoria\ntoque = execuções\n✅\nTestes ocultos reexecutados sobre o código entregue; contagem igual à usada na nota\n528/528\n🔒\nTestes ocultos idênticos ao git; nenhum indício de edição manual de nota/resultado (relatório do Avaliador)\n✔\n🧪\nTestes reexecutados deram contagem diferente do resultado.json (o Avaliador usa a reexecução)\n1\n⏱\nTimeout com entrega parcial que passa testes: nota 0 pela regra geral\n71\n📁\nresultado.json da rodada sobrescreveu o do piloto no mesmo caminho (benigno)\n16\n🔁\nExecução refeita por erro de cota (claude-opus-5-5-high, documentado em commit)\n7\n📝\nresultado.json alterado em 2 commits (grok-4.7-high refeito)\n16\n✏️\nArquivos com mudanças não commitadas (grok-4.7-high refeito)\n13\n👻\nSem avaliação antiga: a nota antiga conta 0\n10",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-ranking": {
+    "scrollW": 390,
+    "lista": [
+     "claude-haiku-5-5-high 9.75",
+     "claude-opus-5-5-high 9.71",
+     "claude-opus-5-5-medium 9.70",
+     "claude-haiku-5-5-medium 9.66",
+     "gpt-6.1-sol-medium 9.41",
+     "gpt-6.1-sol-high 9.39",
+     "gpt-6-luna-high 9.29",
+     "gemini-4-argon-high 9.18",
+     "gpt-6-luna-medium 9.09",
+     "gemini-4-argon-medium 9.09",
+     "gemini-3.8-flash-medium 8.80",
+     "gemini-3.8-flash-high 7.09"
+    ],
+    "nvSegVisivel": true,
+    "selosVisiveis": [],
+    "texto": "360\nexecuções na nota\n23\n⏱ timeouts\n70\n🔁 refeitas com 420 s\n⚖️ Peso da nota\n70% testes · 30% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nnota_i\ntimeout = 0\nnota_ii\nentrega parcial julgada\nPenalidades do grok-4.7-high: não há Grok no Ranking B\n👻 Mostrar nota do Ranking A\n\nnota_i: timeout = 0 (regra padrão, vale mesmo mexendo no peso). nota_ii: os 23 timeouts de novo são julgados pelo que ficou em codigo/. O peso testes × rubrica funciona no B: as 360 execuções têm %testes e rubrica do Avaliador. ⚖️ Penalidades do grok: desligado, o B não tem Grok. 👻 Nota antiga dos juízes da rodada não existe para as 70 refeitas; no lugar, o fantasma mostra a nota do Ranking A.\n\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\npadrão do Avaliador\n1\n👑\nclaude-haiku-5-5high\n9.75\n–\n2\nclaude-opus-5-5high\n9.71\n–\n3\nclaude-opus-5-5medium\n9.70\n–\n4\nclaude-haiku-5-5medium\n9.66\n–\n5\ngpt-6.1-solmedium\n9.41\n–\n6\ngpt-6.1-solhigh\n9.39\n–\n7\ngpt-6-lunahigh\n9.29\n–\n8\ngemini-4-argonhigh\n9.18\n–\n⏱3\n9\ngpt-6-lunamedium\n9.09\n–\n10\ngemini-4-argonmedium\n9.09\n–\n⏱1\n11\ngemini-3.8-flashmedium\n8.80\n–\n⏱5\n12\ngemini-3.8-flashhigh\n7.09\n–\n⏱14\nCom 7 min, claude-opus-5-5-high sai do 4º (entre estas 12) do Ranking A para o 2º. Troque para nota_i: gemini-4-argon-high vai de 9.18 para 8.52 (8º → 10º).\n🏢 Média por empresa\nRanking B ii · média das combinações\nclaude\n9.71\ncodex\n9.30\ngemini\n8.54\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "TABLE#. [31,503]",
+     "THEAD#. [31,503]",
+     "TR#. [31,503]",
+     "TH#. [357,410]",
+     "TH#. [410,455]",
+     "TH#. [455,479]",
+     "TH#. [479,503]",
+     "TBODY#. [31,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]",
+     "TD#. [410,455]",
+     "TD#. [455,479]",
+     "TD#. [479,503]",
+     "TR#. [31,503]",
+     "TD#. [357,410]"
+    ]
+   },
+   "B-ii-comparar": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "⚖️ Duelo de modelos\nModelo A\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-high (9.71)\n3. claude-opus-5-5-medium (9.70)\n4. claude-haiku-5-5-medium (9.66)\n5. gpt-6.1-sol-medium (9.41)\n6. gpt-6.1-sol-high (9.39)\n7. gpt-6-luna-high (9.29)\n8. gemini-4-argon-high (9.18)\n9. gpt-6-luna-medium (9.09)\n10. gemini-4-argon-medium (9.09)\n11. gemini-3.8-flash-medium (8.80)\n12. gemini-3.8-flash-high (7.09)\nclaude-haiku-5-5\nhigh\nA · 9.75 · 1º\n×\nModelo B\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-high (9.71)\n3. claude-opus-5-5-medium (9.70)\n4. claude-haiku-5-5-medium (9.66)\n5. gpt-6.1-sol-medium (9.41)\n6. gpt-6.1-sol-high (9.39)\n7. gpt-6-luna-high (9.29)\n8. gemini-4-argon-high (9.18)\n9. gpt-6-luna-medium (9.09)\n10. gemini-4-argon-medium (9.09)\n11. gemini-3.8-flash-medium (8.80)\n12. gemini-3.8-flash-high (7.09)\ngpt-6-luna\nmedium\nB · 9.09 · 9º\nRubrica, testes e pontualidade\n0–100%\n50%\nLegível\nBordas\nIdiomático\nManutenção\nDocs\nTestes\nPontual\nToque num eixo para ver os valores\nA — linha cheia\nB — tracejada\n+ testes e pontual\nNota por tipo de tarefa\n◀ A · B ▶ · toque = execuções\n★ 9.70\n01 função\n9.00\n★ 9.60\n02 bug\n9.40\n★ 9.75\n03 refator.\n9.23\n★ 9.75\n04 dados\n9.40\n★ 9.65\n05 cli\n9.35\n★ 9.80\n06 multiarq.\n9.50\n★ 9.65\n07 perf.\n9.25\n★ 9.95\n08 testes\n6.76\n★ 9.75\n09 api\n9.55\n★ 9.95\n10 ambígua\n9.49\nver como tabela\n🏅 A vence em\n10 de 10 tipos\n⏱ tempo médio\n50 s × 20 s",
+    "overflow": [
+     "CORTADO SPAN.sr: Modelo A",
+     "CORTADO SPAN.sr: Modelo B",
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-esforco": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🔥 Mais esforço ajuda?\nmedium → high\nNota medium × high\n0–10 · toque = detalhes\n0\n2.5\n5\n7.5\n10\ngpt-6-luna\n▲ +0.19\nclaude-haiku-5-5\n▲ +0.10\ngemini-4-argon\n▲ +0.08\nclaude-opus-5-5\n▲ +0.01\ngpt-6.1-sol\n▼ −0.02\ngemini-3.8-flash\n▼ −1.71\nmedium (cor cheia)\nhigh (hachurada)\n▲ melhorou ▼ piorou\nver como tabela\nTempo médio medium → high\nsegundos\n0s\n60s\n120s\n180s\n240s\n300s\n360s\ngpt-6-luna\n20→28\nclaude-haiku-5-5\n28→50\nclaude-opus-5-5\n43→46\ngpt-6.1-sol\n51→72\ngemini-4-argon\n106→171\ngemini-3.8-flash\n268→350\nRanking B (nota_ii): high ganha em 3, empata (|Δ| < 0,05) em 2 e piora em 1 de 6\nMaior queda: gemini-3.8-flash, de 8.80 para 7.09 (▼ −1.71).\n⚖️ Ranking A × Ranking B\nhigh − medium lado a lado\nhigh − medium por modelo\npontos · toque = detalhes\n-4\n-3\n-2\n-1\n0\n+1\ngpt-6-luna\nA\n▼−0.09\nB i\n▲+0.19\nB ii\n▲+0.19\nclaude-haiku-5-5\nA\n▲+0.09\nB i\n▲+0.10\nB ii\n▲+0.10\nclaude-opus-5-5\nA\n▼−0.31\nB i\n▲+0.01\nB ii\n▲+0.01\ngpt-6.1-sol\nA\n▼−0.63\nB i\n▼−0.02\nB ii\n▼−0.02\ngemini-4-argon\nA\n▼−0.26\nB i\n▼−0.57\nB ii\n▲+0.08\ngemini-3.8-flash\nA\n▼−1.54\nB i\n▼−2.80\nB ii\n▼−1.71\ngrok-4.7\nA\n▼−2.89\nB i\nsem Grok no B\nB ii\nsem Grok no B\ngrok-4.7-b-fast\nA\n▼−3.82\nB i\nsem Grok no B\nB ii\nsem Grok no B\nA (3/5 min)\nB nota_i\nB nota_ii\nver como tabela\nConclusão: com 7 min, o high empata ou ganha no Claude e no Codex; no argon só ganha julgando a entrega; o flash-high continua pior.\nRanking B, nota_i: haiku +0.10 · opus +0.01 · luna +0.19 · sol −0.02 (igual na nota_ii). argon −0.57 na nota_i e +0.08 na nota_ii. flash −2.80 na nota_i e −1.71 na nota_ii. No Ranking A o high piorava em 7 de 8.",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-tarefas": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧩 Mapa de tarefas\ntipo × empresa\nempresa resolvedora\nmodelo × esforço\nempresa autora\nNota média · Ranking B ii (N=30 por modelo)\n★ = melhor da linha · toque = execuções\nclaude\ncodex\ngemini\n01 função\n9.6\n★\n9.1\n8.6\n02 bug\n9.7\n★\n9.4\n9.5\n03 refatoração\n9.7\n★\n9.5\n9.2\n04 dados\n9.6\n★\n9.3\n7.6\n05 cli\n9.7\n★\n9.4\n7.8\n06 multiarquivo\n9.6\n★\n9.4\n9.3\n07 performance\n9.6\n★\n9.2\n9.1\n08 testes\n9.9\n★\n8.7\n8.4\n09 api\n9.7\n★\n9.5\n9.4\n10 ambígua\n10.0\n★\n9.4\n6.5\n0\n10 · claro = pior\nver como tabela\nclaude lidera todos os tipos. Em 10 ambígua, claude tem 10.0 e gemini só 6.5.\n🧩 10-ambigua-claude\n0% continua na nota\n\n⏱ timeout sem entrega (Gemini e Grok); tarefa validada\n\nOs 4 Gemini deram timeout (420 s) sem gravar nenhum arquivo, por isso 0%. Os 4 Codex resolvem com 40 a 42 de 42 testes. O Avaliador conferiu enunciado, conftest e testes ocultos: sem defeito na tarefa (_avaliador/analise_10_ambigua_claude.md). O Claude é a autora e não a resolve.\n\ngpt-6-lunahigh\n✅ 40/42 · 8.62\ngpt-6-lunamedium\n✅ 40/42 · 9.22\ngpt-6.1-solhigh\n✅ 42/42 · 9.70\ngpt-6.1-solmedium\n✅ 42/42 · 9.40\ngemini-3.8-flashhigh\n⏱ 420 s · 0/1 · 0.00\ngemini-3.8-flashmedium\n⏱ 420 s · 0/1 · 0.00\ngemini-4-argonhigh\n⏱ 420 s · 0/1 · 0.00\ngemini-4-argonmedium\n⏱ 420 s · 0/1 · 0.00\n✅ Todo mundo gabaritou\n100% dos testes\n01-funcao-codex01-funcao-gemini01-funcao-grok02-bug-claude02-bug-codex02-bug-gemini02-bug-grok03-refatoracao-gemini03-refatoracao-grok04-dados-codex04-dados-gemini05-cli-claude05-cli-gemini06-multiarquivo-claude06-multiarquivo-codex06-multiarquivo-gemini07-performance-claude07-performance-codex07-performance-gemini07-performance-grok09-api-claude09-api-codex09-api-gemini09-api-grok10-ambigua-codex10-ambigua-gemini10-ambigua-grok\ne mais 4 quase (≥90% das execuções com 100%)\nConsistência: 4 runs da mesma tarefa\nordem: mais instável primeiro\n\nRanking A: o cenário de 7 min só refez run-1, então as runs 2–4 vêm do limite original.\n\n04-dados-claude (o Claude resolve 04-dados-grok). Runs 2–4 não entram no ranking. ⏱ = timeout (vale 0) · ⚖️ = regra especial do grok-4.7-high\n\ngpt-6.1-solhigh\n9.1\n9.1\n9.1\n⏱\nσ 3.94\ngrok-4.7-build-fastmedium\n8.9\n⏱\n⏱\n⏱\nσ 3.88\ngrok-4.7medium\n⏱\n⏱\n⏱\n8.9\nσ 3.88\ngemini-4-argonhigh\n⏱\n8.8\n⏱\n⏱\nσ 3.81\ngrok-4.7high\n⏱\n4.4\n4.7\n4.7\nσ 2.00\ngpt-6.1-solmedium\n9.1\n9.4\n9.1\n8.9\nσ 0.16\nclaude-haiku-5-5high\n9.8\n9.8\n9.8\n9.6\nσ 0.13\ngpt-6-lunahigh\n8.9\n8.7\n9.0\n8.7\nσ 0.12\ngpt-6-lunamedium\n9.3\n9.3\n9.2\n9.4\nσ 0.08\nclaude-haiku-5-5medium\n9.8\n10.0\n10.0\n9.8\nσ 0.08\nclaude-opus-5-5high\n9.7\n9.7\n9.7\n9.8\nσ 0.06\nclaude-opus-5-5medium\n9.8\n9.8\n9.7\n9.8\nσ 0.06\ngemini-4-argonmedium\n8.8\n8.9\n8.8\n8.8\nσ 0.06\ngemini-3.8-flashhigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngemini-3.8-flashmedium\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngrok-4.7-build-fasthigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-juizes": {
+    "scrollW": 390,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧑‍⚖️ O Avaliador\nreavaliação independente\nVocê está no Ranking B. Esta aba mostra o Avaliador do Ranking A (528 execuções). No B, as 70 refeitas com 420 s foram julgadas pelo mesmo Avaliador (2 juízes neutros, código anonimizado) e auditadas sem divergência; 23 delas deram timeout de novo. O “corrigir viés” vale nos dois rankings (no B, com a média de cada juiz nas 360 execuções).\nPor que “Avaliador”? As notas da rodada vinham dos juízes do julgar.py, com falhas: execuções sem juiz válido entravam com rubrica 0 e o ranking antigo usava N=33. O Avaliador independente rejulgou tudo com código anonimizado, 2 juízes neutros por solução (nem a empresa resolvedora nem a autora da tarefa), reexecutou os testes ocultos e auditou cada execução. Esta aba mostra os juízes dele e o que mudou.\nmais severo\n8.28\nclaude · n=175\n8.40\ncodex · n=174\n8.34\ngemini · n=232\nmais bonzinho\n8.60\ngrok · n=207\nNota antiga × nota do Avaliador\nmesmas 30 execuções · toque = execuções\n0\n2.5\n5\n7.5\n10\nclaude-haiku-5-5 H\n−0.02\nclaude-opus-5-5 M\n+0.04\nclaude-haiku-5-5 M\n−0.02\nclaude-opus-5-5 H\n+0.01\ngpt-6-luna M\n+0.14\ngpt-6-luna H\n+0.17\ngpt-6.1-sol M\n+0.05\ngpt-6.1-sol H\n+0.12\ngrok-4.7-bf M\n−0.02\ngemini-4-argon M\n−0.02\ngemini-4-argon H\n−0.03\ngrok-4.7 M\n−0.03\ngrok-4.7-bf H\n+0.01\ngrok-4.7 H ⚖️\n+1.57\ngemini-3.8-flash M\n−0.04\ngemini-3.8-flash H\n+0.00\nantiga (juízes da rodada)\nAvaliador\n\nMaior mudança: grok-4.7-high (2.26 → 3.83): 6 execuções refeitas dele contavam 0 na nota antiga e agora valem pela regra especial. Por empresa: claude 9.62 → 9.62 · codex 8.64 → 8.76 · grok 5.14 → 5.52 · gemini 4.61 → 4.58.\n\nver como tabela\nMaiores mudanças por execução\ntoque = detalhes\ngrok-4.7high 09-api-gemini\n0.00 → 10.00\ngrok-4.7high 06-multiarquivo-codex\n0.00 → 9.70\ngrok-4.7high 07-performance-claude\n0.00 → 8.65\ngrok-4.7high 09-api-codex\n0.00 → 7.00\ngrok-4.7high 10-ambigua-gemini\n0.00 → 6.58\ngrok-4.7high 08-testes-codex\n0.00 → 4.92\ngpt-6-lunamedium 04-dados-grok\n7.00 → 9.55\ngpt-6.1-solhigh 07-performance-claude\n7.00 → 9.40\nJuiz 1 × juiz 2\n394 execuções\n0\n0\n5\n5\n10\n10\njuiz 1 (ordem alfabética)\njuiz 2\n!\n!\n!\n\nTodas as 394 execuções julgadas tiveram os 2 juízes válidos (1 tentativa com falha, refeita). Bolha = nº de execuções com o mesmo par de notas; na linha verde os juízes concordam. |diferença| média 0.63 pt · mediana 0.00. ○ ! 3 casos com mais de 3 pts de briga.\n\nCorrigir viés dos juízes (experimento, não é o critério oficial) — muda as notas\n🔍 Auditoria\ntoque = execuções\n✅\nTestes ocultos reexecutados sobre o código entregue; contagem igual à usada na nota\n528/528\n🔒\nTestes ocultos idênticos ao git; nenhum indício de edição manual de nota/resultado (relatório do Avaliador)\n✔\n🧪\nTestes reexecutados deram contagem diferente do resultado.json (o Avaliador usa a reexecução)\n1\n⏱\nTimeout com entrega parcial que passa testes: nota 0 pela regra geral\n71\n📁\nresultado.json da rodada sobrescreveu o do piloto no mesmo caminho (benigno)\n16\n🔁\nExecução refeita por erro de cota (claude-opus-5-5-high, documentado em commit)\n7\n📝\nresultado.json alterado em 2 commits (grok-4.7-high refeito)\n16\n✏️\nArquivos com mudanças não commitadas (grok-4.7-high refeito)\n13\n👻\nSem avaliação antiga: a nota antiga conta 0\n10",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-slider100": {
+    "scrollW": 390,
+    "lista": [
+     "claude-haiku-5-5-high 10.00",
+     "claude-opus-5-5-medium 10.00",
+     "claude-haiku-5-5-medium 9.94",
+     "claude-opus-5-5-high 9.67",
+     "gpt-6-luna-medium 9.65",
+     "gpt-6-luna-high 9.60",
+     "gpt-6.1-sol-medium 9.33",
+     "gpt-6.1-sol-high 8.67",
+     "grok-4.7-build-fast-medium 8.00",
+     "gemini-4-argon-medium 7.67",
+     "gemini-4-argon-high 7.33",
+     "grok-4.7-medium 7.00",
+     "grok-4.7-build-fast-high 4.00",
+     "grok-4.7-high 3.97 SELO:⚖️ ×0,7/×0,5",
+     "gemini-3.8-flash-medium 3.00",
+     "gemini-3.8-flash-high 1.33"
+    ],
+    "nvSegVisivel": false,
+    "selosVisiveis": [
+     "⚖️ ×0,7/×0,5"
+    ],
+    "texto": "473\nexecuções na nota\n118\n⏱ timeouts\n47\n🔁 consistência (fora)\n⚖️ Peso da nota\n100% testes · 0% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nPenalidades do grok-4.7-high (×0,7 / ×0,5)\n👻 Mostrar nota antiga\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\nseu ranking\n1\n👑\nclaude-haiku-5-5high\n10.00\n–\n2\nclaude-opus-5-5medium\n10.00\n–\n3\nclaude-haiku-5-5medium\n9.94\n–\n4\nclaude-opus-5-5high\n9.67\n–\n⏱1\n5\ngpt-6-lunamedium\n9.65\n–\n6\ngpt-6-lunahigh\n9.60\n–\n⏱1\n7\ngpt-6.1-solmedium\n9.33\n–\n⏱2\n8\ngpt-6.1-solhigh\n8.67\n–\n⏱4\n9\ngrok-4.7-build-fastmedium\n8.00\n–\n⏱6\n10\ngemini-4-argonmedium\n7.67\n–\n⏱7\n11\ngemini-4-argonhigh\n7.33\n–\n⏱8\n12\ngrok-4.7medium\n7.00\n–\n⏱9\n13\ngrok-4.7-build-fasthigh\n4.00\n–\n⏱18\n14\ngrok-4.7high⚖️ ×0,7/×0,5\n3.97\n–\n⏱17\n15\ngemini-3.8-flashmedium\n3.00\n–\n⏱21\n16\ngemini-3.8-flashhigh\n1.33\n–\n⏱26\n⚖️ grok-4.7-high tem regra especial: 13 execuções refeitas (10 delas no ranking) com limite maior; as entregues na 2ª tentativa valem ×0,7 ou ×0,5 por atraso. Com penalidades 3.97, sem 4.33. As outras 15 combinações não têm essa regra (lá, timeout = 0). Letras miúdas ↓\nNinguém trocou de lugar, mas gpt-6-luna-high foi de 9.00 para 9.60.\n🏢 Média por empresa\nRanking A · média das combinações\nclaude\n9.90\ncodex\n9.31\ngrok\n5.74\ngemini\n4.83\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "TABLE#. [31,495]",
+     "THEAD#. [31,495]",
+     "TR#. [31,495]",
+     "TH#. [349,402]",
+     "TH#. [402,447]",
+     "TH#. [447,472]",
+     "TH#. [472,495]",
+     "TBODY#. [31,495]",
+     "TR#. [31,495]",
+     "TD#. [349,402]",
+     "TD#. [402,447]",
+     "TD#. [447,472]",
+     "TD#. [472,495]",
+     "TR#. [31,495]",
+     "TD#. [349,402]",
+     "TD#. [402,447]",
+     "TD#. [447,472]",
+     "TD#. [472,495]",
+     "TR#. [31,495]",
+     "TD#. [349,402]",
+     "TD#. [402,447]",
+     "TD#. [447,472]",
+     "TD#. [472,495]",
+     "TR#. [31,495]",
+     "TD#. [349,402]",
+     "TD#. [402,447]",
+     "TD#. [447,472]",
+     "TD#. [472,495]",
+     "TR#. [31,495]",
+     "TD#. [349,402]",
+     "TD#. [402,447]",
+     "TD#. [447,472]",
+     "TD#. [472,495]",
+     "TR#. [31,495]",
+     "TD#. [349,402]",
+     "TD#. [402,447]",
+     "TD#. [447,472]",
+     "TD#. [472,495]",
+     "TR#. [31,495]",
+     "TD#. [349,402]"
+    ]
+   },
+   "A-slider0": {
+    "scrollW": 390,
+    "lista": [
+     "claude-haiku-5-5-high 9.18",
+     "claude-opus-5-5-medium 9.00",
+     "claude-haiku-5-5-medium 9.00",
+     "claude-opus-5-5-high 8.73",
+     "gpt-6-luna-medium 7.78",
+     "gpt-6-luna-high 7.60",
+     "gpt-6.1-sol-medium 7.52",
+     "gpt-6.1-sol-high 6.97",
+     "grok-4.7-build-fast-medium 6.93",
+     "gemini-4-argon-medium 6.17",
+     "gemini-4-argon-high 6.10",
+     "grok-4.7-medium 6.08",
+     "grok-4.7-build-fast-high 3.55",
+     "grok-4.7-high 3.51 SELO:⚖️ ×0,7/×0,5",
+     "gemini-3.8-flash-medium 2.50",
+     "gemini-3.8-flash-high 1.27"
+    ],
+    "nvSegVisivel": false,
+    "selosVisiveis": [
+     "⚖️ ×0,7/×0,5"
+    ],
+    "texto": "480\nexecuções na nota\n120\n⏱ timeouts\n48\n🔁 consistência (fora)\n⚖️ Peso da nota\n0% testes · 100% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nPenalidades do grok-4.7-high (×0,7 / ×0,5)\n👻 Mostrar nota antiga\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\nseu ranking\n1\n👑\nclaude-haiku-5-5high\n9.18\n–\n2\nclaude-opus-5-5medium\n9.00\n–\n3\nclaude-haiku-5-5medium\n9.00\n–\n4\nclaude-opus-5-5high\n8.73\n–\n⏱1\n5\ngpt-6-lunamedium\n7.78\n–\n6\ngpt-6-lunahigh\n7.60\n–\n⏱1\n7\ngpt-6.1-solmedium\n7.52\n–\n⏱2\n8\ngpt-6.1-solhigh\n6.97\n–\n⏱4\n9\ngrok-4.7-build-fastmedium\n6.93\n–\n⏱6\n10\ngemini-4-argonmedium\n6.17\n–\n⏱7\n11\ngemini-4-argonhigh\n6.10\n–\n⏱8\n12\ngrok-4.7medium\n6.08\n–\n⏱9\n13\ngrok-4.7-build-fasthigh\n3.55\n–\n⏱18\n14\ngrok-4.7high⚖️ ×0,7/×0,5\n3.51\n–\n⏱17\n15\ngemini-3.8-flashmedium\n2.50\n–\n⏱21\n16\ngemini-3.8-flashhigh\n1.27\n–\n⏱26\n⚖️ grok-4.7-high tem regra especial: 13 execuções refeitas (10 delas no ranking) com limite maior; as entregues na 2ª tentativa valem ×0,7 ou ×0,5 por atraso. Com penalidades 3.51, sem 3.85. As outras 15 combinações não têm essa regra (lá, timeout = 0). Letras miúdas ↓\nNinguém trocou de lugar, mas gpt-6-luna-high foi de 9.00 para 7.60.\n🏢 Média por empresa\nRanking A · média das combinações\nclaude\n8.98\ncodex\n7.47\ngrok\n5.02\ngemini\n4.01\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "TABLE#. [31,490]",
+     "THEAD#. [31,490]",
+     "TR#. [31,490]",
+     "TH#. [343,397]",
+     "TH#. [397,442]",
+     "TH#. [442,466]",
+     "TH#. [466,490]",
+     "TBODY#. [31,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]",
+     "TD#. [397,442]",
+     "TD#. [442,466]",
+     "TD#. [466,490]",
+     "TR#. [31,490]",
+     "TD#. [343,397]"
+    ]
+   },
+   "B-slider100": {
+    "scrollW": 390,
+    "lista": [
+     "claude-haiku-5-5-high 10.00",
+     "claude-opus-5-5-high 10.00",
+     "claude-opus-5-5-medium 10.00",
+     "gpt-6.1-sol-medium 10.00",
+     "gpt-6.1-sol-high 10.00",
+     "claude-haiku-5-5-medium 9.94",
+     "gpt-6-luna-high 9.93",
+     "gemini-4-argon-high 9.67",
+     "gemini-4-argon-medium 9.67",
+     "gpt-6-luna-medium 9.65",
+     "gemini-3.8-flash-medium 9.35",
+     "gemini-3.8-flash-high 7.53"
+    ],
+    "nvSegVisivel": true,
+    "selosVisiveis": [],
+    "texto": "349\nexecuções na nota\n22\n⏱ timeouts\n68\n🔁 refeitas com 420 s\n⚖️ Peso da nota\n100% testes · 0% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nnota_i\ntimeout = 0\nnota_ii\nentrega parcial julgada\nPenalidades do grok-4.7-high: não há Grok no Ranking B\n👻 Mostrar nota do Ranking A\n\nnota_i: timeout = 0 (regra padrão, vale mesmo mexendo no peso). nota_ii: os 23 timeouts de novo são julgados pelo que ficou em codigo/. O peso testes × rubrica funciona no B: as 360 execuções têm %testes e rubrica do Avaliador. ⚖️ Penalidades do grok: desligado, o B não tem Grok. 👻 Nota antiga dos juízes da rodada não existe para as 70 refeitas; no lugar, o fantasma mostra a nota do Ranking A.\n\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\nseu ranking\n1\n👑\nclaude-haiku-5-5high\n10.00\n–\n2\nclaude-opus-5-5high\n10.00\n–\n3\nclaude-opus-5-5medium\n10.00\n–\n4\ngpt-6.1-solmedium\n10.00\n▲1\n5\ngpt-6.1-solhigh\n10.00\n▲1\n6\nclaude-haiku-5-5medium\n9.94\n▼2\n7\ngpt-6-lunahigh\n9.93\n–\n8\ngemini-4-argonhigh\n9.67\n–\n⏱3\n9\ngemini-4-argonmedium\n9.67\n▲1\n⏱1\n10\ngpt-6-lunamedium\n9.65\n▼1\n11\ngemini-3.8-flashmedium\n9.35\n–\n⏱5\n12\ngemini-3.8-flashhigh\n7.53\n–\n⏱14\ngpt-6.1-sol-high sobe de 6º para 5º (9.39 → 10.00).\n🏢 Média por empresa\nRanking B ii · média das combinações\nclaude\n9.98\ncodex\n9.90\ngemini\n9.05\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "TABLE#. [31,509]",
+     "THEAD#. [31,509]",
+     "TR#. [31,509]",
+     "TH#. [362,416]",
+     "TH#. [416,460]",
+     "TH#. [460,485]",
+     "TH#. [485,509]",
+     "TBODY#. [31,509]",
+     "TR#. [31,509]",
+     "TD#. [362,416]",
+     "TD#. [416,460]",
+     "TD#. [460,485]",
+     "TD#. [485,509]",
+     "TR#. [31,509]",
+     "TD#. [362,416]",
+     "TD#. [416,460]",
+     "TD#. [460,485]",
+     "TD#. [485,509]",
+     "TR#. [31,509]",
+     "TD#. [362,416]",
+     "TD#. [416,460]",
+     "TD#. [460,485]",
+     "TD#. [485,509]",
+     "TR#. [31,509]",
+     "TD#. [362,416]",
+     "TD#. [416,460]",
+     "TD#. [460,485]",
+     "TD#. [485,509]",
+     "TR#. [31,509]",
+     "TD#. [362,416]",
+     "TD#. [416,460]",
+     "TD#. [460,485]",
+     "TD#. [485,509]",
+     "TR#. [31,509]",
+     "TD#. [362,416]",
+     "TD#. [416,460]",
+     "TD#. [460,485]",
+     "TD#. [485,509]",
+     "TR#. [31,509]",
+     "TD#. [362,416]"
+    ]
+   }
+  },
+  "console": []
+ },
+ "desktop": {
+  "estados": {
+   "A-ranking": {
+    "scrollW": 1440,
+    "lista": [
+     "claude-haiku-5-5-high 9.75",
+     "claude-opus-5-5-medium 9.70",
+     "claude-haiku-5-5-medium 9.66",
+     "claude-opus-5-5-high 9.39",
+     "gpt-6-luna-medium 9.09",
+     "gpt-6-luna-high 9.00",
+     "gpt-6.1-sol-medium 8.79",
+     "gpt-6.1-sol-high 8.16",
+     "grok-4.7-build-fast-medium 7.68",
+     "gemini-4-argon-medium 7.22",
+     "gemini-4-argon-high 6.96",
+     "grok-4.7-medium 6.72",
+     "grok-4.7-build-fast-high 3.86",
+     "grok-4.7-high 3.83 SELO:⚖️ ×0,7/×0,5",
+     "gemini-3.8-flash-medium 2.85",
+     "gemini-3.8-flash-high 1.31"
+    ],
+    "nvSegVisivel": false,
+    "selosVisiveis": [
+     "⚖️ ×0,7/×0,5"
+    ],
+    "texto": "480\nexecuções na nota\n120\n⏱ timeouts\n48\n🔁 consistência (fora)\n⚖️ Peso da nota\n70% testes · 30% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nPenalidades do grok-4.7-high (×0,7 / ×0,5)\n👻 Mostrar nota antiga\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\npadrão do Avaliador\n1\n👑\nclaude-haiku-5-5high\n9.75\n–\n2\nclaude-opus-5-5medium\n9.70\n–\n3\nclaude-haiku-5-5medium\n9.66\n–\n4\nclaude-opus-5-5high\n9.39\n–\n⏱1\n5\ngpt-6-lunamedium\n9.09\n–\n6\ngpt-6-lunahigh\n9.00\n–\n⏱1\n7\ngpt-6.1-solmedium\n8.79\n–\n⏱2\n8\ngpt-6.1-solhigh\n8.16\n–\n⏱4\n9\ngrok-4.7-build-fastmedium\n7.68\n–\n⏱6\n10\ngemini-4-argonmedium\n7.22\n–\n⏱7\n11\ngemini-4-argonhigh\n6.96\n–\n⏱8\n12\ngrok-4.7medium\n6.72\n–\n⏱9\n13\ngrok-4.7-build-fasthigh\n3.86\n–\n⏱18\n14\ngrok-4.7high⚖️ ×0,7/×0,5\n3.83\n–\n⏱17\n15\ngemini-3.8-flashmedium\n2.85\n–\n⏱21\n16\ngemini-3.8-flashhigh\n1.31\n–\n⏱26\n⚖️ grok-4.7-high tem regra especial: 13 execuções refeitas (10 delas no ranking) com limite maior; as entregues na 2ª tentativa valem ×0,7 ou ×0,5 por atraso. Com penalidades 3.83, sem 4.19. As outras 15 combinações não têm essa regra (lá, timeout = 0). Letras miúdas ↓\nDesligue “Penalidades do grok-4.7-high”: ele vai de 3.83 para 4.19 (14º → 13º) e passa grok-4.7-build-fast-high!\n🏢 Média por empresa\nRanking A · média das combinações\nclaude\n9.62\ncodex\n8.76\ngrok\n5.52\ngemini\n4.58\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": []
+   },
+   "A-comparar": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "⚖️ Duelo de modelos\nModelo A\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-medium (9.70)\n3. claude-haiku-5-5-medium (9.66)\n4. claude-opus-5-5-high (9.39)\n5. gpt-6-luna-medium (9.09)\n6. gpt-6-luna-high (9.00)\n7. gpt-6.1-sol-medium (8.79)\n8. gpt-6.1-sol-high (8.16)\n9. grok-4.7-build-fast-medium (7.68)\n10. gemini-4-argon-medium (7.22)\n11. gemini-4-argon-high (6.96)\n12. grok-4.7-medium (6.72)\n13. grok-4.7-build-fast-high (3.86)\n14. grok-4.7-high (3.83)\n15. gemini-3.8-flash-medium (2.85)\n16. gemini-3.8-flash-high (1.31)\nclaude-haiku-5-5\nhigh\nA · 9.75 · 1º\n×\nModelo B\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-medium (9.70)\n3. claude-haiku-5-5-medium (9.66)\n4. claude-opus-5-5-high (9.39)\n5. gpt-6-luna-medium (9.09)\n6. gpt-6-luna-high (9.00)\n7. gpt-6.1-sol-medium (8.79)\n8. gpt-6.1-sol-high (8.16)\n9. grok-4.7-build-fast-medium (7.68)\n10. gemini-4-argon-medium (7.22)\n11. gemini-4-argon-high (6.96)\n12. grok-4.7-medium (6.72)\n13. grok-4.7-build-fast-high (3.86)\n14. grok-4.7-high (3.83)\n15. gemini-3.8-flash-medium (2.85)\n16. gemini-3.8-flash-high (1.31)\ngpt-6-luna\nmedium\nB · 9.09 · 5º\nRubrica, testes e pontualidade\n0–100%\n50%\nLegível\nBordas\nIdiomático\nManutenção\nDocs\nTestes\nPontual\nToque num eixo para ver os valores\nA — linha cheia\nB — tracejada\n+ testes e pontual\nNota por tipo de tarefa\n◀ A · B ▶ · toque = execuções\n★ 9.70\n01 função\n9.00\n★ 9.60\n02 bug\n9.40\n★ 9.75\n03 refator.\n9.23\n★ 9.75\n04 dados\n9.40\n★ 9.65\n05 cli\n9.35\n★ 9.80\n06 multiarq.\n9.50\n★ 9.65\n07 perf.\n9.25\n★ 9.95\n08 testes\n6.76\n★ 9.75\n09 api\n9.55\n★ 9.95\n10 ambígua\n9.49\nver como tabela\n🏅 A vence em\n10 de 10 tipos\n⏱ tempo médio\n50 s × 20 s",
+    "overflow": [
+     "CORTADO SPAN.sr: Modelo A",
+     "CORTADO SPAN.sr: Modelo B",
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-esforco": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🔥 Mais esforço ajuda?\nmedium → high\nNota medium × high\n0–10 · toque = detalhes\n0\n2.5\n5\n7.5\n10\nclaude-haiku-5-5\n▲ +0.09\ngpt-6-luna\n▼ −0.09\ngemini-4-argon\n▼ −0.26\nclaude-opus-5-5\n▼ −0.31\ngpt-6.1-sol\n▼ −0.63\ngemini-3.8-flash\n▼ −1.54\ngrok-4.7\n▼ −2.89\ngrok-4.7-b-fast\n▼ −3.82\nmedium (cor cheia)\nhigh (hachurada)\n▲ melhorou ▼ piorou\nver como tabela\nTempo médio medium → high\nsegundos\n0s\n60s\n120s\n180s\n240s\n300s\n360s\ngpt-6-luna\n20→33\nclaude-haiku-5-5\n28→50\nclaude-opus-5-5\n43→51\ngpt-6.1-sol\n63→87\ngrok-4.7-b-fast\n103→171\ngemini-4-argon\n121→134\ngrok-4.7\n142→302\ngemini-3.8-flash\n195→209\nHigh piorou em 7 de 8 modelos 😬\nMaior queda: grok-4.7-build-fast, de 7.68 para 3.86 (▼ −3.82). Sem as penalidades do grok-4.7-high, o high dele iria a 4.19 (ainda ▼ −2.54).\n⚖️ Ranking A × Ranking B\nhigh − medium lado a lado\nhigh − medium por modelo\npontos · toque = detalhes\n-4\n-3\n-2\n-1\n0\n+1\ngpt-6-luna\nA\n▼−0.09\nB i\n▲+0.19\nB ii\n▲+0.19\nclaude-haiku-5-5\nA\n▲+0.09\nB i\n▲+0.10\nB ii\n▲+0.10\nclaude-opus-5-5\nA\n▼−0.31\nB i\n▲+0.01\nB ii\n▲+0.01\ngpt-6.1-sol\nA\n▼−0.63\nB i\n▼−0.02\nB ii\n▼−0.02\ngemini-4-argon\nA\n▼−0.26\nB i\n▼−0.57\nB ii\n▲+0.08\ngemini-3.8-flash\nA\n▼−1.54\nB i\n▼−2.80\nB ii\n▼−1.71\ngrok-4.7\nA\n▼−2.89\nB i\nsem Grok no B\nB ii\nsem Grok no B\ngrok-4.7-b-fast\nA\n▼−3.82\nB i\nsem Grok no B\nB ii\nsem Grok no B\nA (3/5 min)\nB nota_i\nB nota_ii\nver como tabela\nConclusão: com 7 min, o high empata ou ganha no Claude e no Codex; no argon só ganha julgando a entrega; o flash-high continua pior.\nRanking B, nota_i: haiku +0.10 · opus +0.01 · luna +0.19 · sol −0.02 (igual na nota_ii). argon −0.57 na nota_i e +0.08 na nota_ii. flash −2.80 na nota_i e −1.71 na nota_ii. No Ranking A o high piorava em 7 de 8.",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-tarefas": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧩 Mapa de tarefas\ntipo × empresa\nempresa resolvedora\nmodelo × esforço\nempresa autora\nNota média · Ranking A (N=30 por modelo)\n★ = melhor da linha · toque = execuções\nclaude\ncodex\ngemini\ngrok\n01 função\n9.6\n★\n9.1\n4.8\n7.1\n02 bug\n9.7\n★\n9.4\n6.4\n7.2\n03 refatoração\n9.7\n★\n9.5\n4.0\n5.6\n04 dados\n9.6\n★\n9.3\n3.1\n1.6\n05 cli\n8.9\n★\n7.9\n4.6\n5.7\n06 multiarquivo\n9.6\n★\n9.4\n4.6\n5.6\n07 performance\n9.6\n★\n8.5\n5.3\n9.5\n08 testes\n9.9\n★\n7.1\n0.8\n1.2\n09 api\n9.7\n★\n7.9\n5.6\n6.3\n10 ambígua\n10.0\n★\n9.4\n6.5\n5.4\n0\n10 · claro = pior\nver como tabela\nclaude lidera todos os tipos. Em 08 testes, claude tem 9.9 e gemini só 0.8.\n🧩 10-ambigua-claude\n0% continua na nota\n\n⏱ timeout sem entrega (Gemini e Grok); tarefa validada\n\nOs 8 Gemini e Grok deram timeout sem gravar nenhum arquivo, por isso 0%. Os 4 Codex resolvem com 40 a 42 de 42 testes. O Avaliador conferiu enunciado, conftest e testes ocultos: sem defeito na tarefa (_avaliador/analise_10_ambigua_claude.md). O Claude é a autora e não a resolve.\n\ngpt-6-lunahigh\n✅ 40/42 · 8.62\ngpt-6-lunamedium\n✅ 40/42 · 9.22\ngpt-6.1-solhigh\n✅ 42/42 · 9.70\ngpt-6.1-solmedium\n✅ 42/42 · 9.40\ngemini-3.8-flashhigh\n⏱ 180 s · 0/1 · 0.00\ngemini-3.8-flashmedium\n⏱ 180 s · 0/1 · 0.00\ngemini-4-argonhigh\n⏱ 180 s · 0/1 · 0.00\ngemini-4-argonmedium\n⏱ 180 s · 0/1 · 0.00\ngrok-4.7-build-fasthigh\n⏱ 186 s · 0/1 · 0.00\ngrok-4.7-build-fastmedium\n⏱ 180 s · 0/1 · 0.00\ngrok-4.7high\n⏱ 900 s · 0/1 · 0.00\ngrok-4.7medium\n⏱ 180 s · 0/1 · 0.00\n✅ Todo mundo gabaritou\n100% dos testes\n01-funcao-gemini02-bug-codex07-performance-gemini09-api-codex10-ambigua-codex10-ambigua-grok\ne mais 10 quase (≥90% das execuções com 100%)\nConsistência: 4 runs da mesma tarefa\nordem: mais instável primeiro\n\n04-dados-claude (o Claude resolve 04-dados-grok). Runs 2–4 não entram no ranking. ⏱ = timeout (vale 0) · ⚖️ = regra especial do grok-4.7-high\n\ngpt-6.1-solhigh\n9.1\n9.1\n9.1\n⏱\nσ 3.94\ngrok-4.7-build-fastmedium\n8.9\n⏱\n⏱\n⏱\nσ 3.88\ngrok-4.7medium\n⏱\n⏱\n⏱\n8.9\nσ 3.88\ngemini-4-argonhigh\n⏱\n8.8\n⏱\n⏱\nσ 3.81\ngrok-4.7high\n⏱\n4.4\n4.7\n4.7\nσ 2.00\ngpt-6.1-solmedium\n9.1\n9.4\n9.1\n8.9\nσ 0.16\nclaude-haiku-5-5high\n9.8\n9.8\n9.8\n9.6\nσ 0.13\ngpt-6-lunahigh\n8.9\n8.7\n9.0\n8.7\nσ 0.12\ngpt-6-lunamedium\n9.3\n9.3\n9.2\n9.4\nσ 0.08\nclaude-haiku-5-5medium\n9.8\n10.0\n10.0\n9.8\nσ 0.08\nclaude-opus-5-5high\n9.7\n9.7\n9.7\n9.8\nσ 0.06\nclaude-opus-5-5medium\n9.8\n9.8\n9.7\n9.8\nσ 0.06\ngemini-4-argonmedium\n8.8\n8.9\n8.8\n8.8\nσ 0.06\ngemini-3.8-flashhigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngemini-3.8-flashmedium\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngrok-4.7-build-fasthigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-juizes": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧑‍⚖️ O Avaliador\nreavaliação independente\nPor que “Avaliador”? As notas da rodada vinham dos juízes do julgar.py, com falhas: execuções sem juiz válido entravam com rubrica 0 e o ranking antigo usava N=33. O Avaliador independente rejulgou tudo com código anonimizado, 2 juízes neutros por solução (nem a empresa resolvedora nem a autora da tarefa), reexecutou os testes ocultos e auditou cada execução. Esta aba mostra os juízes dele e o que mudou.\nmais severo\n8.28\nclaude · n=175\n8.40\ncodex · n=174\n8.34\ngemini · n=232\nmais bonzinho\n8.60\ngrok · n=207\nNota antiga × nota do Avaliador\nmesmas 30 execuções · toque = execuções\n0\n2.5\n5\n7.5\n10\nclaude-haiku-5-5 H\n−0.02\nclaude-opus-5-5 M\n+0.04\nclaude-haiku-5-5 M\n−0.02\nclaude-opus-5-5 H\n+0.01\ngpt-6-luna M\n+0.14\ngpt-6-luna H\n+0.17\ngpt-6.1-sol M\n+0.05\ngpt-6.1-sol H\n+0.12\ngrok-4.7-bf M\n−0.02\ngemini-4-argon M\n−0.02\ngemini-4-argon H\n−0.03\ngrok-4.7 M\n−0.03\ngrok-4.7-bf H\n+0.01\ngrok-4.7 H ⚖️\n+1.57\ngemini-3.8-flash M\n−0.04\ngemini-3.8-flash H\n+0.00\nantiga (juízes da rodada)\nAvaliador\n\nMaior mudança: grok-4.7-high (2.26 → 3.83): 6 execuções refeitas dele contavam 0 na nota antiga e agora valem pela regra especial. Por empresa: claude 9.62 → 9.62 · codex 8.64 → 8.76 · grok 5.14 → 5.52 · gemini 4.61 → 4.58.\n\nver como tabela\nMaiores mudanças por execução\ntoque = detalhes\ngrok-4.7high 09-api-gemini\n0.00 → 10.00\ngrok-4.7high 06-multiarquivo-codex\n0.00 → 9.70\ngrok-4.7high 07-performance-claude\n0.00 → 8.65\ngrok-4.7high 09-api-codex\n0.00 → 7.00\ngrok-4.7high 10-ambigua-gemini\n0.00 → 6.58\ngrok-4.7high 08-testes-codex\n0.00 → 4.92\ngpt-6-lunamedium 04-dados-grok\n7.00 → 9.55\ngpt-6.1-solhigh 07-performance-claude\n7.00 → 9.40\nJuiz 1 × juiz 2\n394 execuções\n0\n0\n5\n5\n10\n10\njuiz 1 (ordem alfabética)\njuiz 2\n!\n!\n!\n\nTodas as 394 execuções julgadas tiveram os 2 juízes válidos (1 tentativa com falha, refeita). Bolha = nº de execuções com o mesmo par de notas; na linha verde os juízes concordam. |diferença| média 0.63 pt · mediana 0.00. ○ ! 3 casos com mais de 3 pts de briga.\n\nCorrigir viés dos juízes (experimento, não é o critério oficial) — muda as notas\n🔍 Auditoria\ntoque = execuções\n✅\nTestes ocultos reexecutados sobre o código entregue; contagem igual à usada na nota\n528/528\n🔒\nTestes ocultos idênticos ao git; nenhum indício de edição manual de nota/resultado (relatório do Avaliador)\n✔\n🧪\nTestes reexecutados deram contagem diferente do resultado.json (o Avaliador usa a reexecução)\n1\n⏱\nTimeout com entrega parcial que passa testes: nota 0 pela regra geral\n71\n📁\nresultado.json da rodada sobrescreveu o do piloto no mesmo caminho (benigno)\n16\n🔁\nExecução refeita por erro de cota (claude-opus-5-5-high, documentado em commit)\n7\n📝\nresultado.json alterado em 2 commits (grok-4.7-high refeito)\n16\n✏️\nArquivos com mudanças não commitadas (grok-4.7-high refeito)\n13\n👻\nSem avaliação antiga: a nota antiga conta 0\n10",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-ranking": {
+    "scrollW": 1440,
+    "lista": [
+     "claude-haiku-5-5-high 9.75",
+     "claude-opus-5-5-high 9.71",
+     "claude-opus-5-5-medium 9.70",
+     "claude-haiku-5-5-medium 9.66",
+     "gpt-6.1-sol-medium 9.41",
+     "gpt-6.1-sol-high 9.39",
+     "gpt-6-luna-high 9.29",
+     "gpt-6-luna-medium 9.09",
+     "gemini-4-argon-medium 9.09",
+     "gemini-4-argon-high 8.52",
+     "gemini-3.8-flash-medium 7.85",
+     "gemini-3.8-flash-high 5.05"
+    ],
+    "nvSegVisivel": true,
+    "selosVisiveis": [],
+    "texto": "360\nexecuções na nota\n23\n⏱ timeouts\n70\n🔁 refeitas com 420 s\n⚖️ Peso da nota\n70% testes · 30% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nnota_i\ntimeout = 0\nnota_ii\nentrega parcial julgada\nPenalidades do grok-4.7-high: não há Grok no Ranking B\n👻 Mostrar nota do Ranking A\n\nnota_i: timeout = 0 (regra padrão, vale mesmo mexendo no peso). nota_ii: os 23 timeouts de novo são julgados pelo que ficou em codigo/. O peso testes × rubrica funciona no B: as 360 execuções têm %testes e rubrica do Avaliador. ⚖️ Penalidades do grok: desligado, o B não tem Grok. 👻 Nota antiga dos juízes da rodada não existe para as 70 refeitas; no lugar, o fantasma mostra a nota do Ranking A.\n\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\npadrão do Avaliador\n1\n👑\nclaude-haiku-5-5high\n9.75\n–\n2\nclaude-opus-5-5high\n9.71\n–\n3\nclaude-opus-5-5medium\n9.70\n–\n4\nclaude-haiku-5-5medium\n9.66\n–\n5\ngpt-6.1-solmedium\n9.41\n–\n6\ngpt-6.1-solhigh\n9.39\n–\n7\ngpt-6-lunahigh\n9.29\n–\n8\ngpt-6-lunamedium\n9.09\n–\n9\ngemini-4-argonmedium\n9.09\n–\n⏱1\n10\ngemini-4-argonhigh\n8.52\n–\n⏱3\n11\ngemini-3.8-flashmedium\n7.85\n–\n⏱5\n12\ngemini-3.8-flashhigh\n5.05\n–\n⏱14\nCom 7 min, claude-opus-5-5-high sai do 4º (entre estas 12) do Ranking A para o 2º. Troque para nota_ii: gemini-4-argon-high vai de 8.52 para 9.18 (10º → 8º).\n🏢 Média por empresa\nRanking B i · média das combinações\nclaude\n9.71\ncodex\n9.30\ngemini\n7.63\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-comparar": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "⚖️ Duelo de modelos\nModelo A\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-high (9.71)\n3. claude-opus-5-5-medium (9.70)\n4. claude-haiku-5-5-medium (9.66)\n5. gpt-6.1-sol-medium (9.41)\n6. gpt-6.1-sol-high (9.39)\n7. gpt-6-luna-high (9.29)\n8. gpt-6-luna-medium (9.09)\n9. gemini-4-argon-medium (9.09)\n10. gemini-4-argon-high (8.52)\n11. gemini-3.8-flash-medium (7.85)\n12. gemini-3.8-flash-high (5.05)\nclaude-haiku-5-5\nhigh\nA · 9.75 · 1º\n×\nModelo B\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-high (9.71)\n3. claude-opus-5-5-medium (9.70)\n4. claude-haiku-5-5-medium (9.66)\n5. gpt-6.1-sol-medium (9.41)\n6. gpt-6.1-sol-high (9.39)\n7. gpt-6-luna-high (9.29)\n8. gpt-6-luna-medium (9.09)\n9. gemini-4-argon-medium (9.09)\n10. gemini-4-argon-high (8.52)\n11. gemini-3.8-flash-medium (7.85)\n12. gemini-3.8-flash-high (5.05)\ngpt-6-luna\nmedium\nB · 9.09 · 8º\nRubrica, testes e pontualidade\n0–100%\n50%\nLegível\nBordas\nIdiomático\nManutenção\nDocs\nTestes\nPontual\nToque num eixo para ver os valores\nA — linha cheia\nB — tracejada\n+ testes e pontual\nNota por tipo de tarefa\n◀ A · B ▶ · toque = execuções\n★ 9.70\n01 função\n9.00\n★ 9.60\n02 bug\n9.40\n★ 9.75\n03 refator.\n9.23\n★ 9.75\n04 dados\n9.40\n★ 9.65\n05 cli\n9.35\n★ 9.80\n06 multiarq.\n9.50\n★ 9.65\n07 perf.\n9.25\n★ 9.95\n08 testes\n6.76\n★ 9.75\n09 api\n9.55\n★ 9.95\n10 ambígua\n9.49\nver como tabela\n🏅 A vence em\n10 de 10 tipos\n⏱ tempo médio\n50 s × 20 s",
+    "overflow": [
+     "CORTADO SPAN.sr: Modelo A",
+     "CORTADO SPAN.sr: Modelo B",
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-esforco": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🔥 Mais esforço ajuda?\nmedium → high\nNota medium × high\n0–10 · toque = detalhes\n0\n2.5\n5\n7.5\n10\ngpt-6-luna\n▲ +0.19\nclaude-haiku-5-5\n▲ +0.10\nclaude-opus-5-5\n▲ +0.01\ngpt-6.1-sol\n▼ −0.02\ngemini-4-argon\n▼ −0.57\ngemini-3.8-flash\n▼ −2.80\nmedium (cor cheia)\nhigh (hachurada)\n▲ melhorou ▼ piorou\nver como tabela\nTempo médio medium → high\nsegundos\n0s\n60s\n120s\n180s\n240s\n300s\n360s\ngpt-6-luna\n20→28\nclaude-haiku-5-5\n28→50\nclaude-opus-5-5\n43→46\ngpt-6.1-sol\n51→72\ngemini-4-argon\n106→171\ngemini-3.8-flash\n268→350\nRanking B (nota_i): high ganha em 2, empata (|Δ| < 0,05) em 2 e piora em 2 de 6\nMaior queda: gemini-3.8-flash, de 7.85 para 5.05 (▼ −2.80).\n⚖️ Ranking A × Ranking B\nhigh − medium lado a lado\nhigh − medium por modelo\npontos · toque = detalhes\n-4\n-3\n-2\n-1\n0\n+1\ngpt-6-luna\nA\n▼−0.09\nB i\n▲+0.19\nB ii\n▲+0.19\nclaude-haiku-5-5\nA\n▲+0.09\nB i\n▲+0.10\nB ii\n▲+0.10\nclaude-opus-5-5\nA\n▼−0.31\nB i\n▲+0.01\nB ii\n▲+0.01\ngpt-6.1-sol\nA\n▼−0.63\nB i\n▼−0.02\nB ii\n▼−0.02\ngemini-4-argon\nA\n▼−0.26\nB i\n▼−0.57\nB ii\n▲+0.08\ngemini-3.8-flash\nA\n▼−1.54\nB i\n▼−2.80\nB ii\n▼−1.71\ngrok-4.7\nA\n▼−2.89\nB i\nsem Grok no B\nB ii\nsem Grok no B\ngrok-4.7-b-fast\nA\n▼−3.82\nB i\nsem Grok no B\nB ii\nsem Grok no B\nA (3/5 min)\nB nota_i\nB nota_ii\nver como tabela\nConclusão: com 7 min, o high empata ou ganha no Claude e no Codex; no argon só ganha julgando a entrega; o flash-high continua pior.\nRanking B, nota_i: haiku +0.10 · opus +0.01 · luna +0.19 · sol −0.02 (igual na nota_ii). argon −0.57 na nota_i e +0.08 na nota_ii. flash −2.80 na nota_i e −1.71 na nota_ii. No Ranking A o high piorava em 7 de 8.",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-tarefas": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧩 Mapa de tarefas\ntipo × empresa\nempresa resolvedora\nmodelo × esforço\nempresa autora\nNota média · Ranking B i (N=30 por modelo)\n★ = melhor da linha · toque = execuções\nclaude\ncodex\ngemini\n01 função\n9.6\n★\n9.1\n8.6\n02 bug\n9.7\n★\n9.4\n9.5\n03 refatoração\n9.7\n★\n9.5\n7.2\n04 dados\n9.6\n★\n9.3\n6.9\n05 cli\n9.7\n★\n9.4\n6.2\n06 multiarquivo\n9.6\n★\n9.4\n9.3\n07 performance\n9.6\n★\n9.2\n9.1\n08 testes\n9.9\n★\n8.7\n5.8\n09 api\n9.7\n★\n9.5\n7.2\n10 ambígua\n10.0\n★\n9.4\n6.5\n0\n10 · claro = pior\nver como tabela\nclaude lidera todos os tipos. Em 08 testes, claude tem 9.9 e gemini só 5.8.\n🧩 10-ambigua-claude\n0% continua na nota\n\n⏱ timeout sem entrega (Gemini e Grok); tarefa validada\n\nOs 4 Gemini deram timeout (420 s) sem gravar nenhum arquivo, por isso 0%. Os 4 Codex resolvem com 40 a 42 de 42 testes. O Avaliador conferiu enunciado, conftest e testes ocultos: sem defeito na tarefa (_avaliador/analise_10_ambigua_claude.md). O Claude é a autora e não a resolve.\n\ngpt-6-lunahigh\n✅ 40/42 · 8.62\ngpt-6-lunamedium\n✅ 40/42 · 9.22\ngpt-6.1-solhigh\n✅ 42/42 · 9.70\ngpt-6.1-solmedium\n✅ 42/42 · 9.40\ngemini-3.8-flashhigh\n⏱ 420 s · 0/1 · 0.00\ngemini-3.8-flashmedium\n⏱ 420 s · 0/1 · 0.00\ngemini-4-argonhigh\n⏱ 420 s · 0/1 · 0.00\ngemini-4-argonmedium\n⏱ 420 s · 0/1 · 0.00\n✅ Todo mundo gabaritou\n100% dos testes\n01-funcao-codex01-funcao-gemini01-funcao-grok02-bug-claude02-bug-codex02-bug-gemini02-bug-grok03-refatoracao-gemini03-refatoracao-grok04-dados-codex04-dados-gemini05-cli-claude05-cli-gemini06-multiarquivo-claude06-multiarquivo-codex06-multiarquivo-gemini07-performance-claude07-performance-codex07-performance-gemini07-performance-grok09-api-claude09-api-codex09-api-gemini09-api-grok10-ambigua-codex10-ambigua-gemini10-ambigua-grok\ne mais 4 quase (≥90% das execuções com 100%)\nConsistência: 4 runs da mesma tarefa\nordem: mais instável primeiro\n\nRanking A: o cenário de 7 min só refez run-1, então as runs 2–4 vêm do limite original.\n\n04-dados-claude (o Claude resolve 04-dados-grok). Runs 2–4 não entram no ranking. ⏱ = timeout (vale 0) · ⚖️ = regra especial do grok-4.7-high\n\ngpt-6.1-solhigh\n9.1\n9.1\n9.1\n⏱\nσ 3.94\ngrok-4.7-build-fastmedium\n8.9\n⏱\n⏱\n⏱\nσ 3.88\ngrok-4.7medium\n⏱\n⏱\n⏱\n8.9\nσ 3.88\ngemini-4-argonhigh\n⏱\n8.8\n⏱\n⏱\nσ 3.81\ngrok-4.7high\n⏱\n4.4\n4.7\n4.7\nσ 2.00\ngpt-6.1-solmedium\n9.1\n9.4\n9.1\n8.9\nσ 0.16\nclaude-haiku-5-5high\n9.8\n9.8\n9.8\n9.6\nσ 0.13\ngpt-6-lunahigh\n8.9\n8.7\n9.0\n8.7\nσ 0.12\ngpt-6-lunamedium\n9.3\n9.3\n9.2\n9.4\nσ 0.08\nclaude-haiku-5-5medium\n9.8\n10.0\n10.0\n9.8\nσ 0.08\nclaude-opus-5-5high\n9.7\n9.7\n9.7\n9.8\nσ 0.06\nclaude-opus-5-5medium\n9.8\n9.8\n9.7\n9.8\nσ 0.06\ngemini-4-argonmedium\n8.8\n8.9\n8.8\n8.8\nσ 0.06\ngemini-3.8-flashhigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngemini-3.8-flashmedium\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngrok-4.7-build-fasthigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-i-juizes": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧑‍⚖️ O Avaliador\nreavaliação independente\nVocê está no Ranking B. Esta aba mostra o Avaliador do Ranking A (528 execuções). No B, as 70 refeitas com 420 s foram julgadas pelo mesmo Avaliador (2 juízes neutros, código anonimizado) e auditadas sem divergência; 23 delas deram timeout de novo. O “corrigir viés” vale nos dois rankings (no B, com a média de cada juiz nas 360 execuções).\nPor que “Avaliador”? As notas da rodada vinham dos juízes do julgar.py, com falhas: execuções sem juiz válido entravam com rubrica 0 e o ranking antigo usava N=33. O Avaliador independente rejulgou tudo com código anonimizado, 2 juízes neutros por solução (nem a empresa resolvedora nem a autora da tarefa), reexecutou os testes ocultos e auditou cada execução. Esta aba mostra os juízes dele e o que mudou.\nmais severo\n8.28\nclaude · n=175\n8.40\ncodex · n=174\n8.34\ngemini · n=232\nmais bonzinho\n8.60\ngrok · n=207\nNota antiga × nota do Avaliador\nmesmas 30 execuções · toque = execuções\n0\n2.5\n5\n7.5\n10\nclaude-haiku-5-5 H\n−0.02\nclaude-opus-5-5 M\n+0.04\nclaude-haiku-5-5 M\n−0.02\nclaude-opus-5-5 H\n+0.01\ngpt-6-luna M\n+0.14\ngpt-6-luna H\n+0.17\ngpt-6.1-sol M\n+0.05\ngpt-6.1-sol H\n+0.12\ngrok-4.7-bf M\n−0.02\ngemini-4-argon M\n−0.02\ngemini-4-argon H\n−0.03\ngrok-4.7 M\n−0.03\ngrok-4.7-bf H\n+0.01\ngrok-4.7 H ⚖️\n+1.57\ngemini-3.8-flash M\n−0.04\ngemini-3.8-flash H\n+0.00\nantiga (juízes da rodada)\nAvaliador\n\nMaior mudança: grok-4.7-high (2.26 → 3.83): 6 execuções refeitas dele contavam 0 na nota antiga e agora valem pela regra especial. Por empresa: claude 9.62 → 9.62 · codex 8.64 → 8.76 · grok 5.14 → 5.52 · gemini 4.61 → 4.58.\n\nver como tabela\nMaiores mudanças por execução\ntoque = detalhes\ngrok-4.7high 09-api-gemini\n0.00 → 10.00\ngrok-4.7high 06-multiarquivo-codex\n0.00 → 9.70\ngrok-4.7high 07-performance-claude\n0.00 → 8.65\ngrok-4.7high 09-api-codex\n0.00 → 7.00\ngrok-4.7high 10-ambigua-gemini\n0.00 → 6.58\ngrok-4.7high 08-testes-codex\n0.00 → 4.92\ngpt-6-lunamedium 04-dados-grok\n7.00 → 9.55\ngpt-6.1-solhigh 07-performance-claude\n7.00 → 9.40\nJuiz 1 × juiz 2\n394 execuções\n0\n0\n5\n5\n10\n10\njuiz 1 (ordem alfabética)\njuiz 2\n!\n!\n!\n\nTodas as 394 execuções julgadas tiveram os 2 juízes válidos (1 tentativa com falha, refeita). Bolha = nº de execuções com o mesmo par de notas; na linha verde os juízes concordam. |diferença| média 0.63 pt · mediana 0.00. ○ ! 3 casos com mais de 3 pts de briga.\n\nCorrigir viés dos juízes (experimento, não é o critério oficial) — muda as notas\n🔍 Auditoria\ntoque = execuções\n✅\nTestes ocultos reexecutados sobre o código entregue; contagem igual à usada na nota\n528/528\n🔒\nTestes ocultos idênticos ao git; nenhum indício de edição manual de nota/resultado (relatório do Avaliador)\n✔\n🧪\nTestes reexecutados deram contagem diferente do resultado.json (o Avaliador usa a reexecução)\n1\n⏱\nTimeout com entrega parcial que passa testes: nota 0 pela regra geral\n71\n📁\nresultado.json da rodada sobrescreveu o do piloto no mesmo caminho (benigno)\n16\n🔁\nExecução refeita por erro de cota (claude-opus-5-5-high, documentado em commit)\n7\n📝\nresultado.json alterado em 2 commits (grok-4.7-high refeito)\n16\n✏️\nArquivos com mudanças não commitadas (grok-4.7-high refeito)\n13\n👻\nSem avaliação antiga: a nota antiga conta 0\n10",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-ranking": {
+    "scrollW": 1440,
+    "lista": [
+     "claude-haiku-5-5-high 9.75",
+     "claude-opus-5-5-high 9.71",
+     "claude-opus-5-5-medium 9.70",
+     "claude-haiku-5-5-medium 9.66",
+     "gpt-6.1-sol-medium 9.41",
+     "gpt-6.1-sol-high 9.39",
+     "gpt-6-luna-high 9.29",
+     "gemini-4-argon-high 9.18",
+     "gpt-6-luna-medium 9.09",
+     "gemini-4-argon-medium 9.09",
+     "gemini-3.8-flash-medium 8.80",
+     "gemini-3.8-flash-high 7.09"
+    ],
+    "nvSegVisivel": true,
+    "selosVisiveis": [],
+    "texto": "360\nexecuções na nota\n23\n⏱ timeouts\n70\n🔁 refeitas com 420 s\n⚖️ Peso da nota\n70% testes · 30% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nnota_i\ntimeout = 0\nnota_ii\nentrega parcial julgada\nPenalidades do grok-4.7-high: não há Grok no Ranking B\n👻 Mostrar nota do Ranking A\n\nnota_i: timeout = 0 (regra padrão, vale mesmo mexendo no peso). nota_ii: os 23 timeouts de novo são julgados pelo que ficou em codigo/. O peso testes × rubrica funciona no B: as 360 execuções têm %testes e rubrica do Avaliador. ⚖️ Penalidades do grok: desligado, o B não tem Grok. 👻 Nota antiga dos juízes da rodada não existe para as 70 refeitas; no lugar, o fantasma mostra a nota do Ranking A.\n\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\npadrão do Avaliador\n1\n👑\nclaude-haiku-5-5high\n9.75\n–\n2\nclaude-opus-5-5high\n9.71\n–\n3\nclaude-opus-5-5medium\n9.70\n–\n4\nclaude-haiku-5-5medium\n9.66\n–\n5\ngpt-6.1-solmedium\n9.41\n–\n6\ngpt-6.1-solhigh\n9.39\n–\n7\ngpt-6-lunahigh\n9.29\n–\n8\ngemini-4-argonhigh\n9.18\n–\n⏱3\n9\ngpt-6-lunamedium\n9.09\n–\n10\ngemini-4-argonmedium\n9.09\n–\n⏱1\n11\ngemini-3.8-flashmedium\n8.80\n–\n⏱5\n12\ngemini-3.8-flashhigh\n7.09\n–\n⏱14\nCom 7 min, claude-opus-5-5-high sai do 4º (entre estas 12) do Ranking A para o 2º. Troque para nota_i: gemini-4-argon-high vai de 9.18 para 8.52 (8º → 10º).\n🏢 Média por empresa\nRanking B ii · média das combinações\nclaude\n9.71\ncodex\n9.30\ngemini\n8.54\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-comparar": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "⚖️ Duelo de modelos\nModelo A\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-high (9.71)\n3. claude-opus-5-5-medium (9.70)\n4. claude-haiku-5-5-medium (9.66)\n5. gpt-6.1-sol-medium (9.41)\n6. gpt-6.1-sol-high (9.39)\n7. gpt-6-luna-high (9.29)\n8. gemini-4-argon-high (9.18)\n9. gpt-6-luna-medium (9.09)\n10. gemini-4-argon-medium (9.09)\n11. gemini-3.8-flash-medium (8.80)\n12. gemini-3.8-flash-high (7.09)\nclaude-haiku-5-5\nhigh\nA · 9.75 · 1º\n×\nModelo B\n1. claude-haiku-5-5-high (9.75)\n2. claude-opus-5-5-high (9.71)\n3. claude-opus-5-5-medium (9.70)\n4. claude-haiku-5-5-medium (9.66)\n5. gpt-6.1-sol-medium (9.41)\n6. gpt-6.1-sol-high (9.39)\n7. gpt-6-luna-high (9.29)\n8. gemini-4-argon-high (9.18)\n9. gpt-6-luna-medium (9.09)\n10. gemini-4-argon-medium (9.09)\n11. gemini-3.8-flash-medium (8.80)\n12. gemini-3.8-flash-high (7.09)\ngpt-6-luna\nmedium\nB · 9.09 · 9º\nRubrica, testes e pontualidade\n0–100%\n50%\nLegível\nBordas\nIdiomático\nManutenção\nDocs\nTestes\nPontual\nToque num eixo para ver os valores\nA — linha cheia\nB — tracejada\n+ testes e pontual\nNota por tipo de tarefa\n◀ A · B ▶ · toque = execuções\n★ 9.70\n01 função\n9.00\n★ 9.60\n02 bug\n9.40\n★ 9.75\n03 refator.\n9.23\n★ 9.75\n04 dados\n9.40\n★ 9.65\n05 cli\n9.35\n★ 9.80\n06 multiarq.\n9.50\n★ 9.65\n07 perf.\n9.25\n★ 9.95\n08 testes\n6.76\n★ 9.75\n09 api\n9.55\n★ 9.95\n10 ambígua\n9.49\nver como tabela\n🏅 A vence em\n10 de 10 tipos\n⏱ tempo médio\n50 s × 20 s",
+    "overflow": [
+     "CORTADO SPAN.sr: Modelo A",
+     "CORTADO SPAN.sr: Modelo B",
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-esforco": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🔥 Mais esforço ajuda?\nmedium → high\nNota medium × high\n0–10 · toque = detalhes\n0\n2.5\n5\n7.5\n10\ngpt-6-luna\n▲ +0.19\nclaude-haiku-5-5\n▲ +0.10\ngemini-4-argon\n▲ +0.08\nclaude-opus-5-5\n▲ +0.01\ngpt-6.1-sol\n▼ −0.02\ngemini-3.8-flash\n▼ −1.71\nmedium (cor cheia)\nhigh (hachurada)\n▲ melhorou ▼ piorou\nver como tabela\nTempo médio medium → high\nsegundos\n0s\n60s\n120s\n180s\n240s\n300s\n360s\ngpt-6-luna\n20→28\nclaude-haiku-5-5\n28→50\nclaude-opus-5-5\n43→46\ngpt-6.1-sol\n51→72\ngemini-4-argon\n106→171\ngemini-3.8-flash\n268→350\nRanking B (nota_ii): high ganha em 3, empata (|Δ| < 0,05) em 2 e piora em 1 de 6\nMaior queda: gemini-3.8-flash, de 8.80 para 7.09 (▼ −1.71).\n⚖️ Ranking A × Ranking B\nhigh − medium lado a lado\nhigh − medium por modelo\npontos · toque = detalhes\n-4\n-3\n-2\n-1\n0\n+1\ngpt-6-luna\nA\n▼−0.09\nB i\n▲+0.19\nB ii\n▲+0.19\nclaude-haiku-5-5\nA\n▲+0.09\nB i\n▲+0.10\nB ii\n▲+0.10\nclaude-opus-5-5\nA\n▼−0.31\nB i\n▲+0.01\nB ii\n▲+0.01\ngpt-6.1-sol\nA\n▼−0.63\nB i\n▼−0.02\nB ii\n▼−0.02\ngemini-4-argon\nA\n▼−0.26\nB i\n▼−0.57\nB ii\n▲+0.08\ngemini-3.8-flash\nA\n▼−1.54\nB i\n▼−2.80\nB ii\n▼−1.71\ngrok-4.7\nA\n▼−2.89\nB i\nsem Grok no B\nB ii\nsem Grok no B\ngrok-4.7-b-fast\nA\n▼−3.82\nB i\nsem Grok no B\nB ii\nsem Grok no B\nA (3/5 min)\nB nota_i\nB nota_ii\nver como tabela\nConclusão: com 7 min, o high empata ou ganha no Claude e no Codex; no argon só ganha julgando a entrega; o flash-high continua pior.\nRanking B, nota_i: haiku +0.10 · opus +0.01 · luna +0.19 · sol −0.02 (igual na nota_ii). argon −0.57 na nota_i e +0.08 na nota_ii. flash −2.80 na nota_i e −1.71 na nota_ii. No Ranking A o high piorava em 7 de 8.",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-tarefas": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧩 Mapa de tarefas\ntipo × empresa\nempresa resolvedora\nmodelo × esforço\nempresa autora\nNota média · Ranking B ii (N=30 por modelo)\n★ = melhor da linha · toque = execuções\nclaude\ncodex\ngemini\n01 função\n9.6\n★\n9.1\n8.6\n02 bug\n9.7\n★\n9.4\n9.5\n03 refatoração\n9.7\n★\n9.5\n9.2\n04 dados\n9.6\n★\n9.3\n7.6\n05 cli\n9.7\n★\n9.4\n7.8\n06 multiarquivo\n9.6\n★\n9.4\n9.3\n07 performance\n9.6\n★\n9.2\n9.1\n08 testes\n9.9\n★\n8.7\n8.4\n09 api\n9.7\n★\n9.5\n9.4\n10 ambígua\n10.0\n★\n9.4\n6.5\n0\n10 · claro = pior\nver como tabela\nclaude lidera todos os tipos. Em 10 ambígua, claude tem 10.0 e gemini só 6.5.\n🧩 10-ambigua-claude\n0% continua na nota\n\n⏱ timeout sem entrega (Gemini e Grok); tarefa validada\n\nOs 4 Gemini deram timeout (420 s) sem gravar nenhum arquivo, por isso 0%. Os 4 Codex resolvem com 40 a 42 de 42 testes. O Avaliador conferiu enunciado, conftest e testes ocultos: sem defeito na tarefa (_avaliador/analise_10_ambigua_claude.md). O Claude é a autora e não a resolve.\n\ngpt-6-lunahigh\n✅ 40/42 · 8.62\ngpt-6-lunamedium\n✅ 40/42 · 9.22\ngpt-6.1-solhigh\n✅ 42/42 · 9.70\ngpt-6.1-solmedium\n✅ 42/42 · 9.40\ngemini-3.8-flashhigh\n⏱ 420 s · 0/1 · 0.00\ngemini-3.8-flashmedium\n⏱ 420 s · 0/1 · 0.00\ngemini-4-argonhigh\n⏱ 420 s · 0/1 · 0.00\ngemini-4-argonmedium\n⏱ 420 s · 0/1 · 0.00\n✅ Todo mundo gabaritou\n100% dos testes\n01-funcao-codex01-funcao-gemini01-funcao-grok02-bug-claude02-bug-codex02-bug-gemini02-bug-grok03-refatoracao-gemini03-refatoracao-grok04-dados-codex04-dados-gemini05-cli-claude05-cli-gemini06-multiarquivo-claude06-multiarquivo-codex06-multiarquivo-gemini07-performance-claude07-performance-codex07-performance-gemini07-performance-grok09-api-claude09-api-codex09-api-gemini09-api-grok10-ambigua-codex10-ambigua-gemini10-ambigua-grok\ne mais 4 quase (≥90% das execuções com 100%)\nConsistência: 4 runs da mesma tarefa\nordem: mais instável primeiro\n\nRanking A: o cenário de 7 min só refez run-1, então as runs 2–4 vêm do limite original.\n\n04-dados-claude (o Claude resolve 04-dados-grok). Runs 2–4 não entram no ranking. ⏱ = timeout (vale 0) · ⚖️ = regra especial do grok-4.7-high\n\ngpt-6.1-solhigh\n9.1\n9.1\n9.1\n⏱\nσ 3.94\ngrok-4.7-build-fastmedium\n8.9\n⏱\n⏱\n⏱\nσ 3.88\ngrok-4.7medium\n⏱\n⏱\n⏱\n8.9\nσ 3.88\ngemini-4-argonhigh\n⏱\n8.8\n⏱\n⏱\nσ 3.81\ngrok-4.7high\n⏱\n4.4\n4.7\n4.7\nσ 2.00\ngpt-6.1-solmedium\n9.1\n9.4\n9.1\n8.9\nσ 0.16\nclaude-haiku-5-5high\n9.8\n9.8\n9.8\n9.6\nσ 0.13\ngpt-6-lunahigh\n8.9\n8.7\n9.0\n8.7\nσ 0.12\ngpt-6-lunamedium\n9.3\n9.3\n9.2\n9.4\nσ 0.08\nclaude-haiku-5-5medium\n9.8\n10.0\n10.0\n9.8\nσ 0.08\nclaude-opus-5-5high\n9.7\n9.7\n9.7\n9.8\nσ 0.06\nclaude-opus-5-5medium\n9.8\n9.8\n9.7\n9.8\nσ 0.06\ngemini-4-argonmedium\n8.8\n8.9\n8.8\n8.8\nσ 0.06\ngemini-3.8-flashhigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngemini-3.8-flashmedium\n⏱\n⏱\n⏱\n⏱\nσ 0.00\ngrok-4.7-build-fasthigh\n⏱\n⏱\n⏱\n⏱\nσ 0.00",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-ii-juizes": {
+    "scrollW": 1440,
+    "lista": [],
+    "nvSegVisivel": false,
+    "selosVisiveis": [],
+    "texto": "🧑‍⚖️ O Avaliador\nreavaliação independente\nVocê está no Ranking B. Esta aba mostra o Avaliador do Ranking A (528 execuções). No B, as 70 refeitas com 420 s foram julgadas pelo mesmo Avaliador (2 juízes neutros, código anonimizado) e auditadas sem divergência; 23 delas deram timeout de novo. O “corrigir viés” vale nos dois rankings (no B, com a média de cada juiz nas 360 execuções).\nPor que “Avaliador”? As notas da rodada vinham dos juízes do julgar.py, com falhas: execuções sem juiz válido entravam com rubrica 0 e o ranking antigo usava N=33. O Avaliador independente rejulgou tudo com código anonimizado, 2 juízes neutros por solução (nem a empresa resolvedora nem a autora da tarefa), reexecutou os testes ocultos e auditou cada execução. Esta aba mostra os juízes dele e o que mudou.\nmais severo\n8.28\nclaude · n=175\n8.40\ncodex · n=174\n8.34\ngemini · n=232\nmais bonzinho\n8.60\ngrok · n=207\nNota antiga × nota do Avaliador\nmesmas 30 execuções · toque = execuções\n0\n2.5\n5\n7.5\n10\nclaude-haiku-5-5 H\n−0.02\nclaude-opus-5-5 M\n+0.04\nclaude-haiku-5-5 M\n−0.02\nclaude-opus-5-5 H\n+0.01\ngpt-6-luna M\n+0.14\ngpt-6-luna H\n+0.17\ngpt-6.1-sol M\n+0.05\ngpt-6.1-sol H\n+0.12\ngrok-4.7-bf M\n−0.02\ngemini-4-argon M\n−0.02\ngemini-4-argon H\n−0.03\ngrok-4.7 M\n−0.03\ngrok-4.7-bf H\n+0.01\ngrok-4.7 H ⚖️\n+1.57\ngemini-3.8-flash M\n−0.04\ngemini-3.8-flash H\n+0.00\nantiga (juízes da rodada)\nAvaliador\n\nMaior mudança: grok-4.7-high (2.26 → 3.83): 6 execuções refeitas dele contavam 0 na nota antiga e agora valem pela regra especial. Por empresa: claude 9.62 → 9.62 · codex 8.64 → 8.76 · grok 5.14 → 5.52 · gemini 4.61 → 4.58.\n\nver como tabela\nMaiores mudanças por execução\ntoque = detalhes\ngrok-4.7high 09-api-gemini\n0.00 → 10.00\ngrok-4.7high 06-multiarquivo-codex\n0.00 → 9.70\ngrok-4.7high 07-performance-claude\n0.00 → 8.65\ngrok-4.7high 09-api-codex\n0.00 → 7.00\ngrok-4.7high 10-ambigua-gemini\n0.00 → 6.58\ngrok-4.7high 08-testes-codex\n0.00 → 4.92\ngpt-6-lunamedium 04-dados-grok\n7.00 → 9.55\ngpt-6.1-solhigh 07-performance-claude\n7.00 → 9.40\nJuiz 1 × juiz 2\n394 execuções\n0\n0\n5\n5\n10\n10\njuiz 1 (ordem alfabética)\njuiz 2\n!\n!\n!\n\nTodas as 394 execuções julgadas tiveram os 2 juízes válidos (1 tentativa com falha, refeita). Bolha = nº de execuções com o mesmo par de notas; na linha verde os juízes concordam. |diferença| média 0.63 pt · mediana 0.00. ○ ! 3 casos com mais de 3 pts de briga.\n\nCorrigir viés dos juízes (experimento, não é o critério oficial) — muda as notas\n🔍 Auditoria\ntoque = execuções\n✅\nTestes ocultos reexecutados sobre o código entregue; contagem igual à usada na nota\n528/528\n🔒\nTestes ocultos idênticos ao git; nenhum indício de edição manual de nota/resultado (relatório do Avaliador)\n✔\n🧪\nTestes reexecutados deram contagem diferente do resultado.json (o Avaliador usa a reexecução)\n1\n⏱\nTimeout com entrega parcial que passa testes: nota 0 pela regra geral\n71\n📁\nresultado.json da rodada sobrescreveu o do piloto no mesmo caminho (benigno)\n16\n🔁\nExecução refeita por erro de cota (claude-opus-5-5-high, documentado em commit)\n7\n📝\nresultado.json alterado em 2 commits (grok-4.7-high refeito)\n16\n✏️\nArquivos com mudanças não commitadas (grok-4.7-high refeito)\n13\n👻\nSem avaliação antiga: a nota antiga conta 0\n10",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-slider100": {
+    "scrollW": 1440,
+    "lista": [
+     "claude-haiku-5-5-high 10.00",
+     "claude-opus-5-5-medium 10.00",
+     "claude-haiku-5-5-medium 9.94",
+     "claude-opus-5-5-high 9.67",
+     "gpt-6-luna-medium 9.65",
+     "gpt-6-luna-high 9.60",
+     "gpt-6.1-sol-medium 9.33",
+     "gpt-6.1-sol-high 8.67",
+     "grok-4.7-build-fast-medium 8.00",
+     "gemini-4-argon-medium 7.67",
+     "gemini-4-argon-high 7.33",
+     "grok-4.7-medium 7.00",
+     "grok-4.7-build-fast-high 4.00",
+     "grok-4.7-high 3.97 SELO:⚖️ ×0,7/×0,5",
+     "gemini-3.8-flash-medium 3.00",
+     "gemini-3.8-flash-high 1.33"
+    ],
+    "nvSegVisivel": false,
+    "selosVisiveis": [
+     "⚖️ ×0,7/×0,5"
+    ],
+    "texto": "471\nexecuções na nota\n118\n⏱ timeouts\n47\n🔁 consistência (fora)\n⚖️ Peso da nota\n100% testes · 0% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nPenalidades do grok-4.7-high (×0,7 / ×0,5)\n👻 Mostrar nota antiga\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\nseu ranking\n1\n👑\nclaude-haiku-5-5high\n10.00\n–\n2\nclaude-opus-5-5medium\n10.00\n–\n3\nclaude-haiku-5-5medium\n9.94\n–\n4\nclaude-opus-5-5high\n9.67\n–\n⏱1\n5\ngpt-6-lunamedium\n9.65\n–\n6\ngpt-6-lunahigh\n9.60\n–\n⏱1\n7\ngpt-6.1-solmedium\n9.33\n–\n⏱2\n8\ngpt-6.1-solhigh\n8.67\n–\n⏱4\n9\ngrok-4.7-build-fastmedium\n8.00\n–\n⏱6\n10\ngemini-4-argonmedium\n7.67\n–\n⏱7\n11\ngemini-4-argonhigh\n7.33\n–\n⏱8\n12\ngrok-4.7medium\n7.00\n–\n⏱9\n13\ngrok-4.7-build-fasthigh\n4.00\n–\n⏱18\n14\ngrok-4.7high⚖️ ×0,7/×0,5\n3.97\n–\n⏱17\n15\ngemini-3.8-flashmedium\n3.00\n–\n⏱21\n16\ngemini-3.8-flashhigh\n1.33\n–\n⏱26\n⚖️ grok-4.7-high tem regra especial: 13 execuções refeitas (10 delas no ranking) com limite maior; as entregues na 2ª tentativa valem ×0,7 ou ×0,5 por atraso. Com penalidades 3.97, sem 4.33. As outras 15 combinações não têm essa regra (lá, timeout = 0). Letras miúdas ↓\nNinguém trocou de lugar, mas gpt-6-luna-high foi de 9.00 para 9.60.\n🏢 Média por empresa\nRanking A · média das combinações\nclaude\n9.90\ncodex\n9.31\ngrok\n5.74\ngemini\n4.83\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "A-slider0": {
+    "scrollW": 1440,
+    "lista": [
+     "claude-haiku-5-5-high 9.18",
+     "claude-opus-5-5-medium 9.00",
+     "claude-haiku-5-5-medium 9.00",
+     "claude-opus-5-5-high 8.73",
+     "gpt-6-luna-medium 7.78",
+     "gpt-6-luna-high 7.60",
+     "gpt-6.1-sol-medium 7.52",
+     "gpt-6.1-sol-high 6.97",
+     "grok-4.7-build-fast-medium 6.93",
+     "gemini-4-argon-medium 6.17",
+     "gemini-4-argon-high 6.10",
+     "grok-4.7-medium 6.08",
+     "grok-4.7-build-fast-high 3.55",
+     "grok-4.7-high 3.51 SELO:⚖️ ×0,7/×0,5",
+     "gemini-3.8-flash-medium 2.50",
+     "gemini-3.8-flash-high 1.27"
+    ],
+    "nvSegVisivel": false,
+    "selosVisiveis": [
+     "⚖️ ×0,7/×0,5"
+    ],
+    "texto": "480\nexecuções na nota\n120\n⏱ timeouts\n48\n🔁 consistência (fora)\n⚖️ Peso da nota\n0% testes · 100% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nPenalidades do grok-4.7-high (×0,7 / ×0,5)\n👻 Mostrar nota antiga\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\nseu ranking\n1\n👑\nclaude-haiku-5-5high\n9.18\n–\n2\nclaude-opus-5-5medium\n9.00\n–\n3\nclaude-haiku-5-5medium\n9.00\n–\n4\nclaude-opus-5-5high\n8.73\n–\n⏱1\n5\ngpt-6-lunamedium\n7.78\n–\n6\ngpt-6-lunahigh\n7.60\n–\n⏱1\n7\ngpt-6.1-solmedium\n7.52\n–\n⏱2\n8\ngpt-6.1-solhigh\n6.97\n–\n⏱4\n9\ngrok-4.7-build-fastmedium\n6.93\n–\n⏱6\n10\ngemini-4-argonmedium\n6.17\n–\n⏱7\n11\ngemini-4-argonhigh\n6.10\n–\n⏱8\n12\ngrok-4.7medium\n6.08\n–\n⏱9\n13\ngrok-4.7-build-fasthigh\n3.55\n–\n⏱18\n14\ngrok-4.7high⚖️ ×0,7/×0,5\n3.51\n–\n⏱17\n15\ngemini-3.8-flashmedium\n2.50\n–\n⏱21\n16\ngemini-3.8-flashhigh\n1.27\n–\n⏱26\n⚖️ grok-4.7-high tem regra especial: 13 execuções refeitas (10 delas no ranking) com limite maior; as entregues na 2ª tentativa valem ×0,7 ou ×0,5 por atraso. Com penalidades 3.51, sem 3.85. As outras 15 combinações não têm essa regra (lá, timeout = 0). Letras miúdas ↓\nNinguém trocou de lugar, mas gpt-6-luna-high foi de 9.00 para 7.60.\n🏢 Média por empresa\nRanking A · média das combinações\nclaude\n8.98\ncodex\n7.47\ngrok\n5.02\ngemini\n4.01\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   },
+   "B-slider100": {
+    "scrollW": 1440,
+    "lista": [
+     "claude-haiku-5-5-high 10.00",
+     "claude-opus-5-5-high 10.00",
+     "claude-opus-5-5-medium 10.00",
+     "gpt-6.1-sol-medium 10.00",
+     "gpt-6.1-sol-high 10.00",
+     "claude-haiku-5-5-medium 9.94",
+     "gpt-6-luna-high 9.93",
+     "gemini-4-argon-high 9.67",
+     "gemini-4-argon-medium 9.67",
+     "gpt-6-luna-medium 9.65",
+     "gemini-3.8-flash-medium 9.35",
+     "gemini-3.8-flash-high 7.53"
+    ],
+    "nvSegVisivel": true,
+    "selosVisiveis": [],
+    "texto": "349\nexecuções na nota\n22\n⏱ timeouts\n68\n🔁 refeitas com 420 s\n⚖️ Peso da nota\n100% testes · 0% rubrica\n🧑‍⚖️ só rubrica\nsó testes 🧪\nnota_i\ntimeout = 0\nnota_ii\nentrega parcial julgada\nPenalidades do grok-4.7-high: não há Grok no Ranking B\n👻 Mostrar nota do Ranking A\n\nnota_i: timeout = 0 (regra padrão, vale mesmo mexendo no peso). nota_ii: os 23 timeouts de novo são julgados pelo que ficou em codigo/. O peso testes × rubrica funciona no B: as 360 execuções têm %testes e rubrica do Avaliador. ⚖️ Penalidades do grok: desligado, o B não tem Grok. 👻 Nota antiga dos juízes da rodada não existe para as 70 refeitas; no lugar, o fantasma mostra a nota do Ranking A.\n\n🧪 Corrigir viés dos juízes\n↺ padrão do relatório\n🏆 Ranking ao vivo\nseu ranking\n1\n👑\nclaude-haiku-5-5high\n10.00\n–\n2\nclaude-opus-5-5high\n10.00\n–\n3\nclaude-opus-5-5medium\n10.00\n–\n4\ngpt-6.1-solmedium\n10.00\n▲1\n5\ngpt-6.1-solhigh\n10.00\n▲1\n6\nclaude-haiku-5-5medium\n9.94\n▼2\n7\ngpt-6-lunahigh\n9.93\n–\n8\ngemini-4-argonhigh\n9.67\n–\n⏱3\n9\ngemini-4-argonmedium\n9.67\n▲1\n⏱1\n10\ngpt-6-lunamedium\n9.65\n▼1\n11\ngemini-3.8-flashmedium\n9.35\n–\n⏱5\n12\ngemini-3.8-flashhigh\n7.53\n–\n⏱14\ngpt-6.1-sol-high sobe de 6º para 5º (9.39 → 10.00).\n🏢 Média por empresa\nRanking B ii · média das combinações\nclaude\n9.98\ncodex\n9.90\ngemini\n9.05\nTabela completa\ncom o estado atual\nver como tabela\n📜 Letras miúdas\n\nFonte: só as notas do Avaliador independente (_avaliador/notas_avaliador.csv e avaliacao_avaliador.json de cada execução). As avaliações antigas não são usadas; a “nota antiga” vem da coluna nota_antiga do CSV do Avaliador.\n\nNota = peso × %testes/10 + (1 − peso) × rubrica, arredondada em 2 casas por execução. Padrão: 0,7 e 0,3. Rubrica = média dos 2 juízes neutros. Timeout = 0 e a rubrica nem é julgada, por isso não há botão para “perdoar” timeouts: não existe nota de rubrica para eles. Média por modelo × esforço = média simples das 30 execuções principais (run-1); as runs 2–4 da tarefa de consistência ficam fora. Média por empresa = média das suas combinações.\n\n✔ Com o padrão, as 528 notas por execução, as 16 médias (nova e antiga) e as 4 médias por empresa conferem com RELATORIO_AVALIADOR.md.\n\nRanking B — limite de 7 min (420 s): fonte _avaliador/cenario_7min/ (notas_7min.csv, matriz_7min.csv, resumo_7min.json) e avaliacao_avaliador_7min.json das 70 refeitas. Os timeouts de Claude, Codex e Gemini foram refeitos com 420 s e substituem os originais; as outras 290 execuções são as do Ranking A. 12 combinações, N=30, sem Grok (não foi refeito) e sem consistência. nota_i (padrão): timeout = 0. nota_ii: a entrega parcial dos 23 timeouts de novo é julgada (%testes + rubrica). Médias por empresa e high − medium do B usam as médias sem arredondar, como o resumo_7min.json.\n\n✔ Ranking B: as 360 notas (nota_i e nota_ii), as 12 médias e posições, as médias por empresa e o high − medium conferem com resumo_7min.json.\n\n10-ambigua-claude: o 0% continua na nota, com a marcação “⏱ timeout sem entrega (Gemini e Grok); tarefa validada”. Os 4 Codex resolvem com 40 a 42 de 42 testes; análise em _avaliador/analise_10_ambigua_claude.md.\n\n⚖️ Penalidades: só para o grok-4.7-high, só no Ranking A (13 execuções)\nMetodologia do Avaliador (de RELATORIO_AVALIADOR.md)\n\n⬇ baixar os dados (JSON, 528 + 360 execuções)",
+    "overflow": [
+     "CORTADO DIV.sr: claude-haiku-5-5-high continua em 1º"
+    ]
+   }
+  },
+  "console": []
+ }
+}

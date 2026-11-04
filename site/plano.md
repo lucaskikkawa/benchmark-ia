@@ -209,3 +209,35 @@ Cada robô é um `<symbol>` de < 1 KB (`#m-claude`, `#m-codex`, `#m-gemini`, `#m
 3. Motor `media()` + ranking ao vivo (2.1) com FLIP.
 4. Seções 2.3 → 2.4 → 2.2 → 2.6 → 2.5 → 2.7.
 5. Build final: inline de dados, fontes e SVG em `site/index.html`; screenshots em 390×844 e 1280×800; teste de `prefers-reduced-motion` e daltonismo (emulação do Chrome DevTools).
+
+---
+
+# Versão 2 — dois rankings oficiais + QA (decidido em 04/11/2026)
+
+> A versão 1 acima fica preservada como foi feita. Esta seção descreve só o que muda na v2.
+
+## V2.1 Fonte única das notas
+- Todas as notas vêm do **Bench - Avaliador** (2 juízes neutros, auditadas). Não usar `avaliacao.json` antigos.
+- **Ranking A — limite original (3/5 min):** `resultados/_avaliador/notas_avaliador.csv` (16 combinações, N=30, com Grok e penalidades do grok-4.7-high).
+- **Ranking B — limite de 7 min (420 s):** `resultados/_avaliador/cenario_7min/` (`notas_7min.csv`, `matriz_7min.csv`, `resumo_7min.json`). São 12 combinações, sem o Grok. Os 70 timeouts de Claude, Codex e Gemini foram refeitos com 420 s.
+  - `nota_i` (padrão no site): timeout = 0.
+  - `nota_ii` (toggle): entrega parcial de timeout é julgada.
+- O `build_site.py` valida os dois rankings contra o relatório e o `resumo_7min.json` e para com erro se algo não bater.
+
+## V2.2 O que muda no site
+- Um seletor bem visível entre **Ranking A (3 min)** e **Ranking B (7 min)**, com um texto curto explicando a diferença.
+- Toggle `nota_i`/`nota_ii` só no Ranking B.
+- A seção "Mais esforço ajuda?" mostra o high − medium dos dois rankings lado a lado. A conclusão: com 7 min o high empata ou ganha no Claude e no Codex; no argon só ganha julgando a entrega; o flash-high continua pior.
+- Tarefa **10-ambigua-claude**: o 0% continua na nota, com a marcação "timeout sem entrega (Gemini e Grok); tarefa validada". Os 4 Codex resolvem com 40 a 42 de 42 testes, e a análise está em `resultados/_avaliador/analise_10_ambigua_claude.md`.
+- As penalidades do grok-4.7-high continuam com o selo ⚖️, só no Ranking A.
+- Visual, mascotes e abas da v1 continuam iguais.
+
+## V2.3 Fluxo de construção + QA
+1. O **Bench - Claude** gera o site e os prints, sem commit.
+2. O **Bench - Gemini** faz o QA com o Gemini 3.8 Flash (esforço medium): abas, console, toggles, números contra os CSVs do Avaliador e layout no celular (390×844). Devolve uma lista de erros.
+3. Uma volta é o Claude fazer e o Gemini avaliar. São **no máximo 3 voltas**. Se ainda sobrar erro, o Chefe leva ao Lucas.
+4. O site só vai ao Lucas depois de passar no QA. O commit na `rodada-1` (PR #6) vem depois.
+5. Os bots falam entre si sem acordar (priority false); só o Avaliador pode ser acordado.
+
+## V2.4 Fora do escopo do site da rodada 1
+- A próxima rodada (sem Grok e com limite padrão de 420 s em todas as tarefas) é outra conversa.

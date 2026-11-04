@@ -1,0 +1,19 @@
+RANKING A (so run-1, N=30):
+  claude-haiku-5-5-high 9.7550 N=30
+  claude-opus-5-5-medium 9.7000 N=30
+  claude-haiku-5-5-medium 9.6570 N=30
+  claude-opus-5-5-high 9.3867 N=30
+  gpt-6-luna-medium 9.0927 N=30
+  gpt-6-luna-high 8.9990 N=30
+  gpt-6.1-sol-medium 8.7883 N=30
+  gpt-6.1-sol-high 8.1567 N=30
+  grok-4.7-build-fast-medium 7.6800 N=30
+  gemini-4-argon-medium 7.2167 N=30
+  gemini-4-argon-high 6.9633 N=30
+  grok-4.7-medium 6.7250 N=30
+  grok-4.7-build-fast-high 3.8650 N=30
+  grok-4.7-high 3.8300 N=30
+  gemini-3.8-flash-medium 2.8500 N=30
+  gemini-3.8-flash-high 1.3133 N=30
+empresas A: {'claude': 9.6247, 'codex': 8.7592, 'gemini': 4.5858, 'grok': 5.525}
+high-medium A: {'claude-haiku-5-5': 0.098, 'gemini-4-argon': -0.2533, 'grok-4.7-build-fast': -3.815, 'gpt-6-luna': -0.0937, 'gpt-6.1-sol': -0.6317, 'claude-opus-5-5': -0.3133, 'grok-4.7': -2.895, 'gemini-3.8-flash': -1.5367}
