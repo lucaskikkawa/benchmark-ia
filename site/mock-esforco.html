@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rodada 1 — mock esforço</title><style>
+:root{--bg:#FFF8EC;--card:#fff;--ink:#2B2340;--ink2:#6B6280;--sun:#FFD23F;--orange:#FF9F1C;--up:#2FB86B;--down:#E5484D;
+  --claude:#E06A1E;--codex:#C3C8D0;--gemini:#3B6FE0;--grok:#1C1B22;--line:#E7E0F0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden}
+body{background:var(--bg);background-image:radial-gradient(rgba(43,35,64,.07) 1.5px,transparent 1.6px);background-size:18px 18px;
+  color:var(--ink);font-family:Nunito,ui-rounded,system-ui,sans-serif;font-variant-numeric:tabular-nums;position:relative}
+.f{font-family:Fredoka,Nunito,sans-serif}
+.box{background:var(--card);border:3px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink)}
+header{padding:14px 16px 0;display:flex;align-items:center;gap:10px}
+.bubble{position:relative;background:var(--sun);border:3px solid var(--ink);border-radius:18px;padding:6px 14px 4px;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink)}
+.bubble h1{font-family:Fredoka,sans-serif;font-weight:700;font-size:30px;line-height:1}
+.bubble:after{content:"";position:absolute;right:-12px;bottom:6px;width:16px;height:16px;background:var(--sun);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(-45deg)}
+.bubble.sm{padding:3px 10px 2px;border-radius:14px}.bubble.sm h1{font-size:20px}.bubble.sm:after{width:12px;height:12px;right:-9px;bottom:4px}
+.sub{font-size:12px;color:var(--ink2);font-weight:700;line-height:1.25}
+.crew{display:flex;gap:2px;margin-left:auto}.crew svg{width:34px;height:34px}
+.pill{margin-left:auto;font-size:11px;font-weight:800;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:2px 8px;box-shadow:2px 2px 0 var(--ink);white-space:nowrap}
+h2{font-family:Fredoka,sans-serif;font-size:20px;margin:12px 16px 6px;display:flex;align-items:center;gap:8px;line-height:1.1}
+h2 .tag{font-family:Nunito;font-size:11px;font-weight:800;background:var(--sun);border:2px solid var(--ink);border-radius:10px;padding:1px 7px;transform:rotate(2deg)}
+h3{font-family:Fredoka,sans-serif;font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+h3 small{font-family:Nunito;font-size:11px;font-weight:800;color:var(--ink2)}
+.card{margin:8px 20px 0 16px;padding:8px 12px}
+.chip{display:inline-block;font-size:10px;font-weight:800;border:2px solid var(--ink);border-radius:8px;padding:0 5px;margin-left:3px;vertical-align:1px;background:#fff;line-height:1.35}
+.chip.high{background:repeating-linear-gradient(45deg,#fff 0 3px,#E7E0F0 3px 6px)}
+.leg{display:flex;gap:12px;font-size:11px;font-weight:800;color:var(--ink2);align-items:center;flex-wrap:wrap}
+.leg i{display:inline-block;width:12px;height:12px;border:2px solid var(--ink);border-radius:50%;vertical-align:-2px;margin-right:3px}
+.tip{margin:8px 20px 0 16px;padding:5px 10px;line-height:1.2;display:flex;gap:8px;align-items:center;font-size:12px;font-weight:700;background:#FFF3C4;border-radius:16px}
+.tip svg{flex:none}
+.seg{display:flex;margin:0 20px 0 16px;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.seg span{flex:1;text-align:center;font-size:11px;font-weight:800;padding:4px 2px;line-height:1.15}
+.seg span+span{border-left:2px solid var(--ink)}.seg .on{background:var(--sun)}
+.sw{flex:none;display:inline-block;width:38px;height:22px;border-radius:12px;border:3px solid var(--ink);background:#EDE6F5;position:relative}
+.sw:after{content:"";position:absolute;top:1px;left:1px;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--ink)}
+.sw.on{background:var(--up)}.sw.on:after{left:17px}
+nav{position:absolute;left:10px;right:10px;bottom:8px;height:56px;display:flex;justify-content:space-around;align-items:center;border-radius:22px;background:var(--ink);box-shadow:0 4px 0 #0E0B18}
+nav a{color:#fff;text-decoration:none;font-size:10px;font-weight:800;text-align:center;line-height:1.2;width:62px;border:2px solid transparent;padding:3px 0;border-radius:14px}
+nav a span{display:block;font-size:20px}
+nav a.on{background:var(--sun);color:var(--ink);border-color:#fff}
+svg text{font-family:Nunito,sans-serif;font-weight:800;fill:var(--ink)}
+</style></head>
+<body><svg width="0" height="0" style="position:absolute"><defs><symbol id="m-claude" viewBox="0 0 40 40"><line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><path d="M20 0.5 l1.3 2.9 2.9 1.3 -2.9 1.3 -1.3 2.9 -1.3 -2.9 -2.9 -1.3 2.9 -1.3z" fill="#FFD23F" stroke="#2B2340" stroke-width="1.1" stroke-linejoin="round"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#E06A1E" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-codex" viewBox="0 0 40 40"><line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="20" cy="4.5" r="2.8" fill="#FFD23F" stroke="#2B2340" stroke-width="1.5"/><rect x="1.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/><rect x="34.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#C3C8D0" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#2B2340" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-gemini" viewBox="0 0 40 40"><line x1="13" y1="4" x2="13" y2="10" stroke="#2B2340" stroke-width="2.5"/><line x1="27" y1="4" x2="27" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="13" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/><circle cx="27" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#3B6FE0" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="m-grok" viewBox="0 0 40 40"><rect x="10" y="5.5" width="20" height="5" rx="2.5" fill="#6B6280" stroke="#2B2340" stroke-width="1.8"/><circle cx="3.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/><circle cx="36.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/>
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="#1C1B22" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18 l5.5 4 -5.5 4" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="20.5" y1="28" x2="28" y2="28" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/>
+</symbol><symbol id="toga" viewBox="0 0 40 30"><path d="M7 2 h26 l5 27 h-36z" fill="#2B2340"/><path d="M14 2 l6 9 6-9" fill="#fff" stroke="#2B2340" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+<pattern id="hach" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#fff"/><rect width="2.2" height="5" fill="#2B2340" fill-opacity=".55"/></pattern>
+</defs></svg>
+<style>.verd{display:flex;gap:10px;align-items:center;margin:8px 20px 0 16px;padding:6px 12px;background:var(--sun);transform:rotate(-1deg);border-radius:18px}
+.verd b{font-family:Fredoka;font-size:17px;line-height:1.1;display:block}.verd span{font-size:11.5px;font-weight:800}</style>
+<header><div class="bubble sm"><h1>Rodada 1</h1></div>
+<span class="pill">⚖️ 70% testes · ⏱ timeout = 0</span></header>
+<h2>🔥 Mais esforço ajuda? <span class="tag">medium → high</span></h2>
+<section class="card box"><h3>Nota medium × high <small>0–10</small></h3>
+<svg width="334" height="226" viewBox="0 0 334 226" role="img" aria-label="halteres medium x high"><line x1="128.0" y1="10" x2="128.0" y2="220" stroke="#EFE9F5" stroke-width="1.5"/><text x="128.0" y="8" font-size="9" text-anchor="middle" fill="#6B6280">0</text><line x1="166.0" y1="10" x2="166.0" y2="220" stroke="#EFE9F5" stroke-width="1.5"/><text x="166.0" y="8" font-size="9" text-anchor="middle" fill="#6B6280">2.5</text><line x1="204.0" y1="10" x2="204.0" y2="220" stroke="#EFE9F5" stroke-width="1.5"/><text x="204.0" y="8" font-size="9" text-anchor="middle" fill="#6B6280">5</text><line x1="242.0" y1="10" x2="242.0" y2="220" stroke="#EFE9F5" stroke-width="1.5"/><text x="242.0" y="8" font-size="9" text-anchor="middle" fill="#6B6280">7.5</text><line x1="280.0" y1="10" x2="280.0" y2="220" stroke="#EFE9F5" stroke-width="1.5"/><text x="280.0" y="8" font-size="9" text-anchor="middle" fill="#6B6280">10</text><use href="#m-claude" x="0" y="16" width="20" height="20"/><text x="23" y="30" font-size="11">claude-haiku-5-5</text>
+<line x1="275.5" y1="26" x2="276.4" y2="26" stroke="#2FB86B" stroke-width="4" stroke-linecap="round"/>
+<circle cx="275.5" cy="26" r="6" fill="#E06A1E" stroke="#2B2340" stroke-width="2"/>
+<circle cx="276.4" cy="26" r="6" fill="url(#hach)" stroke="#2B2340" stroke-width="2"/>
+<text x="334" y="30" font-size="11.5" text-anchor="end"><tspan fill="#2FB86B">▲</tspan> +0.06</text><use href="#m-codex" x="0" y="42" width="20" height="20"/><text x="23" y="56" font-size="11">gpt-6-luna</text>
+<line x1="264.3" y1="52" x2="262.3" y2="52" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/>
+<circle cx="264.3" cy="52" r="6" fill="#C3C8D0" stroke="#2B2340" stroke-width="2"/>
+<circle cx="262.3" cy="52" r="6" fill="url(#hach)" stroke="#2B2340" stroke-width="2"/>
+<text x="334" y="56" font-size="11.5" text-anchor="end"><tspan fill="#E5484D">▼</tspan> −0.13</text><use href="#m-gemini" x="0" y="68" width="20" height="20"/><text x="23" y="82" font-size="11">gemini-4-argon</text>
+<line x1="240.1" y1="78" x2="228.6" y2="78" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/>
+<circle cx="240.1" cy="78" r="6" fill="#3B6FE0" stroke="#2B2340" stroke-width="2"/>
+<circle cx="228.6" cy="78" r="6" fill="url(#hach)" stroke="#2B2340" stroke-width="2"/>
+<text x="334" y="82" font-size="11.5" text-anchor="end"><tspan fill="#E5484D">▼</tspan> −0.75</text><use href="#m-codex" x="0" y="94" width="20" height="20"/><text x="23" y="108" font-size="11">gpt-6.1-sol</text>
+<line x1="261.3" y1="104" x2="247.5" y2="104" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/>
+<circle cx="261.3" cy="104" r="6" fill="#C3C8D0" stroke="#2B2340" stroke-width="2"/>
+<circle cx="247.5" cy="104" r="6" fill="url(#hach)" stroke="#2B2340" stroke-width="2"/>
+<text x="334" y="108" font-size="11.5" text-anchor="end"><tspan fill="#E5484D">▼</tspan> −0.91</text><use href="#m-gemini" x="0" y="120" width="20" height="20"/><text x="23" y="134" font-size="11">gemini-3.8-flash</text>
+<line x1="167.9" y1="130" x2="146.1" y2="130" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/>
+<circle cx="167.9" cy="130" r="6" fill="#3B6FE0" stroke="#2B2340" stroke-width="2"/>
+<circle cx="146.1" cy="130" r="6" fill="url(#hach)" stroke="#2B2340" stroke-width="2"/>
+<text x="334" y="134" font-size="11.5" text-anchor="end"><tspan fill="#E5484D">▼</tspan> −1.43</text><use href="#m-claude" x="0" y="146" width="20" height="20"/><text x="23" y="160" font-size="11">claude-opus-5-5</text>
+<line x1="275.1" y1="156" x2="243.8" y2="156" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/>
+<circle cx="275.1" cy="156" r="6" fill="#E06A1E" stroke="#2B2340" stroke-width="2"/>
+<circle cx="243.8" cy="156" r="6" fill="url(#hach)" stroke="#2B2340" stroke-width="2"/>
+<text x="334" y="160" font-size="11.5" text-anchor="end"><tspan fill="#E5484D">▼</tspan> −2.06</text><use href="#m-grok" x="0" y="172" width="20" height="20"/><text x="23" y="186" font-size="11">grok-4.7-b-fast</text>
+<line x1="234.4" y1="182" x2="181.3" y2="182" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/>
+<circle cx="234.4" cy="182" r="6" fill="#1C1B22" stroke="#2B2340" stroke-width="2"/>
+<circle cx="181.3" cy="182" r="6" fill="url(#hach)" stroke="#2B2340" stroke-width="2"/>
+<text x="334" y="186" font-size="11.5" text-anchor="end"><tspan fill="#E5484D">▼</tspan> −3.50</text><use href="#m-grok" x="0" y="198" width="20" height="20"/><text x="23" y="212" font-size="11">grok-4.7</text>
+<line x1="225.3" y1="208" x2="146.6" y2="208" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/>
+<circle cx="225.3" cy="208" r="6" fill="#1C1B22" stroke="#2B2340" stroke-width="2"/>
+<circle cx="146.6" cy="208" r="6" fill="url(#hach)" stroke="#2B2340" stroke-width="2"/>
+<text x="334" y="212" font-size="11.5" text-anchor="end"><tspan fill="#E5484D">▼</tspan> −5.18</text></svg>
+<div class="leg"><span><i style="background:#6B6280"></i>medium (cor cheia)</span><span><i style="background:repeating-linear-gradient(45deg,#fff 0 2px,#8A8296 2px 4px)"></i>high (hachurada)</span><span>▲ melhorou ▼ piorou</span></div></section>
+<section class="card box"><h3>Tempo médio medium → high <small>segundos</small></h3>
+<svg width="334" height="156" viewBox="0 0 334 156" role="img" aria-label="tempo medio"><line x1="118.0" y1="10" x2="118.0" y2="148" stroke="#EFE9F5" stroke-width="1.5"/><text x="118.0" y="8" font-size="9" text-anchor="middle" fill="#6B6280">0s</text><line x1="159.1" y1="10" x2="159.1" y2="148" stroke="#EFE9F5" stroke-width="1.5"/><text x="159.1" y="8" font-size="9" text-anchor="middle" fill="#6B6280">60s</text><line x1="200.3" y1="10" x2="200.3" y2="148" stroke="#EFE9F5" stroke-width="1.5"/><text x="200.3" y="8" font-size="9" text-anchor="middle" fill="#6B6280">120s</text><line x1="241.4" y1="10" x2="241.4" y2="148" stroke="#EFE9F5" stroke-width="1.5"/><text x="241.4" y="8" font-size="9" text-anchor="middle" fill="#6B6280">180s</text><text x="0" y="24" font-size="10.5" fill="#6B6280">gpt-6-luna</text>
+<line x1="131.8" y1="20" x2="136.1" y2="20" stroke="#2B2340" stroke-width="2"/>
+<path d="M140.1 20 l-6.0 -4 v8z" fill="#2B2340"/><circle cx="131.8" cy="20" r="3.5" fill="#C3C8D0" stroke="#2B2340" stroke-width="1.5"/>
+<text x="334" y="24" font-size="10" text-anchor="end">20→32</text><text x="0" y="41" font-size="10.5" fill="#6B6280">claude-haiku-5-5</text>
+<line x1="138.0" y1="37" x2="149.2" y2="37" stroke="#2B2340" stroke-width="2"/>
+<path d="M153.2 37 l-6.0 -4 v8z" fill="#2B2340"/><circle cx="138.0" cy="37" r="3.5" fill="#E06A1E" stroke="#2B2340" stroke-width="1.5"/>
+<text x="334" y="41" font-size="10" text-anchor="end">29→51</text><text x="0" y="58" font-size="10.5" fill="#6B6280">claude-opus-5-5</text>
+<line x1="147.3" y1="54" x2="151.1" y2="54" stroke="#2B2340" stroke-width="2"/>
+<path d="M147.1 54 l6.0 -4 v8z" fill="#2B2340"/><circle cx="147.3" cy="54" r="3.5" fill="#E06A1E" stroke="#2B2340" stroke-width="1.5"/>
+<text x="334" y="58" font-size="10" text-anchor="end">43→42</text><text x="0" y="75" font-size="10.5" fill="#6B6280">gpt-6.1-sol</text>
+<line x1="159.9" y1="71" x2="174.0" y2="71" stroke="#2B2340" stroke-width="2"/>
+<path d="M178.0 71 l-6.0 -4 v8z" fill="#2B2340"/><circle cx="159.9" cy="71" r="3.5" fill="#C3C8D0" stroke="#2B2340" stroke-width="1.5"/>
+<text x="334" y="75" font-size="10" text-anchor="end">61→88</text><text x="0" y="92" font-size="10.5" fill="#6B6280">grok-4.7-b-fast</text>
+<line x1="193.7" y1="88" x2="232.0" y2="88" stroke="#2B2340" stroke-width="2"/>
+<path d="M236.0 88 l-6.0 -4 v8z" fill="#2B2340"/><circle cx="193.7" cy="88" r="3.5" fill="#1C1B22" stroke="#2B2340" stroke-width="1.5"/>
+<text x="334" y="92" font-size="10" text-anchor="end">110→172</text><text x="0" y="109" font-size="10.5" fill="#6B6280">gemini-4-argon</text>
+<line x1="200.3" y1="105" x2="208.7" y2="105" stroke="#2B2340" stroke-width="2"/>
+<path d="M212.7 105 l-6.0 -4 v8z" fill="#2B2340"/><circle cx="200.3" cy="105" r="3.5" fill="#3B6FE0" stroke="#2B2340" stroke-width="1.5"/>
+<text x="334" y="109" font-size="10" text-anchor="end">120→138</text><text x="0" y="126" font-size="10.5" fill="#6B6280">grok-4.7</text>
+<line x1="217.5" y1="122" x2="191.1" y2="122" stroke="#2B2340" stroke-width="2"/>
+<path d="M187.1 122 l6.0 -4 v8z" fill="#2B2340"/><circle cx="217.5" cy="122" r="3.5" fill="#1C1B22" stroke="#2B2340" stroke-width="1.5"/>
+<text x="334" y="126" font-size="10" text-anchor="end">145→101</text><text x="0" y="143" font-size="10.5" fill="#6B6280">gemini-3.8-flash</text>
+<line x1="250.7" y1="139" x2="255.9" y2="139" stroke="#2B2340" stroke-width="2"/>
+<path d="M259.9 139 l-6.0 -4 v8z" fill="#2B2340"/><circle cx="250.7" cy="139" r="3.5" fill="#3B6FE0" stroke="#2B2340" stroke-width="1.5"/>
+<text x="334" y="143" font-size="10" text-anchor="end">193→207</text></svg></section>
+<div class="verd box"><svg width="38" height="38" aria-hidden="true"><use href="#m-claude"/></svg><div><b>High piorou em 7 de 8 modelos 😬</b>
+<span>Ligue “Ignorar erros de cota”: opus-high vai de 7.62 para 9.30.</span></div></div>
+<nav aria-label="abas"><a href="#ranking"><span>🏆</span>Ranking</a><a href="#comparar"><span>⚖️</span>Comparar</a><a class=on aria-current=page href="#esforco"><span>🔥</span>Esforço</a><a href="#tarefas"><span>🧩</span>Tarefas</a><a href="#juizes"><span>🧑‍⚖️</span>Juízes</a></nav>
+<script>addEventListener('load',()=>{const nb=document.querySelector('nav').getBoundingClientRect().top,p=[];
+for(const e of document.querySelectorAll('body *')){if(e.closest('nav')||e.closest('defs')||e.tagName==='symbol')continue;const r=e.getBoundingClientRect();if(!r.width&&!r.height)continue;
+if(r.right>390.5||r.left<-0.5)p.push('x:'+(e.className.baseVal??e.className)+':'+e.tagName);
+if(r.bottom>nb-2)p.push('y:'+e.tagName+'.'+(e.className.baseVal??e.className)+':'+Math.round(r.bottom));
+if(e.scrollWidth>e.clientWidth+1&&getComputedStyle(e).overflow!=='visible')p.push('corte:'+e.tagName+'.'+e.className)}
+document.title='CHECK '+(p.length?[...new Set(p)].slice(0,8).join(' | '):'ok')+' nav='+Math.round(nb)})</script>
+</body></html>
