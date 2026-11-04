@@ -1,114 +1,89 @@
-# Rodada 1 — resultados
+# Rodada 1 — resultados (notas do avaliador)
 
-528 execuções (fora piloto). Nota final (0–10) = 0,7×%testes/10 + 0,3×rubrica (média de 2 juízes neutros; se só 1 válido, a nota dele). **Nota** conta timeout como 0; **Nota s/ pen.** ignora a penalidade.
+528 execuções (16 combinações × 33). Ranking com **N=30** por combinação (as 3 repetições de consistência ficam fora da nota). Nota final (0–10) = 0,7×%testes/10 + 0,3×rubrica (média de 2 juízes neutros: nenhum da empresa resolvedora nem da autora da tarefa; código anonimizado). **Timeout = 0.** Fonte: `avaliacao_avaliador.json` em cada execução; metodologia, auditoria e comparação com as notas antigas em `RELATORIO_AVALIADOR.md`.
+
+## Regras específicas
+
+- **Tipo 08 (testes)**: tem mutation score: os testes ocultos rodam a suíte escrita pelo agente contra mutantes plantados (10–14 por tarefa), e o %testes é a taxa de mutantes mortos. (A versão anterior deste arquivo dizia, por engano, que o mutation score não tinha sido calculado.)
+- **Correção no teste do tipo 08**: `tarefas/08-testes-grok/testes_ocultos/test_mutantes.py` concatenava texto com bytes no tratamento de timeout do mutante (`TypeError` sob carga). Corrigido só o tratamento do erro; o que o teste avalia não mudou. Reexecutado em todas as 12 execuções da 08-testes-grok: nenhuma nota do avaliador mudou (a gpt-6.1-sol-medium já contava 15/15 pela reexecução; o resultado.json original registrava 14/15).
+- **grok-4.7-high** (decisão do Lucas; tempo pelo campo `duracao_agente_s` do agente): 1ª tentativa concluída em até 300 s = nota cheia; 2ª tentativa (limite 900 s) = no máximo 70%: até 600 s ×0,7; de 600 a 900 s ×0,5; acima de 900 s com entrega parcial ×0,5; sem entrega, zero. As demais execuções dele seguem a regra geral.
 
 ## Ranking modelo × esforço
 
-|#|Modelo|Nota|Nota s/ pen.|%testes|Rubrica|Tempo médio (s)|Timeouts|Erros|N|
-|-|-|-|-|-|-|-|-|-|-|
-|1|claude-haiku-5-5-high (claude)|9.76|9.76|100.0|9.21|51|0|0|33|
-|2|claude-haiku-5-5-medium (claude)|9.71|9.71|99.4|9.15|29|0|0|33|
-|3|claude-opus-5-5-medium (claude)|9.68|9.68|100.0|8.92|43|0|0|33|
-|4|claude-opus-5-5-high (claude)|9.41|9.71|100.0|9.05|52|1|0|33|
-|5|gpt-6-luna-medium (codex)|8.96|8.96|96.8|7.30|20|0|0|33|
-|6|gpt-6-luna-high (codex)|8.84|8.84|96.1|7.05|32|1|0|33|
-|7|gpt-6.1-sol-medium (codex)|8.77|8.77|93.7|7.36|61|2|0|33|
-|8|gpt-6.1-sol-high (codex)|7.86|8.41|91.9|6.59|88|5|0|33|
-|9|gemini-4-argon-medium (gemini)|7.37|8.69|91.3|7.67|120|7|0|33|
-|10|grok-4.7-build-fast-medium (grok)|7.00|8.73|91.1|7.85|110|9|0|33|
-|11|gemini-4-argon-high (gemini)|6.62|8.66|91.1|7.62|138|10|0|33|
-|12|grok-4.7-medium (grok)|6.40|7.95|82.0|7.36|145|11|0|33|
-|13|grok-4.7-build-fast-high (grok)|3.50|5.15|54.0|4.58|172|21|0|33|
-|14|gemini-3.8-flash-medium (gemini)|2.63|5.55|58.7|4.80|193|24|0|33|
-|15|grok-4.7-high (grok)|2.05|3.22|33.5|2.89|184|26|0|33|
-|16|gemini-3.8-flash-high (gemini)|1.19|3.22|34.6|2.67|207|29|0|33|
+|#|Modelo|Nota|%testes|Rubrica (não-timeout)|Timeouts|N|
+|-|-|-|-|-|-|-|
+|1|claude-haiku-5-5-high (claude)|9.75|100.00|9.18|0|30|
+|2|claude-opus-5-5-medium (claude)|9.70|100.00|9.00|0|30|
+|3|claude-haiku-5-5-medium (claude)|9.66|99.39|9.00|0|30|
+|4|claude-opus-5-5-high (claude)|9.39|100.00|9.03|1|30|
+|5|gpt-6-luna-medium (codex)|9.09|96.54|7.78|0|30|
+|6|gpt-6-luna-high (codex)|9.00|95.99|7.86|1|30|
+|7|gpt-6.1-sol-medium (codex)|8.79|93.33|8.05|2|30|
+|8|gpt-6.1-sol-high (codex)|8.16|94.44|8.04|4|30|
+|9|grok-4.7-build-fast-medium (grok)|7.68|93.53|8.67|6|30|
+|10|gemini-4-argon-medium (gemini)|7.22|90.47|8.04|7|30|
+|11|gemini-4-argon-high (gemini)|6.96|90.20|8.32|8|30|
+|12|grok-4.7-medium (grok)|6.72|83.53|8.69|9|30|
+|13|grok-4.7-build-fast-high (grok)|3.86|59.36|8.88|18|30|
+|14|grok-4.7-high (grok)|3.83|50.15|7.22|17|30|
+|15|gemini-3.8-flash-medium (gemini)|2.85|64.56|8.33|21|30|
+|16|gemini-3.8-flash-high (gemini)|1.31|38.09|9.50|26|30|
 
-## Tipo × empresa (nota com penalidade)
+## Por empresa
+
+|Empresa|Nota|
+|-|-|
+|claude|9.62|
+|codex|8.76|
+|grok|5.52|
+|gemini|4.58|
+
+## Tipo × empresa
 
 |Tipo|claude|codex|gemini|grok|
 |-|-|-|-|-|
-|01-funcao|9.60|8.97|4.76|7.05|
-|02-bug|9.70|9.41|6.34|7.28|
-|03-refatoracao|9.69|9.52|4.07|5.58|
-|04-dados|9.69|8.68|3.00|1.14|
-|05-cli|8.90|7.70|4.72|5.65|
-|06-multiarquivo|9.59|9.45|4.76|4.86|
-|07-performance|9.59|8.29|5.36|8.78|
-|08-testes|9.85|6.91|0.83|0.83|
-|09-api|9.72|7.73|5.66|4.94|
-|10-ambigua|10.00|9.36|6.49|4.88|
+|01-funcao|9.62|9.09|4.79|7.09|
+|02-bug|9.65|9.40|6.40|7.21|
+|03-refatoracao|9.69|9.52|4.02|5.61|
+|04-dados|9.60|9.34|3.10|1.55|
+|05-cli|8.88|7.88|4.64|5.67|
+|06-multiarquivo|9.61|9.44|4.62|5.63|
+|07-performance|9.61|8.50|5.33|9.50|
+|08-testes|9.87|7.12|0.82|1.23|
+|09-api|9.74|7.90|5.61|6.33|
+|10-ambigua|9.97|9.39|6.53|5.42|
 
 ## Medium vs high
 
-|Modelo|Medium|High|Δ|Tempo med/high (s)|
-|-|-|-|-|-|
-|claude-haiku-5-5|9.71|9.76|+0.06|29/51|
-|claude-opus-5-5|9.68|9.41|-0.27|43/52|
-|gemini-3.8-flash|2.63|1.19|-1.43|193/207|
-|gemini-4-argon|7.37|6.62|-0.75|120/138|
-|gpt-6-luna|8.96|8.84|-0.13|20/32|
-|gpt-6.1-sol|8.77|7.86|-0.91|61/88|
-|grok-4.7|6.40|2.05|-4.35|145/184|
-|grok-4.7-build-fast|7.00|3.50|-3.50|110/172|
-
-## Consistência (04-dados-claude; Claude usa 04-dados-grok; runs 1–4)
-
-|Modelo|Notas por run|Média|Desvio|
+|Modelo|Medium|High|Δ|
 |-|-|-|-|
-|claude-haiku-5-5-high|10.0, 9.7, 9.7, 9.8|9.81|0.12|
-|claude-haiku-5-5-medium|9.8, 9.8, 10.0, 10.0|9.93|0.08|
-|claude-opus-5-5-high|10.0, 9.6, 9.7, 9.8|9.78|0.17|
-|claude-opus-5-5-medium|9.8, 9.7, 9.8, 9.8|9.81|0.06|
-|gpt-6-luna-high|8.4, 8.9, 8.9, 8.9|8.77|0.19|
-|gpt-6-luna-medium|9.4, 9.1, 8.9, 9.4|9.20|0.22|
-|gpt-6.1-sol-high|9.1, 9.1, 9.1, 0.0|6.82|3.94|
-|gpt-6.1-sol-medium|9.1, 9.1, 9.1, 8.9|9.06|0.06|
-|gemini-3.8-flash-high|0.0, 0.0, 0.0, 0.0|0.00|0.00|
-|gemini-3.8-flash-medium|0.0, 0.0, 0.0, 0.0|0.00|0.00|
-|gemini-4-argon-high|0.0, 8.8, 0.0, 0.0|2.20|3.81|
-|gemini-4-argon-medium|8.8, 8.5, 8.8, 8.8|8.73|0.13|
-|grok-4.7-build-fast-high|0.0, 0.0, 0.0, 0.0|0.00|0.00|
-|grok-4.7-build-fast-medium|8.9, 0.0, 0.0, 0.0|2.24|3.88|
-|grok-4.7-high|0.0, 0.0, 0.0, 0.0|0.00|0.00|
-|grok-4.7-medium|0.0, 0.0, 0.0, 8.8|2.20|3.81|
+|claude-haiku-5-5|9.66|9.75|+0.09|
+|claude-opus-5-5|9.70|9.39|-0.31|
+|gemini-3.8-flash|2.85|1.31|-1.54|
+|gemini-4-argon|7.22|6.96|-0.26|
+|gpt-6-luna|9.09|9.00|-0.09|
+|gpt-6.1-sol|8.79|8.16|-0.63|
+|grok-4.7|6.72|3.83|-2.89|
+|grok-4.7-build-fast|7.68|3.86|-3.82|
 
-## Tarefas em que todos tiraram 100% nos testes
+## Consistência (tarefa fixa 04-dados-claude; Claude usa 04-dados-grok; runs 1–4) — não entra na nota
 
-- 01-funcao-gemini
-- 02-bug-codex
-- 07-performance-gemini
-- 09-api-codex
-- 10-ambigua-codex
-- 10-ambigua-grok
+|Modelo|Notas novas por run|Média|Desvio|Antiga média|
+|-|-|-|-|-|
+|claude-haiku-5-5-high|9.85, 9.85, 9.85, 9.55|9.78|0.13|9.81|
+|claude-haiku-5-5-medium|9.85, 10.00, 10.00, 9.85|9.93|0.08|9.93|
+|claude-opus-5-5-high|9.70, 9.70, 9.70, 9.85|9.74|0.06|9.78|
+|claude-opus-5-5-medium|9.85, 9.85, 9.70, 9.85|9.81|0.06|9.81|
+|gemini-3.8-flash-high|0.00, 0.00, 0.00, 0.00|0.00|0.00|0.00|
+|gemini-3.8-flash-medium|0.00, 0.00, 0.00, 0.00|0.00|0.00|0.00|
+|gemini-4-argon-high|0.00, 8.80, 0.00, 0.00|2.20|3.81|2.20|
+|gemini-4-argon-medium|8.80, 8.95, 8.80, 8.80|8.84|0.06|8.73|
+|gpt-6-luna-high|8.88, 8.73, 9.03, 8.73|8.84|0.12|8.77|
+|gpt-6-luna-medium|9.25, 9.25, 9.18, 9.40|9.27|0.08|9.20|
+|gpt-6.1-sol-high|9.10, 9.10, 9.10, 0.00|6.82|3.94|6.82|
+|gpt-6.1-sol-medium|9.10, 9.40, 9.10, 8.95|9.14|0.16|9.06|
+|grok-4.7-build-fast-high|0.00, 0.00, 0.00, 0.00|0.00|0.00|0.00|
+|grok-4.7-build-fast-medium|8.95, 0.00, 0.00, 0.00|2.24|3.88|2.24|
+|grok-4.7-high|0.00, 4.40, 4.70, 4.70|3.45|2.00|0.00|
+|grok-4.7-medium|0.00, 0.00, 0.00, 8.95|2.24|3.88|2.20|
 
-Quase (≥90% das execuções com 100%): 01-funcao-codex (11/12), 02-bug-gemini (11/12), 02-bug-grok (11/12), 03-refatoracao-gemini (11/12), 04-dados-grok (22/24), 06-multiarquivo-grok (11/12), 07-performance-codex (11/12), 09-api-gemini (11/12)
-
-## Divergência entre juízes
-
-- Execuções com 2 juízes válidos: 345; com só 1: 174; com 0: 9. (sem juiz válido → rubrica 0)
-- |diferença| média: 0.62 pts (de 10); mediana 0.00; >3 pts: 5.
-- Falhas de juiz (tentativas): grok — JSON inválido: 216; gemini — timeout: 129; claude — JSON inválido: 62; grok — timeout: 13
-- Média dada por juiz: claude 7.02 (n=213), codex 6.39 (n=276), gemini 7.29 (n=223), grok 8.67 (n=152)
-
-## Casos com rubrica 0,0 de algum juiz
-
-85 execuções. Todas são timeout ou erro do agente — nenhuma com status ok: timeout/código vazio: 62, timeout/código parcial: 23.
-Ou seja, o 0 é o juiz avaliando solução vazia/incompleta, não falha do juiz. As falhas reais de juiz (JSON inválido, sobretudo do Grok build-fast e também do Claude Haiku; timeouts do Gemini Flash) aparecem como 'só 1 juiz válido' e são cobertas pelo fallback.
-
-|Modelo|Rubrica 0|
-|-|-|
-|gemini-3.8-flash-high|20|
-|grok-4.7-high|19|
-|grok-4.7-build-fast-high|15|
-|gemini-3.8-flash-medium|12|
-|grok-4.7-medium|6|
-|gpt-6.1-sol-high|3|
-|grok-4.7-build-fast-medium|3|
-|gemini-4-argon-high|3|
-|gpt-6.1-sol-medium|2|
-|gpt-6-luna-high|1|
-|gemini-4-argon-medium|1|
-
-## Mutation score (tipo 08)
-
-Não foi calculado com mutmut na rodada. O tipo 08 mede a qualidade dos testes escritos pelo agente via testes ocultos que rodam a suíte contra mutantes pré-definidos (ex.: 14 mutantes em 08-testes-claude); o %testes nesse tipo funciona como proxy de mutation score.

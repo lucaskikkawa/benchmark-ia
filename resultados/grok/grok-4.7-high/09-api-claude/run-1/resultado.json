@@ -6,11 +6,11 @@
   "run": 1,
   "status": "timeout",
   "exit_code": -9,
-  "duracao_agente_s": 300.123,
+  "duracao_agente_s": 900.102,
   "testes_total": 1,
   "testes_passados": 0,
   "pct_passados": 0.0,
-  "inicio_iso": "2026-11-03T10:27:53.244504-03:00",
+  "inicio_iso": "2026-11-03T19:09:32.072158-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-9x6p11sy",
-    "/tmp/bench-9x6p11sy",
+    "/tmp/bench-vvcz7z0m",
+    "/tmp/bench-vvcz7z0m",
     "--chdir",
-    "/tmp/bench-9x6p11sy",
+    "/tmp/bench-vvcz7z0m",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,7 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-9x6p11sy"
-  ]
+    "/tmp/bench-vvcz7z0m"
+  ],
+  "timeout_s": 900
 }

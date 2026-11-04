@@ -3,7 +3,7 @@
 Uso: python scripts/rodada.py [--empresas codex,claude,...] [--tarefas 01-funcao-codex,...] [--sem-consistencia] [--dry-run]
 Pula execuções que já têm resultado.json. Log de progresso em resultados/rodada.log.
 """
-import argparse, json, pathlib, subprocess, sys, threading, time, queue
+import os, argparse, json, pathlib, subprocess, sys, threading, time, queue
 from concurrent.futures import ThreadPoolExecutor
 import yaml
 
@@ -95,8 +95,11 @@ def main():
     ap.add_argument("--tarefas", default="")
     ap.add_argument("--paralelo", type=int, default=2)
     ap.add_argument("--sem-consistencia", action="store_true")
+    ap.add_argument("--timeout", type=int, default=0, help="força timeout (s) do agente, máx 900")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
+    if a.timeout:
+        os.environ["BENCH_TIMEOUT_S"] = str(a.timeout)
     LOG.parent.mkdir(exist_ok=True)
     filtro = set(filter(None, a.tarefas.split(",")))
     emps = a.empresas.split(",")

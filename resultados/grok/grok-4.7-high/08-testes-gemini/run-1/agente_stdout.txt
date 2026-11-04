@@ -1,1 +1,1 @@
-Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntar nada.O enunciado pede uma suíte pytest que passe no `validador.py` correto e derrube mutantes com bugs de limite e regras. Vou cobrir os limites e, em seguida, conferir a suíte contra mutações.

@@ -1,0 +1,36 @@
+{
+ "pasta": "resultados/grok/grok-4.7-medium/04-dados-claude/run-2",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "medium",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 2,
+ "consistencia_extra": true,
+ "autora_tarefa": "claude",
+ "status": "timeout",
+ "duracao_agente_s": 180.045,
+ "testes_passados": 32,
+ "testes_total": 32,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {},
+ "obs": [
+  "timeout: nota 0 (rubrica não julgada)"
+ ],
+ "rubrica_media_10": null,
+ "nota_final_10": 0.0,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 32,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "timeout com entrega parcial: 32/32 testes passam (100%), mas a regra zera a nota"
+ ],
+ "nota_antiga_avaliacao_json": 9.55,
+ "nota_antiga_com_penalidade": 0.0
+}

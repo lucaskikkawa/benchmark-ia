@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/01-funcao-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "01-funcao-claude",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 24.004,
+ "testes_passados": 23,
+ "testes_total": 23,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0,
+   "justificativa": "Parsing manual funcional mas pouco idiomático; mensagens de erro não incluem a entrada recebida; docstring não cita exceções; limite de componentes acoplado no código.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Parser compreensível com tabela única, porém laços manuais aninhados; erros certos sem ecoar a entrada; docstring sem exceções; estender unidade é um ponto só.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 5.5,
+ "nota_final_10": 8.65,
+ "reexecucao_testes": {
+  "total": 23,
+  "passados": 23,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+ ],
+ "nota_antiga_avaliacao_json": 8.8,
+ "nota_antiga_com_penalidade": 8.8
+}

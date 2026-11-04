@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/claude/claude-haiku-5-5-medium/06-multiarquivo-grok/run-1",
+ "empresa": "claude",
+ "modelo": "claude-haiku-5-5",
+ "esforco": "medium",
+ "tarefa": "06-multiarquivo-grok",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 52.566,
+ "testes_passados": 15,
+ "testes_total": 17,
+ "pct_testes": 88.24,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "gemini"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Responsabilidades bem separadas, validações e regras atendidas; usa dataclass, datas e imports relativos. Faltam docstrings nas classes.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "A solução atende perfeitamente à lógica, regras de borda e arquitetura modular, mas peca apenas pela ausência de docstrings nas classes exportadas.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 8.88,
+ "reexecucao_testes": {
+  "total": 17,
+  "passados": 15,
+  "pct": 88.24
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.88,
+ "nota_antiga_com_penalidade": 8.88
+}

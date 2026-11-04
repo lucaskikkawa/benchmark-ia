@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="13" skipped="0" tests="13" time="0.206" timestamp="2026-11-03T10:36:34.907871-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_runner" name="test_suite_passa_no_modulo_original" time="0.001"><failure message="AssertionError: Diretório 'tests/' não encontrado no diretório raiz da solução.&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-ncnvozbx/tests').is_dir">def test_suite_passa_no_modulo_original():
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="13" skipped="0" tests="13" time="0.206" timestamp="2026-11-03T19:25:13.823455-03:00" hostname="grok-bot-vm-197759088"><testcase classname="testes_ocultos.test_runner" name="test_suite_passa_no_modulo_original" time="0.001"><failure message="AssertionError: Diretório 'tests/' não encontrado no diretório raiz da solução.&#10;assert False&#10; +  where False = is_dir()&#10; +    where is_dir = PosixPath('/tmp/bench-ojql5vrx/tests').is_dir">def test_suite_passa_no_modulo_original():
         tests_dir = ROOT_DIR / "tests"
 &gt;       assert tests_dir.is_dir(), "Diretório 'tests/' não encontrado no diretório raiz da solução."
 E       AssertionError: Diretório 'tests/' não encontrado no diretório raiz da solução.
 E       assert False
 E        +  where False = is_dir()
-E        +    where is_dir = PosixPath('/tmp/bench-ncnvozbx/tests').is_dir
+E        +    where is_dir = PosixPath('/tmp/bench-ojql5vrx/tests').is_dir
 
-testes_ocultos/test_runner.py:36: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_01" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_01():
+testes_ocultos/test_runner.py:36: AssertionError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_01" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_01():
 &gt;       executar_mutante("mutante_01")
 
 testes_ocultos/test_runner.py:57: 
@@ -18,10 +18,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmp155xn8cu/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b7e6700&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmp3t5g7pte/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2c32700&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -67,9 +67,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_02" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_02():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_02" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_02():
 &gt;       executar_mutante("mutante_02")
 
 testes_ocultos/test_runner.py:61: 
@@ -81,10 +81,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmpyf0tfh1f/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b7e7f60&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmp1w2rkddq/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2c33f60&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -130,9 +130,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_03" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_03():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_03" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_03():
 &gt;       executar_mutante("mutante_03")
 
 testes_ocultos/test_runner.py:65: 
@@ -144,10 +144,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmp3jd0kowl/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b86c540&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmpwze86r9w/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2cb8540&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -193,9 +193,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_04" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_04():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_04" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_04():
 &gt;       executar_mutante("mutante_04")
 
 testes_ocultos/test_runner.py:69: 
@@ -207,10 +207,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmpo0_12yn5/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b86c860&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmpomwcmob4/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2cb8860&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -256,9 +256,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_05" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_05():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_05" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_05():
 &gt;       executar_mutante("mutante_05")
 
 testes_ocultos/test_runner.py:73: 
@@ -270,10 +270,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmpuseg_r9q/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b86ca40&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmp0awch5ol/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2cb8a40&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -319,9 +319,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_06" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_06():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_06" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_06():
 &gt;       executar_mutante("mutante_06")
 
 testes_ocultos/test_runner.py:77: 
@@ -333,10 +333,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmp7iz1f37x/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b7e7920&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmp58ou8mqv/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2c33920&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -382,9 +382,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_07" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_07():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_07" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_07():
 &gt;       executar_mutante("mutante_07")
 
 testes_ocultos/test_runner.py:81: 
@@ -396,10 +396,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmpahhq5xru/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b7e7f60&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmp88ob24at/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2c33f60&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -445,9 +445,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_08" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_08():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_08" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_08():
 &gt;       executar_mutante("mutante_08")
 
 testes_ocultos/test_runner.py:85: 
@@ -459,10 +459,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmping8l3xw/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b86cea0&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmpvh_56cyv/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2cb8ea0&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -508,9 +508,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_09" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_09():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_09" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_09():
 &gt;       executar_mutante("mutante_09")
 
 testes_ocultos/test_runner.py:89: 
@@ -522,10 +522,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmpmh3g_4ko/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b86c4a0&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmp59iqvv5s/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2cb84a0&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -571,9 +571,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_10" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_10():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_10" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_10():
 &gt;       executar_mutante("mutante_10")
 
 testes_ocultos/test_runner.py:93: 
@@ -585,10 +585,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmp72jaczt5/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b86d260&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmps_mum_ni/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2cb9260&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -634,9 +634,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_11" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_11():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_11" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_11():
 &gt;       executar_mutante("mutante_11")
 
 testes_ocultos/test_runner.py:97: 
@@ -648,10 +648,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmpgn9dj6ry/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b86c400&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmp181e51zs/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2cb8400&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -697,9 +697,9 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
-/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_12" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'">def test_mata_mutante_12():
+/home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase><testcase classname="testes_ocultos.test_runner" name="test_mata_mutante_12" time="0.000"><failure message="FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'">def test_mata_mutante_12():
 &gt;       executar_mutante("mutante_12")
 
 testes_ocultos/test_runner.py:101: 
@@ -711,10 +711,10 @@ testes_ocultos/test_runner.py:27: in executar_suite_isolada
     shutil.copytree(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-src = PosixPath('/tmp/bench-ncnvozbx/tests')
-dst = PosixPath('/tmp/tmp64hvko2i/tests'), symlinks = False
-ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7ff03b86d4e0&gt;
-copy_function = &lt;function copy2 at 0x7ff03c001b20&gt;
+src = PosixPath('/tmp/bench-ojql5vrx/tests')
+dst = PosixPath('/tmp/tmpoop4fyto/tests'), symlinks = False
+ignore = &lt;function ignore_patterns.&lt;locals&gt;._ignore_patterns at 0x7f1fd2cb94e0&gt;
+copy_function = &lt;function copy2 at 0x7f1fd344db20&gt;
 ignore_dangling_symlinks = False, dirs_exist_ok = False
 
     def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
@@ -760,6 +760,6 @@ ignore_dangling_symlinks = False, dirs_exist_ok = False
         sys.audit("shutil.copytree", src, dst)
 &gt;       with os.scandir(src) as itr:
              ^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ncnvozbx/tests'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bench-ojql5vrx/tests'
 
 /home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/shutil.py:598: FileNotFoundError</failure></testcase></testsuite></testsuites>

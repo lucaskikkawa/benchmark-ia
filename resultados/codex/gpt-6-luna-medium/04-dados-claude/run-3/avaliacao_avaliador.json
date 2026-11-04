@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/04-dados-claude/run-3",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 3,
+ "consistencia_extra": true,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 17.113,
+ "testes_passados": 31,
+ "testes_total": 32,
+ "pct_testes": 96.88,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Trata erros e bordas com perfeição e usa bem a stdlib, mas concentra validação e agregação em função única, sem modularidade para novas métricas.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Validação e agregação no mesmo laço de uma função. Erros, linhas inválidas, arredondamento e JSON conferem. Colunas em constante; status e métricas no corpo. Docstring curta cobre o contrato.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 9.18,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 31,
+  "pct": 96.88
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.88,
+ "nota_antiga_com_penalidade": 8.88
+}

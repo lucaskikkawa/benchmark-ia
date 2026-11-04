@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/claude/claude-opus-5-5-high/10-ambigua-codex/run-1",
+ "empresa": "claude",
+ "modelo": "claude-opus-5-5",
+ "esforco": "high",
+ "tarefa": "10-ambigua-codex",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 29.395,
+ "testes_passados": 14,
+ "testes_total": 14,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Código idiomático e legível, atende perfeitamente ao núcleo com cópias rasas, lida bem com bordas e possui SUPOSICOES.md completo e coerente.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Filtra pendentes, copia rasa independente e ordena com sorted estável decrescente sem alterar a entrada. Validação isolada. SUPOSICOES.md descreve desempate e inválidos de forma coerente com o código.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0,
+ "reexecucao_testes": {
+  "total": 14,
+  "passados": 14,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "execução refeita (commit b850e82 'Refaz 7 execuções do opus-5-5-high que falharam por cota'; backup em resultados/_erros_cota). Documentada no commit"
+ ],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 10.0
+}

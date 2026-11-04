@@ -1,0 +1,1 @@
+Vou ler o enunciado e o conteúdo deste diretório para resolver a tarefa aqui mesmo.O enunciado pede um cliente com retry e backoff. Vou implementar `cliente_resiliente.py` conforme a especificação e validar o comportamento.

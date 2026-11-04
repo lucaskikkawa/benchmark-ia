@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "10-ambigua-gemini",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 180.143,
-  "testes_total": 1,
-  "testes_passados": 0,
-  "pct_passados": 0.0,
-  "inicio_iso": "2026-11-03T10:43:06.870549-03:00",
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 292.647,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct_passados": 100.0,
+  "inicio_iso": "2026-11-03T19:29:33.005137-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-yaow7q3x",
-    "/tmp/bench-yaow7q3x",
+    "/tmp/bench-38fztqcu",
+    "/tmp/bench-38fztqcu",
     "--chdir",
-    "/tmp/bench-yaow7q3x",
+    "/tmp/bench-38fztqcu",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,7 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-yaow7q3x"
-  ]
+    "/tmp/bench-38fztqcu"
+  ],
+  "timeout_s": 900
 }

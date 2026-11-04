@@ -1,3 +1,7 @@
-# Complete com uma dataclass frozen=True.
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
 class Movimento:
-    pass
+    sku: str
+    delta: int

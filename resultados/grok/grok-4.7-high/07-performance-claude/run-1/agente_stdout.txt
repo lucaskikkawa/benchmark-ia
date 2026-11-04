@@ -1,1 +1,5 @@
-Vou ler o enunciado e o conteúdo deste diretório para resolver a tarefa aqui mesmo.
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede contar subarrays contíguos com soma `k` e comprimento limitado, em tempo linear para até 300 mil elementos. Vou implementar isso e validar com os exemplos e um teste de desempenho.A função `contar_subarrays_soma` está em `solucao.py`. Ela conta subarrays contíguos com soma exatamente `k` e comprimento entre `comprimento_min` e `comprimento_max`.
+
+A soma de um trecho é a diferença de prefixos. Para cada fim, a função consulta quantos prefixos válidos caem numa janela de índices que desliza para a direita: cada índice entra e sai no máximo uma vez, então o custo é linear. Valores negativos e inteiros grandes ficam em um dicionário de frequências. Comprimentos inválidos (`< 1`) geram `ValueError`. Se o intervalo de comprimento é impossível, o resultado é `0`.
+
+Os exemplos do enunciado batem com uma conferência por força bruta, e uma chamada com 300 mil elementos fica em cerca de 0,1 s.

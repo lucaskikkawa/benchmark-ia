@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/08-testes-grok/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "08-testes-grok",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 30.617,
+ "testes_passados": 14,
+ "testes_total": 15,
+ "pct_testes": 93.33,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Importa 'descuentos' em vez de 'descontos', então a suíte quebra no módulo correto. Fronteiras e pytest.raises estão bem cobertos. Um parametrize grande mistura regras.",
+   "falhas": []
+  },
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "A suíte é completa, idiomática e cobre todas as bordas, mas errou a importação ao usar 'descuentos' em vez de 'descontos', falhando na execução contra o módulo.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 8.78,
+ "reexecucao_testes": {
+  "total": 15,
+  "passados": 14,
+  "pct": 93.33
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": null,
+ "nota_antiga_com_penalidade": 6.53
+}

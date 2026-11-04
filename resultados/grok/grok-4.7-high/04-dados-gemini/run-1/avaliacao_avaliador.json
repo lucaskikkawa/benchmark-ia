@@ -1,0 +1,34 @@
+{
+ "pasta": "resultados/grok/grok-4.7-high/04-dados-gemini/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "high",
+ "tarefa": "04-dados-gemini",
+ "tipo": "04-dados",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "timeout",
+ "duracao_agente_s": 180.117,
+ "testes_passados": 0,
+ "testes_total": 1,
+ "pct_testes": 0.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {},
+ "obs": [
+  "timeout: nota 0 (rubrica não julgada)"
+ ],
+ "rubrica_media_10": null,
+ "nota_final_10": 0.0,
+ "reexecucao_testes": {
+  "total": 1,
+  "passados": 0,
+  "pct": 0.0
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 0.0,
+ "nota_antiga_com_penalidade": 0.0
+}

@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "09-api-gemini",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 180.065,
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 194.612,
   "testes_total": 46,
   "testes_passados": 46,
   "pct_passados": 100.0,
-  "inicio_iso": "2026-11-03T10:38:36.757950-03:00",
+  "inicio_iso": "2026-11-03T18:20:48.406492-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-z_0azdl2",
-    "/tmp/bench-z_0azdl2",
+    "/tmp/bench-h4k6pih6",
+    "/tmp/bench-h4k6pih6",
     "--chdir",
-    "/tmp/bench-z_0azdl2",
+    "/tmp/bench-h4k6pih6",
     "--setenv",
     "HOME",
     "/home/box",
@@ -110,6 +110,7 @@
     "--permission-mode",
     "bypassPermissions",
     "--cwd",
-    "/tmp/bench-z_0azdl2"
-  ]
+    "/tmp/bench-h4k6pih6"
+  ],
+  "timeout_s": 300
 }

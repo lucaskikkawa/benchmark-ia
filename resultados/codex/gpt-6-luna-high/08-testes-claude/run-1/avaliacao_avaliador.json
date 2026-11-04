@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/08-testes-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "08-testes-claude",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 60.932,
+ "testes_passados": 16,
+ "testes_total": 17,
+ "pct_testes": 94.12,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Suíte exemplar: cobertura completa de bordas e tipos, parametrização idiomática, testes independentes e legíveis agrupados por função com comentários pertinentes.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Nomes claros e pytest idiomático; cobre faixas, trincas, piso e brancos. Números mágicos sem fórmula, testa ordem interna das exceções e não agrupa por seções ou classes.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 8.5,
+ "nota_final_10": 9.14,
+ "reexecucao_testes": {
+  "total": 17,
+  "passados": 16,
+  "pct": 94.12
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 9.29,
+ "nota_antiga_com_penalidade": 9.29
+}

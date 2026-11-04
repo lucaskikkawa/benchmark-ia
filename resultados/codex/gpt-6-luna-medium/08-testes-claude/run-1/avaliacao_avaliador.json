@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/08-testes-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "08-testes-claude",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 27.695,
+ "testes_passados": 2,
+ "testes_total": 17,
+ "pct_testes": 11.76,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 0.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 5.0,
+   "justificativa": "A suíte falha no módulo correto por ignorar trincas em 'a'*20 e 'A'*18, erra limites e copia a lógica da implementação nos testes, apesar da boa legibilidade e uso idiomático do pytest.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 0.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Nomes e pytest.parametrize claros, mas a suíte falha no módulo correto: esperados ignoram trincas em repetições (a*20 vale 0, não 55; A*18 é fraca). Limites 50/80/100 e piso de 111 ficam errados.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 5.5,
+ "nota_final_10": 2.47,
+ "reexecucao_testes": {
+  "total": 17,
+  "passados": 2,
+  "pct": 11.76
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 2.62,
+ "nota_antiga_com_penalidade": 2.62
+}

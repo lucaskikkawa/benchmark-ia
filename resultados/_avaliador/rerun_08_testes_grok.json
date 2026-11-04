@@ -1,0 +1,194 @@
+[
+ {
+  "pasta": "resultados/claude/claude-haiku-5-5-high/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "ok"
+ },
+ {
+  "pasta": "resultados/claude/claude-haiku-5-5-medium/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "ok"
+ },
+ {
+  "pasta": "resultados/claude/claude-opus-5-5-high/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "ok"
+ },
+ {
+  "pasta": "resultados/claude/claude-opus-5-5-medium/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "ok"
+ },
+ {
+  "pasta": "resultados/codex/gpt-6-luna-high/08-testes-grok/run-1",
+  "orig": [
+   14,
+   15
+  ],
+  "aval": [
+   14,
+   15
+  ],
+  "novo": [
+   14,
+   15
+  ],
+  "status": "ok"
+ },
+ {
+  "pasta": "resultados/codex/gpt-6-luna-medium/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "ok"
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "ok"
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-medium/08-testes-grok/run-1",
+  "orig": [
+   14,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "ok"
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1",
+  "orig": [
+   14,
+   15
+  ],
+  "aval": [
+   14,
+   15
+  ],
+  "novo": [
+   14,
+   15
+  ],
+  "status": "timeout"
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "timeout"
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "timeout"
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/08-testes-grok/run-1",
+  "orig": [
+   15,
+   15
+  ],
+  "aval": [
+   15,
+   15
+  ],
+  "novo": [
+   15,
+   15
+  ],
+  "status": "ok"
+ }
+]

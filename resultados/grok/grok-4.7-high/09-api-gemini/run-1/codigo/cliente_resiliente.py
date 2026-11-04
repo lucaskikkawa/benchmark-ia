@@ -1,35 +1,44 @@
-"""Cliente HTTP resiliente com retry e exponential backoff."""
+"""Cliente HTTP resiliente com retentativa e backoff exponencial."""
 
 from __future__ import annotations
 
-import numbers
 import time
-from collections.abc import Callable
+from typing import Callable
 
-from fake_api import (
-    ApiResponse,
-    FakeApiServer,
-    SimulatedNetworkError,
-    SimulatedTimeoutError,
-)
+from fake_api import FakeApiServer, SimulatedNetworkError, SimulatedTimeoutError
 
-# 501 (Not Implemented) fica de fora: é definitivo. Os demais 5xx listados
-# no enunciado, mais 429, são transitórios.
-_STATUS_RETENTAVEIS = frozenset({429, 500, 502, 503, 504})
+
+# Códigos HTTP transitórios: 429 e a faixa 5xx.
+_STATUS_RETENTAVEIS_EXATOS = {429}
 
 
 class ApiError(Exception):
-    """Falha definitiva ou esgotamento das tentativas de chamada à API."""
-
-    status_code: int | None = None
+    """Erro definitivo de API após falha não retentável ou esgotamento das tentativas."""
 
     def __init__(self, mensagem: str = "", status_code: int | None = None) -> None:
         super().__init__(mensagem)
         self.status_code = status_code
 
 
+def _numero_positivo(valor: object) -> bool:
+    """True se valor for int/float (exceto bool) e estritamente positivo."""
+    if type(valor) is bool or not isinstance(valor, (int, float)):
+        return False
+    return valor > 0
+
+
+def _status_retentavel(status_code: int) -> bool:
+    return status_code in _STATUS_RETENTAVEIS_EXATOS or 500 <= status_code <= 599
+
+
+def _mensagem_http(status_code: int, data: object) -> str:
+    if isinstance(data, dict) and "erro" in data:
+        return f"HTTP {status_code}: {data['erro']}"
+    return f"HTTP {status_code}: {data}"
+
+
 class ClienteResiliente:
-    """Executa requisições no FakeApiServer com retentativas e backoff."""
+    """Executa requisições no FakeApiServer com retry e exponential backoff."""
 
     def __init__(
         self,
@@ -42,9 +51,12 @@ class ClienteResiliente:
     ) -> None:
         if type(max_tentativas) is not int or max_tentativas < 1:
             raise ValueError("max_tentativas deve ser um inteiro >= 1")
-        _validar_positivo("backoff_base", backoff_base)
-        _validar_positivo("backoff_fator", backoff_fator)
-        _validar_positivo("timeout", timeout)
+        if not _numero_positivo(backoff_base):
+            raise ValueError("backoff_base deve ser um número > 0")
+        if not _numero_positivo(backoff_fator):
+            raise ValueError("backoff_fator deve ser um número > 0")
+        if not _numero_positivo(timeout):
+            raise ValueError("timeout deve ser um número > 0")
 
         self.servidor = servidor
         self.max_tentativas = max_tentativas
@@ -60,6 +72,7 @@ class ClienteResiliente:
         return self.executar("POST", rota, payload)
 
     def executar(self, metodo: str, rota: str, payload: dict | None = None) -> dict:
+        """Envia a requisição, repetindo apenas falhas transitórias."""
         for tentativa in range(1, self.max_tentativas + 1):
             try:
                 resposta = self.servidor.requisicao(
@@ -71,41 +84,26 @@ class ClienteResiliente:
             except (SimulatedNetworkError, SimulatedTimeoutError) as exc:
                 if tentativa == self.max_tentativas:
                     raise ApiError(str(exc), status_code=None) from exc
-                self.sleep_fn(self._delay(tentativa))
+                self._aguardar(tentativa)
                 continue
 
-            if 200 <= resposta.status_code < 300:
+            status = resposta.status_code
+            if 200 <= status <= 299:
                 return resposta.data
 
-            if resposta.status_code in _STATUS_RETENTAVEIS:
+            if _status_retentavel(status):
                 if tentativa == self.max_tentativas:
                     raise ApiError(
-                        _mensagem_http(resposta),
-                        status_code=resposta.status_code,
+                        _mensagem_http(status, resposta.data),
+                        status_code=status,
                     )
-                self.sleep_fn(self._delay(tentativa))
+                self._aguardar(tentativa)
                 continue
 
-            raise ApiError(
-                _mensagem_http(resposta),
-                status_code=resposta.status_code,
-            )
+            raise ApiError(_mensagem_http(status, resposta.data), status_code=status)
 
-        raise ApiError("Tentativas esgotadas", status_code=None)
+        raise ApiError("Número de tentativas esgotado", status_code=None)
 
-    def _delay(self, tentativa: int) -> float:
-        return self.backoff_base * (self.backoff_fator ** (tentativa - 1))
-
-
-def _validar_positivo(nome: str, valor: object) -> None:
-    if isinstance(valor, bool) or not isinstance(valor, numbers.Real):
-        raise ValueError(f"{nome} deve ser um número positivo")
-    if valor <= 0:
-        raise ValueError(f"{nome} deve ser um número positivo")
-
-
-def _mensagem_http(resposta: ApiResponse) -> str:
-    dados = resposta.data
-    if isinstance(dados, dict) and "erro" in dados:
-        return str(dados["erro"])
-    return f"HTTP {resposta.status_code}"
+    def _aguardar(self, tentativa: int) -> None:
+        delay = self.backoff_base * (self.backoff_fator ** (tentativa - 1))
+        self.sleep_fn(delay)

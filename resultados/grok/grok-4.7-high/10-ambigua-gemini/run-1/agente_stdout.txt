@@ -1,1 +1,10 @@
-Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.
+Vou ler o enunciado neste diretório e resolver a tarefa só com arquivos daqui.O enunciado pede a função `classificar_cliente` e um `SUPOSICOES.md`. Vou ver o que já existe no diretório antes de implementar.A especificação fecha a fórmula do score e deixa a categorização em aberto. Vou implementar o cálculo literal e registrar as decisões em `SUPOSICOES.md`.Vou conferir os exemplos do documento, a imutabilidade e os casos de borda contra a função.A função `classificar_cliente` está em `solucao.py` e as decisões de desenho estão em `SUPOSICOES.md`.
+
+O score segue a fórmula pedida: `round(soma(compras) * 0.1 + anos_ativo * 5, 2)`. A entrada não é alterada. A saída traz só `id`, `nome`, `score` e `categoria`.
+
+Premissas registradas:
+
+- Compras negativas entram na soma, como estorno.
+- Ano negativo também entra na fórmula, sem correção silenciosa.
+- Campos extras são ignorados.
+- As faixas, do menor para o maior, são `em_risco`, `iniciante`, `bronze`, `prata`, `ouro`, `platina` e `diamante`, com corte inclusivo no limite inferior.

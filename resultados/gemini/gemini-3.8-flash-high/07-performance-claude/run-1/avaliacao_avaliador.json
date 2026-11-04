@@ -1,0 +1,36 @@
+{
+ "pasta": "resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-3.8-flash",
+ "esforco": "high",
+ "tarefa": "07-performance-claude",
+ "tipo": "07-performance",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "timeout",
+ "duracao_agente_s": 180.075,
+ "testes_passados": 36,
+ "testes_total": 36,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {},
+ "obs": [
+  "timeout: nota 0 (rubrica não julgada)"
+ ],
+ "rubrica_media_10": null,
+ "nota_final_10": 0.0,
+ "reexecucao_testes": {
+  "total": 36,
+  "passados": 36,
+  "pct": 100.0
+ },
+ "incoerencias": [
+  "timeout com entrega parcial: 36/36 testes passam (100%), mas a regra zera a nota"
+ ],
+ "nota_antiga_avaliacao_json": 10.0,
+ "nota_antiga_com_penalidade": 0.0
+}

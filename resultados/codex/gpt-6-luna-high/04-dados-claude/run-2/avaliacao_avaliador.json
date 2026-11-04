@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/04-dados-claude/run-2",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 2,
+ "consistencia_extra": true,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 22.868,
+ "testes_passados": 31,
+ "testes_total": 32,
+ "pct_testes": 96.88,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Etapas misturadas em função única; validação de bordas impecável; parsing manual de índices; status hardcoded sem modularizar agregação; docstring sucinta e total_geral int 0 em CSV vazio.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Etapas legíveis, mas validação e agregação no mesmo laço. Validação e erros corretos; total_geral vira int 0 sem vendas. Status não é constante e a agregação não está encapsulada. Docstring curta.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.73,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 31,
+  "pct": 96.88
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.88,
+ "nota_antiga_com_penalidade": 8.88
+}

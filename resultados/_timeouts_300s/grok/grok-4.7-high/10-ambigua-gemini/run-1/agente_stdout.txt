@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O enunciado pede a função `classificar_cliente` e um `SUPOSICOES.md`. Vou ver o que já existe no diretório antes de implementar.

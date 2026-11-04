@@ -1,0 +1,59 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-high/04-dados-claude/run-4",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "high",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 4,
+ "consistencia_extra": true,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 25.677,
+ "testes_passados": 31,
+ "testes_total": 32,
+ "pct_testes": 96.88,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Excelente tratamento de erros e bordas. Falta modularização em funções, uso de DictReader/Counter e constantes para status, além de docstring mais descritiva do contrato.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Etapas no mesmo laço, sem funções de validar e agregar. Validação, erros e JSON estão corretos e idiomáticos. Falta constante de status e agregação encapsulada. Docstring não explica o contrato.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.73,
+ "reexecucao_testes": {
+  "total": 32,
+  "passados": 31,
+  "pct": 96.88
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.88,
+ "nota_antiga_com_penalidade": 8.88
+}

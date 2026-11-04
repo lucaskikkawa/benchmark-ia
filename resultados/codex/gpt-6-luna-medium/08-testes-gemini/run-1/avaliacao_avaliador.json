@@ -1,0 +1,61 @@
+{
+ "pasta": "resultados/codex/gpt-6-luna-medium/08-testes-gemini/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6-luna",
+ "esforco": "medium",
+ "tarefa": "08-testes-gemini",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "gemini",
+ "status": "ok",
+ "duracao_agente_s": 20.925,
+ "testes_passados": 12,
+ "testes_total": 13,
+ "pct_testes": 92.31,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0,
+   "justificativa": "Boa cobertura de limites e regras, mas falta o limite de forca 10 (fraca/media), e um mutante de faixa sobrevive. Sem fixtures nem docstrings; teste de minimo duplica o primeiro.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Nomes claros e asserts legíveis. Sem docstrings nem fixtures; instanciação repetida. Cobre a maioria das regras, mas omite força no tamanho 10, usa 64 'b' (repetição) e trata 'Aaa' como tripla.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 5.5,
+ "nota_final_10": 8.11,
+ "reexecucao_testes": {
+  "total": 13,
+  "passados": 12,
+  "pct": 92.31
+ },
+ "incoerencias": [],
+ "nota_antiga_avaliacao_json": 8.11,
+ "nota_antiga_com_penalidade": 8.11
+}

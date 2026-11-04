@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.Vou conferir os casos de borda da especificação (Unicode, dígitos, espaços e pontuação) para os testes cobrirem exatamente o contrato.

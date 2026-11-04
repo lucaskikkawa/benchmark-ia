@@ -1,0 +1,1 @@
+Vou ler o enunciado neste diretório e resolver a tarefa aqui, sem perguntas.O enunciado pede um cliente com retry só para falhas transitórias, validação antes de qualquer efeito e backoff exponencial. Vou implementar isso em `cliente.py`.

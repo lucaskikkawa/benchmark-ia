@@ -1,0 +1,36 @@
+{
+ "pasta": "resultados/grok/grok-4.7-high/01-funcao-codex/run-1",
+ "empresa": "grok",
+ "modelo": "grok-4.7",
+ "esforco": "high",
+ "tarefa": "01-funcao-codex",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "timeout",
+ "duracao_agente_s": 180.128,
+ "testes_passados": 0,
+ "testes_total": 2,
+ "pct_testes": 0.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "gemini"
+ ],
+ "juizes": {},
+ "obs": [
+  "timeout: nota 0 (rubrica não julgada)"
+ ],
+ "rubrica_media_10": null,
+ "nota_final_10": 0.0,
+ "reexecucao_testes": {
+  "total": 2,
+  "passados": 0,
+  "pct": 0.0
+ },
+ "incoerencias": [
+  "resultado.json da rodada sobrescreveu o do piloto (commit 98a25b8 'Piloto') no mesmo caminho run-1; o piloto está em resultados/piloto. Benigno, mas o histórico do arquivo mistura duas execuções"
+ ],
+ "nota_antiga_avaliacao_json": 0.0,
+ "nota_antiga_com_penalidade": 0.0
+}

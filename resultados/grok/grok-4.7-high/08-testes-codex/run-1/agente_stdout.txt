@@ -1,1 +1,9 @@
-Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O enunciado pede uma suíte pytest para `carrinho.py`, sem alterar o módulo. Vou ler a API e o código para cobrir o comportamento público e as bordas.
+Vou ler o enunciado neste diretório e resolver a tarefa só com os arquivos daqui.O módulo público já está definido. Vou calcular os casos de borda e escrever uma suíte pytest que cubra o contrato, sem alterar `carrinho.py`.A suíte vai exercer só a API pública: truncamento no total, frete, bordas, inteiros grandes e a lista intacta mesmo quando há erro.A suíte passou no módulo correto. Vou conferir se ela falha em mutações típicas do contrato.A suíte está em `tests/test_carrinho.py` e passa no `carrinho.py` correto: 141 testes em menos de um segundo.
+
+Ela cobre o contrato público de `calcular_total`:
+
+- Desconto aplicado uma vez sobre o bruto, com truncamento para baixo, inclusive quando o corte muda entre linhas ou entre unidades.
+- Frete só entra se a soma das quantidades é positiva, sem desconto. Item grátis paga frete; quantidade zero não.
+- Bordas de desconto (0 e 100), frete zero e rejeição com `ValueError` em carrinho vazio, quantidade zero e linhas depois de uma quantidade zero.
+- A lista recebida permanece a mesma em caso de sucesso e de erro, e chamadas seguidas não se influenciam.
+- Inteiros exatos acima de `2**53`.
