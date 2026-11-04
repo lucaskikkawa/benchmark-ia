@@ -1,5 +1,5 @@
 // Verifica site/index.html (v2: Ranking A 3/5 min e Ranking B 7 min, notas do Avaliador) em 390x844 (Chrome headless)
-// e gera site/site-<aba>.png, site-ranking-b.png e site-ranking-b-nota-ii.png.
+// e gera site/qa/site-<aba>.png, site/qa/site-ranking-b.png e site/qa/site-ranking-b-nota-ii.png.
 // Ranking A tem de ser igual ao de index.prev.html (v1); Ranking B tem de bater com resumo_7min.json.
 // Uso: node site/verificar_site.js
 const { chromium } = require('/node_modules/playwright-core');
@@ -15,7 +15,7 @@ const ok = (c, msg) => { if (!c) falhas.push(msg); console.log((c ? 'âœ” ' : 'âœ
   const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] });
   // ---- referÃªncia: ranking A da v1 (index.prev.html), lido no mesmo Chrome
   const prev = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  await prev.goto('file://' + path.join(DIR, 'index.prev.html')); await prev.waitForTimeout(800);
+  await prev.goto('file://' + path.join(DIR, 'rascunhos/index.prev.html')); await prev.waitForTimeout(800);
   const PREV = await prev.$$eval('#lista .lr:not(.oculto)', els => els.map(e => [e.dataset.me, e.querySelector('.sc b').textContent]));
   await prev.close();
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true });
@@ -30,7 +30,7 @@ const ok = (c, msg) => { if (!c) falhas.push(msg); console.log((c ? 'âœ” ' : 'âœ
   const print = async nome => {
     const h = await page.evaluate(() => document.documentElement.scrollHeight);
     await page.setViewportSize({ width: 390, height: h }); await page.waitForTimeout(250);
-    await page.screenshot({ path: path.join(DIR, nome) });
+    await page.screenshot({ path: path.join(DIR, 'qa', nome) });
     await page.setViewportSize({ width: 390, height: 844 }); await page.waitForTimeout(150);
   };
   const nota = async me => { await page.waitForTimeout(600); return Object.fromEntries(await rank())[me]; };
