@@ -4,7 +4,7 @@ Uso: python scripts/julgar.py <pasta run-N> [...]   (pula se avaliacao.json já 
 """
 import json, pathlib, re, subprocess, sys, tempfile, shutil, os, signal
 import yaml
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "runner"))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import run
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent

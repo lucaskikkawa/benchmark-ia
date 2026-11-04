@@ -71,7 +71,7 @@ def executar(job, dry):
     if dry:
         return
     t0 = time.time()
-    p = subprocess.run([PY, "runner/run.py", "--empresa", empresa, "--modelo", m, "--esforco", e,
+    p = subprocess.run([PY, "scripts/run.py", "--empresa", empresa, "--modelo", m, "--esforco", e,
                         "--tarefa", t, "--run", str(n)], cwd=ROOT, capture_output=True, text=True)
     try:
         r = json.loads(p.stdout[p.stdout.index("{"):])

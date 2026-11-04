@@ -2,7 +2,7 @@
 
 Um único `index.html` (HTML + CSS + JS + dados embutidos, sem CDN obrigatório), mobile-first (base 390 px, cresce até ~1100 px em 2 colunas). Visual de desenho animado: contorno grosso, sombras "carimbadas", um mascote-robô por empresa (cara de terminal `>_`). Tudo que é número é **recalculado no navegador** a partir das execuções brutas, de modo que sliders e toggles mudam o ranking ao vivo.
 
-Mocks de todas as abas (390×844, Chrome headless, números reais de `resultados/`): `mock-ranking`, `mock-comparar`, `mock-esforco`, `mock-tarefas`, `mock-juizes` (`.html` → `.png`), gerados por `site/gerar_mocks.py` (rodar na raiz do repo). O antigo `mock.html`/`mock.png` (mascotes da 1ª versão) ficou obsoleto: `mock-ranking` o substitui.
+Mocks de todas as abas (390×844, Chrome headless, números reais de `resultados/`): `site/rascunhos/mocks/mock-ranking`, `site/rascunhos/mocks/mock-comparar`, `site/rascunhos/mocks/mock-esforco`, `site/rascunhos/mocks/mock-tarefas`, `site/rascunhos/mocks/mock-juizes` (`.html` → `.png`), gerados por `site/rascunhos/mocks/gerar_mocks.py` (rodar na raiz do repo). O antigo `site/rascunhos/mocks/mock.html`/`site/rascunhos/mocks/mock.png` (mascotes da 1ª versão) ficou obsoleto: `site/rascunhos/mocks/mock-ranking` o substitui.
 
 ---
 

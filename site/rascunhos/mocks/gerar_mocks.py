@@ -1,7 +1,7 @@
 """Gera os mocks estáticos (390x844) de cada aba a partir de resultados/ (mesma fórmula de rodada_relatorio.py).
 
-Uso (na raiz do repo): python3 site/gerar_mocks.py  → site/mock-<aba>.html
-Render: google-chrome --headless --window-size=390,844 --screenshot=site/mock-<aba>.png site/mock-<aba>.html
+Uso (na raiz do repo): python3 site/rascunhos/mocks/gerar_mocks.py  → site/rascunhos/mocks/mock-<aba>.html
+Render: google-chrome --headless --window-size=390,844 --screenshot=site/rascunhos/mocks/mock-<aba>.png site/rascunhos/mocks/mock-<aba>.html
 """
 import json, glob, os, math, statistics as S, collections as C
 
@@ -429,5 +429,5 @@ def aba_juizes():
 if __name__ == '__main__':
     for nome, fn in [('ranking', aba_ranking), ('comparar', aba_comparar), ('esforco', aba_esforco),
                      ('tarefas', aba_tarefas), ('juizes', aba_juizes)]:
-        open(f'site/mock-{nome}.html', 'w').write(fn())
-        print('site/mock-%s.html' % nome)
+        open(f'site/rascunhos/mocks/mock-{nome}.html', 'w').write(fn())
+        print('site/rascunhos/mocks/mock-%s.html' % nome)
