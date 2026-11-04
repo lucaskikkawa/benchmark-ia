@@ -1,7 +1,6 @@
-"""Solução para contagem de subarrays com soma exata e comprimento limitado."""
+"""Módulo com a função contar_subarrays_soma."""
 
-from collections import defaultdict
-from itertools import accumulate
+from __future__ import annotations
 
 
 def contar_subarrays_soma(
@@ -12,47 +11,64 @@ def contar_subarrays_soma(
 ) -> int:
     """Conta quantos subarrays contíguos não vazios de nums têm soma igual a k
 
-    e comprimento no intervalo [comprimento_min, comprimento_max].
-
-    Args:
-        nums: Lista de inteiros.
-        k: Soma alvo procurada.
-        comprimento_min: Comprimento mínimo do subarray (padrão 1).
-        comprimento_max: Comprimento máximo do subarray (None para ilimitado).
-
-    Returns:
-        Número de subarrays que satisfazem os critérios.
-
-    Raises:
-        ValueError: Se comprimento_min < 1 ou comprimento_max < 1 (se informado).
+    e comprimento entre comprimento_min e comprimento_max (inclusive).
     """
-    if comprimento_min < 1:
+    if isinstance(comprimento_min, bool) or not isinstance(comprimento_min, (int, float)) or comprimento_min < 1:
         raise ValueError("comprimento_min deve ser >= 1")
-    if comprimento_max is not None and comprimento_max < 1:
-        raise ValueError("comprimento_max deve ser >= 1")
+    if isinstance(comprimento_min, float):
+        if not comprimento_min.is_integer():
+            raise ValueError("comprimento_min deve ser um inteiro")
+        comprimento_min = int(comprimento_min)
+
+    if comprimento_max is not None:
+        if isinstance(comprimento_max, bool) or not isinstance(comprimento_max, (int, float)) or comprimento_max < 1:
+            raise ValueError("comprimento_max deve ser >= 1")
+        if comprimento_max == float("inf"):
+            comprimento_max = None
+        elif isinstance(comprimento_max, float):
+            if not comprimento_max.is_integer():
+                raise ValueError("comprimento_max deve ser um inteiro")
+            comprimento_max = int(comprimento_max)
+
+    if comprimento_max is not None and comprimento_min > comprimento_max:
+        return 0
 
     n = len(nums)
     if comprimento_min > n:
         return 0
-    if comprimento_max is not None and comprimento_min > comprimento_max:
-        return 0
 
-    # Prefix sums: P[j] = sum(nums[:j])
-    P = list(accumulate(nums, initial=0))
-    freq: defaultdict[int, int] = defaultdict(int)
+    # Prefix sums: P[x] = sum(nums[0:x]), P[0] = 0
+    # A subarray nums[i:j] (comprimento j - i) tem soma P[j] - P[i] == k <=> P[i] == P[j] - k.
+    P = [0] * (n + 1)
+    s = 0
+    for i, x in enumerate(nums):
+        s += x
+        P[i + 1] = s
+
+    freq: dict[int, int] = {}
     ans = 0
 
-    if comprimento_max is None or comprimento_max >= n:
+    if comprimento_max is None:
         for j in range(comprimento_min, n + 1):
-            freq[P[j - comprimento_min]] += 1
-            ans += freq[P[j] - k]
+            add_val = P[j - comprimento_min]
+            freq[add_val] = freq.get(add_val, 0) + 1
+            ans += freq.get(P[j] - k, 0)
     else:
-        for j in range(comprimento_min, comprimento_max + 1):
-            freq[P[j - comprimento_min]] += 1
-            ans += freq[P[j] - k]
-        for j in range(comprimento_max + 1, n + 1):
-            freq[P[j - comprimento_min]] += 1
-            freq[P[j - comprimento_max - 1]] -= 1
-            ans += freq[P[j] - k]
+        split_point = min(n, comprimento_max)
+        for j in range(comprimento_min, split_point + 1):
+            add_val = P[j - comprimento_min]
+            freq[add_val] = freq.get(add_val, 0) + 1
+            ans += freq.get(P[j] - k, 0)
+
+        for j in range(split_point + 1, n + 1):
+            add_val = P[j - comprimento_min]
+            freq[add_val] = freq.get(add_val, 0) + 1
+            rem_val = P[j - comprimento_max - 1]
+            c = freq[rem_val]
+            if c == 1:
+                del freq[rem_val]
+            else:
+                freq[rem_val] = c - 1
+            ans += freq.get(P[j] - k, 0)
 
     return ans

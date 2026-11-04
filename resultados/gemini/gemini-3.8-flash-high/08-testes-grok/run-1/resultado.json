@@ -6,11 +6,11 @@
   "run": 1,
   "status": "timeout",
   "exit_code": -9,
-  "duracao_agente_s": 180.094,
+  "duracao_agente_s": 420.051,
   "testes_total": 15,
-  "testes_passados": 14,
-  "pct_passados": 93.33333333333333,
-  "inicio_iso": "2026-10-29T20:30:38.806116-03:00",
+  "testes_passados": 15,
+  "pct_passados": 100.0,
+  "inicio_iso": "2026-11-04T06:24:02.432398-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-pvbdzwxu",
-    "/tmp/bench-pvbdzwxu",
+    "/tmp/bench-q34eta46",
+    "/tmp/bench-q34eta46",
     "--chdir",
-    "/tmp/bench-pvbdzwxu",
+    "/tmp/bench-q34eta46",
     "--setenv",
     "HOME",
     "/home/box",
@@ -106,5 +106,6 @@
     "--model",
     "gemini-3.8-flash-high",
     "--dangerously-skip-permissions"
-  ]
+  ],
+  "timeout_s": 420
 }

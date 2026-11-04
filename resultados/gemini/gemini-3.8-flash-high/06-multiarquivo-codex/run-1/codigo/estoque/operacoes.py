@@ -1,22 +1,23 @@
+from collections.abc import Iterable, Mapping
 from .modelos import Movimento
 
-__all__ = ['calcular_saldos']
 
-
-def calcular_saldos(movimentos, iniciais=None) -> dict[str, int]:
+def calcular_saldos(
+    movimentos: Iterable[Movimento],
+    iniciais: Mapping[str, int] | None = None,
+) -> dict[str, int]:
     saldos = dict(iniciais) if iniciais is not None else {}
+
     for sku, saldo in saldos.items():
         if saldo < 0:
-            raise ValueError(
-                f"Saldo inicial não pode ser negativo para o SKU '{sku}': {saldo}"
-            )
+            raise ValueError(f"Saldo inicial negativo para o SKU {sku!r}: {saldo}")
 
-    for m in movimentos:
-        novo_saldo = saldos.get(m.sku, 0) + m.delta
-        if novo_saldo < 0:
+    for mov in movimentos:
+        saldo = saldos.get(mov.sku, 0) + mov.delta
+        if saldo < 0:
             raise ValueError(
-                f"Saldo não pode ser negativo para o SKU '{m.sku}': {novo_saldo}"
+                f"Saldo intermediário negativo para o SKU {mov.sku!r}: {saldo}"
             )
-        saldos[m.sku] = novo_saldo
+        saldos[mov.sku] = saldo
 
     return saldos

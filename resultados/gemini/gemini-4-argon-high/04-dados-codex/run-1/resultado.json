@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "04-dados-codex",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 180.12,
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 347.351,
   "testes_total": 47,
   "testes_passados": 47,
   "pct_passados": 100.0,
-  "inicio_iso": "2026-10-30T01:08:21.491034-03:00",
+  "inicio_iso": "2026-11-04T16:52:10.707848-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-qiybcvya",
-    "/tmp/bench-qiybcvya",
+    "/tmp/bench-p0rvysua",
+    "/tmp/bench-p0rvysua",
     "--chdir",
-    "/tmp/bench-qiybcvya",
+    "/tmp/bench-p0rvysua",
     "--setenv",
     "HOME",
     "/home/box",
@@ -106,5 +106,6 @@
     "--model",
     "gemini-4-argon-high",
     "--dangerously-skip-permissions"
-  ]
+  ],
+  "timeout_s": 420
 }

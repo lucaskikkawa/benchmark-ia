@@ -1,0 +1,8 @@
+A tarefa foi concluída com a criação do arquivo [`solucao.py`](file:///tmp/bench-hcugsnym/solucao.py) contendo a função [`parse_duracao`](file:///tmp/bench-hcugsnym/solucao.py#L32-L78).
+
+### Detalhes da implementação:
+- **Validação de tipos**: Valida se a entrada é instância de `str` (incluindo subclasses), levantando `TypeError` caso contrário.
+- **Parsing e unidades**: Reconhece os componentes `<inteiro><unidade>` com unidades `w` (604800 s), `d` (86400 s), `h` (3600 s), `m` (60 s) e `s` (1 s), maiúsculas ou minúsculas, garantindo a ordem estrita `w < d < h < m < s` e ausência de repetições.
+- **Formatação e espaços**: Suporta componentes colados (`1h30m`) ou separados por espaços em branco (`1h 30m`, `1h\t30m`), ignorando espaços no início/fim e rejeitando espaços entre o número e a unidade (`1 h`).
+- **Suporte a inteiros arbitrários**: Utiliza divisão e conquista para conversão exata de números com milhares de dígitos sem violar o limite padrão de dígitos do Python 3.11+.
+- **Desempenho linear**: Processamento via regex compilada com quantificadores possessivos (`++`), evitando retrocesso (*backtracking*) e processando entradas de ~1 MB em milissegundos.

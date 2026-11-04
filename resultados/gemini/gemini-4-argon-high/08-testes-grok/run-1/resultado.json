@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "08-testes-grok",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 180.094,
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 265.106,
   "testes_total": 15,
   "testes_passados": 15,
   "pct_passados": 100.0,
-  "inicio_iso": "2026-10-30T01:16:03.050329-03:00",
+  "inicio_iso": "2026-11-04T17:34:09.204461-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-8mnvlwqz",
-    "/tmp/bench-8mnvlwqz",
+    "/tmp/bench-c3cnpgze",
+    "/tmp/bench-c3cnpgze",
     "--chdir",
-    "/tmp/bench-8mnvlwqz",
+    "/tmp/bench-c3cnpgze",
     "--setenv",
     "HOME",
     "/home/box",
@@ -106,5 +106,6 @@
     "--model",
     "gemini-4-argon-high",
     "--dangerously-skip-permissions"
-  ]
+  ],
+  "timeout_s": 420
 }

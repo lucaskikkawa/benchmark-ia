@@ -4,13 +4,13 @@
   "esforco": "medium",
   "tarefa": "01-funcao-claude",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 180.126,
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 124.996,
   "testes_total": 23,
   "testes_passados": 23,
   "pct_passados": 100.0,
-  "inicio_iso": "2026-10-29T20:44:51.264752-03:00",
+  "inicio_iso": "2026-11-04T06:44:16.539416-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-x2a7o58y",
-    "/tmp/bench-x2a7o58y",
+    "/tmp/bench-xnagv5gm",
+    "/tmp/bench-xnagv5gm",
     "--chdir",
-    "/tmp/bench-x2a7o58y",
+    "/tmp/bench-xnagv5gm",
     "--setenv",
     "HOME",
     "/home/box",
@@ -106,5 +106,6 @@
     "--model",
     "gemini-4-argon-medium",
     "--dangerously-skip-permissions"
-  ]
+  ],
+  "timeout_s": 420
 }

@@ -1,0 +1,15 @@
+A implementação solicitada foi concluída no arquivo [cli.py](file:///tmp/bench-xanp7kcl/cli.py).
+
+### O que foi implementado:
+- **CLI com `argparse`**: recebe o argumento posicional `ARQUIVO` e as opções `--minimo`, `--top`, `--ignorar-caixa`, `--json`, `-h`/`--help`.
+- **Função `main(argv=None) -> int`**: exposta diretamente, delegando a `sys.argv[1:]` quando `argv=None`, retornando `0` em caso de sucesso e `2` em erros.
+- **Leitura e Tokenização**: leitura em UTF-8 usando `str.split()`, preservando pontuação, espaços de largura zero e distinção entre caracteres Unicode compostos e decompostos sem normalizações extras.
+- **Tratamento de flags e ordenação**:
+  - `--ignorar-caixa`: aplica `str.casefold()` nos tokens antes da contagem com `collections.Counter`.
+  - `--minimo`: filtra tokens com contagem mínima informada (padrão 1).
+  - Ordenação por contagem decrescente e, em caso de empate, por palavra em ordem lexicográfica padrão de strings.
+  - `--top`: limita aos primeiros $N$ resultados após a ordenação.
+- **Formatação de saída**:
+  - Padrão: linhas no formato `PALAVRA\tCONTAGEM\n`; stdout vazio caso não haja resultados.
+  - JSON: lista de dicionários `{"palavra": str, "contagem": int}` em uma linha única finalizada com quebra de linha, preservando acentos (`ensure_ascii=False`) e emitindo `[]\n` caso não haja resultados.
+- **Tratamento de erros (código 2)**: arquivo ausente/ilegível, UTF-8 inválido, argumentos obrigatórios ausentes, flags desconhecidas ou valores inválidos para `--minimo` e `--top` geram stdout vazio, mensagem no stderr e nenhum traceback.

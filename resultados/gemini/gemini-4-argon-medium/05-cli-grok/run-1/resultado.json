@@ -4,13 +4,13 @@
   "esforco": "medium",
   "tarefa": "05-cli-grok",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 300.148,
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 141.129,
   "testes_total": 15,
   "testes_passados": 15,
   "pct_passados": 100.0,
-  "inicio_iso": "2026-10-29T20:52:07.201117-03:00",
+  "inicio_iso": "2026-11-04T06:44:16.548528-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-t95reakn",
-    "/tmp/bench-t95reakn",
+    "/tmp/bench-nby5fvnw",
+    "/tmp/bench-nby5fvnw",
     "--chdir",
-    "/tmp/bench-t95reakn",
+    "/tmp/bench-nby5fvnw",
     "--setenv",
     "HOME",
     "/home/box",
@@ -106,5 +106,6 @@
     "--model",
     "gemini-4-argon-medium",
     "--dangerously-skip-permissions"
-  ]
+  ],
+  "timeout_s": 420
 }

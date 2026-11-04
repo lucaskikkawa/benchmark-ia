@@ -1,0 +1,14 @@
+A tarefa descrita em [enunciado.md](file:///tmp/bench-ovpl9d0g/enunciado.md) foi implementada no arquivo [solucao.py](file:///tmp/bench-ovpl9d0g/solucao.py).
+
+### O que foi implementado:
+- **`horas_livres`**: função em [solucao.py](file:///tmp/bench-ovpl9d0g/solucao.py#L49-L117) que calcula os intervalos livres dentro da janela semiaberta `[inicio, fim)`.
+- **Validação de tipos e formato**:
+  - Exige `ocupados` como `list` e cada elemento como `tuple` ou `list` de duas strings.
+  - Valida formato estrito de horários (`HH:MM`, 5 caracteres, dígitos ASCII `0-9`, minutos de 00 a 59, horas de 00 a 23 e aceitando `24:00`).
+  - Lança `TypeError` para tipos incorretos e `ValueError` para formatos inválidos ou `ini > fim` (mesmo para intervalos fora da janela ou de duração zero).
+  - Ignora intervalos com `ini == fim` válidos.
+- **Processamento de intervalos**:
+  - Preserva os objetos e listas de entrada sem mutação.
+  - Recorta os intervalos para a janela e descarta os que ficam inteiramente fora.
+  - Unifica intervalos sobrepostos ou adjacentes pós-recorte de forma transitiva.
+  - Constrói a lista ordenada de intervalos livres, formatando 1440 minutos como `"24:00"`.

@@ -3,7 +3,7 @@ import datetime
 
 
 class BibliotecaErro(Exception):
-    """Exceção base para erros do pacote biblioteca."""
+    """Exceção base do pacote biblioteca."""
 
 
 class LivroNaoEncontrado(BibliotecaErro):
@@ -11,7 +11,7 @@ class LivroNaoEncontrado(BibliotecaErro):
 
 
 class LivroIndisponivel(BibliotecaErro):
-    """Livro já se encontra emprestado."""
+    """Livro já está emprestado."""
 
 
 class LimiteEmprestimos(BibliotecaErro):
@@ -19,7 +19,7 @@ class LimiteEmprestimos(BibliotecaErro):
 
 
 class EmprestimoNaoEncontrado(BibliotecaErro):
-    """Não há empréstimo ativo para o livro informado."""
+    """Empréstimo ativo não encontrado para o livro."""
 
 
 class RenovacaoNegada(BibliotecaErro):
@@ -33,11 +33,15 @@ class Livro:
     autor: str
 
     def __post_init__(self) -> None:
-        for nome, valor in (("isbn", self.isbn), ("titulo", self.titulo), ("autor", self.autor)):
+        for nome_campo, valor in (
+            ("isbn", self.isbn),
+            ("titulo", self.titulo),
+            ("autor", self.autor),
+        ):
             if not isinstance(valor, str):
-                raise TypeError(f"O campo '{nome}' deve ser uma str.")
+                raise TypeError(f"{nome_campo} deve ser str")
             if not valor.strip():
-                raise ValueError(f"O campo '{nome}' não pode ser vazio ou conter apenas espaços.")
+                raise ValueError(f"{nome_campo} não pode ser vazio")
 
 
 @dataclass(frozen=True)

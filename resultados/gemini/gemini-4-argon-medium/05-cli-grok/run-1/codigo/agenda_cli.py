@@ -2,12 +2,7 @@ import argparse
 import datetime
 import json
 import os
-import re
 import sys
-
-PRIORIDADES = ("baixa", "media", "alta")
-ORDEM_PRIORIDADE = {"alta": 0, "media": 1, "baixa": 2}
-DATE_RE = re.compile(r"\A[0-9]{4}-[0-9]{2}-[0-9]{2}\Z")
 
 
 def erro(msg: str) -> None:
@@ -15,21 +10,30 @@ def erro(msg: str) -> None:
     sys.exit(2)
 
 
-def validar_prazo(valor: str) -> bool:
-    if type(valor) is not str or not DATE_RE.match(valor):
+def validar_prazo(valor: object) -> bool:
+    if type(valor) is not str:
         return False
-    ano = int(valor[0:4])
-    mes = int(valor[5:7])
-    dia = int(valor[8:10])
+    if len(valor) != 10 or valor[4] != "-" or valor[7] != "-":
+        return False
+    ano_s, mes_s, dia_s = valor[0:4], valor[5:7], valor[8:10]
+    if not (
+        ano_s.isascii()
+        and ano_s.isdigit()
+        and mes_s.isascii()
+        and mes_s.isdigit()
+        and dia_s.isascii()
+        and dia_s.isdigit()
+    ):
+        return False
     try:
-        datetime.date(ano, mes, dia)
+        datetime.date(int(ano_s), int(mes_s), int(dia_s))
     except ValueError:
         return False
     return True
 
 
-def _sem_chaves_duplicadas(pares):
-    obj = {}
+def _sem_chaves_duplicadas(pares: list[tuple[str, object]]) -> dict[str, object]:
+    obj: dict[str, object] = {}
     for k, v in pares:
         if k in obj:
             raise ValueError("chave duplicada")
@@ -37,28 +41,29 @@ def _sem_chaves_duplicadas(pares):
     return obj
 
 
-def validar_dados(dados) -> bool:
+def validar_dados(dados: object) -> dict[str, object]:
     if type(dados) is not dict:
-        return False
+        erro("arquivo invalido")
     if set(dados.keys()) != {"proximo_id", "tarefas"}:
-        return False
+        erro("arquivo invalido")
 
     proximo_id = dados["proximo_id"]
     tarefas = dados["tarefas"]
 
     if type(proximo_id) is not int or proximo_id < 1:
-        return False
+        erro("arquivo invalido")
     if type(tarefas) is not list:
-        return False
+        erro("arquivo invalido")
 
-    ids_vistos = set()
+    ids_vistos: set[int] = set()
+    tarefas_normalizadas: list[dict[str, object]] = []
     chaves_esperadas = {"id", "titulo", "prioridade", "prazo", "concluida"}
 
     for t in tarefas:
         if type(t) is not dict:
-            return False
+            erro("arquivo invalido")
         if set(t.keys()) != chaves_esperadas:
-            return False
+            erro("arquivo invalido")
 
         tid = t["id"]
         titulo = t["titulo"]
@@ -66,36 +71,52 @@ def validar_dados(dados) -> bool:
         prazo = t["prazo"]
         concluida = t["concluida"]
 
-        if type(tid) is not int or tid < 1 or tid >= proximo_id or tid in ids_vistos:
-            return False
+        if type(tid) is not int or tid < 1 or tid in ids_vistos:
+            erro("arquivo invalido")
         ids_vistos.add(tid)
 
-        if type(titulo) is not str or len(titulo) == 0:
-            return False
-        if titulo != titulo.strip():
-            return False
+        if type(titulo) is not str:
+            erro("arquivo invalido")
+        if not titulo or titulo != titulo.strip():
+            erro("arquivo invalido")
         if "\n" in titulo or "\r" in titulo or "\t" in titulo:
-            return False
+            erro("arquivo invalido")
 
-        if type(prioridade) is not str or prioridade not in PRIORIDADES:
-            return False
+        if type(prioridade) is not str or prioridade not in ("baixa", "media", "alta"):
+            erro("arquivo invalido")
 
         if prazo is not None and not validar_prazo(prazo):
-            return False
+            erro("arquivo invalido")
 
         if type(concluida) is not bool:
-            return False
+            erro("arquivo invalido")
 
-    return True
+        tarefas_normalizadas.append(
+            {
+                "id": tid,
+                "titulo": titulo,
+                "prioridade": prioridade,
+                "prazo": prazo,
+                "concluida": concluida,
+            }
+        )
+
+    if ids_vistos and proximo_id <= max(ids_vistos):
+        erro("arquivo invalido")
+
+    return {
+        "proximo_id": proximo_id,
+        "tarefas": tarefas_normalizadas,
+    }
 
 
-def ler_arquivo(caminho: str, exigir_existente: bool):
-    if not os.path.lexists(caminho):
-        if exigir_existente:
+def carregar_arquivo(caminho: str, obrigatorio: bool) -> dict[str, object]:
+    if not os.path.exists(caminho):
+        if obrigatorio:
             erro("arquivo inexistente")
         return {"proximo_id": 1, "tarefas": []}
 
-    if os.path.isdir(caminho):
+    if not os.path.isfile(caminho):
         erro("arquivo invalido")
 
     try:
@@ -105,38 +126,33 @@ def ler_arquivo(caminho: str, exigir_existente: bool):
     except Exception:
         erro("arquivo invalido")
 
-    if not validar_dados(dados):
-        erro("arquivo invalido")
-
-    return dados
+    return validar_dados(dados)
 
 
-def salvar_arquivo(caminho: str, dados: dict) -> None:
-    tarefas_ordenadas_chaves = [
-        {
-            "id": t["id"],
-            "titulo": t["titulo"],
-            "prioridade": t["prioridade"],
-            "prazo": t["prazo"],
-            "concluida": t["concluida"],
-        }
-        for t in dados["tarefas"]
-    ]
+def salvar_arquivo(caminho: str, dados: dict[str, object]) -> None:
+    parent = os.path.dirname(caminho)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
     saida = {
         "proximo_id": dados["proximo_id"],
-        "tarefas": tarefas_ordenadas_chaves,
+        "tarefas": [
+            {
+                "id": t["id"],
+                "titulo": t["titulo"],
+                "prioridade": t["prioridade"],
+                "prazo": t["prazo"],
+                "concluida": t["concluida"],
+            }
+            for t in dados["tarefas"]
+        ],
     }
     texto = json.dumps(saida, indent=2, ensure_ascii=False) + "\n"
     with open(caminho, "w", encoding="utf-8") as f:
         f.write(texto)
 
 
-def cmd_adicionar(args) -> None:
-    # Se o arquivo já existe, valida antes para garantir erro: arquivo invalido
-    # se for inválido (e não alterar o arquivo de forma alguma).
-    dados = None
-    if os.path.lexists(args.arquivo):
-        dados = ler_arquivo(args.arquivo, exigir_existente=True)
+def cmd_adicionar(args: argparse.Namespace) -> None:
+    dados = carregar_arquivo(args.arquivo, obrigatorio=False)
 
     titulo = args.titulo.strip()
     if not titulo:
@@ -148,11 +164,7 @@ def cmd_adicionar(args) -> None:
     if prazo is not None and not validar_prazo(prazo):
         erro("prazo invalido")
 
-    if dados is None:
-        dados = {"proximo_id": 1, "tarefas": []}
-
     novo_id = dados["proximo_id"]
-    dados["proximo_id"] = novo_id + 1
     dados["tarefas"].append(
         {
             "id": novo_id,
@@ -162,13 +174,14 @@ def cmd_adicionar(args) -> None:
             "concluida": False,
         }
     )
+    dados["proximo_id"] = novo_id + 1
 
     salvar_arquivo(args.arquivo, dados)
     sys.stdout.write(f"ok id={novo_id}\n")
 
 
-def cmd_listar(args) -> None:
-    dados = ler_arquivo(args.arquivo, exigir_existente=True)
+def cmd_listar(args: argparse.Namespace) -> None:
+    dados = carregar_arquivo(args.arquivo, obrigatorio=True)
     tarefas = dados["tarefas"]
 
     if args.prioridade is not None:
@@ -176,20 +189,22 @@ def cmd_listar(args) -> None:
     if args.somente_abertas:
         tarefas = [t for t in tarefas if not t["concluida"]]
 
-    tarefas.sort(key=lambda t: (ORDEM_PRIORIDADE[t["prioridade"]], t["id"]))
+    ordem_prioridade = {"alta": 0, "media": 1, "baixa": 2}
+    tarefas_ordenadas = sorted(
+        tarefas,
+        key=lambda t: (ordem_prioridade[t["prioridade"]], t["id"]),
+    )
 
-    linhas = []
-    for t in tarefas:
+    for t in tarefas_ordenadas:
         estado = "concluida" if t["concluida"] else "aberta"
-        prazo = "-" if t["prazo"] is None else t["prazo"]
-        linhas.append(f"{t['id']}\t{t['prioridade']}\t{estado}\t{prazo}\t{t['titulo']}\n")
+        prazo = t["prazo"] if t["prazo"] is not None else "-"
+        sys.stdout.write(
+            f"{t['id']}\t{t['prioridade']}\t{estado}\t{prazo}\t{t['titulo']}\n"
+        )
 
-    if linhas:
-        sys.stdout.write("".join(linhas))
 
-
-def cmd_concluir(args) -> None:
-    dados = ler_arquivo(args.arquivo, exigir_existente=True)
+def cmd_concluir(args: argparse.Namespace) -> None:
+    dados = carregar_arquivo(args.arquivo, obrigatorio=True)
     alvo = None
     for t in dados["tarefas"]:
         if t["id"] == args.id:
@@ -206,33 +221,39 @@ def cmd_concluir(args) -> None:
     sys.stdout.write(f"ok id={alvo['id']}\n")
 
 
-def criar_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="agenda_cli.py", allow_abbrev=False)
+def construir_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog="agenda_cli.py")
     subparsers = parser.add_subparsers(dest="subcomando", required=True)
 
-    p_add = subparsers.add_parser("adicionar", allow_abbrev=False)
-    p_add.add_argument("--titulo", required=True, type=str)
-    p_add.add_argument("--prioridade", required=True, choices=PRIORIDADES)
-    p_add.add_argument("--prazo", required=False, default=None, type=str)
-    p_add.add_argument("--arquivo", required=True, type=str)
+    p_add = subparsers.add_parser("adicionar")
+    p_add.add_argument("--titulo", required=True)
+    p_add.add_argument(
+        "--prioridade", required=True, choices=["baixa", "media", "alta"]
+    )
+    p_add.add_argument("--prazo", default=None)
+    p_add.add_argument("--arquivo", required=True)
     p_add.set_defaults(func=cmd_adicionar)
 
-    p_list = subparsers.add_parser("listar", allow_abbrev=False)
-    p_list.add_argument("--arquivo", required=True, type=str)
-    p_list.add_argument("--prioridade", required=False, default=None, choices=PRIORIDADES)
+    p_list = subparsers.add_parser("listar")
+    p_list.add_argument("--arquivo", required=True)
+    p_list.add_argument("--prioridade", default=None, choices=["baixa", "media", "alta"])
     p_list.add_argument("--somente-abertas", action="store_true")
     p_list.set_defaults(func=cmd_listar)
 
-    p_done = subparsers.add_parser("concluir", allow_abbrev=False)
+    p_done = subparsers.add_parser("concluir")
     p_done.add_argument("--id", required=True, type=int)
-    p_done.add_argument("--arquivo", required=True, type=str)
-    p_done.set_defaults(func=cmd_concluir)
+    p_done.add_argument("--arquivo", required=True)
+    p_done.set_defaults(func=cmd_done_wrapper)
 
     return parser
 
 
+def cmd_done_wrapper(args: argparse.Namespace) -> None:
+    cmd_concluir(args)
+
+
 def main() -> None:
-    parser = criar_parser()
+    parser = construir_parser()
     args = parser.parse_args()
     args.func(args)
 

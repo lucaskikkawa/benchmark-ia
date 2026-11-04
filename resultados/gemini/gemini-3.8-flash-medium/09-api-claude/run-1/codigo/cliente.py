@@ -1,8 +1,9 @@
-"""Cliente com retry, backoff e timeout para API de usuários simulada."""
+"""Cliente HTTP com retry, backoff e timeout para API de usuários simulada."""
+
+from __future__ import annotations
 
 import math
 import time
-from typing import Any
 
 from fake_api import ErroConexao, TempoEsgotado
 
@@ -12,83 +13,88 @@ STATUS_RETENTAVEIS = {429, 500, 502, 503, 504}
 class ErroAPI(Exception):
     """Base dos erros do cliente."""
 
-    def __init__(self, *args, status: int | None = None):
-        if status is None and len(args) >= 2 and isinstance(args[-1], int) and not isinstance(args[-1], bool):
-            status = args[-1]
-        super().__init__(*args)
-        if status is not None:
-            self.status = status
+    def __init__(self, *args, status: int | None = None, **kwargs):
+        if status is None and len(args) > 1 and isinstance(args[1], int) and not isinstance(args[1], bool):
+            status = args[1]
+            args = (args[0],)
+        elif status is None and len(args) == 1 and isinstance(args[0], int) and not isinstance(args[0], bool):
+            status = args[0]
+        super().__init__(*args, **kwargs)
+        self.status = status
 
 
 class NaoEncontrado(ErroAPI):
     """Recurso inexistente (404)."""
 
-    def __init__(self, *args, status: int = 404):
-        super().__init__(*args, status=status)
+    def __init__(self, *args, status: int | None = None, **kwargs):
+        if status is None:
+            for arg in args:
+                if isinstance(arg, int) and not isinstance(arg, bool):
+                    status = arg
+                    break
+            if status is None:
+                status = 404
+        super().__init__(*args, status=status, **kwargs)
 
 
 class FalhaPermanente(ErroAPI):
-    """Desistência das tentativas do cliente."""
+    """Desistiu das tentativas; possui o atributo .tentativas: int."""
 
-    def __init__(
-        self,
-        *args,
-        tentativas: int | None = None,
-        status: int | None = None,
-    ):
+    def __init__(self, *args, tentativas: int | None = None, status: int | None = None, **kwargs):
         if tentativas is None:
-            if len(args) >= 2 and isinstance(args[1], int) and not isinstance(args[1], bool):
-                tentativas = args[1]
-            elif len(args) == 1 and isinstance(args[0], int) and not isinstance(args[0], bool):
-                tentativas = args[0]
-            else:
+            for arg in args:
+                if isinstance(arg, int) and not isinstance(arg, bool):
+                    tentativas = arg
+                    break
+            if tentativas is None:
                 tentativas = 0
-        super().__init__(*args, status=status)
+        super().__init__(*args, status=status, **kwargs)
         self.tentativas = tentativas
 
 
 def _calcular_backoff(backoff_base: float, backoff_max: float, n: int) -> float:
-    """Calcula min(backoff_max, backoff_base * 2 ** (n - 1)) sem overflow."""
-    if backoff_base <= 0:
-        return 0.0
-    exp = n - 1
-    if exp <= 0:
-        return min(float(backoff_max), float(backoff_base))
+    if backoff_base == 0:
+        return min(float(backoff_max), 0.0)
+    if n - 1 > 1050:
+        return float(backoff_max)
     try:
-        val = math.ldexp(float(backoff_base), exp)
+        val = backoff_base * (2 ** (n - 1))
+        return min(float(backoff_max), float(val))
     except OverflowError:
-        val = float("inf")
-    return min(float(backoff_max), val)
+        return float(backoff_max)
 
 
-def _extrair_retry_after(headers: Any) -> float | None:
-    """Extrai e valida valor de Retry-After dos headers."""
-    if headers is None:
+def _extrair_retry_after(headers) -> float | None:
+    if not headers:
         return None
-    items = None
+    val_raw = None
     if hasattr(headers, "items"):
-        items = headers.items()
+        for k, v in headers.items():
+            if isinstance(k, str) and k.lower() == "retry-after":
+                val_raw = v
+                break
     elif isinstance(headers, (list, tuple)):
-        items = headers
-    if items is None:
+        for item in headers:
+            if isinstance(item, (list, tuple)) and len(item) == 2:
+                k, v = item
+                if isinstance(k, str) and k.lower() == "retry-after":
+                    val_raw = v
+                    break
+    elif hasattr(headers, "get"):
+        val_raw = headers.get("retry-after") or headers.get("Retry-After")
+
+    if val_raw is None or isinstance(val_raw, bool):
         return None
 
-    for item in items:
-        try:
-            k, v = item
-        except (ValueError, TypeError):
-            continue
-        if isinstance(k, str) and k.lower() == "retry-after":
-            if isinstance(v, bool):
-                return None
-            try:
-                val = float(v)
-                if math.isfinite(val) and val >= 0:
-                    return val
-                return None
-            except (ValueError, TypeError, OverflowError):
-                return None
-    return None
+    try:
+        val = float(val_raw)
+    except (ValueError, TypeError):
+        return None
+
+    if not math.isfinite(val) or val < 0:
+        return None
+
+    return val
 
 
 class ClienteAPI:
@@ -103,114 +109,109 @@ class ClienteAPI:
         orcamento_espera: float | None = None,
     ):
         if isinstance(max_tentativas, bool) or not isinstance(max_tentativas, int) or max_tentativas < 1:
-            raise ValueError(f"max_tentativas deve ser um inteiro >= 1: {max_tentativas!r}")
-        if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or math.isnan(timeout) or timeout <= 0:
-            raise ValueError(f"timeout deve ser um número > 0: {timeout!r}")
-        if (
-            isinstance(backoff_base, bool)
-            or not isinstance(backoff_base, (int, float))
-            or math.isnan(backoff_base)
-            or backoff_base < 0
-        ):
-            raise ValueError(f"backoff_base deve ser um número >= 0: {backoff_base!r}")
-        if (
-            isinstance(backoff_max, bool)
-            or not isinstance(backoff_max, (int, float))
-            or math.isnan(backoff_max)
-            or backoff_max < 0
-        ):
-            raise ValueError(f"backoff_max deve ser um número >= 0: {backoff_max!r}")
+            raise ValueError("max_tentativas deve ser um inteiro >= 1")
+
+        if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or timeout <= 0 or math.isnan(timeout):
+            raise ValueError("timeout deve ser > 0")
+
+        if isinstance(backoff_base, bool) or not isinstance(backoff_base, (int, float)) or backoff_base < 0 or math.isnan(backoff_base):
+            raise ValueError("backoff_base deve ser >= 0")
+
+        if isinstance(backoff_max, bool) or not isinstance(backoff_max, (int, float)) or backoff_max < 0 or math.isnan(backoff_max):
+            raise ValueError("backoff_max deve ser >= 0")
+
         if orcamento_espera is not None:
-            if (
-                isinstance(orcamento_espera, bool)
-                or not isinstance(orcamento_espera, (int, float))
-                or math.isnan(orcamento_espera)
-                or orcamento_espera < 0
-            ):
-                raise ValueError(f"orcamento_espera deve ser um número >= 0 ou None: {orcamento_espera!r}")
+            if isinstance(orcamento_espera, bool) or not isinstance(orcamento_espera, (int, float)) or orcamento_espera < 0 or math.isnan(orcamento_espera):
+                raise ValueError("orcamento_espera deve ser >= 0 ou None")
 
         self.api = api
         self.max_tentativas = max_tentativas
-        self.backoff_base = backoff_base
-        self.backoff_max = backoff_max
-        self.timeout = timeout
+        self.backoff_base = float(backoff_base)
+        self.backoff_max = float(backoff_max)
+        self.timeout = float(timeout)
         self.dormir = dormir
-        self.orcamento_espera = orcamento_espera
+        self.orcamento_espera = float(orcamento_espera) if orcamento_espera is not None else None
 
     def obter_usuario(self, id_usuario: int) -> dict:
         if isinstance(id_usuario, bool) or not isinstance(id_usuario, int) or id_usuario < 1:
-            raise ValueError(f"id_usuario deve ser um inteiro >= 1: {id_usuario!r}")
+            raise ValueError("id_usuario deve ser um int >= 1")
 
+        tentativas_feitas = 0
         soma_esperas = 0.0
-        tentativas = 0
-        ultima_excecao: Exception | None = None
+        ultima_falha_excecao: Exception | None = None
         ultimo_status: int | None = None
-        ultimos_headers: Any = None
 
-        while tentativas < self.max_tentativas:
-            tentativas += 1
+        for n in range(1, self.max_tentativas + 1):
+            tentativas_feitas = n
+            resposta = None
+            erro_excecao = None
+
             try:
-                resp = self.api.requisitar("GET", f"/usuarios/{id_usuario}", timeout=self.timeout)
-            except (ErroConexao, TempoEsgotado) as erro:
-                ultima_excecao = erro
-                ultimo_status = None
-                ultimos_headers = None
-            else:
-                status = resp.status
+                resposta = self.api.requisitar("GET", f"/usuarios/{id_usuario}", timeout=self.timeout)
+            except (ErroConexao, TempoEsgotado) as exc:
+                erro_excecao = exc
+
+            if erro_excecao is None and resposta is not None:
+                status = resposta.status
                 if status == 200:
-                    return resp.corpo
+                    return resposta.corpo
                 if status == 404:
                     raise NaoEncontrado(f"Usuário {id_usuario} não encontrado", status=status)
                 if status not in STATUS_RETENTAVEIS:
-                    raise ErroAPI(f"Erro na API com status {status}", status=status)
+                    raise ErroAPI(f"Erro HTTP {status}", status=status)
 
-                ultima_excecao = None
+                ultima_falha_excecao = None
                 ultimo_status = status
-                ultimos_headers = getattr(resp, "headers", None)
-
-            # Não espera após a última tentativa
-            if tentativas >= self.max_tentativas:
-                break
-
-            # Calcula espera antes da próxima tentativa
-            if ultimo_status == 429:
-                espera_header = _extrair_retry_after(ultimos_headers)
-                if espera_header is not None:
-                    espera = min(float(self.backoff_max), espera_header)
-                else:
-                    espera = _calcular_backoff(self.backoff_base, self.backoff_max, tentativas)
+                ultima_resposta = resposta
             else:
-                espera = _calcular_backoff(self.backoff_base, self.backoff_max, tentativas)
+                ultima_falha_excecao = erro_excecao
+                ultimo_status = None
+                ultima_resposta = None
 
-            # Orçamento de espera
-            if self.orcamento_espera is not None and (soma_esperas + espera) > self.orcamento_espera:
+            if n == self.max_tentativas:
                 break
 
-            soma_esperas += espera
-            self.dormir(espera)
+            espera = None
+            if ultimo_status == 429 and ultima_resposta is not None:
+                ra = _extrair_retry_after(getattr(ultima_resposta, "headers", None))
+                if ra is not None:
+                    espera = min(self.backoff_max, float(ra))
 
-        if ultima_excecao is not None:
+            if espera is None:
+                espera = _calcular_backoff(self.backoff_base, self.backoff_max, n)
+
+            if self.orcamento_espera is not None:
+                nova_soma = soma_esperas + espera
+                if nova_soma > self.orcamento_espera and not math.isclose(nova_soma, self.orcamento_espera, rel_tol=1e-9, abs_tol=1e-9):
+                    break
+
+            self.dormir(espera)
+            soma_esperas += espera
+
+        if ultima_falha_excecao is not None:
             raise FalhaPermanente(
-                f"Falha permanente após {tentativas} tentativa(s)",
-                tentativas=tentativas,
-            ) from ultima_excecao
+                f"Falha permanente ao obter usuário {id_usuario} após {tentativas_feitas} tentativa(s)",
+                tentativas=tentativas_feitas,
+                status=None,
+            ) from ultima_falha_excecao
         else:
             raise FalhaPermanente(
-                f"Falha permanente após {tentativas} tentativa(s) com status {ultimo_status}",
-                tentativas=tentativas,
+                f"Falha permanente ao obter usuário {id_usuario} após {tentativas_feitas} tentativa(s) (HTTP {ultimo_status})",
+                tentativas=tentativas_feitas,
                 status=ultimo_status,
             ) from None
 
     def obter_varios(self, ids) -> dict[int, dict | None]:
         lista_ids = list(ids)
-        for id_val in lista_ids:
-            if isinstance(id_val, bool) or not isinstance(id_val, int) or id_val < 1:
-                raise ValueError(f"id_usuario inválido: {id_val!r}")
+        for uid in lista_ids:
+            if isinstance(uid, bool) or not isinstance(uid, int) or uid < 1:
+                raise ValueError(f"ID inválido: {uid!r}")
 
         resultado: dict[int, dict | None] = {}
-        for id_val in dict.fromkeys(lista_ids):
+        for uid in dict.fromkeys(lista_ids).keys():
             try:
-                resultado[id_val] = self.obter_usuario(id_val)
+                resultado[uid] = self.obter_usuario(uid)
             except NaoEncontrado:
-                resultado[id_val] = None
+                resultado[uid] = None
+
         return resultado

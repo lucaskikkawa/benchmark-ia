@@ -5,37 +5,39 @@ import re
 from .catalogo import Catalogo
 from .models import ErroBiblioteca
 
-
-@dataclass
-class _Emprestimo:
-    isbn: str
-    usuario: str
-    dia_str: str
-    data_emprestimo: date
-    data_prevista: date
+_DATE_REGEX = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 
 
 def _validar_dia(dia: str) -> date:
     if not isinstance(dia, str):
-        raise ErroBiblioteca("Dia deve ser string")
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", dia):
-        raise ErroBiblioteca(f"Data deve estar no formato YYYY-MM-DD: {dia!r}")
+        raise ErroBiblioteca("Dia deve ser uma string no formato YYYY-MM-DD")
+    if not _DATE_REGEX.fullmatch(dia):
+        raise ErroBiblioteca("Formato de data inválido, esperado YYYY-MM-DD")
     try:
         d = date.fromisoformat(dia)
-    except (ValueError, OverflowError) as exc:
-        raise ErroBiblioteca(f"Data inválida no calendário gregoriano: {dia!r}") from exc
-    if not (1 <= d.year <= 9999):
-        raise ErroBiblioteca(f"Ano fora do intervalo 1 a 9999: {dia!r}")
+    except (ValueError, OverflowError) as e:
+        raise ErroBiblioteca(f"Data inválida no calendário gregoriano: {dia}") from e
+    if d.year < 1 or d.year > 9999:
+        raise ErroBiblioteca(f"Ano fora do intervalo permitido (1 a 9999): {d.year}")
     return d
 
 
 def _validar_usuario(usuario: str) -> str:
     if not isinstance(usuario, str):
-        raise ErroBiblioteca("Usuário deve ser string")
-    usuario_limpo = usuario.strip()
-    if not usuario_limpo:
+        raise ErroBiblioteca("Usuário deve ser uma string")
+    u = usuario.strip()
+    if not u:
         raise ErroBiblioteca("Usuário não pode ser vazio")
-    return usuario_limpo
+    return u
+
+
+@dataclass
+class _Emprestimo:
+    isbn: str
+    usuario: str
+    dia: str
+    data_emprestimo: date
+    data_prevista: date
 
 
 class ServicoEmprestimos:
@@ -43,77 +45,61 @@ class ServicoEmprestimos:
         if not isinstance(catalogo, Catalogo):
             raise ErroBiblioteca("catalogo deve ser uma instância de Catalogo")
         self.catalogo = catalogo
-        self._emprestimos_ativos: dict[tuple[str, str], _Emprestimo] = {}
+        self._ativos: dict[tuple[str, str], _Emprestimo] = {}
 
     def emprestar(self, isbn: str, usuario: str, dia: str) -> None:
-        if not isinstance(isbn, str):
-            raise ErroBiblioteca("ISBN deve ser string")
-        usuario_limpo = _validar_usuario(usuario)
-        data_emp = _validar_dia(dia)
-
+        d_emp = _validar_dia(dia)
+        u = _validar_usuario(usuario)
         livro = self.catalogo.buscar(isbn)
 
-        chave = (isbn, usuario_limpo)
-        if chave in self._emprestimos_ativos:
-            raise ErroBiblioteca(
-                f"Usuário {usuario_limpo!r} já possui empréstimo ativo do livro {isbn!r}"
-            )
+        chave = (isbn, u)
+        if chave in self._ativos:
+            raise ErroBiblioteca(f"Usuário '{u}' já possui empréstimo ativo do livro '{isbn}'")
 
-        ativos_deste_isbn = sum(
-            1 for (k_isbn, _) in self._emprestimos_ativos if k_isbn == isbn
-        )
-        if livro.exemplares - ativos_deste_isbn <= 0:
-            raise ErroBiblioteca(
-                f"Não há exemplares livres para o livro {isbn!r}"
-            )
+        ativos_isbn = sum(1 for k_isbn, _ in self._ativos if k_isbn == isbn)
+        if ativos_isbn >= livro.exemplares:
+            raise ErroBiblioteca(f"Não há exemplares livres para o ISBN '{isbn}'")
 
         try:
-            data_prevista = data_emp + timedelta(days=14)
-        except OverflowError as exc:
-            raise ErroBiblioteca(
-                f"Data prevista excede limite do calendário: {exc}"
-            ) from exc
+            d_prev = d_emp + timedelta(days=14)
+        except OverflowError as e:
+            raise ErroBiblioteca("Data prevista de devolução excede o limite do calendário") from e
 
-        self._emprestimos_ativos[chave] = _Emprestimo(
+        self._ativos[chave] = _Emprestimo(
             isbn=isbn,
-            usuario=usuario_limpo,
-            dia_str=dia,
-            data_emprestimo=data_emp,
-            data_prevista=data_prevista,
+            usuario=u,
+            dia=dia,
+            data_emprestimo=d_emp,
+            data_prevista=d_prev,
         )
 
     def devolver(self, isbn: str, usuario: str, dia: str) -> int:
+        d_dev = _validar_dia(dia)
+        u = _validar_usuario(usuario)
         if not isinstance(isbn, str):
-            raise ErroBiblioteca("ISBN deve ser string")
-        usuario_limpo = _validar_usuario(usuario)
-        data_dev = _validar_dia(dia)
+            raise ErroBiblioteca("ISBN deve ser uma string")
 
-        chave = (isbn, usuario_limpo)
-        if chave not in self._emprestimos_ativos:
-            raise ErroBiblioteca(
-                f"Empréstimo inexistente ou já devolvido para ISBN {isbn!r} e usuário {usuario_limpo!r}"
-            )
+        chave = (isbn, u)
+        if chave not in self._ativos:
+            raise ErroBiblioteca("Empréstimo inexistente ou já devolvido")
 
-        emprestimo = self._emprestimos_ativos[chave]
-        if data_dev < emprestimo.data_emprestimo:
-            raise ErroBiblioteca(
-                f"Data de devolução ({dia}) anterior à data de empréstimo ({emprestimo.dia_str})"
-            )
+        emp = self._ativos[chave]
+        if d_dev < emp.data_emprestimo:
+            raise ErroBiblioteca("Devolução anterior ao dia do empréstimo")
 
-        atraso = max(0, (data_dev - emprestimo.data_prevista).days)
-        del self._emprestimos_ativos[chave]
+        atraso = max(0, (d_dev - emp.data_prevista).days)
+        del self._ativos[chave]
         return atraso
 
     def disponiveis(self, isbn: str) -> int:
         livro = self.catalogo.buscar(isbn)
-        ativos_deste_isbn = sum(
-            1 for (k_isbn, _) in self._emprestimos_ativos if k_isbn == isbn
-        )
-        return livro.exemplares - ativos_deste_isbn
+        ativos_isbn = sum(1 for k_isbn, _ in self._ativos if k_isbn == isbn)
+        return livro.exemplares - ativos_isbn
 
     def ativos(self) -> list[tuple[str, str, str]]:
-        itens = [
-            (emp.isbn, emp.usuario, emp.dia_str)
-            for emp in self._emprestimos_ativos.values()
+        res = [
+            (emp.isbn, emp.usuario, emp.dia)
+            for emp in self._ativos.values()
         ]
-        return sorted(itens, key=lambda t: (t[2], t[0], t[1]))
+        res.sort(key=lambda item: (item[2], item[0], item[1]))
+        return res

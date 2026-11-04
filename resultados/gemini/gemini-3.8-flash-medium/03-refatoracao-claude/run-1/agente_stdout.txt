@@ -1,0 +1,11 @@
+A refatoração de [relatorio.py](file:///tmp/bench-r_jb3otw/relatorio.py) foi concluída mantendo estritamente o comportamento observável original e atendendo a todos os requisitos especificados em [enunciado.md](file:///tmp/bench-r_jb3otw/enunciado.md):
+
+- **Constantes de desconto expostas e consultadas em tempo de execução**:
+  - `LIMITE_FAIXA_ALTA = 1000`
+  - `TAXAS_DESCONTO: dict[str, tuple[float, float]] = {'vip': (0.10, 0.15), 'atacado': (0.05, 0.08)}`
+  - `TAXAS_PADRAO: tuple[float, float] = (0.0, 0.02)`
+- **Funções públicas implementadas**:
+  - [`calcular_subtotal(itens: list[dict]) -> float`](file:///tmp/bench-r_jb3otw/relatorio.py#L9-L16)
+  - [`calcular_desconto(subtotal: float, tipo_cliente: str) -> float`](file:///tmp/bench-r_jb3otw/relatorio.py#L19-L26)
+  - [`formatar_relatorio(totais_por_cliente: dict[str, float]) -> str`](file:///tmp/bench-r_jb3otw/relatorio.py#L29-L37)
+  - [`gerar_relatorio(pedidos: list[dict]) -> str`](file:///tmp/bench-r_jb3otw/relatorio.py#L40-L51), que orquestra as funções acima no escopo do módulo sem duplicação de lógica e preservando a integridade das listas e dicionários de entrada.

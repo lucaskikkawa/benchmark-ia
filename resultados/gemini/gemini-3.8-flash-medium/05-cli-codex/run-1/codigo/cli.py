@@ -1,101 +1,91 @@
+#!/usr/bin/env python3
 """Contador de palavras pela linha de comando."""
 
 import argparse
 import collections
 import json
 import sys
+from typing import Sequence
 
 
-def positive_int(value: str) -> int:
-    """Valida se o valor informado é um inteiro positivo (> 0)."""
+def _positive_int(value: str) -> int:
     try:
-        val = int(value)
-    except (ValueError, TypeError):
+        ivalue = int(value)
+    except ValueError:
         raise argparse.ArgumentTypeError(
-            f"Valor inválido: {value!r} (deve ser um número inteiro)."
+            f"o valor '{value}' deve ser um número inteiro positivo"
         )
-    if val <= 0:
+    if ivalue <= 0:
         raise argparse.ArgumentTypeError(
-            f"Valor inválido: {value!r} (deve ser maior que zero)."
+            f"o valor '{value}' deve ser maior que zero"
         )
-    return val
+    return ivalue
 
 
-def create_parser() -> argparse.ArgumentParser:
-    """Cria e configura o analisador de argumentos de linha de comando."""
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="cli.py",
-        description="Contador de palavras pela linha de comando",
+        description="Contador de palavras pela linha de comando."
     )
-    parser.add_argument(
-        "ARQUIVO",
-        help="Caminho do arquivo UTF-8 a ser lido",
-    )
+    parser.add_argument("arquivo", metavar="ARQUIVO", help="Arquivo a ser lido")
     parser.add_argument(
         "--minimo",
-        type=positive_int,
+        type=_positive_int,
         default=1,
-        help="inteiro positivo, padrão 1; só exibe tokens de contagem >= N",
+        help="Inteiro positivo, padrão 1; só exibe tokens de contagem >= N",
     )
     parser.add_argument(
         "--top",
-        type=positive_int,
+        type=_positive_int,
         default=None,
-        help="inteiro positivo opcional; limita a N resultados depois de ordenar",
+        help="Inteiro positivo opcional; limita a N resultados depois de ordenar",
     )
     parser.add_argument(
         "--ignorar-caixa",
         action="store_true",
-        help="aplica str.casefold() antes de contar",
+        help="Aplica str.casefold() antes de contar",
     )
     parser.add_argument(
         "--json",
         action="store_true",
-        help="escreve uma lista JSON de objetos {'palavra': str, 'contagem': int}",
+        help="Escreve uma lista JSON de objetos {'palavra': str, 'contagem': int}",
     )
     return parser
 
 
-def main(argv: list[str] | None = None) -> int:
-    """Ponto de entrada da CLI."""
-    if argv is None:
-        argv = sys.argv[1:]
-
-    parser = create_parser()
-
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = build_parser()
     try:
         args = parser.parse_args(argv)
     except SystemExit as exc:
         return exc.code if isinstance(exc.code, int) else (0 if exc.code is None else 2)
 
     try:
-        with open(args.ARQUIVO, "r", encoding="utf-8") as f:
+        with open(args.arquivo, "r", encoding="utf-8") as f:
             content = f.read()
-    except (OSError, UnicodeError) as exc:
-        sys.stderr.write(f"Erro ao ler arquivo: {exc}\n")
-        return 2
-    except Exception as exc:
-        sys.stderr.write(f"Erro inesperado: {exc}\n")
+    except (OSError, UnicodeDecodeError, ValueError) as exc:
+        sys.stderr.write(f"Erro ao ler arquivo '{args.arquivo}': {exc}\n")
         return 2
 
     tokens = content.split()
     if args.ignorar_caixa:
-        counts = collections.Counter(t.casefold() for t in tokens)
-    else:
-        counts = collections.Counter(tokens)
+        tokens = [t.casefold() for t in tokens]
 
-    results = [(word, count) for word, count in counts.items() if count >= args.minimo]
-    results.sort(key=lambda item: (-item[1], item[0]))
+    counts = collections.Counter(tokens)
+
+    filtered = [
+        (word, count) for word, count in counts.items() if count >= args.minimo
+    ]
+    filtered.sort(key=lambda item: (-item[1], item[0]))
 
     if args.top is not None:
-        results = results[: args.top]
+        filtered = filtered[: args.top]
 
     if args.json:
-        data = [{"palavra": word, "contagem": count} for word, count in results]
+        data = [{"palavra": word, "contagem": count} for word, count in filtered]
         sys.stdout.write(json.dumps(data, ensure_ascii=False) + "\n")
     else:
-        for word, count in results:
-            sys.stdout.write(f"{word}\t{count}\n")
+        if filtered:
+            sys.stdout.write("".join(f"{word}\t{count}\n" for word, count in filtered))
 
     return 0
 

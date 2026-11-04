@@ -1,29 +1,30 @@
 Reading additional input from stdin...
 OpenAI Codex v0.163.0
 --------
-workdir: /tmp/bench-6przu4vs
+workdir: /tmp/bench-vr0axh5g
 model: gpt-6.1-sol
 provider: openai
 approval: never
 sandbox: danger-full-access
 reasoning effort: medium
 reasoning summaries: none
-session id: 01a189d5-367b-7f53-9b68-c0debe679237
+session id: 01a1a4b1-b621-7163-8ab9-56f9dc55ec2d
 --------
 user
 Leia enunciado.md neste diretório e resolva a tarefa editando/criando arquivos aqui. Não pergunte nada; trabalhe só neste diretório.
-2026-10-29T22:43:36.112194Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
+2026-11-04T03:54:34.026424Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://ai.todoist.net/.well-known/oauth-protected-resource/mcp\"" })
 codex
-Vou ler o enunciado e os arquivos deste diretório, implementar a solução e verificar o resultado.
+Vou ler o enunciado e os arquivos do diretório, implementar a solução e verificar o resultado.
 
 exec
-/bin/bash -lc "pwd && rg --files -g 'enunciado.md' -g 'AGENTS.md' -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-6przu4vs
+/bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' -g '"'!*.lock'"' -g 'AGENTS.md' -g 'enunciado.md' -g '*'" in /tmp/bench-vr0axh5g
  succeeded in 0ms:
-/tmp/bench-6przu4vs
+/tmp/bench-vr0axh5g
 enunciado.md
+fake_api.py
 
 exec
-/bin/bash -lc "cat enunciado.md; rg --files -g '"'!node_modules'"' -g '"'!vendor'"'" in /tmp/bench-6przu4vs
+/bin/bash -lc 'cat enunciado.md' in /tmp/bench-vr0axh5g
  succeeded in 0ms:
 # 09 - Cliente Resiliente de API com Retry e Backoff
 
@@ -74,11 +75,9 @@ Sua tarefa é implementar a classe `ClienteResiliente` e a exceção `ApiError` 
     - **Erros Não Retentáveis (Definitivos)**:
       - Qualquer resposta HTTP fora da faixa 2xx que não pertença ao conjunto de erros retentáveis (por exemplo `400`, `401`, `403`, `404`, ou códigos `3xx`).
       - Não deve tentar novamente; deve levantar imediatamente `ApiError` contendo o `status_code` correspondente.
-enunciado.md
-fake_api.py
 
 exec
-/bin/bash -lc 'cat fake_api.py' in /tmp/bench-6przu4vs
+/bin/bash -lc 'cat fake_api.py' in /tmp/bench-vr0axh5g
  succeeded in 0ms:
 from dataclasses import dataclass, field
 import random
@@ -156,3 +155,207 @@ class FakeApiServer:
             data={"status": "ok", "metodo": metodo, "rota": rota, "payload": payload},
         )
 
+apply patch
+patch: completed
+/tmp/bench-vr0axh5g/cliente_resiliente.py
+/tmp/bench-vr0axh5g/test_cliente_resiliente.py
+diff --git a/cliente_resiliente.py b/cliente_resiliente.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..fa56dc3db1241db40269fea0b747f8e692cc55d0
+--- /dev/null
++++ b/cliente_resiliente.py
+@@ -0,0 +1,74 @@
++"""Cliente com retentativas e backoff para o servidor simulado."""
++
++import time
++from numbers import Real
++from typing import Callable
++
++from fake_api import FakeApiServer, SimulatedNetworkError, SimulatedTimeoutError
++
++
++class ApiError(Exception):
++    """Falha da API, com código HTTP quando houver resposta do servidor."""
++
++    def __init__(self, mensagem: str, status_code: int | None = None) -> None:
++        super().__init__(mensagem)
++        self.status_code = status_code
++
++
++class ClienteResiliente:
++    def __init__(
++        self,
++        servidor: FakeApiServer,
++        max_tentativas: int = 3,
++        backoff_base: float = 0.05,
++        backoff_fator: float = 2.0,
++        timeout: float = 2.0,
++        sleep_fn: Callable[[float], None] = time.sleep,
++    ) -> None:
++        if type(max_tentativas) is not int or max_tentativas < 1:
++            raise ValueError("max_tentativas deve ser um inteiro maior ou igual a 1")
++        for nome, valor in (
++            ("backoff_base", backoff_base),
++            ("backoff_fator", backoff_fator),
++            ("timeout", timeout),
++        ):
++            if isinstance(valor, bool) or not isinstance(valor, Real) or not valor > 0:
++                raise ValueError(f"{nome} deve ser um número positivo")
++
++        self.servidor = servidor
++        self.max_tentativas = max_tentativas
++        self.backoff_base = backoff_base
++        self.backoff_fator = backoff_fator
++        self.timeout = timeout
++        self.sleep_fn = sleep_fn
++
++    def get(self, rota: str) -> dict:
++        return self.executar("GET", rota)
++
++    def post(self, rota: str, payload: dict) -> dict:
++        return self.executar("POST", rota, payload)
++
++    def executar(self, metodo: str, rota: str, payload: dict | None = None) -> dict:
++        for tentativa in range(1, self.max_tentativas + 1):
++            try:
++                resposta = self.servidor.requisicao(
++                    metodo=metodo, rota=rota, payload=payload, timeout=self.timeout
++                )
++            except (SimulatedNetworkError, SimulatedTimeoutError) as erro:
++                if tentativa == self.max_tentativas:
++                    raise ApiError(
++                        f"Falha após {tentativa} tentativa(s): {erro}"
++                    ) from erro
++            else:
++                status = resposta.status_code
++                if 200 <= status < 300:
++                    return resposta.data
++                retentavel = status == 429 or 500 <= status < 600
++                if not retentavel or tentativa == self.max_tentativas:
++                    raise ApiError(
++                        f"Erro HTTP {status} ao executar {metodo} {rota}",
++                        status_code=status,
++                    )
++
++            delay = self.backoff_base * (self.backoff_fator ** (tentativa - 1))
++            self.sleep_fn(delay)
+diff --git a/test_cliente_resiliente.py b/test_cliente_resiliente.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..7ce0390f6df81207b1f5506f6b2f9b97d57e04f1
+--- /dev/null
++++ b/test_cliente_resiliente.py
+@@ -0,0 +1,86 @@
++import unittest
++from unittest.mock import Mock
++
++from cliente_resiliente import ApiError, ClienteResiliente
++from fake_api import ApiResponse, FakeApiServer, SimulatedNetworkError, SimulatedTimeoutError
++
++
++class ClienteResilienteTests(unittest.TestCase):
++    def test_sucesso_e_encaminhamento_dos_parametros(self):
++        servidor = FakeApiServer()
++        cliente = ClienteResiliente(servidor, timeout=4)
++        payload = {"nome": "teste"}
++        self.assertEqual(cliente.post("/dados", payload)["payload"], payload)
++        self.assertEqual(servidor.chamadas, [
++            {"metodo": "POST", "rota": "/dados", "payload": payload, "timeout": 4}
++        ])
++        self.assertEqual(cliente.get("/dados")["metodo"], "GET")
++
++    def test_recuperacao_com_backoff(self):
++        for tipo in ("network", "timeout", "503", "429"):
++            with self.subTest(tipo=tipo):
++                servidor = FakeApiServer()
++                servidor.configurar_falhas("/dados", 2, tipo)
++                esperas = []
++                cliente = ClienteResiliente(servidor, sleep_fn=esperas.append)
++                self.assertEqual(cliente.get("/dados")["status"], "ok")
++                self.assertEqual(len(servidor.chamadas), 3)
++                self.assertEqual(esperas, [0.05, 0.1])
++
++    def test_esgotamento_e_status(self):
++        for falha, status in [
++            (SimulatedNetworkError("rede"), None),
++            (SimulatedTimeoutError("timeout"), None),
++            *[(ApiResponse(codigo, {}), codigo) for codigo in (429, 500, 502, 503, 504, 599)],
++        ]:
++            with self.subTest(falha=falha):
++                servidor = Mock()
++                if isinstance(falha, Exception):
++                    servidor.requisicao.side_effect = falha
++                else:
++                    servidor.requisicao.return_value = falha
++                esperas = []
++                cliente = ClienteResiliente(servidor, sleep_fn=esperas.append)
++                with self.assertRaises(ApiError) as contexto:
++                    cliente.get("/dados")
++                self.assertEqual(contexto.exception.status_code, status)
++                self.assertEqual(servidor.requisicao.call_count, 3)
++                self.assertEqual(esperas, [0.05, 0.1])
++
++    def test_erros_definitivos_nao_repetem(self):
++        for status in (199, 300, 301, 400, 401, 403, 404, 499, 600):
++            with self.subTest(status=status):
++                servidor = FakeApiServer()
++                servidor.configurar_resposta("/dados", status, {})
++                espera = Mock()
++                with self.assertRaises(ApiError) as contexto:
++                    ClienteResiliente(servidor, sleep_fn=espera).get("/dados")
++                self.assertEqual(contexto.exception.status_code, status)
++                self.assertEqual(len(servidor.chamadas), 1)
++                espera.assert_not_called()
++
++    def test_uma_tentativa_sem_espera(self):
++        servidor = FakeApiServer()
++        servidor.configurar_falhas("/dados", 1)
++        espera = Mock()
++        with self.assertRaises(ApiError):
++            ClienteResiliente(servidor, max_tentativas=1, sleep_fn=espera).get("/dados")
++        espera.assert_not_called()
++
++    def test_validacao(self):
++        for valor in (True, False, 0, -1, 1.5, "3", None):
++            with self.subTest(max_tentativas=valor), self.assertRaises(ValueError):
++                ClienteResiliente(FakeApiServer(), max_tentativas=valor)
++        for parametro in ("backoff_base", "backoff_fator", "timeout"):
++            for valor in (True, False, 0, -1, "1", None, 1j, float("nan")):
++                with self.subTest(parametro=parametro, valor=valor), self.assertRaises(ValueError):
++                    ClienteResiliente(FakeApiServer(), **{parametro: valor})
++
++    def test_excecao_preserva_mensagem(self):
++        erro = ApiError("mensagem")
++        self.assertEqual(str(erro), "mensagem")
++        self.assertIsNone(erro.status_code)
++
++
++if __name__ == "__main__":
++    unittest.main()
+
+exec
+/bin/bash -lc 'python -m unittest -v' in /tmp/bench-vr0axh5g
+ exited 127 in 0ms:
+/bin/bash: line 1: python: command not found
+
+exec
+/bin/bash -lc 'python3 -m unittest -v' in /tmp/bench-vr0axh5g
+ succeeded in 0ms:
+test_erros_definitivos_nao_repetem (test_cliente_resiliente.ClienteResilienteTests.test_erros_definitivos_nao_repetem) ... ok
+test_esgotamento_e_status (test_cliente_resiliente.ClienteResilienteTests.test_esgotamento_e_status) ... ok
+test_excecao_preserva_mensagem (test_cliente_resiliente.ClienteResilienteTests.test_excecao_preserva_mensagem) ... ok
+test_recuperacao_com_backoff (test_cliente_resiliente.ClienteResilienteTests.test_recuperacao_com_backoff) ... ok
+test_sucesso_e_encaminhamento_dos_parametros (test_cliente_resiliente.ClienteResilienteTests.test_sucesso_e_encaminhamento_dos_parametros) ... ok
+test_uma_tentativa_sem_espera (test_cliente_resiliente.ClienteResilienteTests.test_uma_tentativa_sem_espera) ... ok
+test_validacao (test_cliente_resiliente.ClienteResilienteTests.test_validacao) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.002s
+
+OK
+
+codex
+Implementei `ClienteResiliente` e `ApiError` em `cliente_resiliente.py`, com validação, retentativas, backoff exponencial e tratamento dos erros especificados.
+
+Criei testes em `test_cliente_resiliente.py`. Verificação: `python3 -m unittest -v` — 7 testes passaram.
+tokens used
+9,895

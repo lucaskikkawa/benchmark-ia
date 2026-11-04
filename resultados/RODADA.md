@@ -87,3 +87,9 @@
 |grok-4.7-high|0.00, 4.40, 4.70, 4.70|3.45|2.00|0.00|
 |grok-4.7-medium|0.00, 0.00, 0.00, 8.95|2.24|3.88|2.20|
 
+
+## Dois rankings oficiais (decisão do Lucas, 04/11/2026)
+
+- **Ranking original**: vale para a configuração com limite de 180/300 s. É o deste relatório, com `resultados/notas_avaliador.csv`.
+- **Ranking 7 min (420 s)**: as 70 run-1 que deram timeout em Claude, Codex e Gemini foram refeitas com 420 s. Fica em `resultados/_avaliador/cenario_7min/` (`RELATORIO_7MIN.md`, `notas_7min.csv`, `matriz_7min.csv`), em duas versões: **(i)** timeout = 0 e **(ii)** julgando a entrega parcial em `codigo/`.
+- Nas 70 pastas refeitas, `avaliacao_avaliador.json` corresponde à execução original (180/300 s), cujos arquivos estão em `resultados/_timeouts_180s/` e `_timeouts_300s/`. Já `avaliacao_avaliador_7min.json` corresponde à execução de 420 s que está na pasta (`resultado.json`, `junit.xml`, `testes_saida.txt`, `codigo/`).

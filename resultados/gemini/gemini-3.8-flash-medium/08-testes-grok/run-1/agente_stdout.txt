@@ -1,0 +1,13 @@
+A suíte de testes foi implementada em [`tests/test_descontos.py`](file:///tmp/bench-gn2xl8yq/tests/test_descontos.py).
+
+### Cobertura do contrato:
+- **Tipagem e validação de `preco_centavos`**: rejeição de `bool`, `float`, negativos (`ValueError`), strings e outros tipos (`TypeError`), além da validação de preço `0`.
+- **Validação de `cupom`**: tipos inválidos (`TypeError`), códigos desconhecidos (`ValueError`), sensibilidade a maiúsculas/minúsculas sem strip (`" OFF10"`, `"off10"` levantam `ValueError`), espaços em branco (`" "`, `"\t"` como desconhecidos), e funcionamento de `None` e `""`.
+- **Validação de `hoje`**: rejeição de objetos `date` ou tipos não-string (`TypeError`), formato estrito `YYYY-MM-DD` com 10 caracteres e hifens, validação do calendário gregoriano (ano bissexto pela regra do século como `2000-02-29` válido e `1900-02-29`/`2100-02-29` inválidos, limites de ano `0001` a `9999`).
+- **Contrato de retorno**: dicionário contendo exatamente as chaves `preco_final`, `desconto` e `cupom_aplicado`, com tipos estritos `int` e a relação `desconto == preco - preco_final`.
+- **Regras específicas de cupons**:
+  - `OFF10`: cálculo estrito `(preco * 90) // 100` (e piso no preço 1).
+  - `OFF5`: cálculo estrito `(preco * 95) // 100` (incluindo casos 101 → 95 e 200 → 190).
+  - `FIXO500`: subtração de 500 centavos com piso 0, sem gerar valor negativo, mantendo aplicação no preço 0.
+  - `BEMVINDO`: 20% com `(preco * 80) // 100` estritamente na janela de `2024-01-01` a `2024-12-31` (inclusive em ambos os extremos), retornando preço inalterado e `cupom_aplicado = None` fora da janela.
+  - `NATAL`: 15% com `(preco * 85) // 100` exclusivamente nos dias 24 e 25 de dezembro para qualquer ano gregoriano válido, retornando preço inalterado e `cupom_aplicado = None` nos demais dias.

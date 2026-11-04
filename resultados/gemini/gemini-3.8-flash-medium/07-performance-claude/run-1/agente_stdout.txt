@@ -1,0 +1,7 @@
+A solução foi implementada no arquivo [`solucao.py`](file:///tmp/bench-ucuceexg/solucao.py) contendo a função [`contar_subarrays_soma`](file:///tmp/bench-ucuceexg/solucao.py#L7-L49).
+
+### Detalhes da Implementação
+- **Somas de prefixo e janela deslizante**: Para cada índice final $i$, os índices iniciais válidos $j$ satisfazem $\max(0, i - \text{comprimento\_max}) \le j \le i - \text{comprimento\_min}$ com $P[j] = P[i] - k$. Conforme $i$ avança, os limites da janela de $j$ avançam monotonamente, permitindo gerenciar as frequências das somas de prefixo com inserções e remoções $O(1)$ amortizadas via tabela hash.
+- **Complexidade de tempo**: $O(n)$, processando 300.000 elementos em menos de 0,1s.
+- **Complexidade de espaço**: $O(n)$.
+- **Validações e casos de borda**: Lança `ValueError` para `comprimento_min < 1` ou `comprimento_max < 1`; retorna `0` quando `comprimento_min > comprimento_max` ou `comprimento_min > len(nums)`; lida com lista vazia, inteiros grandes ($> 2^{63}$) e preserva a lista de entrada intacta.

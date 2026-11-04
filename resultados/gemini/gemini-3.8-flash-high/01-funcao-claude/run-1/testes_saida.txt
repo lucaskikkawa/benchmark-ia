@@ -1,7 +1,7 @@
 
 ==================================== ERRORS ====================================
 _______________ ERROR collecting testes_ocultos/test_duracao.py ________________
-ImportError while importing test module '/tmp/bench-lee6pwhp/testes_ocultos/test_duracao.py'.
+ImportError while importing test module '/tmp/bench-yj36q0kv/testes_ocultos/test_duracao.py'.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 /home/box/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module

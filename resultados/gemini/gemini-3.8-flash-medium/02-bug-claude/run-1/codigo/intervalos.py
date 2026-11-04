@@ -16,19 +16,34 @@ def mesclar_intervalos(intervalos):
     - Retorna uma nova lista de tuplas, ordenada por inicio, sem sobreposições.
     - Lista vazia retorna lista vazia.
     """
-    for inicio, fim in intervalos:
+    validados = []
+    for item in intervalos:
+        if not isinstance(item, (tuple, list)):
+            raise TypeError(f"cada intervalo deve ser tupla ou lista: {item!r}")
+        if len(item) != 2:
+            raise ValueError(f"cada intervalo deve ter exatamente 2 elementos: {item!r}")
+        inicio, fim = item
+        if isinstance(inicio, bool) or not isinstance(inicio, int) or isinstance(fim, bool) or not isinstance(fim, int):
+            raise TypeError(f"inicio e fim devem ser int (bool não é aceito): ({inicio!r}, {fim!r})")
         if inicio > fim:
             raise ValueError(f"intervalo inválido: ({inicio}, {fim})")
+        validados.append((inicio, fim))
 
-    intervalos.sort()
-    resultado = [list(intervalos[0])]
-    for inicio, fim in intervalos[1:]:
-        ultimo = resultado[-1]
-        if inicio < ultimo[1]:
-            ultimo[1] = fim
+    if not validados:
+        return []
+
+    validados.sort()
+    resultado = []
+    curr_inicio, curr_fim = validados[0]
+    for inicio, fim in validados[1:]:
+        if inicio <= curr_fim:
+            if fim > curr_fim:
+                curr_fim = fim
         else:
-            resultado.append([inicio, fim])
-    return [tuple(i) for i in resultado]
+            resultado.append((curr_inicio, curr_fim))
+            curr_inicio, curr_fim = inicio, fim
+    resultado.append((curr_inicio, curr_fim))
+    return resultado
 
 
 def total_coberto(intervalos):

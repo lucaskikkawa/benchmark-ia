@@ -1,4 +1,4 @@
-"""Fechamento de boletim escolar."""
+"""Fechamento de boletim."""
 
 from decimal import Decimal, ROUND_HALF_UP
 import math
@@ -7,35 +7,36 @@ import math
 def fechar_boletim(provas: list) -> dict:
     if type(provas) is not list:
         raise TypeError("provas deve ser list")
-    if len(provas) < 1 or len(provas) > 4:
-        raise ValueError("provas deve conter entre 1 e 4 elementos")
 
-    validas = []
+    if len(provas) == 0 or len(provas) > 4:
+        raise ValueError("provas deve ter entre 1 e 4 elementos")
+
+    notas = []
     for nota in provas:
-        if isinstance(nota, bool):
-            raise TypeError("bool não é nota")
         if nota is None:
             continue
-        if not isinstance(nota, (int, float)):
-            raise TypeError("nota deve ser int, float ou None")
-        if isinstance(nota, float) and not math.isfinite(nota):
-            raise ValueError("nota deve ser finita")
-        if nota < 0 or nota > 10:
-            raise ValueError("nota fora do intervalo [0, 10]")
-        validas.append(nota)
+        if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+            raise TypeError("nota deve ser int ou float")
+        if not math.isfinite(nota) or nota < 0 or nota > 10:
+            raise ValueError("nota deve ser finita e estar no intervalo [0, 10]")
+        notas.append(nota)
 
-    if not validas:
-        raise ValueError("nenhuma nota válida após ignorar ausências")
+    if len(notas) == 0:
+        raise ValueError("nenhuma nota valida apos ignorar ausencias")
 
     descartada = None
-    if len(validas) == 4:
-        min_idx = min(range(len(validas)), key=lambda i: validas[i])
-        descartada = float(validas.pop(min_idx))
+    if len(notas) == 4:
+        menor_idx = min(range(4), key=lambda i: notas[i])
+        descartada = float(notas.pop(menor_idx))
+        if descartada == 0.0:
+            descartada = 0.0
 
-    soma = sum(Decimal(str(nota)) for nota in validas)
-    n = Decimal(len(validas))
+    soma = sum(Decimal(str(nota)) for nota in notas)
+    n = Decimal(len(notas))
     media_dec = (soma / n).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
     media = float(media_dec)
+    if media == 0.0:
+        media = 0.0
 
     if media >= 9.0:
         conceito = "A"
@@ -46,9 +47,11 @@ def fechar_boletim(provas: list) -> dict:
     else:
         conceito = "D"
 
+    aprovado = conceito != "D"
+
     return {
         "media": media,
         "conceito": conceito,
-        "aprovado": conceito != "D",
+        "aprovado": aprovado,
         "descartada": descartada,
     }

@@ -1,0 +1,13 @@
+A suíte de testes foi criada em [tests/test_descontos.py](file:///tmp/bench-c3cnpgze/tests/test_descontos.py) para validar o contrato de [`aplicar_desconto`](file:///tmp/bench-c3cnpgze/descontos.py#L6-L34) sem alterar [descontos.py](file:///tmp/bench-c3cnpgze/descontos.py).
+
+### Cobertura implementada
+- **Estrutura e tipos de retorno** ([`TestContratoRetorno`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L31-L39)): verificação exata das chaves (`preco_final`, `desconto`, `cupom_aplicado`), tipos (`int` estrito e `str | None`) e invariante `desconto == preco_centavos - preco_final`.
+- **Validação de `preco_centavos`** ([`TestValidacaoPrecoCentavos`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L42-L73)): rejeição de `bool`, `float` e outros tipos com `TypeError`, e valores negativos com `ValueError`.
+- **Validação de `cupom`** ([`TestValidacaoCupom`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L76-L157)): tratamento de `None` e `""` sem desconto (`cupom_aplicado=None`), `TypeError` para tipos inválidos e `ValueError` para códigos desconhecidos, espaços (`" "`, `"\t"`), prefixos/sufixos com espaço e variações de caixa.
+- **Validação de `hoje`** ([`TestValidacaoDataHoje`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L160-L273)): `TypeError` para tipos não `str` (incluindo `datetime.date`), `ValueError` para formatos fora de `YYYY-MM-DD` e datas inexistentes no calendário gregoriano (como `1900-02-29`, `2100-02-29`, `2023-02-29` e meses de 30 dias com dia 31), além de aceitação de anos extremos (`0001-12-25`, `9999-12-31`) e bissextos seculares (`2000-02-29`).
+- **Regras dos cupons**:
+  - [`TestCupomOFF10`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L276-L305): `(preco * 90) // 100`, incluindo piso em valores pequenos (`0`, `1`, `11`, `101`).
+  - [`TestCupomOFF5`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L308-L337): `(preco * 95) // 100` (incluindo `200 -> 190`, `101 -> 95`, `1 -> 0`).
+  - [`TestCupomFIXO500`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L340-L364): abatimento de 500 centavos limitado ao piso `0`, mantendo `cupom_aplicado="FIXO500"` e `desconto = preco_centavos - preco_final`.
+  - [`TestCupomBEMVINDO`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L367-L433): `(preco * 80) // 100` nos limites inclusivos `2024-01-01` e `2024-12-31`, e sem efeito fora de 2024 (`2023-12-31`, `2025-01-01`).
+  - [`TestCupomNATAL`](file:///tmp/bench-c3cnpgze/tests/test_descontos.py#L436-L511): `(preco * 85) // 100` exclusivamente em 24 e 25 de dezembro de qualquer ano (`0001` a `9999`), e sem efeito nos demais dias.

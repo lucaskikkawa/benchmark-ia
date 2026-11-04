@@ -9,7 +9,7 @@ import sys
 
 
 def inteiro_positivo(valor):
-    """Tipo de argumento para inteiros maiores ou iguais a um."""
+    """Valida os limites numéricos pela interface do argparse."""
     try:
         numero = int(valor)
     except ValueError:
@@ -21,7 +21,7 @@ def inteiro_positivo(valor):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("arquivo", metavar="ARQUIVO", help="arquivo UTF-8; - para stdin")
+    parser.add_argument("arquivo", metavar="ARQUIVO", help="arquivo UTF-8; - lê stdin")
     parser.add_argument("-n", "--top", type=inteiro_positivo, default=10, metavar="N")
     parser.add_argument("-m", "--min-len", type=inteiro_positivo, default=1, metavar="K")
     parser.add_argument("-i", "--ignore-case", action="store_true")
@@ -30,25 +30,24 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     try:
-        # Ler bytes também em stdin evita a decodificação dependente do locale.
         if args.arquivo == "-":
             dados = sys.stdin.buffer.read()
         else:
             with open(args.arquivo, "rb") as entrada:
                 dados = entrada.read()
         texto = dados.decode("utf-8", errors="strict")
-    except (OSError, UnicodeError, ValueError) as erro:
+    except (OSError, UnicodeError) as erro:
         mensagem = " ".join(str(erro).splitlines())
         print("erro: " + mensagem, file=sys.stderr)
         return 1
 
-    excluidas = set(args.excluir)
-    if args.ignore_case:
-        excluidas = {palavra.lower() for palavra in excluidas}
-
+    excluidas = {
+        palavra.lower() if args.ignore_case else palavra
+        for palavra in args.excluir
+    }
     contagens = Counter()
-    for resultado in re.finditer(r"[^\W\d_]+", texto):
-        palavra = resultado.group()
+    for correspondencia in re.finditer(r"[^\W\d_]+", texto):
+        palavra = correspondencia.group()
         if args.ignore_case:
             palavra = palavra.lower()
         if len(palavra) >= args.min_len and palavra not in excluidas:
@@ -56,14 +55,14 @@ def main(argv=None):
 
     frequentes = sorted(contagens.items(), key=lambda item: (-item[1], item[0]))[:args.top]
     if args.formato == "json":
-        saida = json.dumps(
-            [{"palavra": palavra, "contagem": total} for palavra, total in frequentes],
+        resultado = json.dumps(
+            [{"palavra": palavra, "contagem": contagem} for palavra, contagem in frequentes],
             ensure_ascii=False,
         ) + "\n"
     else:
-        saida = "".join(f"{palavra}\t{total}\n" for palavra, total in frequentes)
+        resultado = "".join(f"{palavra}\t{contagem}\n" for palavra, contagem in frequentes)
 
-    sys.stdout.buffer.write(saida.encode("utf-8"))
+    sys.stdout.buffer.write(resultado.encode("utf-8"))
     return 0
 
 

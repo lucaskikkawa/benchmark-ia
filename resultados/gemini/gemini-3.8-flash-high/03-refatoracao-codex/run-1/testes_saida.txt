@@ -123,7 +123,7 @@ E        +    where None = getattr(pedidos, 'subtotal', None)
 testes_ocultos/test_endurecimento.py:13: AssertionError
 ___________________ test_delegacao_ordenada_usa_cada_retorno ___________________
 
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4740e3bb60>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f21f4c6bc20>
 
     def test_delegacao_ordenada_usa_cada_retorno(monkeypatch):
 >       assert hasattr(pedidos, 'subtotal'), 'Falta subtotal público'
@@ -144,7 +144,7 @@ E        +    where None = getattr(pedidos, 'subtotal', None)
 testes_ocultos/test_pedidos.py:49: AssertionError
 ______________________ test_delegacao_uma_vez_por_pedido _______________________
 
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4740e38ec0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f21f4c6af90>
 
     def test_delegacao_uma_vez_por_pedido(monkeypatch):
 >       assert hasattr(pedidos, 'subtotal'), 'Falta a função extraída'
@@ -164,4 +164,4 @@ FAILED testes_ocultos/test_endurecimento.py::test_subtotal_exato[17-13-33] - ...
 FAILED testes_ocultos/test_endurecimento.py::test_delegacao_ordenada_usa_cada_retorno
 FAILED testes_ocultos/test_pedidos.py::test_helper_publico - AssertionError: ...
 FAILED testes_ocultos/test_pedidos.py::test_delegacao_uma_vez_por_pedido - As...
-10 failed, 9 passed in 0.06s
+10 failed, 9 passed in 0.07s

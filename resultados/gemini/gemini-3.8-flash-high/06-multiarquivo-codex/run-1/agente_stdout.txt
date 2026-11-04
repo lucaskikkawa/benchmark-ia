@@ -1,0 +1,19 @@
+A tarefa descrita em [enunciado.md](file:///tmp/bench-5irm9ejq/enunciado.md) foi resolvida. Os quatro módulos do pacote `estoque/` foram implementados/mantidos conforme as especificações:
+
+1. [modelos.py](file:///tmp/bench-5irm9ejq/estoque/modelos.py):
+   - Definida a dataclass imutável [`Movimento`](file:///tmp/bench-5irm9ejq/estoque/modelos.py#L4-L7) com `@dataclass(frozen=True)` e campos `sku: str` e `delta: int`, com igualdade por campos e sem validação no construtor.
+
+2. [operacoes.py](file:///tmp/bench-5irm9ejq/estoque/operacoes.py):
+   - Implementada a função [`calcular_saldos(movimentos, iniciais=None)`](file:///tmp/bench-5irm9ejq/estoque/operacoes.py#L5-L23), aceitando iteráveis de passagem única e dicionário opcional de saldos iniciais.
+   - Faz cópia de `iniciais` sem alterá-lo em nenhum cenário (inclusive em caso de falha).
+   - Valida saldos iniciais e intermediários negativos levantando `ValueError`.
+   - Preserva entradas com saldo zero e SKUs sem movimentação.
+   - Retorna um novo dicionário com inteiros de precisão arbitrária e chaves de SKU exatas.
+
+3. [persistencia.py](file:///tmp/bench-5irm9ejq/estoque/persistencia.py):
+   - Implementada a função [`carregar_movimentos(caminho)`](file:///tmp/bench-5irm9ejq/estoque/persistencia.py#L7-L33), aceitando `str` ou `Path` e decodificando JSON em UTF-8.
+   - Valida estrutura da lista e objetos, garantindo presença de `sku` (string não-branca preservada) e `delta` (inteiro estrito, rejeitando booleanos), ignorando campos extras.
+   - Lança `ValueError` para dados ou JSON inválidos e propaga erros de arquivo.
+
+4. [__init__.py](file:///tmp/bench-5irm9ejq/estoque/__init__.py):
+   - Exporta [`Movimento`](file:///tmp/bench-5irm9ejq/estoque/__init__.py#L1), [`calcular_saldos`](file:///tmp/bench-5irm9ejq/estoque/__init__.py#L2) e [`carregar_movimentos`](file:///tmp/bench-5irm9ejq/estoque/__init__.py#L3) via imports relativos em `__all__`.

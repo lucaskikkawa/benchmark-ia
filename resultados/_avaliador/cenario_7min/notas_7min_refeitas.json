@@ -1,0 +1,4368 @@
+[
+ {
+  "pasta": "resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1",
+  "empresa": "claude",
+  "modelo": "claude-opus-5-5",
+  "esforco": "high",
+  "tarefa": "05-cli-gemini",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "gemini",
+  "status": "ok",
+  "duracao_agente_s": 28.688,
+  "testes_passados": 22,
+  "testes_total": 22,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Código modular, usa argparse, Counter e pathlib e trata erros e bordas corretamente; atende às flags e formatos, mas faltam docstrings informativas para nota máxima em documentação.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Modular e idiomático: argparse, Counter, pathlib e cálculo separado da saída. Exit 0/1/2, vazio e pontuação corretos. Help curto e sem docstrings nas funções.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 9.7,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/agente_stdout.txt', ' D resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/avaliacao.json', ' D resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/avaliacao_avaliador.json', ' M resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/codigo/contatexto.py', ' M resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 22,
+   "passados": 22,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/codex/gpt-6-luna-high/07-performance-grok/run-1",
+  "empresa": "codex",
+  "modelo": "gpt-6-luna",
+  "esforco": "high",
+  "tarefa": "07-performance-grok",
+  "tipo": "07-performance",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 21.526,
+  "testes_passados": 12,
+  "testes_total": 12,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "gemini"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Contagem por frequências correta, com bordas tratadas. Caso x+x sem ramo próprio, validação de elementos dentro do laço e docstring sem nota sobre duplicatas.",
+    "falhas": []
+   },
+   "gemini": {
+    "modelo": "gemini-3.8-flash",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 5.0,
+    "justificativa": "Lógica correta para bordas e tipos, mas validação dentro do laço, dict manual em vez de Counter e docstring sem detalhar tipos e combinações.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 5.5,
+  "nota_final_10": 8.65,
+  "nota_i": 8.65,
+  "nota_ii": 8.65,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/avaliacao.json', ' D resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1",
+  "empresa": "codex",
+  "modelo": "gpt-6.1-sol",
+  "esforco": "high",
+  "tarefa": "05-cli-claude",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 73.735,
+  "testes_passados": 27,
+  "testes_total": 27,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "gemini",
+   "grok"
+  ],
+  "juizes": {
+   "gemini": {
+    "modelo": "gemini-3.8-flash",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Tratamento de erros e CLI idiomática excelentes, mas toda a lógica está concentrada no main sem funções puras e a maioria das opções não possui help descritivo.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "main mistura parse, leitura, contagem e impressão. Exit 0/1/2 com erro: no stderr, UTF-8 estrito, stdin - e type=. Idiomático: argparse, Counter, sorted. Contagem não é pura. Help ausente nas opções.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.0,
+  "nota_final_10": 8.8,
+  "nota_i": 8.8,
+  "nota_ii": 8.8,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/codigo/freq.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 27,
+   "passados": 27,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1",
+  "empresa": "codex",
+  "modelo": "gpt-6.1-sol",
+  "esforco": "high",
+  "tarefa": "05-cli-gemini",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "gemini",
+  "status": "ok",
+  "duracao_agente_s": 104.073,
+  "testes_passados": 22,
+  "testes_total": 22,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Modular e claro, com argparse, Counter e Path; códigos 0, 1 e 2 e erros em stderr corretos. Help curto e docstrings ausentes na maioria das funções.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Código modular com argparse, Counter e pathlib; cálculo separado da saída; exit 0/1/2, vazio e pontuação corretos. Help curto e poucas docstrings.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 9.7,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 22,
+   "passados": 22,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1",
+  "empresa": "codex",
+  "modelo": "gpt-6.1-sol",
+  "esforco": "high",
+  "tarefa": "08-testes-claude",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 139.461,
+  "testes_passados": 17,
+  "testes_total": 17,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "gemini",
+   "grok"
+  ],
+  "juizes": {
+   "gemini": {
+    "modelo": "gemini-3.8-flash",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Excelente cobertura e parametrização, mas reimplementa a lógica em oráculo, usa números mágicos em pontuações e não organiza os testes por seções ou classes.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Nomes claros e bordas completas (exceções, 50/80, 20 caracteres, piso/teto, trincas, espaços), com raises e parametrize. Números mágicos e conferir misturam regras; falta agrupar por função em seções ou classes.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 9.1,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1",
+  "empresa": "codex",
+  "modelo": "gpt-6.1-sol",
+  "esforco": "high",
+  "tarefa": "08-testes-gemini",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "gemini",
+  "status": "ok",
+  "duracao_agente_s": 83.097,
+  "testes_passados": 13,
+  "testes_total": 13,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Nomes expressivos e cobertura ampla de bordas e mutantes; porém sem fixtures (ValidadorSenha() repetido), e os testes têm pouca ou nenhuma docstring.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Testes pytest nomeados, parametrizados e independentes, cobrindo limites, categorias, espaços, trincas e faixas de força. Há docstring só no módulo e num helper, não em cada teste.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 8.0,
+  "nota_final_10": 9.4,
+  "nota_i": 9.4,
+  "nota_ii": 9.4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/codigo/tests/conftest.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 13,
+   "passados": 13,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1",
+  "empresa": "codex",
+  "modelo": "gpt-6.1-sol",
+  "esforco": "medium",
+  "tarefa": "09-api-gemini",
+  "tipo": "09-api",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "gemini",
+  "status": "ok",
+  "duracao_agente_s": 58.814,
+  "testes_passados": 46,
+  "testes_total": 46,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Loop explícito e backoff claro; erros transitórios e definitivos bem separados. Faltam conjunto de status retentáveis, docstrings na classe e nos métodos; códigos HTTP ficam fixos no código.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Loop explícito, backoff claro e retry só em rede, timeout, 429 e 5xx; 4xx encerra na hora. sleep_fn injetável, ApiError com chaining e validação correta. Faltam docstrings na classe e nos métodos.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.5,
+  "nota_final_10": 9.55,
+  "nota_i": 9.55,
+  "nota_ii": 9.55,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 46,
+   "passados": 46,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1",
+  "empresa": "codex",
+  "modelo": "gpt-6.1-sol",
+  "esforco": "medium",
+  "tarefa": "09-api-grok",
+  "tipo": "09-api",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 74.545,
+  "testes_passados": 18,
+  "testes_total": 18,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "gemini"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Timeout isolado em função própria, mas laço de retry, backoff 2**(i-1) e tupla de exceções ficam inline em baixar_pedidos. Erros e prazos corretos. Docstring não diz o que é retentado.",
+    "falhas": []
+   },
+   "gemini": {
+    "modelo": "gemini-3.8-flash",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Tratamento correto de timeout e erros com thread daemon, mas o laco de retry de cada id e a formula de backoff poderiam estar desacoplados em funcoes dedicadas.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.5,
+  "nota_final_10": 9.25,
+  "nota_i": 9.25,
+  "nota_ii": 9.25,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 18,
+   "passados": 18,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "01-funcao-claude",
+  "tipo": "01-funcao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.159,
+  "testes_passados": 0,
+  "testes_total": 1,
+  "pct_testes": 0.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução entregue contém apenas um .gitkeep vazio; não há arquivo solucao.py nem função para avaliar.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "Não há solucao.py nem parse_duracao: só .gitkeep vazio. Sem parser, validação, unidades, type hints ou docstring; nada atende ao enunciado.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.0,
+  "nota_i": 0.0,
+  "nota_ii": 0.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "01-funcao-grok",
+  "tipo": "01-funcao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 359.655,
+  "testes_passados": 33,
+  "testes_total": 33,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Valida e calcula corretamente as bordas, com minutos inteiros e fusão clara. Porém, não separa a fusão em função própria, repete o limite 1440 e falta docstring sobre exceções e anotações na função pública.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Parser e formatação separados, mas fusão e folgas ficam no mesmo bloco. Validação e bordas corretas. 1440 e limite do dia ficam no parser. Docstring sem exceções. Há .gitkeep extra.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 9.1,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 33,
+   "passados": 33,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "02-bug-claude",
+  "tipo": "02-bug",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 349.183,
+  "testes_passados": 26,
+  "testes_total": 26,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Corrige as bordas e preserva a API e docstrings. Usa sort() após validar e uma verificação redundante de vazio; faltou comentário sobre max.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Laço claro com <= e max, mas if extra para vazio. Cobre vazio, ordenação sem mutar, contato, contido e ValueError. Idiomático. Tirou type hints. Docstrings mantidas, sem comentário do max.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.5,
+  "nota_final_10": 9.25,
+  "nota_i": 9.25,
+  "nota_ii": 9.25,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/codigo/intervalos.py', ' M resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 26,
+   "passados": 26,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "02-bug-grok",
+  "tipo": "02-bug",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 378.385,
+  "testes_passados": 16,
+  "testes_total": 16,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Fluxo claro, valida tipos e limites, ignora ausências, descarta só com quatro notas e usa Decimal com HALF_UP. Limiares ficam na cadeia de ifs e a docstring não explicita as regras.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Decimal(str), HALF_UP e isinstance sem bool ok. Sem docstring na funcao. Int enorme (10**400) gera OverflowError, nao ValueError. Validacao, descarte e conceito no mesmo bloco.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 9.1,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/codigo/boletim.py', ' M resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 16,
+   "passados": 16,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "03-refatoracao-claude",
+  "tipo": "03-refatoracao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.064,
+  "testes_passados": 32,
+  "testes_total": 32,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Código claro, funções curtas, taxas centralizadas e estrutura exigida atendida. A busca de taxas captura TypeError, podendo alterar exceções para tipos de cliente não-hashable.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Funções curtas, nomes claros, taxas centralizadas e docstrings corretas. O acúmulo por cliente ainda usa if/else, sem dict.get ou defaultdict. Bordas do limite, tipo, qtd negativa e soma preservadas.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 0.0,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/codigo/relatorio.py', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "03-refatoracao-codex",
+  "tipo": "03-refatoracao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "timeout",
+  "duracao_agente_s": 420.12,
+  "testes_passados": 9,
+  "testes_total": 19,
+  "pct_testes": 47.37,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 3.0,
+    "justificativa": "Mantém a, b, c, x e y; não há subtotal, delegação nem documentação. Aritmética inteira e bordas corretas, mas acumulação repetitiva no dicionário.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 3.0,
+    "justificativa": "Mantém a, b, c, x e y. Cálculo inteiro por linha preserva vazio, zeros e truncamento, mas não há função subtotal nem documentação. Acumulação do dicionário é repetitiva.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 3.0,
+  "nota_final_10": 4.22,
+  "nota_i": 0.0,
+  "nota_ii": 4.22,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 19,
+   "passados": 9,
+   "pct": 47.37
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "03-refatoracao-grok",
+  "tipo": "03-refatoracao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 281.803,
+  "testes_passados": 12,
+  "testes_total": 12,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "A busca e o cálculo estão centralizados no método e a função delega. Porém, faixa_de_peso duplica validação e busca; type(...) is int também não segue o critério de isinstance que exclui bool.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "A busca de faixa se repete em cotar e faixa_de_peso; bordas, expresso e exceções estão corretos; usa type() em vez de isinstance; cotar do módulo não tem docstring.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.5,
+  "nota_final_10": 9.25,
+  "nota_i": 9.25,
+  "nota_ii": 9.25,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/codigo/frete.py', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "04-dados-claude",
+  "tipo": "04-dados",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.085,
+  "testes_passados": 0,
+  "testes_total": 1,
+  "pct_testes": 0.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "Nenhum arquivo foi entregue; não há código para avaliar.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "Nenhum solucao.py foi entregue: sem pipeline, validação, uso da stdlib, agregação extensível, gravação do JSON ou docstring do contrato.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.0,
+  "nota_i": 0.0,
+  "nota_ii": 0.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "04-dados-codex",
+  "tipo": "04-dados",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "timeout",
+  "duracao_agente_s": 420.088,
+  "testes_passados": 47,
+  "testes_total": 47,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Valida tudo antes de escrever e aplica o mínimo após a agregação. Usa csv.reader com índices, não DictReader. Agregação em lista [qtd, receita] é opaca. Sem docstring.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Etapas e campos bem nomeados; valida colunas, mínimo e pagos e só então grava; csv/json com with; mínimo só após agregar. Falta docstring da agregação paga, do JSON e dos erros.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.0,
+  "nota_final_10": 9.4,
+  "nota_i": 0.0,
+  "nota_ii": 9.4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 47,
+   "passados": 47,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "04-dados-grok",
+  "tipo": "04-dados",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "timeout",
+  "duracao_agente_s": 420.137,
+  "testes_passados": 0,
+  "testes_total": 1,
+  "pct_testes": 0.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução entregue contém apenas um .gitkeep vazio; não há solucao.py nem implementação para avaliar.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "Submissão vazia: só há um .gitkeep com bloco de código vazio, sem solucao.py nem a função consolidar. Nada a avaliar, todos os critérios zerados.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.0,
+  "nota_i": 0.0,
+  "nota_ii": 0.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "05-cli-claude",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.061,
+  "testes_passados": 27,
+  "testes_total": 27,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Há funções para parsing, mas main mistura leitura, contagem e saída; sys.exit está dentro de main, que não aceita argv nem retorna código, e a contagem depende dos argumentos.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Parser, erros 0/1/2, UTF-8, stdin '-', --help e docstring ok. main mistura leitura, contagem e saída, sem argv nem int; contagem não é pura; open binário e sys.exit dentro de main.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.5,
+  "nota_final_10": 8.95,
+  "nota_i": 0.0,
+  "nota_ii": 8.95,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 27,
+   "passados": 27,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "05-cli-codex",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "timeout",
+  "duracao_agente_s": 420.103,
+  "testes_passados": 0,
+  "testes_total": 1,
+  "pct_testes": 0.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução entregue é apenas um .gitkeep vazio. Não há cli.py, nem parsing, contagem, tratamento de erros, main ou documentação.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A entrega contém apenas .gitkeep vazio, sem cli.py. Não há argparse, contagem, ordenação, emissão, erros, main(argv) nem ajuda.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.0,
+  "nota_i": 0.0,
+  "nota_ii": 0.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "05-cli-grok",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "timeout",
+  "duracao_agente_s": 420.094,
+  "testes_passados": 1,
+  "testes_total": 15,
+  "pct_testes": 6.67,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução contém apenas um .gitkeep vazio; não há script nem implementação dos comandos.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução anônima é só um .gitkeep com bloco de código vazio. Não há agenda_cli.py, nem argparse, subcomandos, validação, JSON ou códigos de saída.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.47,
+  "nota_i": 0.0,
+  "nota_ii": 0.47,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 1,
+   "pct": 6.67
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "06-multiarquivo-claude",
+  "tipo": "06-multiarquivo",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 352.375,
+  "testes_passados": 40,
+  "testes_total": 40,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 5.0,
+    "justificativa": "Código organizado e legível, mas Livro omite autor e acessa atributo inexistente; também faltam raise ... from None e a estrutura exigida está incompleta.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Serviço coeso, dict de ativos, ordem de checagens, multa com round e estado intacto em erro. Livro não declara autor, então __post_init__ gera AttributeError. Faltam docstrings nas classes principais.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.5,
+  "nota_final_10": 8.95,
+  "nota_i": 8.95,
+  "nota_ii": 8.95,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 40,
+   "passados": 40,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "06-multiarquivo-codex",
+  "tipo": "06-multiarquivo",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 306.833,
+  "testes_passados": 42,
+  "testes_total": 42,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Nomes alinhados ao estoque; valida saldos intermediários e a forma do JSON, inclusive bool. Dataclass frozen, imports relativos. Faltam docstrings sobre ordem, saldo negativo e formato JSON.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Módulos, nomes, dataclass frozen, imports relativos, cópia de iniciais e validação de saldo e JSON (bool e campos) estão corretos. Não há docstrings sobre ordem, saldo negativo nem formato JSON.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 9.7,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/codigo/estoque/modelos.py', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/codigo/estoque/operacoes.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "06-multiarquivo-grok",
+  "tipo": "06-multiarquivo",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 365.426,
+  "testes_passados": 17,
+  "testes_total": 17,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Módulos bem separados, validações e regras de empréstimo atendem ao enunciado; imports relativos e manutenção estão adequados. Faltam docstrings curtas nas classes.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Módulos bem separados e validações únicas. Prazo é literal 14 sem constante nomeada. Bordas de ISBN, estoque, datas e devolução tratadas. Faltam docstrings nas classes.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.5,
+  "nota_final_10": 9.55,
+  "nota_i": 9.55,
+  "nota_ii": 9.55,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/codigo/biblioteca/__init__.py', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/codigo/biblioteca/catalogo.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "07-performance-claude",
+  "tipo": "07-performance",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 358.05,
+  "testes_passados": 36,
+  "testes_total": 36,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 5.0,
+    "justificativa": "Usa somas de prefixo e frequências para contar em O(n), mas armazena todos os prefixos e a validação aceita floats inteiros, embora a assinatura exija comprimentos inteiros.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Prefixos com janela de frequências: correto em vazia, zeros, negativos e ints grandes; O(n), não altera nums. Dois laços e nomes curtos; docstring não cita a ideia nem a complexidade O(n).",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.5,
+  "nota_final_10": 8.95,
+  "nota_i": 8.95,
+  "nota_ii": 8.95,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/codigo/solucao.py', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 36,
+   "passados": 36,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "07-performance-codex",
+  "tipo": "07-performance",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 244.623,
+  "testes_passados": 17,
+  "testes_total": 17,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Algoritmo correto e linear com Counter e aritmetica inteira. Nomes cnt e compl sao pouco claros; docstring sem estrategia/complexidade; ramo extra para dict e caso alvo par separado.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Nomes claros, porém sem frequências anteriores. Bordas e geradores ok via Counter. Caminho extra para o valor metade. Docstring cita i < j, sem estratégia nem complexidade linear.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 9.1,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "07-performance-grok",
+  "tipo": "07-performance",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 358.194,
+  "testes_passados": 12,
+  "testes_total": 12,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Contagem linear por frequências trata duplicatas e pares iguais corretamente; valida tipos sem aceitar bool e preserva a lista. Validação e contagem estão na mesma função, e a docstring não explica duplicatas.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Passagem única com freq e total, sem ramo próprio para x+x. Validação de elemento dentro do laço. Docstring é a original, sem notas sobre duplicatas. Há um .gitkeep extra na entrega.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 9.1,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "08-testes-claude",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.107,
+  "testes_passados": 1,
+  "testes_total": 17,
+  "pct_testes": 5.88,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução apresentada apenas reproduz senhas.py; não entrega testes em tests/test_senhas.py.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A entrega traz só senhas.py e não inclui tests/test_senhas.py. Sem suíte pytest não há comportamentos, bordas, uso idiomático nem contrato público a avaliar.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.41,
+  "nota_i": 0.0,
+  "nota_ii": 0.41,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 17,
+   "passados": 1,
+   "pct": 5.88
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "08-testes-codex",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 395.095,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Nomes descrevem cenários, parametrização e pytest.raises; cobre bordas de desconto, vazio e quantidade zero; comentários explicam truncamento, frete e imutabilidade da lista.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Nomes e asserts cobrem cálculo, frete, validação e imutabilidade; bordas, vazio e zeros usam pytest.raises e parametrização; testes independentes e comentários explicam truncamento agregado, frete e não mutação.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 10.0,
+  "nota_final_10": 10.0,
+  "nota_i": 10.0,
+  "nota_ii": 10.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "08-testes-grok",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "timeout",
+  "duracao_agente_s": 420.051,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Suíte organizada por regra, cobre cálculos, pisos, limites, entradas inválidas e formato do retorno. Usa parametrização e pytest.raises, importa a função e não altera o módulo.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Um bloco nomeado por regra, fronteiras de janela, Natal, piso e erros cobertas, pytest.raises e parametrize com finais explícitos. Pontos fracos: sys.path duplicado do conftest e algum código repetido.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 10.0,
+  "nota_final_10": 10.0,
+  "nota_i": 0.0,
+  "nota_ii": 10.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/agente_stderr.txt', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "09-api-claude",
+  "tipo": "09-api",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.12,
+  "testes_passados": 42,
+  "testes_total": 42,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Laço único, mas longo e com estado manual; valida ids e trata retry geral, porém aceita infinitos em parâmetros e pode falhar ao calcular backoff com valores extremos.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Laço claro com helpers. Bordas corretas (Retry-After, orçamento, causa, ids). While e if/elif verbosos. Espera e validação de id repetidas. Docstrings não detalham a política nem as exceções.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.5,
+  "nota_final_10": 8.95,
+  "nota_i": 0.0,
+  "nota_ii": 8.95,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "09-api-codex",
+  "tipo": "09-api",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 368.638,
+  "testes_passados": 38,
+  "testes_total": 38,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Valida antes de qualquer efeito, repete só transitórios, usa raise para preservar a última exceção e não dorme após a falha final. A docstring explica timeout por tentativa; o backoff aparece só como intervalo base.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Valida antes dos efeitos, só repete erros transitórios, relança a última exceção e dorme via callback injetável. Docstring cobre timeout por tentativa e espera entre falhas.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 10.0,
+  "nota_final_10": 10.0,
+  "nota_i": 10.0,
+  "nota_ii": 10.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/codigo/cliente.py', ' M resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 38,
+   "passados": 38,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "09-api-grok",
+  "tipo": "09-api",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "timeout",
+  "duracao_agente_s": 420.063,
+  "testes_passados": 18,
+  "testes_total": 18,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Timeout e erros específicos são tratados corretamente, com thread daemon e docstring. Porém, retry e backoff ficam inline, e a classe de erro transitório é detectada pelo nome.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Erros e timeout corretos. Classifica por nome de classe com except amplo, backoff repetido no laço, docstring não diz o que é retentado.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 0.0,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 18,
+   "passados": 18,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "high",
+  "tarefa": "10-ambigua-claude",
+  "tipo": "10-ambigua",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.114,
+  "testes_passados": 0,
+  "testes_total": 1,
+  "pct_testes": 0.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução contém apenas um .gitkeep vazio: não implementa as funções nem registra decisões em SUPOSICOES.md.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "Entrega só um .gitkeep vazio: faltam telefones.py e SUPOSICOES.md, então não há normalização, extração, tratamento de bordas nem decisões documentadas.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.0,
+  "nota_i": 0.0,
+  "nota_ii": 0.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "01-funcao-claude",
+  "tipo": "01-funcao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 231.933,
+  "testes_passados": 23,
+  "testes_total": 23,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Parser linear e claro, valida tipo e formato com ValueError, usa regex e tabela de unidades. A ordem está separada da tabela de conversão, exigindo mais de um ajuste para adicionar unidade.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Parser linear e erros da spec corretos (TypeError/ValueError). Int recursivo e dicts duplicados por caixa pouco idiomáticos; unidade nova altera regex e dois mapas. Docstring sem exceções.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.0,
+  "nota_final_10": 9.4,
+  "nota_i": 9.4,
+  "nota_ii": 9.4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/codigo/solucao.py', ' M resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 23,
+   "passados": 23,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "01-funcao-grok",
+  "tipo": "01-funcao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 268.829,
+  "testes_passados": 33,
+  "testes_total": 33,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Valida os tipos e limites corretamente, funde intervalos adjacentes e subtrai a janela; o fluxo é claro, mas parsing, recorte e fusão ficam na mesma função.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Bordas e tipos tratados corretamente. Fusão fica no corpo de horas_livres, e o limite 1440/24 aparece no parser e no formatador. Docstring pública não descreve as exceções.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.5,
+  "nota_final_10": 9.25,
+  "nota_i": 9.25,
+  "nota_ii": 9.25,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 33,
+   "passados": 33,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "02-bug-claude",
+  "tipo": "02-bug",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 267.232,
+  "testes_passados": 26,
+  "testes_total": 26,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Corrige as bordas e preserva a API, mas usa sort() na lista local em vez de sorted() e não comenta a extensão do fim com max.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "If extra para vazio e extensão sem max deixam o laço menos direto. Bordas ok: vazio, ordem sem mutar, <=, contido, ValueError. Sem sorted/max; tipos saíram; docstring sem comentário.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.5,
+  "nota_final_10": 8.95,
+  "nota_i": 8.95,
+  "nota_ii": 8.95,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/codigo/intervalos.py', ' M resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 26,
+   "passados": 26,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "02-bug-grok",
+  "tipo": "02-bug",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 210.906,
+  "testes_passados": 16,
+  "testes_total": 16,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Valida e descarta corretamente, usa Decimal com HALF_UP e preserva a lista; limiares estão numa cadeia junto ao cálculo e a docstring não explicita o contrato.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Bordas e tipos conferem com o enunciado, lista não é alterada, Decimal(str) e HALF_UP estão corretos. Conceito é uma cadeia de ifs na mesma função e falta docstring do contrato.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.0,
+  "nota_final_10": 9.4,
+  "nota_i": 9.4,
+  "nota_ii": 9.4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/codigo/boletim.py', ' M resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 16,
+   "passados": 16,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "03-refatoracao-claude",
+  "tipo": "03-refatoracao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 311.231,
+  "testes_passados": 32,
+  "testes_total": 32,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Funções e taxas estão bem separadas, tipadas e documentadas; preserva a ordem e as bordas do cálculo. A formatação ainda usa operador % e a acumulação poderia ser mais idiomática.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Funções curtas e nomes claros; taxas e limite num só lugar; bordas como >1000, qtd negativa e %.2f preservadas. Ainda usa concatenação, % e if/else para acumular, por isso o estilo fica parcial.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 9.7,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/codigo/relatorio.py', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "03-refatoracao-codex",
+  "tipo": "03-refatoracao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 276.748,
+  "testes_passados": 19,
+  "testes_total": 19,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Nomes descritivos; aritmetica inteira e truncamento por linha corretos; formula centralizada em subtotal e delegada uma vez por pedido; faltam docstrings explicando o truncamento.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Nomes descritivos, inteiros, truncamento por linha em subtotal chamado uma vez por pedido, vazio e categorias zeradas preservados. Sem docstring do truncamento nem do resumo.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 9.7,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/codigo/pedidos.py', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 19,
+   "passados": 19,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "03-refatoracao-grok",
+  "tipo": "03-refatoracao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 182.65,
+  "testes_passados": 12,
+  "testes_total": 12,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Busca e cálculo centralizados; validações e limites corretos; FAIXAS é imutável e a API pedida está documentada. A tabela é consultada em cada chamada.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Bordas, bool e expresso batem com o enunciado. Validação e busca de faixa se repetem em cotar e faixa_de_peso; getattr com self is not None é desnecessário; cotar não tem docstring.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.5,
+  "nota_final_10": 9.55,
+  "nota_i": 9.55,
+  "nota_ii": 9.55,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/codigo/frete.py', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "04-dados-claude",
+  "tipo": "04-dados",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 368.864,
+  "testes_passados": 32,
+  "testes_total": 32,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Valida as regras e trata CSV vazio, mas mistura etapas, não usa DictReader nem constantes; falta docstring.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Função única mistura validação e agregação. Erros e bordas de linha estão corretos. csv/json com with, sem DictReader, defaultdict ou docstring; constantes e agregação pouco extensíveis.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.0,
+  "nota_final_10": 8.8,
+  "nota_i": 8.8,
+  "nota_ii": 8.8,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "04-dados-codex",
+  "tipo": "04-dados",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 345.272,
+  "testes_passados": 47,
+  "testes_total": 47,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Valida colunas, linhas pagas e mínimo, ignora não pagas e escreve só após validar. Usa csv.reader com índices manuais, agregado em listas opacas e sem docstring.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Etapas e nomes são claros, validação ocorre antes da escrita e o mínimo filtra só após agregar. Não usa DictReader nem documenta o contrato de saída JSON e erros.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.5,
+  "nota_final_10": 9.25,
+  "nota_i": 9.25,
+  "nota_ii": 9.25,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/avaliacao_avaliador.json', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/codigo/test_vendas.py', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/codigo/vendas.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 47,
+   "passados": 47,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "04-dados-grok",
+  "tipo": "04-dados",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 331.42,
+  "testes_passados": 22,
+  "testes_total": 22,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Leitura, validação, agregação e gravação estão separadas; atende aos casos de borda e usa csv, datetime e json. Prioridades e cabeçalho não estão todos em constantes.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Leitura do CSV, leitura do SLA e validação em funções separadas, mas agregação e gravação ficam juntas em consolidar. Bordas bem cobertas. Prioridades repetidas em três literais. Docstring só copia o enunciado, sem os três caminhos.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.0,
+  "nota_final_10": 9.4,
+  "nota_i": 9.4,
+  "nota_ii": 9.4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 22,
+   "passados": 22,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "05-cli-codex",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 326.191,
+  "testes_passados": 28,
+  "testes_total": 28,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Nomes separam parsing, contagem, ordenação e saída; erros de arquivo e argparse saem com código 2 sem traceback. Ajuda e docstring não explicam a contagem por str.split.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Blocos claros separam argparse, Counter, ordenação explícita e emissão; erros de argumento e de leitura retornam 2 com stderr e sem traceback. A docstring e a ajuda não explicam a tokenização nem o formato TSV.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 9.7,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/codigo/cli.py', ' D resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/codigo/test_cli.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 28,
+   "passados": 28,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "05-cli-grok",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "timeout",
+  "duracao_agente_s": 420.147,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Funções separadas e erros exatos; usa argparse, JSON e datetime.date. A ordem de prioridade está duplicada entre choices e ordenação.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Erros: titulo com quebra de linha no fim e rejeitado, pois o codigo checa o original e nao o stripped do enunciado. Manutencao: prioridades repetidas em choices, tupla e dict. Docs: subcomandos sem help.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.0,
+  "nota_final_10": 9.4,
+  "nota_i": 0.0,
+  "nota_ii": 9.4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "06-multiarquivo-grok",
+  "tipo": "06-multiarquivo",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 235.765,
+  "testes_passados": 17,
+  "testes_total": 17,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Módulos separados, validações e cálculo de prazo centralizados; trata as bordas e usa imports relativos. Faltam docstrings nas classes.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Módulos bem separados e erros de borda corretos. Faltam constante para o prazo de 14 dias (literal em devolver) e docstrings nas classes; timedelta é implícito na subtração de datas.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 8.5,
+  "nota_final_10": 9.55,
+  "nota_i": 9.55,
+  "nota_ii": 9.55,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/codigo/biblioteca/catalogo.py', ' M resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/codigo/biblioteca/emprestimos.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "07-performance-claude",
+  "tipo": "07-performance",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 165.699,
+  "testes_passados": 36,
+  "testes_total": 36,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Correto nas bordas e usa dict com iteração eficiente, mas materializa todos os prefixos, mantém importação desnecessária e a complexidade não é documentada.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Janela de somas de prefixo O(n) correta para vazio, zeros, negativos, k negativo e inteiros grandes, sem mutar nums. Nomes curtos (p, ans) e sem invariante; docstring não explica a ideia nem O(n).",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.5,
+  "nota_final_10": 9.25,
+  "nota_i": 9.25,
+  "nota_ii": 9.25,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 36,
+   "passados": 36,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "07-performance-grok",
+  "tipo": "07-performance",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 219.895,
+  "testes_passados": 12,
+  "testes_total": 12,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Conta cada par uma vez usando frequências, rejeita bool e tipos inválidos sem alterar a lista. Validação e contagem ficam na mesma função; a docstring não explica tipos nem duplicatas.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Contagem linear por frequências correta, com duplicatas, negativos, zero e TypeError para bool e não-int. Caso x+x sem ramo próprio. Validação dentro do laço. Docstring sem tipos nem nota sobre duplicatas.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 9.1,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "08-testes-claude",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.236,
+  "testes_passados": 1,
+  "testes_total": 17,
+  "pct_testes": 5.88,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução não inclui testes em tests/test_senhas.py; apresenta apenas cache e o módulo senhas.py.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A entrega não traz tests/test_senhas.py nem qualquer teste: só senhas.py e cache vazio do pytest. Sem suíte, não há clareza, bordas, pytest idiomático nem contrato verificável.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.41,
+  "nota_i": 0.0,
+  "nota_ii": 0.41,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 17,
+   "passados": 1,
+   "pct": 5.88
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "08-testes-codex",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "timeout",
+  "duracao_agente_s": 420.105,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Nomes e comentários descrevem frete, truncamento e bordas; asserts são claros e usam pytest.raises. Descontei 1 em entrega por incluir .pytest_cache além da suíte pedida.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Suíte pytest independente, com nomes e comentários que distinguem cálculo, truncamento, frete, validação e imutabilidade; usa pytest.raises(ValueError) e cobre vazio, zero, limites, negativos e precisão.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 9.5,
+  "nota_final_10": 9.85,
+  "nota_i": 0.0,
+  "nota_ii": 9.85,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "08-testes-grok",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 365.816,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Suíte organizada por regra, cobre limites, tipos e fórmulas com parametrização e pytest.raises; importa a função no arquivo correto e não altera o módulo.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Uma seção por regra com nomes claros e fronteiras cobertas (24/12, 25/12, janela 2024, piso FIXO500, vazio). Cupons têm tabelas separadas, mas sem estrutura única e com varreduras que recalculam a fórmula.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 9.5,
+  "nota_final_10": 9.85,
+  "nota_i": 9.85,
+  "nota_ii": 9.85,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/avaliacao_avaliador.json', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/codigo/tests/conftest.py', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/codigo/tests/test_descontos.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "09-api-claude",
+  "tipo": "09-api",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.185,
+  "testes_passados": 42,
+  "testes_total": 42,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 5.0,
+    "justificativa": "Laço único e API corretos, com validações e retry-after; porém a lógica é extensa, há tolerância indevida no orçamento via isclose, configuração de exceções/status não centralizada e faltam docstrings da política.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Laço claro com helpers e constantes. isclose no orçamento pode esperar mesmo com soma estritamente acima do limite. API exata e obter_varios reusa obter_usuario, mas sem docstrings da política de retry.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.5,
+  "nota_final_10": 8.95,
+  "nota_i": 0.0,
+  "nota_ii": 8.95,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/codigo/cliente.py', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "09-api-grok",
+  "tipo": "09-api",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 415.033,
+  "testes_passados": 18,
+  "testes_total": 18,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Implementa validação, timeout com thread daemon, 404 imediato, retries e backoff correto. Porém, o laço concentra a política e o backoff em vez de separá-los em funções.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Erros e timeout corretos, sem esperar o ATRASO_S inteiro. Backoff e desistência repetidos inline; classificação por nome no MRO; baixar_pedidos sem docstring.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 9.1,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/codigo/cliente.py', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 18,
+   "passados": 18,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-3.8-flash",
+  "esforco": "medium",
+  "tarefa": "10-ambigua-claude",
+  "tipo": "10-ambigua",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.156,
+  "testes_passados": 0,
+  "testes_total": 1,
+  "pct_testes": 0.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução contém apenas um .gitkeep; faltam telefones.py, as funções exigidas e SUPOSICOES.md.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "Entrega só um .gitkeep vazio: não há telefones.py nem SUPOSICOES.md, então normalização, extração, bordas e decisões ambíguas estão ausentes.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.0,
+  "nota_i": 0.0,
+  "nota_ii": 0.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "high",
+  "tarefa": "01-funcao-claude",
+  "tipo": "01-funcao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 201.063,
+  "testes_passados": 23,
+  "testes_total": 23,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Parser claro e valida tipo, formato, ordem e repetição. Conversão manual de inteiros e regexes separadas dificultam a manutenção; falta docstring.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Parser linear e tabela única de unidades, mas sem docstring. Mensagens de erro não incluem o texto de entrada. Unidade nova exige regex e dict. Conversão recursiva de inteiro é pouco idiomática.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.5,
+  "nota_final_10": 8.95,
+  "nota_i": 8.95,
+  "nota_ii": 8.95,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 23,
+   "passados": 23,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "high",
+  "tarefa": "03-refatoracao-claude",
+  "tipo": "03-refatoracao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.119,
+  "testes_passados": 32,
+  "testes_total": 32,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Funções curtas, nomes claros e taxas centralizadas; preserva a comparação > 1000 e o ValueError. Usa f-strings e type hints, mas concatena linhas com join sem '\\n'. ",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Funções curtas, taxas centralizadas e docstrings corretas. Acúmulo com if/else ainda verboso. Limite 1000, tipo desconhecido, lista vazia e ValueError de qtd negativa preservados.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 0.0,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/codigo/relatorio.py', ' M resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "high",
+  "tarefa": "04-dados-claude",
+  "tipo": "04-dados",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 180.5,
+  "testes_passados": 32,
+  "testes_total": 32,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 5.0,
+    "justificativa": "Pipeline compreensível, mas validação e agregação ficam juntas. Há parsing e gravação corretos; faltam docstring e constantes para colunas/status, e cabeçalho duplicado pode selecionar índice incorreto.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Função única com validação e agregação no mesmo laço. Regras de linha, ValueError, FileNotFoundError e JSON estão corretos. Falta DictReader/defaultdict, docstring e agregação encapsulada; status é valor mágico.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 5.5,
+  "nota_final_10": 8.65,
+  "nota_i": 8.65,
+  "nota_ii": 8.65,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/codigo/solucao.py', ' M resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "high",
+  "tarefa": "04-dados-codex",
+  "tipo": "04-dados",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 347.351,
+  "testes_passados": 47,
+  "testes_total": 47,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Valida tudo antes de gravar e preserva a saída em erro. Usa csv.reader com índices manuais, repete o tratamento de quantidade e preço e não tem docstring.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Etapas claras; valida colunas, mínimo e linhas pagas, ignora as outras e só grava o JSON ao final. Sem docstring. Quantidade e preço repetem o mesmo parse. csv.reader, json e with em UTF-8.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.0,
+  "nota_final_10": 9.1,
+  "nota_i": 9.1,
+  "nota_ii": 9.1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/codigo/vendas.py', ' M resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 47,
+   "passados": 47,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "high",
+  "tarefa": "08-testes-claude",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.033,
+  "testes_passados": 17,
+  "testes_total": 17,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Suíte bem organizada e descritiva, cobre exceções, limites, ordem, trincas e espaços variados; usa pytest idiomaticamente e testa o contrato sem alterar o módulo.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Suíte clara, agrupada por função, com parametrize e pytest.raises. Cobre exceções, ordem, limites de tamanho, faixas 50/80, trincas, piso/teto e espaços. Independente e fiel ao contrato público.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 10.0,
+  "nota_final_10": 10.0,
+  "nota_i": 0.0,
+  "nota_ii": 10.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/resultado.json', ' M resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "high",
+  "tarefa": "08-testes-codex",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 298.127,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Nomes descrevem cálculo, frete, validação e mutação; cobre limites de desconto, negativos, vazio, quantidade zero e preço zero; usa pytest.raises e parametrize; entrega só a suíte.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Nomes e comentários cobrem cálculo, truncamento, frete e não mutação. pytest.raises(ValueError) e parametrização cobrem limites, negativos, vazio e zeros. Testes independentes, dados locais e asserts explícitos.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 10.0,
+  "nota_final_10": 10.0,
+  "nota_i": 10.0,
+  "nota_ii": 10.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/avaliacao_avaliador.json', ' D resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/codigo/tests/__init__.py', ' M resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/codigo/tests/test_carrinho.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "high",
+  "tarefa": "08-testes-grok",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 265.106,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Suíte bem organizada e parametrizada, cobre cálculos, pisos, janelas, datas e erros; usa pytest.raises e valida o retorno sem alterar o módulo.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Uma classe por regra com nomes claros, tabelas com finais explícitos, fronteiras de piso, janela, 24/25 de dezembro, cupom vazio e preço negativo cobertas, helper e pytest.raises. Não executado.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 10.0,
+  "nota_final_10": 10.0,
+  "nota_i": 10.0,
+  "nota_ii": 10.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/codigo/tests/test_descontos.py', ' M resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "high",
+  "tarefa": "10-ambigua-claude",
+  "tipo": "10-ambigua",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.119,
+  "testes_passados": 0,
+  "testes_total": 1,
+  "pct_testes": 0.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução contém apenas um .gitkeep vazio; não há implementação nem SUPOSICOES.md.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "Entrega vazia: só .gitkeep, sem telefones.py nem SUPOSICOES.md. Nenhuma função, validação ou decisão documentada.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.0,
+  "nota_i": 0.0,
+  "nota_ii": 0.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/resultado.json', ' M resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "medium",
+  "tarefa": "01-funcao-claude",
+  "tipo": "01-funcao",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 124.996,
+  "testes_passados": 23,
+  "testes_total": 23,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 5.0,
+    "justificativa": "Parser cobre ordem e repetição, mas aceita mais de 5 componentes; erros não incluem a entrada. A lógica e a configuração de unidades são parcialmente dispersas, e faltam docstring e validação integral.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 1.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 5.0,
+    "justificativa": "Fluxo compreensível com tabela única, mas índice manual e validação misturada ao cálculo. ValueError/TypeError cobrem os casos, sem a entrada na mensagem. Unidades na regex e no dict; sem docstring.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 5.0,
+  "nota_final_10": 8.5,
+  "nota_i": 8.5,
+  "nota_ii": 8.5,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/codigo/solucao.py', ' M resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 23,
+   "passados": 23,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "medium",
+  "tarefa": "05-cli-grok",
+  "tipo": "05-cli",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "grok",
+  "status": "ok",
+  "duracao_agente_s": 141.129,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "claude"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 6.0,
+    "justificativa": "Há funções separadas e parser idiomático, mas concluir usa cmd_done_wrapper desnecessário; prioridades e schema não são centralizados, e falta help que descreva os comandos.",
+    "falhas": []
+   },
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 1.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Funções curtas e separadas, mas as mensagens de erro ficam espalhadas pelo código. Prioridades aparecem em 4 literais. Não há docstring nem help dos subcomandos. Mensagens e códigos de saída estão corretos.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 6.5,
+  "nota_final_10": 8.95,
+  "nota_i": 8.95,
+  "nota_ii": 8.95,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/codigo/agenda_cli.py', ' M resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "medium",
+  "tarefa": "06-multiarquivo-claude",
+  "tipo": "06-multiarquivo",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 75.314,
+  "testes_passados": 40,
+  "testes_total": 40,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 7.0,
+    "justificativa": "Código organizado e idiomático, mas Livro omite o campo autor e a estrutura não inclui .gitkeep como arquivo exigido; faltam docstrings em módulos e classes.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 1.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 8.0,
+    "justificativa": "Livro não declara autor; __post_init__ gera AttributeError. Empréstimos, ordem, multa e estado estão corretos. Faltam docstrings de módulo e das classes principais. Código modular e idiomático.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 7.5,
+  "nota_final_10": 9.25,
+  "nota_i": 9.25,
+  "nota_ii": 9.25,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/codigo/biblioteca/acervo.py', ' M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/codigo/biblioteca/emprestimos.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 40,
+   "passados": 40,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "medium",
+  "tarefa": "06-multiarquivo-codex",
+  "tipo": "06-multiarquivo",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 62.578,
+  "testes_passados": 42,
+  "testes_total": 42,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Nomes claros e alinhados ao estoque; valida saldos e JSON incluindo bool e campos ausentes; imports relativos e cópia explícita. Sem docstrings: ordem e saldo negativo não documentados.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 1.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Nomes e módulos alinhados ao estoque; dataclass frozen, json, imports relativos e cópia de saldos. Valida saldos intermediários e JSON (bool e campos). Faltam docstrings da API.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 9.0,
+  "nota_final_10": 9.7,
+  "nota_i": 9.7,
+  "nota_ii": 9.7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/codigo/estoque/modelos.py', ' M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/codigo/estoque/operacoes.py']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "medium",
+  "tarefa": "08-testes-claude",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "ok",
+  "duracao_agente_s": 170.976,
+  "testes_passados": 17,
+  "testes_total": 17,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Suíte clara e organizada por função, com parametrização idiomática e ampla cobertura de limites, exceções, espaços, trincas e categorias; testa o contrato público.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 1.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 9.0,
+    "justificativa": "Cobre exceções, limites, ordem, trincas, piso/teto e brancos; pytest.raises, parametrize e classes por função. Legibilidade parcial: vários asserts por teste e pontuações mágicas (17, 48, 79).",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 9.5,
+  "nota_final_10": 9.85,
+  "nota_i": 9.85,
+  "nota_ii": 9.85,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/codigo/tests/test_senhas.py', ' M resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "medium",
+  "tarefa": "08-testes-codex",
+  "tipo": "08-testes",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "codex",
+  "status": "ok",
+  "duracao_agente_s": 183.88,
+  "testes_passados": 15,
+  "testes_total": 15,
+  "pct_testes": 100.0,
+  "juizes_neutros_elegiveis": [
+   "claude",
+   "grok"
+  ],
+  "juizes": {
+   "claude": {
+    "modelo": "claude-haiku-5-5",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Nomes descrevem frete, truncamento, validação e não mutação. Cobre limites de desconto, negativos, vazio, quantidade e preço zero. Usa pytest.raises(ValueError) e parametrize. Testes independentes, sem alterar carrinho.py.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 2.0,
+     "erros_bordas": 2.0,
+     "idiomatico": 2.0,
+     "manutenibilidade": 2.0,
+     "documentacao_instrucoes": 2.0
+    },
+    "rubrica_10": 10.0,
+    "justificativa": "Suíte pytest nomeia cálculo, frete, validação e preservação da lista; cobre bordas, ValueError parametrizado e truncamento agregado com comentários. Testes independentes e só asserts públicos.",
+    "falhas": []
+   }
+  },
+  "obs": [
+   "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+  ],
+  "rubrica_media_10": 10.0,
+  "nota_final_10": 10.0,
+  "nota_i": 10.0,
+  "nota_ii": 10.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/codigo/tests/test_carrinho.py', ' M resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  }
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1",
+  "empresa": "gemini",
+  "modelo": "gemini-4-argon",
+  "esforco": "medium",
+  "tarefa": "10-ambigua-claude",
+  "tipo": "10-ambigua",
+  "run": 1,
+  "consistencia_extra": false,
+  "autora_tarefa": "claude",
+  "status": "timeout",
+  "duracao_agente_s": 420.137,
+  "testes_passados": 0,
+  "testes_total": 1,
+  "pct_testes": 0.0,
+  "juizes_neutros_elegiveis": [
+   "codex",
+   "grok"
+  ],
+  "juizes": {
+   "codex": {
+    "modelo": "gpt-6-luna",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "A solução contém apenas um .gitkeep; não há implementação nem SUPOSICOES.md.",
+    "falhas": []
+   },
+   "grok": {
+    "modelo": "grok-4.7-build-fast",
+    "itens": {
+     "legibilidade": 0.0,
+     "erros_bordas": 0.0,
+     "idiomatico": 0.0,
+     "manutenibilidade": 0.0,
+     "documentacao_instrucoes": 0.0
+    },
+    "rubrica_10": 0.0,
+    "justificativa": "Entrega só um .gitkeep vazio: não há telefones.py nem SUPOSICOES.md, então não existe normalização, extração, bordas nem decisões documentadas.",
+    "falhas": []
+   }
+  },
+  "obs": [],
+  "rubrica_media_10": 0.0,
+  "nota_final_10": 0.0,
+  "nota_i": 0.0,
+  "nota_ii": 0.0,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/resultado.json', ' M resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ],
+  "reexecucao_testes": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  }
+ }
+]

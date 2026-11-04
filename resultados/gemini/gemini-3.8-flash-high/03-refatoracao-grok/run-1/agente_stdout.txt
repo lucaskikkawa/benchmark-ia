@@ -1,0 +1,7 @@
+A refatoração do arquivo [`frete.py`](file:///tmp/bench-fvq1f828/frete.py) foi concluída conforme as especificações do [`enunciado.md`](file:///tmp/bench-fvq1f828/enunciado.md):
+
+- Implementada a classe [`TabelaFrete`](file:///tmp/bench-fvq1f828/frete.py#L1-L29) com o atributo de classe `FAIXAS` estruturado como tupla de tuplas com os limites e valores especificados.
+- Implementado o método [`TabelaFrete.cotar`](file:///tmp/bench-fvq1f828/frete.py#L9-L29).
+- Implementada a função [`faixa_de_peso`](file:///tmp/bench-fvq1f828/frete.py#L32-L43), realizando a validação de tipo e limites globais e consultando `TabelaFrete.FAIXAS`.
+- Mantida a função [`cotar`](file:///tmp/bench-fvq1f828/frete.py#L46-L47), delegando para `TabelaFrete().cotar`.
+- Todas as validações de tipos (`bool` rejeitado para inteiros, `bool` obrigatório para expresso) e limites globais (`1..30000` para peso, `0..3000` para distância) foram preservadas e `TabelaFrete.FAIXAS` é consultada dinamicamente a cada chamada.

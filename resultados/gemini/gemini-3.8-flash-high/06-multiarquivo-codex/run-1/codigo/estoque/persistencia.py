@@ -1,35 +1,32 @@
 import json
+from pathlib import Path
+
 from .modelos import Movimento
 
-__all__ = ['carregar_movimentos']
 
-
-def carregar_movimentos(caminho) -> list[Movimento]:
-    with open(caminho, mode='r', encoding='utf-8') as f:
+def carregar_movimentos(caminho: str | Path) -> list[Movimento]:
+    with open(caminho, "r", encoding="utf-8") as f:
         dados = json.load(f)
 
     if not isinstance(dados, list):
-        raise ValueError("O conteúdo JSON raiz deve ser uma lista.")
+        raise ValueError("JSON raiz deve ser uma lista de objetos")
 
     movimentos: list[Movimento] = []
     for item in dados:
         if not isinstance(item, dict):
-            raise ValueError("Cada elemento da lista deve ser um objeto JSON.")
+            raise ValueError(f"Elemento da lista não é um objeto JSON: {item!r}")
+        if "sku" not in item:
+            raise ValueError("Campo 'sku' ausente no objeto")
+        if "delta" not in item:
+            raise ValueError("Campo 'delta' ausente no objeto")
 
-        if 'sku' not in item or 'delta' not in item:
-            raise ValueError("O objeto deve conter os campos 'sku' e 'delta'.")
+        sku = item["sku"]
+        delta = item["delta"]
 
-        sku = item['sku']
         if not isinstance(sku, str) or not sku.strip():
-            raise ValueError(
-                "O campo 'sku' deve ser uma string com ao menos um caractere não branco."
-            )
-
-        delta = item['delta']
+            raise ValueError(f"SKU inválido: {sku!r}")
         if isinstance(delta, bool) or not isinstance(delta, int):
-            raise ValueError(
-                "O campo 'delta' deve ser um número inteiro (não booleano)."
-            )
+            raise ValueError(f"Delta inválido: {delta!r}")
 
         movimentos.append(Movimento(sku=sku, delta=delta))
 

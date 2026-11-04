@@ -10,16 +10,20 @@ def calcular_subtotal(itens: list[dict]) -> float:
     """Soma preco * qtd dos itens. ValueError se algum qtd < 0. Lista vazia -> 0."""
     subtotal = 0
     for item in itens:
-        if item["qtd"] < 0:
+        quantidade = item["qtd"]
+        if quantidade < 0:
             raise ValueError("qtd negativa")
-        subtotal += item["preco"] * item["qtd"]
+        subtotal += item["preco"] * quantidade
     return subtotal
 
 
 def calcular_desconto(subtotal: float, tipo_cliente: str) -> float:
     """Retorna o VALOR do desconto (não o total líquido) para o subtotal e o tipo de cliente."""
-    taxa_ate_limite, taxa_acima_limite = TAXAS_DESCONTO.get(tipo_cliente, TAXAS_PADRAO)
-    taxa = taxa_acima_limite if subtotal > LIMITE_FAIXA_ALTA else taxa_ate_limite
+    try:
+        taxa_ate_limite, taxa_acima = TAXAS_DESCONTO.get(tipo_cliente, TAXAS_PADRAO)
+    except TypeError:
+        taxa_ate_limite, taxa_acima = TAXAS_PADRAO
+    taxa = taxa_acima if subtotal > LIMITE_FAIXA_ALTA else taxa_ate_limite
     return subtotal * taxa
 
 
@@ -27,16 +31,16 @@ def formatar_relatorio(totais_por_cliente: dict[str, float]) -> str:
     """Gera o texto do relatório a partir do total líquido por cliente."""
     linhas = []
     total_geral = 0
-    for cliente in sorted(totais_por_cliente):
-        valor = totais_por_cliente[cliente]
-        linhas.append(f"{cliente}: {valor:.2f}")
-        total_geral += valor
+    for cliente in sorted(totais_por_cliente.keys()):
+        total_cliente = totais_por_cliente[cliente]
+        linhas.append(f"{cliente:s}: {total_cliente:.2f}\n")
+        total_geral += total_cliente
     linhas.append(f"TOTAL: {total_geral:.2f}")
-    return "\n".join(linhas)
+    return "".join(linhas)
 
 
 def gerar_relatorio(pedidos: list[dict]) -> str:
-    """Gera o relatório consolidado de vendas por cliente a partir da lista de pedidos."""
+    """Calcula os totais líquidos por cliente a partir dos pedidos e formata o relatório."""
     totais_por_cliente: dict[str, float] = {}
     for pedido in pedidos:
         cliente = pedido["cliente"]
@@ -48,4 +52,3 @@ def gerar_relatorio(pedidos: list[dict]) -> str:
         else:
             totais_por_cliente[cliente] = total_liquido
     return formatar_relatorio(totais_por_cliente)
-

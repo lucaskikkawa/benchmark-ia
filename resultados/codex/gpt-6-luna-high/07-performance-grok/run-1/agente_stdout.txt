@@ -1,0 +1,1 @@
+Criei [solucao.py](/tmp/bench-gzcfbc18/solucao.py) com `pares_com_soma`. A função valida os tipos, conta pares de índices em uma passagem com frequências e não altera a lista. A complexidade é O(n); não executei testes.

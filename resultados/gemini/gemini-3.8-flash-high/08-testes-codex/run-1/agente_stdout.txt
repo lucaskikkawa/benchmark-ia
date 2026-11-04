@@ -1,0 +1,33 @@
+A suíte de testes com `pytest` foi criada em [`tests/test_carrinho.py`](file:///tmp/bench-hhbwaztd/tests/test_carrinho.py) (junto a [`tests/conftest.py`](file:///tmp/bench-hhbwaztd/tests/conftest.py)).
+
+### Cobertura da suíte
+
+- **Validações globais de parâmetros**:
+  - `desconto` fora do intervalo `[0, 100]` (inclusive negativo e acima de 100).
+  - `frete` negativo.
+  - Validação de desconto e frete inclusive em carrinho vazio e em carrinhos contendo apenas itens de quantidade zero.
+  - Valores de fronteira válidos (`desconto=0`, `desconto=100`, `frete=0`).
+
+- **Validações de itens**:
+  - `quantidade < 0` e `preco < 0` lançando `ValueError`.
+  - Validação de preço negativo mesmo quando quantidade é zero.
+  - Validação de linhas posteriores a uma linha com quantidade zero.
+  - Aceitação válida de `quantidade=0` e `preco=0`.
+
+- **Regras de frete**:
+  - Frete não cobrado quando a soma de quantidades for 0 (carrinho vazio ou apenas itens com quantidade 0).
+  - Item gratuito com quantidade positiva paga frete integral.
+  - Frete acrescido sem incidência de desconto (inclusive com desconto de 100%).
+
+- **Desconto e truncamento**:
+  - Truncamento para baixo (`// 100`).
+  - Fórmula exata `bruto * (100 - desconto) // 100`.
+  - Truncamento agregado entre linhas aplicado uma única vez sobre o total bruto (e não individualmente por item).
+  - Valores padrão de desconto e frete.
+
+- **Precisão arbitrária**:
+  - Inteiros grandes acima de $2^{53}$ mantendo precisão exata (sem conversões para ponto flutuante).
+
+- **Imutabilidade e independência**:
+  - Preservação da lista fornecida em execuções com sucesso e após `ValueError`.
+  - Independência entre chamadas sucessivas.

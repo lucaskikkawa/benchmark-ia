@@ -4,13 +4,13 @@
   "esforco": "high",
   "tarefa": "03-refatoracao-grok",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 180.16,
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 281.803,
   "testes_total": 12,
-  "testes_passados": 9,
-  "pct_passados": 75.0,
-  "inicio_iso": "2026-10-29T20:11:11.908456-03:00",
+  "testes_passados": 12,
+  "pct_passados": 100.0,
+  "inicio_iso": "2026-11-04T05:38:26.984875-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-it_kepsj",
-    "/tmp/bench-it_kepsj",
+    "/tmp/bench-fvq1f828",
+    "/tmp/bench-fvq1f828",
     "--chdir",
-    "/tmp/bench-it_kepsj",
+    "/tmp/bench-fvq1f828",
     "--setenv",
     "HOME",
     "/home/box",
@@ -106,5 +106,6 @@
     "--model",
     "gemini-3.8-flash-high",
     "--dangerously-skip-permissions"
-  ]
+  ],
+  "timeout_s": 420
 }

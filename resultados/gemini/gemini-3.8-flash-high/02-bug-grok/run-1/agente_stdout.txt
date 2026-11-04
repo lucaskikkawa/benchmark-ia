@@ -1,0 +1,17 @@
+A implementação da função [`fechar_boletim`](file:///tmp/bench-0quk_kxr/boletim.py#L7-L54) no arquivo [boletim.py](file:///tmp/bench-0quk_kxr/boletim.py) foi corrigida de acordo com todos os requisitos de [enunciado.md](file:///tmp/bench-0quk_kxr/enunciado.md):
+
+- **Validações de entrada**:
+  - Garante que `provas` seja do tipo `list` (senão `TypeError`).
+  - Garante tamanho entre 1 e 4 elementos (senão `ValueError`).
+  - Rejeita valores booleanos (`bool`), tipos não numéricos ou não `None` com `TypeError`.
+  - Rejeita números não finitos (`NaN`, `±Inf`) ou fora de `[0, 10]` com `ValueError`.
+  - Levanta `ValueError` se não restar nenhuma nota válida após ignorar ausências (`None`).
+  - Não muta a lista recebida.
+
+- **Regras de cálculo**:
+  - Descarte da primeira ocorrência da menor nota apenas quando houver exatamente 4 notas válidas.
+  - Conversão individual com `Decimal(str(nota))`, soma das notas restantes e divisão por `n`.
+  - Arredondamento único da média com `.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)` e conversão para `float`.
+  - Atribuição dos conceitos `"A"`, `"B"`, `"C"` e `"D"` sobre a média arredondada com limites inclusivos (`>= 9`, `>= 7`, `>= 5`, senão `"D"`).
+  - Definição do booleano `aprovado` (`True` quando conceito != `"D"`).
+  - Retorno do dicionário com as quatro chaves especificadas: `media`, `conceito`, `aprovado` e `descartada`.

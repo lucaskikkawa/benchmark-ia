@@ -1,0 +1,5 @@
+O pacote [`estoque`](file:///tmp/bench-2hrdg794/estoque/__init__.py) foi completado nos módulos existentes:
+
+- [`estoque/modelos.py`](file:///tmp/bench-2hrdg794/estoque/modelos.py): define a dataclass imutável [`Movimento`](file:///tmp/bench-2hrdg794/estoque/modelos.py#L4-L7) (`frozen=True`) com `sku: str` e `delta: int`, sem validação no construtor.
+- [`estoque/operacoes.py`](file:///tmp/bench-2hrdg794/estoque/operacoes.py): implementa [`calcular_saldos`](file:///tmp/bench-2hrdg794/estoque/operacoes.py#L6-L22), copiando os saldos iniciais sem mutá-los, validando saldos iniciais e intermediários contra valores negativos (`ValueError`) e preservando entradas de saldo zero e chaves exatas de SKU.
+- [`estoque/persistencia.py`](file:///tmp/bench-2hrdg794/estoque/persistencia.py): implementa [`carregar_movimentos`](file:///tmp/bench-2hrdg794/estoque/persistencia.py#L7-L32), lendo arquivos JSON UTF-8 (`str` ou `Path`) e validando a estrutura de lista de objetos, `sku` com ao menos um caractere não branco (mantendo a string original) e `delta` estritamente inteiro (`bool` rejeitado).

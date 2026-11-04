@@ -1,0 +1,5 @@
+O arquivo [vendas.py](file:///tmp/bench-p0rvysua/vendas.py) foi implementado com a função [`resumir_vendas`](file:///tmp/bench-p0rvysua/vendas.py#L12-L94), atendendo a todas as especificações de [enunciado.md](file:///tmp/bench-p0rvysua/enunciado.md):
+
+- **Validação de entrada e `minimo_centavos`**: exige `type(minimo_centavos) is int` e valor `>= 0`, leitura UTF-8 com suporte a BOM (`utf-8-sig`), regras de aspas do módulo `csv` e verificação das colunas obrigatórias (`produto`, `quantidade`, `preco_centavos`, `status`).
+- **Filtragem e validação de linhas pagas**: ignora linhas cujo `status` (após `strip().lower()`) não seja `pago` (inclusive com campos ausentes), valida campos obrigatórios, produto não vazio após `strip()` e inteiros não negativos com gramática estrita ASCII `[+-]?[0-9]+`.
+- **Agregação e escrita segura**: soma `quantidade` e `quantidade * preco_centavos` com precisão arbitrária, filtra `receita_centavos >= minimo_centavos`, ordena por `produto` e só cria/sobrescreve o JSON UTF-8 de saída (sem escape ASCII e com quebra de linha final) após toda a validação concluir sem erros.

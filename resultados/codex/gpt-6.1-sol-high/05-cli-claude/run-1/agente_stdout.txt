@@ -1,0 +1,5 @@
+Criei [freq.py](/tmp/bench-murq149z/freq.py) conforme o enunciado.
+
+As 24 verificações passaram, incluindo Unicode, exclusões, ordenação, JSON, erros e UTF-8 estrito em arquivos e stdin.
+
+Neste ambiente, execute com `python3 freq.py [opções] ARQUIVO`, pois o comando `python` não está disponível.

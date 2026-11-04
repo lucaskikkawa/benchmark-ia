@@ -1,0 +1,3 @@
+Implementei `ClienteResiliente` e `ApiError` em `cliente_resiliente.py`, com validação, retentativas, backoff exponencial e tratamento dos erros especificados.
+
+Criei testes em `test_cliente_resiliente.py`. Verificação: `python3 -m unittest -v` — 7 testes passaram.

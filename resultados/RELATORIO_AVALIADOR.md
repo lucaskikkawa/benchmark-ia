@@ -211,3 +211,9 @@ Regras excepcionais (decisão do Lucas), tempo pelo campo `duracao_agente_s` do 
 |10-ambigua-claude/run-1|timeout|900|0|—|0.00|sem entrega (codigo/ igual ao inicial): zero|**0.00**|
 |10-ambigua-gemini/run-1|ok|293|100|8.00|9.40|2ª tentativa, 293 s (≤600 s): ×0,7|**6.58**|
 
+
+## Dois rankings oficiais (decisão do Lucas, 04/11/2026)
+
+- **Ranking original**: vale para a configuração com limite de 180/300 s. É o deste relatório, com `resultados/notas_avaliador.csv`.
+- **Ranking 7 min (420 s)**: as 70 run-1 que deram timeout em Claude, Codex e Gemini foram refeitas com 420 s. Fica em `resultados/_avaliador/cenario_7min/` (`RELATORIO_7MIN.md`, `notas_7min.csv`, `matriz_7min.csv`), em duas versões: **(i)** timeout = 0 e **(ii)** julgando a entrega parcial em `codigo/`.
+- Nas 70 pastas refeitas, `avaliacao_avaliador.json` corresponde à execução original (180/300 s), cujos arquivos estão em `resultados/_timeouts_180s/` e `_timeouts_300s/`. Já `avaliacao_avaliador_7min.json` corresponde à execução de 420 s que está na pasta (`resultado.json`, `junit.xml`, `testes_saida.txt`, `codigo/`).

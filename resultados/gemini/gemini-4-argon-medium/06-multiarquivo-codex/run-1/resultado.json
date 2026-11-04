@@ -4,13 +4,13 @@
   "esforco": "medium",
   "tarefa": "06-multiarquivo-codex",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 300.138,
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 62.578,
   "testes_total": 42,
-  "testes_passados": 1,
-  "pct_passados": 2.380952380952381,
-  "inicio_iso": "2026-10-29T20:52:48.555852-03:00",
+  "testes_passados": 42,
+  "pct_passados": 100.0,
+  "inicio_iso": "2026-11-04T06:46:39.093352-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-yocy834f",
-    "/tmp/bench-yocy834f",
+    "/tmp/bench-2hrdg794",
+    "/tmp/bench-2hrdg794",
     "--chdir",
-    "/tmp/bench-yocy834f",
+    "/tmp/bench-2hrdg794",
     "--setenv",
     "HOME",
     "/home/box",
@@ -106,5 +106,6 @@
     "--model",
     "gemini-4-argon-medium",
     "--dangerously-skip-permissions"
-  ]
+  ],
+  "timeout_s": 420
 }

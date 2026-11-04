@@ -1,0 +1,6 @@
+O arquivo [solucao.py](file:///tmp/bench-k6k6zh08/solucao.py) foi criado com a implementação de [`parse_duracao`](file:///tmp/bench-k6k6zh08/solucao.py#L29-L58).
+
+### Destaques da implementação
+- **Validação de tipo**: Aceita `str` (incluindo subclasses de `str`) e levanta `TypeError` para outros tipos.
+- **Tempo linear $O(n)$**: Usa quantificadores possessivos do Python 3.11 (`\s*+` e `[0-9]++`) para varrer a entrada sem *backtracking*, processando entradas de ~1 MB em poucos milissegundos.
+- **Inteiros de precisão arbitrária**: A função auxiliar [`_str_para_int`](file:///tmp/bench-k6k6zh08/solucao.py#L19-L26) faz a conversão por divisão e conquista quando o número de dígitos excede o limite padrão do `int()` no Python 3.11 (`int_max_str_digits`), mantendo exatidão para milhares de dígitos.

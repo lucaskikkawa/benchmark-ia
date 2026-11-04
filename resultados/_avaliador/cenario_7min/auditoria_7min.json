@@ -1,0 +1,1752 @@
+[
+ {
+  "pasta": "resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1",
+  "empresa": "claude",
+  "combo": "claude-opus-5-5-high",
+  "tarefa": "05-cli-gemini",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 28.688,
+  "timeout_s": 420,
+  "testes_total": 22,
+  "testes_passados": 22,
+  "pct": 100.0,
+  "rerun": {
+   "total": 22,
+   "passados": 22,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/agente_stdout.txt', ' D resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/avaliacao.json', ' D resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/avaliacao_avaliador.json', ' M resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/codigo/contatexto.py', ' M resultados/claude/claude-opus-5-5-high/05-cli-gemini/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/codex/gpt-6-luna-high/07-performance-grok/run-1",
+  "empresa": "codex",
+  "combo": "gpt-6-luna-high",
+  "tarefa": "07-performance-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 21.526,
+  "timeout_s": 420,
+  "testes_total": 12,
+  "testes_passados": 12,
+  "pct": 100.0,
+  "rerun": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/avaliacao.json', ' D resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6-luna-high/07-performance-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1",
+  "empresa": "codex",
+  "combo": "gpt-6.1-sol-high",
+  "tarefa": "05-cli-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 73.735,
+  "timeout_s": 420,
+  "testes_total": 27,
+  "testes_passados": 27,
+  "pct": 100.0,
+  "rerun": {
+   "total": 27,
+   "passados": 27,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1/codigo/freq.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1",
+  "empresa": "codex",
+  "combo": "gpt-6.1-sol-high",
+  "tarefa": "05-cli-gemini",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 104.073,
+  "timeout_s": 420,
+  "testes_total": 22,
+  "testes_passados": 22,
+  "pct": 100.0,
+  "rerun": {
+   "total": 22,
+   "passados": 22,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-high/05-cli-gemini/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1",
+  "empresa": "codex",
+  "combo": "gpt-6.1-sol-high",
+  "tarefa": "08-testes-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 139.461,
+  "timeout_s": 420,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct": 100.0,
+  "rerun": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 6,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-high/08-testes-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1",
+  "empresa": "codex",
+  "combo": "gpt-6.1-sol-high",
+  "tarefa": "08-testes-gemini",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 83.097,
+  "timeout_s": 420,
+  "testes_total": 13,
+  "testes_passados": 13,
+  "pct": 100.0,
+  "rerun": {
+   "total": 13,
+   "passados": 13,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-high/08-testes-gemini/run-1/codigo/tests/conftest.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1",
+  "empresa": "codex",
+  "combo": "gpt-6.1-sol-medium",
+  "tarefa": "09-api-gemini",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 58.814,
+  "timeout_s": 420,
+  "testes_total": 46,
+  "testes_passados": 46,
+  "pct": 100.0,
+  "rerun": {
+   "total": 46,
+   "passados": 46,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 3,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-medium/09-api-gemini/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1",
+  "empresa": "codex",
+  "combo": "gpt-6.1-sol-medium",
+  "tarefa": "09-api-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 74.545,
+  "timeout_s": 420,
+  "testes_total": 18,
+  "testes_passados": 18,
+  "pct": 100.0,
+  "rerun": {
+   "total": 18,
+   "passados": 18,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/agente_stderr.txt', ' M resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/agente_stdout.txt', ' D resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/avaliacao.json', ' D resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/avaliacao_avaliador.json', ' M resultados/codex/gpt-6.1-sol-medium/09-api-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "01-funcao-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.159,
+  "timeout_s": 420,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "01-funcao-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 359.655,
+  "timeout_s": 420,
+  "testes_total": 33,
+  "testes_passados": 33,
+  "pct": 100.0,
+  "rerun": {
+   "total": 33,
+   "passados": 33,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/01-funcao-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "02-bug-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 349.183,
+  "timeout_s": 420,
+  "testes_total": 26,
+  "testes_passados": 26,
+  "pct": 100.0,
+  "rerun": {
+   "total": 26,
+   "passados": 26,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/codigo/intervalos.py', ' M resultados/gemini/gemini-3.8-flash-high/02-bug-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "02-bug-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 378.385,
+  "timeout_s": 420,
+  "testes_total": 16,
+  "testes_passados": 16,
+  "pct": 100.0,
+  "rerun": {
+   "total": 16,
+   "passados": 16,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/codigo/boletim.py', ' M resultados/gemini/gemini-3.8-flash-high/02-bug-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "03-refatoracao-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.064,
+  "timeout_s": 420,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct": 100.0,
+  "rerun": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/codigo/relatorio.py', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "03-refatoracao-codex",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.12,
+  "timeout_s": 420,
+  "testes_total": 19,
+  "testes_passados": 9,
+  "pct": 47.36842105263158,
+  "rerun": {
+   "total": 19,
+   "passados": 9,
+   "pct": 47.37
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-codex/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "03-refatoracao-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 281.803,
+  "timeout_s": 420,
+  "testes_total": 12,
+  "testes_passados": 12,
+  "pct": 100.0,
+  "rerun": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/codigo/frete.py', ' M resultados/gemini/gemini-3.8-flash-high/03-refatoracao-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "04-dados-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.085,
+  "timeout_s": 420,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "04-dados-codex",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.088,
+  "timeout_s": 420,
+  "testes_total": 47,
+  "testes_passados": 47,
+  "pct": 100.0,
+  "rerun": {
+   "total": 47,
+   "passados": 47,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-codex/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "04-dados-grok",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.137,
+  "timeout_s": 420,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/04-dados-grok/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "05-cli-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.061,
+  "timeout_s": 420,
+  "testes_total": 27,
+  "testes_passados": 27,
+  "pct": 100.0,
+  "rerun": {
+   "total": 27,
+   "passados": 27,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 3,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "05-cli-codex",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.103,
+  "timeout_s": 420,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-codex/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "05-cli-grok",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.094,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 1,
+  "pct": 6.666666666666667,
+  "rerun": {
+   "total": 15,
+   "passados": 1,
+   "pct": 6.67
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/05-cli-grok/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "06-multiarquivo-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 352.375,
+  "timeout_s": 420,
+  "testes_total": 40,
+  "testes_passados": 40,
+  "pct": 100.0,
+  "rerun": {
+   "total": 40,
+   "passados": 40,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 5,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "06-multiarquivo-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 306.833,
+  "timeout_s": 420,
+  "testes_total": 42,
+  "testes_passados": 42,
+  "pct": 100.0,
+  "rerun": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/codigo/estoque/modelos.py', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-codex/run-1/codigo/estoque/operacoes.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "06-multiarquivo-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 365.426,
+  "timeout_s": 420,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct": 100.0,
+  "rerun": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 5,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/codigo/biblioteca/__init__.py', ' M resultados/gemini/gemini-3.8-flash-high/06-multiarquivo-grok/run-1/codigo/biblioteca/catalogo.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "07-performance-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 358.05,
+  "timeout_s": 420,
+  "testes_total": 36,
+  "testes_passados": 36,
+  "pct": 100.0,
+  "rerun": {
+   "total": 36,
+   "passados": 36,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/codigo/solucao.py', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "07-performance-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 244.623,
+  "timeout_s": 420,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct": 100.0,
+  "rerun": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-codex/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "07-performance-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 358.194,
+  "timeout_s": 420,
+  "testes_total": 12,
+  "testes_passados": 12,
+  "pct": 100.0,
+  "rerun": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/07-performance-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "08-testes-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.107,
+  "timeout_s": 420,
+  "testes_total": 17,
+  "testes_passados": 1,
+  "pct": 5.882352941176471,
+  "rerun": {
+   "total": 17,
+   "passados": 1,
+   "pct": 5.88
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "08-testes-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 395.095,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 8,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-codex/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "08-testes-grok",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.051,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 9,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/agente_stderr.txt', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/08-testes-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "09-api-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.12,
+  "timeout_s": 420,
+  "testes_total": 42,
+  "testes_passados": 42,
+  "pct": 100.0,
+  "rerun": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "09-api-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 368.638,
+  "timeout_s": 420,
+  "testes_total": 38,
+  "testes_passados": 38,
+  "pct": 100.0,
+  "rerun": {
+   "total": 38,
+   "passados": 38,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/codigo/cliente.py', ' M resultados/gemini/gemini-3.8-flash-high/09-api-codex/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "09-api-grok",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.063,
+  "timeout_s": 420,
+  "testes_total": 18,
+  "testes_passados": 18,
+  "pct": 100.0,
+  "rerun": {
+   "total": 18,
+   "passados": 18,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/09-api-grok/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-high",
+  "tarefa": "10-ambigua-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.114,
+  "timeout_s": 420,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-high/10-ambigua-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "01-funcao-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 231.933,
+  "timeout_s": 420,
+  "testes_total": 23,
+  "testes_passados": 23,
+  "pct": 100.0,
+  "rerun": {
+   "total": 23,
+   "passados": 23,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/codigo/solucao.py', ' M resultados/gemini/gemini-3.8-flash-medium/01-funcao-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "01-funcao-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 268.829,
+  "timeout_s": 420,
+  "testes_total": 33,
+  "testes_passados": 33,
+  "pct": 100.0,
+  "rerun": {
+   "total": 33,
+   "passados": 33,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/01-funcao-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "02-bug-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 267.232,
+  "timeout_s": 420,
+  "testes_total": 26,
+  "testes_passados": 26,
+  "pct": 100.0,
+  "rerun": {
+   "total": 26,
+   "passados": 26,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/codigo/intervalos.py', ' M resultados/gemini/gemini-3.8-flash-medium/02-bug-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "02-bug-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 210.906,
+  "timeout_s": 420,
+  "testes_total": 16,
+  "testes_passados": 16,
+  "pct": 100.0,
+  "rerun": {
+   "total": 16,
+   "passados": 16,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/codigo/boletim.py', ' M resultados/gemini/gemini-3.8-flash-medium/02-bug-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "03-refatoracao-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 311.231,
+  "timeout_s": 420,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct": 100.0,
+  "rerun": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/codigo/relatorio.py', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "03-refatoracao-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 276.748,
+  "timeout_s": 420,
+  "testes_total": 19,
+  "testes_passados": 19,
+  "pct": 100.0,
+  "rerun": {
+   "total": 19,
+   "passados": 19,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/codigo/pedidos.py', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-codex/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "03-refatoracao-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 182.65,
+  "timeout_s": 420,
+  "testes_total": 12,
+  "testes_passados": 12,
+  "pct": 100.0,
+  "rerun": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/codigo/frete.py', ' M resultados/gemini/gemini-3.8-flash-medium/03-refatoracao-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "04-dados-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 368.864,
+  "timeout_s": 420,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct": 100.0,
+  "rerun": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "04-dados-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 345.272,
+  "timeout_s": 420,
+  "testes_total": 47,
+  "testes_passados": 47,
+  "pct": 100.0,
+  "rerun": {
+   "total": 47,
+   "passados": 47,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/avaliacao_avaliador.json', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/codigo/test_vendas.py', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-codex/run-1/codigo/vendas.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "04-dados-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 331.42,
+  "timeout_s": 420,
+  "testes_total": 22,
+  "testes_passados": 22,
+  "pct": 100.0,
+  "rerun": {
+   "total": 22,
+   "passados": 22,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/04-dados-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "05-cli-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 326.191,
+  "timeout_s": 420,
+  "testes_total": 28,
+  "testes_passados": 28,
+  "pct": 100.0,
+  "rerun": {
+   "total": 28,
+   "passados": 28,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/codigo/cli.py', ' D resultados/gemini/gemini-3.8-flash-medium/05-cli-codex/run-1/codigo/test_cli.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "05-cli-grok",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.147,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-medium/05-cli-grok/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "06-multiarquivo-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 235.765,
+  "timeout_s": 420,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct": 100.0,
+  "rerun": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 5,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/codigo/biblioteca/catalogo.py', ' M resultados/gemini/gemini-3.8-flash-medium/06-multiarquivo-grok/run-1/codigo/biblioteca/emprestimos.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "07-performance-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 165.699,
+  "timeout_s": 420,
+  "testes_total": 36,
+  "testes_passados": 36,
+  "pct": 100.0,
+  "rerun": {
+   "total": 36,
+   "passados": 36,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/07-performance-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "07-performance-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 219.895,
+  "timeout_s": 420,
+  "testes_total": 12,
+  "testes_passados": 12,
+  "pct": 100.0,
+  "rerun": {
+   "total": 12,
+   "passados": 12,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/07-performance-grok/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "08-testes-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.236,
+  "timeout_s": 420,
+  "testes_total": 17,
+  "testes_passados": 1,
+  "pct": 5.882352941176471,
+  "rerun": {
+   "total": 17,
+   "passados": 1,
+   "pct": 5.88
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 5,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "08-testes-codex",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.105,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-codex/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "08-testes-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 365.816,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/avaliacao_avaliador.json', ' D resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/codigo/tests/conftest.py', ' M resultados/gemini/gemini-3.8-flash-medium/08-testes-grok/run-1/codigo/tests/test_descontos.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "09-api-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.185,
+  "timeout_s": 420,
+  "testes_total": 42,
+  "testes_passados": 42,
+  "pct": 100.0,
+  "rerun": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 8,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/codigo/cliente.py', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "09-api-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 415.033,
+  "timeout_s": 420,
+  "testes_total": 18,
+  "testes_passados": 18,
+  "pct": 100.0,
+  "rerun": {
+   "total": 18,
+   "passados": 18,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/codigo/cliente.py', ' M resultados/gemini/gemini-3.8-flash-medium/09-api-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-3.8-flash-medium",
+  "tarefa": "10-ambigua-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.156,
+  "timeout_s": 420,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/junit.xml', ' M resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/resultado.json', ' M resultados/gemini/gemini-3.8-flash-medium/10-ambigua-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-high",
+  "tarefa": "01-funcao-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 201.063,
+  "timeout_s": 420,
+  "testes_total": 23,
+  "testes_passados": 23,
+  "pct": 100.0,
+  "rerun": {
+   "total": 23,
+   "passados": 23,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-high/01-funcao-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-high",
+  "tarefa": "03-refatoracao-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.119,
+  "timeout_s": 420,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct": 100.0,
+  "rerun": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/codigo/relatorio.py', ' M resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-high/03-refatoracao-claude/run-1/resultado.json']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-high",
+  "tarefa": "04-dados-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 180.5,
+  "timeout_s": 420,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct": 100.0,
+  "rerun": {
+   "total": 32,
+   "passados": 32,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/codigo/solucao.py', ' M resultados/gemini/gemini-4-argon-high/04-dados-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-high",
+  "tarefa": "04-dados-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 347.351,
+  "timeout_s": 420,
+  "testes_total": 47,
+  "testes_passados": 47,
+  "pct": 100.0,
+  "rerun": {
+   "total": 47,
+   "passados": 47,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/codigo/vendas.py', ' M resultados/gemini/gemini-4-argon-high/04-dados-codex/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-high",
+  "tarefa": "08-testes-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.033,
+  "timeout_s": 420,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct": 100.0,
+  "rerun": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 6,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/resultado.json', ' M resultados/gemini/gemini-4-argon-high/08-testes-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-high",
+  "tarefa": "08-testes-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 298.127,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/avaliacao_avaliador.json', ' D resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/codigo/tests/__init__.py', ' M resultados/gemini/gemini-4-argon-high/08-testes-codex/run-1/codigo/tests/test_carrinho.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-high",
+  "tarefa": "08-testes-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 265.106,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/codigo/tests/test_descontos.py', ' M resultados/gemini/gemini-4-argon-high/08-testes-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-high",
+  "tarefa": "10-ambigua-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.119,
+  "timeout_s": 420,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/resultado.json', ' M resultados/gemini/gemini-4-argon-high/10-ambigua-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-medium",
+  "tarefa": "01-funcao-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 124.996,
+  "timeout_s": 420,
+  "testes_total": 23,
+  "testes_passados": 23,
+  "pct": 100.0,
+  "rerun": {
+   "total": 23,
+   "passados": 23,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/codigo/solucao.py', ' M resultados/gemini/gemini-4-argon-medium/01-funcao-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-medium",
+  "tarefa": "05-cli-grok",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 141.129,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 2,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/codigo/agenda_cli.py', ' M resultados/gemini/gemini-4-argon-medium/05-cli-grok/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-medium",
+  "tarefa": "06-multiarquivo-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 75.314,
+  "timeout_s": 420,
+  "testes_total": 40,
+  "testes_passados": 40,
+  "pct": 100.0,
+  "rerun": {
+   "total": 40,
+   "passados": 40,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 5,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/codigo/biblioteca/acervo.py', ' M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-claude/run-1/codigo/biblioteca/emprestimos.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-medium",
+  "tarefa": "06-multiarquivo-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 62.578,
+  "timeout_s": 420,
+  "testes_total": 42,
+  "testes_passados": 42,
+  "pct": 100.0,
+  "rerun": {
+   "total": 42,
+   "passados": 42,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 4,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/codigo/estoque/modelos.py', ' M resultados/gemini/gemini-4-argon-medium/06-multiarquivo-codex/run-1/codigo/estoque/operacoes.py']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-medium",
+  "tarefa": "08-testes-claude",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 170.976,
+  "timeout_s": 420,
+  "testes_total": 17,
+  "testes_passados": 17,
+  "pct": 100.0,
+  "rerun": {
+   "total": 17,
+   "passados": 17,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 6,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/codigo/tests/test_senhas.py', ' M resultados/gemini/gemini-4-argon-medium/08-testes-claude/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-medium",
+  "tarefa": "08-testes-codex",
+  "run": 1,
+  "status": "ok",
+  "duracao_s": 183.88,
+  "timeout_s": 420,
+  "testes_total": 15,
+  "testes_passados": 15,
+  "pct": 100.0,
+  "rerun": {
+   "total": 15,
+   "passados": 15,
+   "pct": 100.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 7,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['M resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/agente_stdout.txt', ' D resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/codigo/tests/test_carrinho.py', ' M resultados/gemini/gemini-4-argon-medium/08-testes-codex/run-1/junit.xml']",
+   "sem avaliacao.json antiga"
+  ]
+ },
+ {
+  "pasta": "resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1",
+  "empresa": "gemini",
+  "combo": "gemini-4-argon-medium",
+  "tarefa": "10-ambigua-claude",
+  "run": 1,
+  "status": "timeout",
+  "duracao_s": 420.137,
+  "timeout_s": 420,
+  "testes_total": 1,
+  "testes_passados": 0,
+  "pct": 0.0,
+  "rerun": {
+   "total": 1,
+   "passados": 0,
+   "pct": 0.0
+  },
+  "nota_antiga": null,
+  "rubrica_antiga": null,
+  "n_arquivos_codigo": 1,
+  "incoerencias": [
+   "arquivos da execução com mudanças não commitadas: ['D resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/avaliacao.json', ' D resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/avaliacao_avaliador.json', ' M resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/junit.xml', ' M resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/resultado.json', ' M resultados/gemini/gemini-4-argon-medium/10-ambigua-claude/run-1/testes_saida.txt']",
+   "sem avaliacao.json antiga"
+  ]
+ }
+]

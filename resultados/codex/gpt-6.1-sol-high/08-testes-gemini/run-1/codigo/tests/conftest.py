@@ -1,4 +1,4 @@
-"""Permite importar o módulo local também com o comando ``pytest``."""
+"""Permite importar o módulo ao executar tanto pytest quanto python -m pytest."""
 
 import sys
 from pathlib import Path

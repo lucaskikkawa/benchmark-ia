@@ -1,0 +1,6 @@
+A tarefa foi concluída com a criação do arquivo [`solucao.py`](file:///tmp/bench-o27b7zz7/solucao.py).
+
+### Detalhes da implementação
+- **Algoritmo**: Utiliza uma única passagem ($O(n)$ no tempo e no espaço) acumulando contagens em um dicionário de frequências dos elementos já percorridos, o que contabiliza pares de índices $i < j$ sem duplicidades e satisfaz a contagem combinatória $C(\text{freq}, 2)$ quando $2x = \text{alvo}$.
+- **Validação de tipos**: Garante que `nums` é estritamente uma `list` e que tanto `alvo` quanto todos os elementos de `nums` são `int` (rejeitando explicitamente `bool` com `TypeError`).
+- **Desempenho**: Executa em aproximadamente 20 milissegundos para $n = 200.000$, respeitando com ampla margem o limite de 3 segundos sem alterar a lista de entrada.

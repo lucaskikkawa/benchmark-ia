@@ -1,0 +1,6 @@
+O arquivo [solucao.py](file:///tmp/bench-xnagv5gm/solucao.py) foi criado com a implementação de [`parse_duracao`](file:///tmp/bench-xnagv5gm/solucao.py#L25-L51):
+
+- **Validação de tipo**: verifica `isinstance(texto, str)` (aceitando subclasses de `str`) e levanta `TypeError` caso contrário.
+- **Parsing linear $O(N)$**: divide a entrada por espaços em branco (`str.split()`) e percorre cada bloco contíguo com [`_TOKEN_RE`](file:///tmp/bench-xnagv5gm/solucao.py#L4) (`[0-9]+[wWdDhHmMsS]`), evitando backtracking em entradas longas com muitos espaços.
+- **Ordem e unicidade**: valida que as unidades sigam estritamente a ordem `w`, `d`, `h`, `m`, `s` sem repetição, levantando `ValueError` para formatos inválidos.
+- **Inteiros de precisão arbitrária**: [`_str_to_int`](file:///tmp/bench-xnagv5gm/solucao.py#L14-L22) suporta números com milhares de dígitos ajustando temporariamente `sys.set_int_max_str_digits(0)` quando necessário.

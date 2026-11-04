@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/codex/gpt-6.1-sol-high/05-cli-claude/run-1",
+ "empresa": "codex",
+ "modelo": "gpt-6.1-sol",
+ "esforco": "high",
+ "tarefa": "05-cli-claude",
+ "tipo": "05-cli",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 73.735,
+ "testes_passados": 27,
+ "testes_total": 27,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "gemini",
+  "grok"
+ ],
+ "juizes": {
+  "gemini": {
+   "modelo": "gemini-3.8-flash",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Tratamento de erros e CLI idiomática excelentes, mas toda a lógica está concentrada no main sem funções puras e a maioria das opções não possui help descritivo.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 0.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "main mistura parse, leitura, contagem e impressão. Exit 0/1/2 com erro: no stderr, UTF-8 estrito, stdin - e type=. Idiomático: argparse, Counter, sorted. Contagem não é pura. Help ausente nas opções.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.0,
+ "nota_final_10": 8.8
+}

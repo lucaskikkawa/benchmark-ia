@@ -4,13 +4,13 @@
   "esforco": "medium",
   "tarefa": "04-dados-claude",
   "run": 1,
-  "status": "timeout",
-  "exit_code": -9,
-  "duracao_agente_s": 180.12,
-  "testes_total": 1,
-  "testes_passados": 0,
-  "pct_passados": 0.0,
-  "inicio_iso": "2026-10-29T19:23:19.479057-03:00",
+  "status": "ok",
+  "exit_code": 0,
+  "duracao_agente_s": 368.864,
+  "testes_total": 32,
+  "testes_passados": 32,
+  "pct_passados": 100.0,
+  "inicio_iso": "2026-11-04T01:07:57.247561-03:00",
   "cmd": [
     "bwrap",
     "--die-with-parent",
@@ -92,10 +92,10 @@
     "/home/box/.config/gh",
     "/home/box/.config/gh",
     "--bind",
-    "/tmp/bench-sz4b5pck",
-    "/tmp/bench-sz4b5pck",
+    "/tmp/bench-lm90vu7q",
+    "/tmp/bench-lm90vu7q",
     "--chdir",
-    "/tmp/bench-sz4b5pck",
+    "/tmp/bench-lm90vu7q",
     "--setenv",
     "HOME",
     "/home/box",
@@ -106,5 +106,6 @@
     "--model",
     "gemini-3.8-flash-medium",
     "--dangerously-skip-permissions"
-  ]
+  ],
+  "timeout_s": 420
 }

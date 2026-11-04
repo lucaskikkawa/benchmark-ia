@@ -1,0 +1,15 @@
+A tarefa foi resolvida criando o arquivo [`cliente.py`](file:///tmp/bench-pe5yejjj/cliente.py) com a implementação de [`TempoEsgotado`](file:///tmp/bench-pe5yejjj/cliente.py#L6-L8) e [`baixar_pedidos`](file:///tmp/bench-pe5yejjj/cliente.py#L23-L101).
+
+### Detalhes da implementação:
+- **Validação prévia**:
+  - `ids`: verificação estrita para garantir tipo `list` (`TypeError`).
+  - `max_tentativas`: verificação de tipo `int` (rejeitando `bool`) e valor $\ge 1$ (`ValueError`).
+  - `backoff_s`: verificação de tipo `int` ou `float` (rejeitando `bool`) e valor $\ge 0$ (`ValueError`).
+  - `timeout_s`: verificação de tipo `int` ou `float` (rejeitando `bool`) e valor $> 0$ (`ValueError`).
+- **Timeout sem bloqueio**: Cada chamada a `api.obter_pedido(pedido_id)` é executada em uma thread daemon com limite de tempo `timeout_s`. Caso o tempo expire antes da conclusão, a espera é abandonada imediatamente sem bloquear pelo `ATRASO_S`.
+- **Tratamento de exceções e retentativas**:
+  - `LojaErroCliente`: propaga imediatamente sem retry e sem backoff.
+  - `LojaIndisponivel` e timeouts: são tratados como falhas retentáveis até o limite de `max_tentativas`. Se esgotarem as tentativas, propagam `LojaIndisponivel` ou levantam `TempoEsgotado`, respectivamente.
+  - Demais exceções propagam na hora.
+- **Backoff exponencial**: Aplica `backoff_s * (2 ** (i - 1))` após falhas retentáveis caso ainda haja tentativas restantes e `backoff_s > 0`. Não dorme após a última tentativa, após sucesso ou quando `backoff_s == 0`.
+- **Ordem e ausência de cache**: Ids são processados na ordem fornecida, sem cache, preservando as contagens de tentativas. Interrupções encerram o processamento impedindo chamadas aos ids subsequentes.

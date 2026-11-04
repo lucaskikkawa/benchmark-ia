@@ -159,10 +159,11 @@ def auditar(rdir, fazer_rerun=True):
 
 if __name__ == "__main__":
     j = int(sys.argv[sys.argv.index("-j") + 1]) if "-j" in sys.argv else 6
-    ds = list(alvos())
+    lst = sys.argv[sys.argv.index("--lista") + 1] if "--lista" in sys.argv else None
+    ds = [ROOT / x for x in open(lst).read().split()] if lst else list(alvos())
     for d in ds: hash_testes_head(d.parts[-2])
     with ThreadPoolExecutor(j) as ex:
         res = list(ex.map(lambda d: auditar(d, "--sem-rerun" not in sys.argv), ds))
-    json.dump(res, open(OUT / ("auditoria_grok_high.json" if "--grok-high" in sys.argv else "auditoria.json"), "w"), ensure_ascii=False, indent=1)
+    json.dump(res, open((pathlib.Path(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv else OUT / ("auditoria_grok_high.json" if "--grok-high" in sys.argv else "auditoria.json")), "w"), ensure_ascii=False, indent=1)
     n = sum(1 for x in res if x["incoerencias"])
     print(len(res), "execuções;", n, "com incoerência")

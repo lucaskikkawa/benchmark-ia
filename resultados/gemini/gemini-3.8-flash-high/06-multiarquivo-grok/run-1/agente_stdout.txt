@@ -1,0 +1,7 @@
+O pacote `biblioteca` foi criado com sucesso conforme os requisitos de [enunciado.md](file:///tmp/bench-w_5jv734/enunciado.md).
+
+Arquivos criados:
+- [`biblioteca/__init__.py`](file:///tmp/bench-w_5jv734/biblioteca/__init__.py): Exporta `Livro`, `ErroBiblioteca`, `Catalogo` e `ServicoEmprestimos`.
+- [`biblioteca/models.py`](file:///tmp/bench-w_5jv734/biblioteca/models.py): Implementa a exceção `ErroBiblioteca` e a dataclass frozen `Livro` com validações no `__post_init__` (ISBN de 13 dígitos ASCII sem strip, título com strip e não vazio, exemplares como `int` ≥ 1 rejeitando `bool`).
+- [`biblioteca/catalogo.py`](file:///tmp/bench-w_5jv734/biblioteca/catalogo.py): Implementa `Catalogo` com `adicionar`, `buscar` (busca exata sem strip) e `listar` (retornando nova lista ordenada por ISBN).
+- [`biblioteca/emprestimos.py`](file:///tmp/bench-w_5jv734/biblioteca/emprestimos.py): Implementa `ServicoEmprestimos` com `emprestar`, `devolver` (cálculo de atraso em dias inteiros), `disponiveis` e `ativos` (ordenado por dia, ISBN e usuário). Inclui validação estrita de calendário gregoriano (YYYY-MM-DD) e tratamento de usuário com `str.strip`.

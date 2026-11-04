@@ -2,7 +2,7 @@ FFFFFFFFF.FFFFF                                                          [100%]
 =================================== FAILURES ===================================
 ______________________ test_adicionar_cria_arquivo_e_ids _______________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_adicionar_cria_arquivo_e_0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_adicionar_cria_arquivo_e_0')
 
     def test_adicionar_cria_arquivo_e_ids(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -17,12 +17,12 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_adicionar_cria_arquivo_
         )
 >       assert primeiro.returncode == 0
 E       assert 2 == 0
-E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
 
 testes_ocultos/test_agenda.py:46: AssertionError
 _______________________ test_listar_ordem_prazo_e_estado _______________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_listar_ordem_prazo_e_esta0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_listar_ordem_prazo_e_esta0')
 
     def test_listar_ordem_prazo_e_estado(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -68,12 +68,12 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_listar_ordem_prazo_e_es
         proc = _run("listar", "--arquivo", str(arquivo))
 >       assert proc.returncode == 0
 E       assert 2 == 0
-E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
 
 testes_ocultos/test_agenda.py:114: AssertionError
 __________________________ test_filtros_e_lista_vazia __________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_filtros_e_lista_vazia0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_filtros_e_lista_vazia0')
 
     def test_filtros_e_lista_vazia(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -105,7 +105,7 @@ E         - 2	baixa	aberta	-	Duas
 testes_ocultos/test_agenda.py:146: AssertionError
 ________________________ test_concluir_sucesso_e_erros _________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_concluir_sucesso_e_erros0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_concluir_sucesso_e_erros0')
 
     def test_concluir_sucesso_e_erros(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -121,12 +121,12 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_concluir_sucesso_e_erro
         ok = _run("concluir", "--id", "1", "--arquivo", str(arquivo))
 >       assert ok.returncode == 0
 E       assert 2 == 0
-E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'concluir'...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'concluir'...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
 
 testes_ocultos/test_agenda.py:189: AssertionError
 _________________________ test_titulo_vazio_e_invalido _________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_titulo_vazio_e_invalido0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_titulo_vazio_e_invalido0')
 
     def test_titulo_vazio_e_invalido(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -144,7 +144,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_titulo_vazio_e_invalido
 testes_ocultos/test_agenda.py:212: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n")
+proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n")
 mensagem = 'titulo vazio'
 
     def _erro(proc, mensagem):
@@ -154,12 +154,12 @@ mensagem = 'titulo vazio'
 E       AssertionError: assert '/workspace/b...r directory\n' == 'erro: titulo vazio\n'
 E         
 E         - erro: titulo vazio
-E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory
+E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory
 
 testes_ocultos/test_agenda.py:32: AssertionError
 _____________________________ test_prazo_invalido ______________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_prazo_invalido0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_prazo_invalido0')
 
     def test_prazo_invalido(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -180,7 +180,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_prazo_invalido0')
 testes_ocultos/test_agenda.py:250: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n")
+proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n")
 mensagem = 'prazo invalido'
 
     def _erro(proc, mensagem):
@@ -190,12 +190,12 @@ mensagem = 'prazo invalido'
 E       AssertionError: assert '/workspace/b...r directory\n' == 'erro: prazo invalido\n'
 E         
 E         - erro: prazo invalido
-E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory
+E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory
 
 testes_ocultos/test_agenda.py:32: AssertionError
 ___________________________ test_arquivo_inexistente ___________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_arquivo_inexistente0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_arquivo_inexistente0')
 
     def test_arquivo_inexistente(tmp_path):
         arquivo = tmp_path / "nao.json"
@@ -204,7 +204,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_arquivo_inexistente0')
 testes_ocultos/test_agenda.py:256: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n")
+proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n")
 mensagem = 'arquivo inexistente'
 
     def _erro(proc, mensagem):
@@ -214,12 +214,12 @@ mensagem = 'arquivo inexistente'
 E       AssertionError: assert '/workspace/b...r directory\n' == 'erro: arquivo inexistente\n'
 E         
 E         - erro: arquivo inexistente
-E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory
+E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory
 
 testes_ocultos/test_agenda.py:32: AssertionError
 ____________________________ test_arquivo_invalido _____________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_arquivo_invalido0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_arquivo_invalido0')
 
     def test_arquivo_invalido(tmp_path):
         arquivo = tmp_path / "ruim.json"
@@ -230,7 +230,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_arquivo_invalido0')
 testes_ocultos/test_agenda.py:267: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n")
+proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n")
 mensagem = 'arquivo invalido'
 
     def _erro(proc, mensagem):
@@ -240,12 +240,12 @@ mensagem = 'arquivo invalido'
 E       AssertionError: assert '/workspace/b...r directory\n' == 'erro: arquivo invalido\n'
 E         
 E         - erro: arquivo invalido
-E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory
+E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory
 
 testes_ocultos/test_agenda.py:32: AssertionError
 _______________________ test_proximo_id_nao_pode_colidir _______________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_proximo_id_nao_pode_colid0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_proximo_id_nao_pode_colid0')
 
     def test_proximo_id_nao_pode_colidir(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -271,7 +271,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_proximo_id_nao_pode_col
 testes_ocultos/test_agenda.py:289: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n")
+proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n")
 mensagem = 'arquivo invalido'
 
     def _erro(proc, mensagem):
@@ -281,12 +281,12 @@ mensagem = 'arquivo invalido'
 E       AssertionError: assert '/workspace/b...r directory\n' == 'erro: arquivo invalido\n'
 E         
 E         - erro: arquivo invalido
-E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory
+E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory
 
 testes_ocultos/test_agenda.py:32: AssertionError
 ________________________ test_buraco_de_id_nao_renumera ________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_buraco_de_id_nao_renumera0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_buraco_de_id_nao_renumera0')
 
     def test_buraco_de_id_nao_renumera(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -301,12 +301,12 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_buraco_de_id_nao_renume
         lista = _run("listar", "--arquivo", str(arquivo))
 >       assert lista.returncode == 0
 E       assert 2 == 0
-E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
 
 testes_ocultos/test_agenda.py:334: AssertionError
 ____________________ test_arquivo_invalido_nao_e_reescrito _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_arquivo_invalido_nao_e_re0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_arquivo_invalido_nao_e_re0')
 
     def test_arquivo_invalido_nao_e_reescrito(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -325,7 +325,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_arquivo_invalido_nao_e_
 testes_ocultos/test_agenda.py:365: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n")
+proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n")
 mensagem = 'arquivo invalido'
 
     def _erro(proc, mensagem):
@@ -335,12 +335,12 @@ mensagem = 'arquivo invalido'
 E       AssertionError: assert '/workspace/b...r directory\n' == 'erro: arquivo invalido\n'
 E         
 E         - erro: arquivo invalido
-E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory
+E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory
 
 testes_ocultos/test_agenda.py:32: AssertionError
 ____________________ test_strip_unicode_e_datas_gregorianas ____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_strip_unicode_e_datas_gre0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_strip_unicode_e_datas_gre0')
 
     def test_strip_unicode_e_datas_gregorianas(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -358,7 +358,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_strip_unicode_e_datas_g
 testes_ocultos/test_agenda.py:380: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n")
+proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'adicionar...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n")
 mensagem = 'titulo vazio'
 
     def _erro(proc, mensagem):
@@ -368,12 +368,12 @@ mensagem = 'titulo vazio'
 E       AssertionError: assert '/workspace/b...r directory\n' == 'erro: titulo vazio\n'
 E         
 E         - erro: titulo vazio
-E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory
+E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory
 
 testes_ocultos/test_agenda.py:32: AssertionError
 ________________________ test_formas_invalidas_do_json _________________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_formas_invalidas_do_json0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_formas_invalidas_do_json0')
 
     def test_formas_invalidas_do_json(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -405,7 +405,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_formas_invalidas_do_jso
 testes_ocultos/test_agenda.py:451: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n")
+proc = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'listar', ...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n")
 mensagem = 'arquivo invalido'
 
     def _erro(proc, mensagem):
@@ -415,12 +415,12 @@ mensagem = 'arquivo invalido'
 E       AssertionError: assert '/workspace/b...r directory\n' == 'erro: arquivo invalido\n'
 E         
 E         - erro: arquivo invalido
-E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory
+E         + /workspace/benchmark-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory
 
 testes_ocultos/test_agenda.py:32: AssertionError
 _____________________ test_concluir_id_com_zero_a_esquerda _____________________
 
-tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_concluir_id_com_zero_a_es0')
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-186/test_concluir_id_com_zero_a_es0')
 
     def test_concluir_id_com_zero_a_esquerda(tmp_path):
         arquivo = tmp_path / "agenda.json"
@@ -428,7 +428,7 @@ tmp_path = PosixPath('/tmp/pytest-of-box/pytest-319/test_concluir_id_com_zero_a_
         ok = _run("concluir", "--id", "01", "--arquivo", str(arquivo))
 >       assert ok.returncode == 0
 E       assert 2 == 0
-E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-a0cprcaa/agenda_cli.py', 'concluir'...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-a0cprcaa/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
+E        +  where 2 = CompletedProcess(args=['/workspace/benchmark-ia/.bench-py/bin/python', '/tmp/bench-l9o0v9h6/agenda_cli.py', 'concluir'...k-ia/.bench-py/bin/python: can't open file '/tmp/bench-l9o0v9h6/agenda_cli.py': [Errno 2] No such file or directory\n").returncode
 
 testes_ocultos/test_agenda.py:458: AssertionError
 =========================== short test summary info ============================
@@ -446,4 +446,4 @@ FAILED testes_ocultos/test_agenda.py::test_arquivo_invalido_nao_e_reescrito
 FAILED testes_ocultos/test_agenda.py::test_strip_unicode_e_datas_gregorianas
 FAILED testes_ocultos/test_agenda.py::test_formas_invalidas_do_json - Asserti...
 FAILED testes_ocultos/test_agenda.py::test_concluir_id_com_zero_a_esquerda - ...
-14 failed, 1 passed in 0.36s
+14 failed, 1 passed in 0.30s

@@ -1,11 +1,9 @@
-A tarefa foi resolvida com a atualização do arquivo [`boletim.py`](file:///tmp/bench-xc1axc3a/boletim.py).
+A função [`fechar_boletim`](file:///tmp/bench-5i6rc3k1/boletim.py#L7-L57) no arquivo [boletim.py](file:///tmp/bench-5i6rc3k1/boletim.py) foi corrigida de acordo com os requisitos especificados em [enunciado.md](file:///tmp/bench-5i6rc3k1/enunciado.md):
 
-### Ajustes realizados de acordo com o contrato:
-- **Preservação da entrada:** A lista `provas` original não é mais modificada.
-- **Validação de tipos e valores:**
-  - `TypeError` para `provas` não sendo `list`, tipos booleanos (`bool`), ou itens que não sejam `int`, `float` ou `None`.
-  - `ValueError` quando `len(provas)` for menor que 1 ou maior que 4, quando nenhuma nota válida sobrar após ignorar `None`, ou caso alguma nota não seja finita ou esteja fora de `[0, 10]`.
-- **Tratamento de ausências:** Itens `None` são ignorados no cômputo em vez de serem tratados como zero.
-- **Regra de descarte:** O menor valor só é descartado se houver exatamente 4 notas válidas. Em caso de empate, apenas a primeira ocorrência é removida.
-- **Cálculo da média:** Notas convertidas via `Decimal(str(nota))`, somadas e divididas pelo total restante `n`, e arredondadas uma única vez com `(soma / n).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`.
-- **Conceito e apro
+- **Preservação da entrada**: Não altera a lista original recebida.
+- **Validação de tipos e valores**:
+  - `TypeError` para tipo que não seja `list`, notas que sejam `bool` ou que não sejam `int`, `float` ou `None`.
+  - `ValueError` quando `len(provas)` não estiver entre 1 e 4, quando após ignorar `None` não restar nenhuma nota, ou quando alguma nota não for finita (`NaN`, `Inf`) ou estiver fora de `[0, 10]`.
+- **Descarte**: Descarta uma ocorrência do menor valor (a primeira em caso de empate) exclusivamente quando há exatamente 4 notas válidas.
+- **Arredondamento e cálculo**: Converte as notas restantes para `Decimal(str(nota))`, calcula a média dividindo por `n` e aplica `quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)` uma única vez, convertendo o resultado para `float`.
+- **Conceitos e aprovação**: Limites inclusivos (`>= 9` para `"A"`, `>= 7` para `"B"`, `>= 5` para `"C"`, caso contrário `"D"`) com `aprovado` sendo `True` exceto quando o conceito for `"D"`.

@@ -7,23 +7,26 @@ class Acervo:
 
     def adicionar(self, livro: Livro) -> None:
         if not isinstance(livro, Livro):
-            raise TypeError("O objeto adicionado deve ser uma instância de Livro.")
+            raise TypeError("livro deve ser uma instância de Livro")
         if livro.isbn in self._livros:
-            raise ValueError(f"Já existe um livro com o ISBN '{livro.isbn}'.")
+            raise ValueError(f"Livro com ISBN {livro.isbn!r} já existe no acervo")
         self._livros[livro.isbn] = livro
 
     def obter(self, isbn: str) -> Livro:
         try:
             return self._livros[isbn]
         except KeyError as exc:
-            raise LivroNaoEncontrado(f"Livro com ISBN '{isbn}' não encontrado.") from exc
+            raise LivroNaoEncontrado(f"Livro com ISBN {isbn!r} não encontrado") from exc
 
     def buscar_por_autor(self, trecho: str) -> list[Livro]:
         alvo = trecho.casefold()
-        encontrados = (
-            livro for livro in self._livros.values() if alvo in livro.autor.casefold()
-        )
-        return sorted(encontrados, key=lambda l: (l.titulo, l.isbn))
+        encontrados = [
+            livro
+            for livro in self._livros.values()
+            if alvo in livro.autor.casefold()
+        ]
+        encontrados.sort(key=lambda l: (l.titulo, l.isbn))
+        return encontrados
 
     def __len__(self) -> int:
         return len(self._livros)

@@ -1,101 +1,111 @@
 import csv
 import json
 import re
-from pathlib import Path
-from typing import Union
+import sys
 
-_NUM_PATTERN = re.compile(r"^[+-]?[0-9]+$", re.ASCII)
-_REQUIRED_COLUMNS = ("produto", "quantidade", "preco_centavos", "status")
+if hasattr(sys, "set_int_max_str_digits"):
+    sys.set_int_max_str_digits(0)
 
+try:
+    csv.field_size_limit(sys.maxsize)
+except OverflowError:
+    csv.field_size_limit(2**31 - 1)
 
-def _parse_non_negative_int(val: str) -> int:
-    s = val.strip()
-    if not _NUM_PATTERN.fullmatch(s):
-        raise ValueError(f"Valor numérico inválido: {val!r}")
-    num = int(s)
-    if num < 0:
-        raise ValueError(f"Valor numérico não pode ser negativo: {val!r}")
-    return num
+NUMERIC_RE = re.compile(r"\A[+-]?[0-9]+\Z")
+REQUIRED_COLUMNS = ("produto", "quantidade", "preco_centavos", "status")
 
 
-def resumir_vendas(
-    entrada: Union[str, Path],
-    saida: Union[str, Path],
-    minimo_centavos: int = 0,
-) -> list[dict]:
+def resumir_vendas(entrada, saida, minimo_centavos: int = 0) -> list[dict]:
     if type(minimo_centavos) is not int:
-        raise ValueError(f"minimo_centavos deve ser int, recebido {type(minimo_centavos).__name__}")
+        raise ValueError("minimo_centavos deve ser exatamente do tipo int")
     if minimo_centavos < 0:
-        raise ValueError(f"minimo_centavos não pode ser negativo: {minimo_centavos}")
+        raise ValueError("minimo_centavos deve ser maior ou igual a zero")
 
     with open(entrada, mode="r", encoding="utf-8-sig", newline="") as f:
         reader = csv.reader(f)
         try:
             header = next(reader)
         except StopIteration:
-            raise ValueError("Arquivo CSV vazio: cabeçalho obrigatório ausente")
+            raise ValueError("Arquivo vazio: cabeçalho ausente")
 
-        col_indices = {}
-        for col in _REQUIRED_COLUMNS:
-            try:
-                col_indices[col] = header.index(col)
-            except ValueError:
-                raise ValueError(f"Coluna obrigatória ausente no cabeçalho: {col!r}")
+        idx_map = {}
+        for col in REQUIRED_COLUMNS:
+            if col in header:
+                idx_map[col] = header.index(col)
 
-        idx_status = col_indices["status"]
-        idx_produto = col_indices["produto"]
-        idx_quantidade = col_indices["quantidade"]
-        idx_preco = col_indices["preco_centavos"]
+        if len(idx_map) < len(REQUIRED_COLUMNS):
+            stripped_header = [c.strip() for c in header]
+            if all(col in stripped_header for col in REQUIRED_COLUMNS):
+                idx_map = {col: stripped_header.index(col) for col in REQUIRED_COLUMNS}
+            else:
+                raise ValueError("Cabeçalho sem coluna obrigatória")
 
-        # Agregação: produto -> [quantidade_total, receita_centavos_total]
-        totais: dict[str, list[int]] = {}
+        idx_produto = idx_map["produto"]
+        idx_quantidade = idx_map["quantidade"]
+        idx_preco = idx_map["preco_centavos"]
+        idx_status = idx_map["status"]
+
+        agregado: dict[str, list[int]] = {}
 
         for row in reader:
-            # Linhas com campos faltando são ignoradas se não pagas
-            if len(row) <= idx_status:
+            if idx_status >= len(row):
+                # Status ausente: linhas com campos faltando são ignoradas se não pagas
                 continue
 
-            status = row[idx_status].strip().lower()
-            if status != "pago":
+            status_val = row[idx_status].strip().lower()
+            if status_val != "pago":
+                # Linhas não pagas são ignoradas antes de validar produto e números
                 continue
 
             # Se pagas, campos obrigatórios faltantes são inválidos
             if (
-                len(row) <= idx_produto
-                or len(row) <= idx_quantidade
-                or len(row) <= idx_preco
+                idx_produto >= len(row)
+                or idx_quantidade >= len(row)
+                or idx_preco >= len(row)
             ):
-                raise ValueError("Linha paga com campos obrigatórios ausentes")
+                raise ValueError("Linha paga com campos obrigatórios faltantes")
 
             produto = row[idx_produto].strip()
             if not produto:
-                raise ValueError("Linha paga com produto vazio")
+                raise ValueError("Produto não pode ficar vazio")
 
-            quantidade = _parse_non_negative_int(row[idx_quantidade])
-            preco_centavos = _parse_non_negative_int(row[idx_preco])
+            qtd_str = row[idx_quantidade].strip()
+            if not NUMERIC_RE.match(qtd_str):
+                raise ValueError(f"Quantidade inválida: {qtd_str!r}")
+            qtd = int(qtd_str)
+            if qtd < 0:
+                raise ValueError(f"Quantidade negativa: {qtd}")
 
-            receita_item = quantidade * preco_centavos
+            preco_str = row[idx_preco].strip()
+            if not NUMERIC_RE.match(preco_str):
+                raise ValueError(f"Preço inválido: {preco_str!r}")
+            preco = int(preco_str)
+            if preco < 0:
+                raise ValueError(f"Preço negativo: {preco}")
 
-            if produto not in totais:
-                totais[produto] = [quantidade, receita_item]
+            receita_linha = qtd * preco
+            if produto in agregado:
+                entry = agregado[produto]
+                entry[0] += qtd
+                entry[1] += receita_linha
             else:
-                totais[produto][0] += quantidade
-                totais[produto][1] += receita_item
+                agregado[produto] = [qtd, receita_linha]
 
-    resultado: list[dict] = []
-    for prod in sorted(totais.keys()):
-        qtd, receita = totais[prod]
-        if receita >= minimo_centavos:
-            resultado.append({
-                "produto": prod,
-                "quantidade": qtd,
-                "receita_centavos": receita,
-            })
+    resultado = []
+    for prod in sorted(agregado.keys()):
+        qtd_total, receita_total = agregado[prod]
+        if receita_total >= minimo_centavos:
+            resultado.append(
+                {
+                    "produto": prod,
+                    "quantidade": qtd_total,
+                    "receita_centavos": receita_total,
+                }
+            )
 
-    # Valide tudo antes de criar/sobrescrever a saída
-    json_bytes_str = json.dumps(resultado, ensure_ascii=False, indent=2) + "\n"
+    json_text = json.dumps(resultado, ensure_ascii=False, indent=2) + "\n"
 
     with open(saida, mode="w", encoding="utf-8", newline="\n") as f:
-        f.write(json_bytes_str)
+        f.write(json_text)
 
     return resultado

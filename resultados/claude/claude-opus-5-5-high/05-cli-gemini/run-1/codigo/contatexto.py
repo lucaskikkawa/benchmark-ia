@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
 """Ferramenta CLI de contagem e métricas de texto."""
 
 import argparse
 import json
-import os
 import sys
 from collections import Counter
+from pathlib import Path
 
 PONTUACAO = ".,!?;:\"'()[]{}"
 
@@ -13,10 +12,10 @@ PONTUACAO = ".,!?;:\"'()[]{}"
 def inteiro_positivo(valor):
     try:
         n = int(valor)
-    except (TypeError, ValueError):
+    except ValueError:
         raise argparse.ArgumentTypeError(f"valor inteiro inválido: {valor!r}")
     if n < 1:
-        raise argparse.ArgumentTypeError(f"deve ser >= 1, recebido: {n}")
+        raise argparse.ArgumentTypeError(f"deve ser >= 1 (recebido {n})")
     return n
 
 
@@ -25,7 +24,7 @@ def criar_parser():
         prog="contatexto.py",
         description="Conta linhas, palavras, caracteres e palavras mais frequentes de um arquivo de texto.",
     )
-    parser.add_argument("arquivo", metavar="ARQUIVO", help="arquivo de texto UTF-8 a ser analisado")
+    parser.add_argument("arquivo", metavar="ARQUIVO", help="arquivo de texto UTF-8 a analisar")
     parser.add_argument("-l", "--linhas", action="store_true", help="conta linhas")
     parser.add_argument("-p", "--palavras", action="store_true", help="conta palavras")
     parser.add_argument("-c", "--chars", action="store_true", help="conta caracteres")
@@ -36,13 +35,10 @@ def criar_parser():
 
 
 def top_palavras(conteudo, n):
-    contagem = Counter()
-    for token in conteudo.split():
-        palavra = token.lower().strip(PONTUACAO)
-        if palavra:
-            contagem[palavra] += 1
-    ordenado = sorted(contagem.items(), key=lambda item: (-item[1], item[0]))
-    return [{"palavra": p, "ocorrencias": c} for p, c in ordenado[:n]]
+    tokens = (t.lower().strip(PONTUACAO) for t in conteudo.split())
+    contagem = Counter(t for t in tokens if t)
+    ordenadas = sorted(contagem.items(), key=lambda item: (-item[1], item[0]))
+    return [{"palavra": p, "ocorrencias": c} for p, c in ordenadas[:n]]
 
 
 def calcular(conteudo, args):
@@ -74,23 +70,21 @@ def formatar_texto(resultado):
     return "\n".join(linhas) + "\n"
 
 
-def erro(mensagem):
-    print(mensagem, file=sys.stderr)
-    return 1
-
-
 def main(argv=None):
     args = criar_parser().parse_args(argv)
 
-    if not os.path.exists(args.arquivo):
-        return erro(f"Erro: arquivo não encontrado: {args.arquivo}")
-    if not os.path.isfile(args.arquivo):
-        return erro(f"Erro: não é um arquivo regular: {args.arquivo}")
+    caminho = Path(args.arquivo)
+    if not caminho.exists():
+        print(f"Erro: arquivo não encontrado: {args.arquivo}", file=sys.stderr)
+        return 1
+    if not caminho.is_file():
+        print(f"Erro: não é um arquivo regular: {args.arquivo}", file=sys.stderr)
+        return 1
     try:
-        with open(args.arquivo, "r", encoding="utf-8") as f:
-            conteudo = f.read()
+        conteudo = caminho.read_text(encoding="utf-8")
     except (OSError, UnicodeDecodeError) as e:
-        return erro(f"Erro ao ler arquivo: {e}")
+        print(f"Erro ao ler arquivo: {e}", file=sys.stderr)
+        return 1
 
     resultado = calcular(conteudo, args)
     if args.json:
@@ -99,14 +93,13 @@ def main(argv=None):
         saida = formatar_texto(resultado)
 
     if args.saida:
+        destino = Path(args.saida)
         try:
-            pasta = os.path.dirname(args.saida)
-            if pasta:
-                os.makedirs(pasta, exist_ok=True)
-            with open(args.saida, "w", encoding="utf-8") as f:
-                f.write(saida)
+            destino.parent.mkdir(parents=True, exist_ok=True)
+            destino.write_text(saida, encoding="utf-8")
         except OSError as e:
-            return erro(f"Erro ao gravar saída: {e}")
+            print(f"Erro ao gravar arquivo: {e}", file=sys.stderr)
+            return 1
         sys.stdout.write(f"Salvo em {args.saida}\n")
     else:
         sys.stdout.write(saida)

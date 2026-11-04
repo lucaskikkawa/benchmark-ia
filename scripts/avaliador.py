@@ -10,7 +10,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from julgar import itens_rubrica
 JUIZ_MODELO = {"codex": "gpt-6-luna", "claude": "claude-haiku-5-5", "gemini": "gemini-3.8-flash", "grok": "grok-4.7-build-fast"}
 TIMEOUT = 240
-JULGAR_TIMEOUT = "--julgar-timeout" in sys.argv  # grok-4.7-high: entrega parcial após 900 s é julgada
+JULGAR_TIMEOUT = "--julgar-timeout" in sys.argv
+SAIDA = sys.argv[sys.argv.index("--saida") + 1] if "--saida" in sys.argv else "avaliacao_avaliador.json"  # grok-4.7-high: entrega parcial após 900 s é julgada
 MARCAS = r"claude|anthropic|opus|haiku|sonnet|gpt[-\w.]*|codex|openai|chatgpt|gemini[-\w.]*|google|bard|antigravity|grok[-\w.]*|xai|x\.ai"
 SEM = {e: threading.Semaphore(5) for e in JUIZ_MODELO}
 LOG = RES / "_avaliador" / "avaliador.log"; LOG.parent.mkdir(exist_ok=True)
@@ -67,7 +68,7 @@ def parse(out, ids):
     return None, None
 
 def avaliar(rdir, refazer=False):
-    dest = rdir / "avaliacao_avaliador.json"
+    dest = rdir / SAIDA
     if dest.exists() and not refazer:
         old = json.load(open(dest))
         if (old.get("status") == "timeout" and not JULGAR_TIMEOUT) or len([j for j in old["juizes"].values() if j["itens"]]) == 2:
@@ -127,7 +128,7 @@ def alvos():
 if __name__ == "__main__":
     a = sys.argv[1:]
     j = int(a[a.index("-j") + 1]) if "-j" in a else 9
-    pastas = [pathlib.Path(x).resolve() for x in a if x.startswith("/") or x.startswith("resultados")] or list(alvos())
+    pastas = [pathlib.Path(x).resolve() for x in a if (x.startswith("/") or x.startswith("resultados")) and x != SAIDA] or list(alvos())
     with ThreadPoolExecutor(j) as ex:
         for f in [ex.submit(avaliar, p, "--refazer" in a) for p in pastas]:
             try: f.result()

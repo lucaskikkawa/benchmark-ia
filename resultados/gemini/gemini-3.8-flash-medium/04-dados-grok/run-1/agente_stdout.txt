@@ -1,0 +1,6 @@
+A tarefa foi concluída com a criação do arquivo [`solucao.py`](file:///tmp/bench-dyvvb108/solucao.py) contendo a função [`consolidar`](file:///tmp/bench-dyvvb108/solucao.py#L107-L149).
+
+### Detalhes da implementação:
+- **`chamados` CSV**: Validação exata do cabeçalho antes do strip (rejeitando BOM `\ufeff` e diferenças de formato), tratamento de quebras de linha `\n` e `\r\n`, descarte de linhas em branco / vazias, verificação de unicidade do `id`, agrupamento por `equipe`, parsing de data e hora no formato ISO estrito `YYYY-MM-DDTHH:MM` e cálculo da duração exata em minutos.
+- **`sla` JSON**: Validação rigorosa do objeto JSON, exigindo exatamente a chave `limites_minutos` com as três prioridades (`baixa`, `media`, `alta`) e valores inteiros estritamente $\ge 1$ (rejeitando booleanos, floats e outros tipos).
+- **Consolidação e Saída**: Agrupamento por equipe ordenada por code point (`sorted`), cálculo de `chamados`, `estourados`, `tempo_medio_minutos` (divisão inteira `//`), desempate de `pior_id` pela maior duração seguida da ordem lexicográfica de `str`, e gravação do JSON em UTF-8 formatado com `indent=2`, `ensure_ascii=False` e quebra de linha final.

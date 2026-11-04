@@ -1,482 +1,590 @@
-"""Suíte de testes para o módulo descontos."""
+"""Testes para o módulo descontos."""
 
-import os
 import sys
 from pathlib import Path
 from datetime import date
-
-_parent = str(Path(__file__).resolve().parent.parent)
-if _parent not in sys.path:
-    sys.path.insert(0, _parent)
-_cwd = os.getcwd()
-if _cwd not in sys.path:
-    sys.path.insert(0, _cwd)
-
 import pytest
+
+# Garante que descontos.py na raiz seja importável em qualquer forma de execução do pytest
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from descontos import aplicar_desconto
 
 
-# ============================================================================
-# 1. Contrato do retorno
-# ============================================================================
-
-def _validar_contrato(resultado, preco_original):
-    """Valida as restrições estritas do dicionário retornado."""
-    assert isinstance(resultado, dict), "O retorno deve ser um dicionário"
+def _validar_resultado(resultado, preco_original, esperado_final, esperado_desconto, esperado_cupom):
+    """Verifica contrato estrito do retorno de aplicar_desconto."""
+    assert isinstance(resultado, dict), "Retorno deve ser dict"
     assert set(resultado.keys()) == {"preco_final", "desconto", "cupom_aplicado"}, (
         f"Chaves inválidas no dicionário: {set(resultado.keys())}"
     )
-    preco_final = resultado["preco_final"]
+    assert len(resultado) == 3
+
+    final = resultado["preco_final"]
     desconto = resultado["desconto"]
     cupom = resultado["cupom_aplicado"]
 
-    assert isinstance(preco_final, int) and not isinstance(preco_final, bool), (
-        "preco_final deve ser int (e não bool)"
-    )
-    assert isinstance(desconto, int) and not isinstance(desconto, bool), (
-        "desconto deve ser int (e não bool)"
-    )
-    assert cupom is None or (isinstance(cupom, str) and not isinstance(cupom, bool)), (
-        "cupom_aplicado deve ser str ou None"
-    )
-    assert preco_final >= 0, "preco_final não pode ser negativo"
-    assert desconto >= 0, "desconto não pode ser negativo"
-    assert preco_final + desconto == preco_original, (
-        f"preco_final ({preco_final}) + desconto ({desconto}) != preco_original ({preco_original})"
-    )
-    assert desconto == preco_original - preco_final
+    assert type(final) is int and not isinstance(final, bool), "preco_final deve ser int estrito"
+    assert type(desconto) is int and not isinstance(desconto, bool), "desconto deve ser int estrito"
+    assert cupom == esperado_cupom, f"cupom_aplicado esperado {esperado_cupom!r}, obteve {cupom!r}"
+    assert final == esperado_final, f"preco_final esperado {esperado_final}, obteve {final}"
+    assert desconto == esperado_desconto, f"desconto esperado {esperado_desconto}, obteve {desconto}"
+    assert desconto == preco_original - final, "desconto deve ser exatamente preco_original - preco_final"
 
 
-def test_contrato_chaves_e_tipos():
-    res = aplicar_desconto(1000, "OFF10", "2024-06-15")
-    _validar_contrato(res, 1000)
-    assert res == {
-        "preco_final": 900,
-        "desconto": 100,
-        "cupom_aplicado": "OFF10",
-    }
+# ---------------------------------------------------------------------------
+# Validação de preco_centavos
+# ---------------------------------------------------------------------------
 
 
-# ============================================================================
-# 2. Validação do parâmetro `preco_centavos`
-# ============================================================================
-
-@pytest.mark.parametrize("preco_invalido", [
-    True,
-    False,
-    100.0,
-    0.0,
-    -0.01,
-    "100",
-    "0",
-    None,
-    [100],
-    (100,),
-    {"preco": 100},
-    object(),
-])
+@pytest.mark.parametrize(
+    "preco_invalido",
+    [
+        True,
+        False,
+        100.0,
+        0.0,
+        1.5,
+        "100",
+        "0",
+        None,
+        [],
+        [100],
+        {},
+        {"preco": 100},
+        (100,),
+        object(),
+    ],
+)
 def test_preco_centavos_tipo_invalido(preco_invalido):
     with pytest.raises(TypeError):
-        aplicar_desconto(preco_invalido, "OFF10", "2024-06-15")
+        aplicar_desconto(preco_invalido, "OFF10", "2024-06-01")
 
 
-@pytest.mark.parametrize("preco_negativo", [-1, -2, -100, -500, -999999])
+@pytest.mark.parametrize("preco_negativo", [-1, -2, -10, -100, -500, -999999])
 def test_preco_centavos_negativo(preco_negativo):
     with pytest.raises(ValueError):
-        aplicar_desconto(preco_negativo, "OFF10", "2024-06-15")
+        aplicar_desconto(preco_negativo, "OFF10", "2024-06-01")
 
 
-def test_preco_centavos_zero():
-    # Preço 0 é válido (int >= 0)
-    for cupom, hoje, esperado_aplicado in [
-        (None, "2024-06-15", None),
-        ("", "2024-06-15", None),
-        ("OFF10", "2024-06-15", "OFF10"),
-        ("OFF5", "2024-06-15", "OFF5"),
-        ("FIXO500", "2024-06-15", "FIXO500"),
-        ("BEMVINDO", "2024-06-15", "BEMVINDO"),
-        ("BEMVINDO", "2025-06-15", None),
-        ("NATAL", "2024-12-25", "NATAL"),
-        ("NATAL", "2024-12-26", None),
-    ]:
-        res = aplicar_desconto(0, cupom, hoje)
-        _validar_contrato(res, 0)
-        assert res["preco_final"] == 0
-        assert res["desconto"] == 0
-        assert res["cupom_aplicado"] == esperado_aplicado
+def test_preco_centavos_zero_valido():
+    # Preço zero é int >= 0 válido para todos os casos
+    res_none = aplicar_desconto(0, None, "2024-06-01")
+    _validar_resultado(res_none, 0, 0, 0, None)
+
+    res_vazio = aplicar_desconto(0, "", "2024-06-01")
+    _validar_resultado(res_vazio, 0, 0, 0, None)
+
+    res_off10 = aplicar_desconto(0, "OFF10", "2024-06-01")
+    _validar_resultado(res_off10, 0, 0, 0, "OFF10")
+
+    res_off5 = aplicar_desconto(0, "OFF5", "2024-06-01")
+    _validar_resultado(res_off5, 0, 0, 0, "OFF5")
+
+    res_fixo = aplicar_desconto(0, "FIXO500", "2024-06-01")
+    _validar_resultado(res_fixo, 0, 0, 0, "FIXO500")
+
+    res_bemvindo_dentro = aplicar_desconto(0, "BEMVINDO", "2024-06-01")
+    _validar_resultado(res_bemvindo_dentro, 0, 0, 0, "BEMVINDO")
+
+    res_bemvindo_fora = aplicar_desconto(0, "BEMVINDO", "2023-06-01")
+    _validar_resultado(res_bemvindo_fora, 0, 0, 0, None)
+
+    res_natal_dentro = aplicar_desconto(0, "NATAL", "2024-12-25")
+    _validar_resultado(res_natal_dentro, 0, 0, 0, "NATAL")
+
+    res_natal_fora = aplicar_desconto(0, "NATAL", "2024-12-20")
+    _validar_resultado(res_natal_fora, 0, 0, 0, None)
 
 
-# ============================================================================
-# 3. Validação do parâmetro `cupom`
-# ============================================================================
+# ---------------------------------------------------------------------------
+# Validação de cupom
+# ---------------------------------------------------------------------------
 
-@pytest.mark.parametrize("cupom_tipo_invalido", [
-    10,
-    10.0,
-    True,
-    False,
-    ["OFF10"],
-    ("OFF10",),
-    {"cupom": "OFF10"},
-    object(),
-])
+
+@pytest.mark.parametrize(
+    "cupom_tipo_invalido",
+    [
+        123,
+        0,
+        10.5,
+        0.0,
+        True,
+        False,
+        [],
+        ["OFF10"],
+        {},
+        {"cupom": "OFF10"},
+        (1,),
+        object(),
+    ],
+)
 def test_cupom_tipo_invalido(cupom_tipo_invalido):
     with pytest.raises(TypeError):
-        aplicar_desconto(1000, cupom_tipo_invalido, "2024-06-15")
+        aplicar_desconto(100, cupom_tipo_invalido, "2024-06-01")
 
 
-@pytest.mark.parametrize("cupom_desconhecido", [
-    "DESCONTO",
-    "OFF15",
-    "PROMO",
-    "XYZ",
-    "OFF20",
-    "FIXO100",
-    "NATAL2024",
-    "BEM-VINDO",
-    "bem_vindo",
-    "null",
-    "None",
-])
+@pytest.mark.parametrize(
+    "cupom_desconhecido",
+    [
+        "INVALID",
+        "OFF20",
+        "OFF",
+        "FIXO",
+        "FIXO100",
+        "PROMO",
+        "DESCONTO",
+        "CUPOM",
+        "123",
+        "NATAL2024",
+    ],
+)
 def test_cupom_desconhecido(cupom_desconhecido):
     with pytest.raises(ValueError):
-        aplicar_desconto(1000, cupom_desconhecido, "2024-06-15")
+        aplicar_desconto(100, cupom_desconhecido, "2024-06-01")
 
 
-@pytest.mark.parametrize("cupom_espacos_ou_case", [
-    " OFF10",
-    "OFF10 ",
-    " OFF10 ",
-    "off10",
-    "Off10",
-    "oFF10",
-    " OFF5",
-    "OFF5 ",
-    "off5",
-    "Off5",
-    " FIXO500",
-    "FIXO500 ",
-    "fixo500",
-    "Fixo500",
-    " BEMVINDO",
-    "BEMVINDO ",
-    "bemvindo",
-    "BemVindo",
-    " NATAL",
-    "NATAL ",
-    "natal",
-    "Natal",
-])
-def test_cupom_sem_strip_e_case_sensitive(cupom_espacos_ou_case):
+@pytest.mark.parametrize(
+    "cupom_case",
+    [
+        "off10",
+        "Off10",
+        "oFF10",
+        "off5",
+        "Off5",
+        "fixo500",
+        "Fixo500",
+        "bemvindo",
+        "Bemvindo",
+        "BemVindo",
+        "natal",
+        "Natal",
+    ],
+)
+def test_cupom_case_sensitive(cupom_case):
+    # Sem case-folding
     with pytest.raises(ValueError):
-        aplicar_desconto(1000, cupom_espacos_ou_case, "2024-12-25")
+        aplicar_desconto(100, cupom_case, "2024-12-25")
 
 
-@pytest.mark.parametrize("cupom_whitespace", [
-    " ",
-    "  ",
-    "   ",
-    "\t",
-    "\n",
-    "\r\n",
-    " \t \n",
-])
-def test_cupom_espacos_em_branco(cupom_whitespace):
+@pytest.mark.parametrize(
+    "cupom_com_espaco",
+    [
+        " OFF10",
+        "OFF10 ",
+        " OFF10 ",
+        "\tOFF10",
+        "OFF10\t",
+        "OFF10\n",
+        " OFF5",
+        "OFF5 ",
+        " FIXO500",
+        "FIXO500 ",
+        " BEMVINDO",
+        "BEMVINDO ",
+        " NATAL",
+        "NATAL ",
+    ],
+)
+def test_cupom_sem_strip(cupom_com_espaco):
+    # Não há strip: espaços antes ou depois tornam código desconhecido
     with pytest.raises(ValueError):
-        aplicar_desconto(1000, cupom_whitespace, "2024-06-15")
+        aplicar_desconto(100, cupom_com_espaco, "2024-12-25")
 
 
-# ============================================================================
-# 4. Validação do parâmetro `hoje`
-# ============================================================================
+@pytest.mark.parametrize(
+    "espacos",
+    [
+        " ",
+        "  ",
+        "\t",
+        "\n",
+        " \t ",
+        "\r\n",
+    ],
+)
+def test_cupom_espacos_nao_sao_vazio(espacos):
+    # " " e "\t" não são vazio: são texto desconhecido e levantam ValueError
+    with pytest.raises(ValueError):
+        aplicar_desconto(100, espacos, "2024-06-01")
 
-@pytest.mark.parametrize("hoje_tipo_invalido", [
-    None,
-    123,
-    20240101,
-    True,
-    False,
-    date(2024, 6, 15),
-    ["2024-06-15"],
-    {"hoje": "2024-06-15"},
-    object(),
-])
+
+# ---------------------------------------------------------------------------
+# Validação de hoje
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "hoje_tipo_invalido",
+    [
+        date(2024, 6, 1),
+        20240601,
+        123,
+        None,
+        True,
+        False,
+        ["2024-06-01"],
+        {"hoje": "2024-06-01"},
+        (2024, 6, 1),
+        object(),
+    ],
+)
 def test_hoje_tipo_invalido(hoje_tipo_invalido):
     with pytest.raises(TypeError):
-        aplicar_desconto(1000, "OFF10", hoje_tipo_invalido)
+        aplicar_desconto(100, "OFF10", hoje_tipo_invalido)
 
 
-@pytest.mark.parametrize("hoje_formato_invalido", [
-    "",
-    "2024",
-    "2024-1-1",
-    "2024-01-1",
-    "2024-1-01",
-    "2024-001-01",
-    "2024/01/01",
-    "2024.01.01",
-    "20240101",
-    "2024_01_01",
-    "2024-01-01 ",
-    " 2024-01-01",
-    "2024-01-01T00:00:00",
-    "YYYY-MM-DD",
-    "abcd-ef-gh",
-    "2024-aa-01",
-    "2024-01-bb",
-    "abcd-01-01",
-    "2024-1-1000",
-    "2024-01-01-01",
-])
+@pytest.mark.parametrize(
+    "hoje_formato_invalido",
+    [
+        "",
+        "2024/06/01",
+        "2024.06.01",
+        "2024_06_01",
+        "2024-6-1",
+        "2024-06-1",
+        "2024-6-01",
+        "24-06-01",
+        "2024-06-001",
+        "20240601",
+        "2024-06-010",
+        " 2024-06-01",
+        "2024-06-01 ",
+        "\t2024-06-01",
+        "2024-06-01\n",
+        "2024-W01-1",
+        "2024-001",
+        "+2024-06-01",
+        "2024-xx-yy",
+        "abcd-ef-gh",
+        "2024-1a-01",
+        "2024-06-1b",
+    ],
+)
 def test_hoje_formato_invalido(hoje_formato_invalido):
     with pytest.raises(ValueError):
-        aplicar_desconto(1000, "OFF10", hoje_formato_invalido)
+        aplicar_desconto(100, "OFF10", hoje_formato_invalido)
 
 
-@pytest.mark.parametrize("hoje_data_inexistente", [
-    "2024-00-10",  # mês 0
-    "2024-13-10",  # mês 13
-    "2024-01-00",  # dia 0
-    "2024-01-32",  # dia 32
-    "2024-04-31",  # abril tem 30 dias
-    "2024-06-31",  # junho tem 30 dias
-    "2024-09-31",  # setembro tem 30 dias
-    "2024-11-31",  # novembro tem 30 dias
-    "2024-02-30",  # fevereiro nunca tem 30
-    "2023-02-29",  # 2023 não é bissexto
-    "1900-02-29",  # século não bissexto (múltiplo de 100, não de 400)
-    "2100-02-29",  # século não bissexto
-    "0000-12-25",  # ano 0 não é gregoriano 1..9999
-    "10000-01-01", # ano 10000 fora do range
-])
-def test_hoje_data_inexistente_ou_fora_calendario(hoje_data_inexistente):
+@pytest.mark.parametrize(
+    "data_inexistente",
+    [
+        # Regra do século para ano bissexto
+        "1900-02-29",
+        "2100-02-29",
+        "2200-02-29",
+        "2300-02-29",
+        # Ano não-bissexto comum
+        "2023-02-29",
+        "2021-02-29",
+        # Fevereiro dias > 29
+        "2024-02-30",
+        "2024-02-31",
+        # Meses de 30 dias com 31
+        "2024-04-31",
+        "2024-06-31",
+        "2024-09-31",
+        "2024-11-31",
+        # Mês inválido
+        "2024-00-15",
+        "2024-13-01",
+        # Dia inválido
+        "2024-01-00",
+        "2024-01-32",
+        # Limites gregorianos de datetime.date (1 a 9999)
+        "0000-01-01",
+        "0000-12-31",
+        "-001-01-01",
+    ],
+)
+def test_hoje_data_inexistente_gregoriano(data_inexistente):
     with pytest.raises(ValueError):
-        aplicar_desconto(1000, "OFF10", hoje_data_inexistente)
+        aplicar_desconto(100, "OFF10", data_inexistente)
 
 
-@pytest.mark.parametrize("hoje_bissexto_e_limites", [
-    "2000-02-29",  # ano bissexto por regra de 400
-    "2024-02-29",  # ano bissexto padrão
-    "0001-01-01",  # limite inferior gregoriano
-    "0001-12-25",  # ano 1
-    "9999-12-31",  # limite superior gregoriano
-])
-def test_hoje_datas_validas_limites(hoje_bissexto_e_limites):
-    res = aplicar_desconto(1000, "OFF10", hoje_bissexto_e_limites)
-    _validar_contrato(res, 1000)
-    assert res["preco_final"] == 900
-    assert res["desconto"] == 100
-    assert res["cupom_aplicado"] == "OFF10"
+@pytest.mark.parametrize(
+    "data_valida",
+    [
+        "2000-02-29",  # Ano 2000 é bissexto (múltiplo de 400)
+        "2024-02-29",  # Ano bissexto comum
+        "0001-01-01",  # Limite inferior gregoriano
+        "0001-12-25",
+        "9999-12-31",  # Limite superior gregoriano
+    ],
+)
+def test_hoje_datas_validas_casos_limite(data_valida):
+    res = aplicar_desconto(100, "OFF10", data_valida)
+    _validar_resultado(res, 100, 90, 10, "OFF10")
 
 
-# ============================================================================
-# 5. Cupom `None` e `""` (sem desconto)
-# ============================================================================
-
-@pytest.mark.parametrize("cupom_vazio", [None, ""])
-@pytest.mark.parametrize("preco", [0, 1, 99, 100, 500, 1000, 99999])
-def test_cupom_none_ou_vazio_nao_altera_preco(cupom_vazio, preco):
-    res = aplicar_desconto(preco, cupom_vazio, "2024-06-15")
-    _validar_contrato(res, preco)
-    assert res["preco_final"] == preco
-    assert res["desconto"] == 0
-    assert res["cupom_aplicado"] is None
+# ---------------------------------------------------------------------------
+# Comportamento de cupom None e ""
+# ---------------------------------------------------------------------------
 
 
-# ============================================================================
-# 6. Cupom `OFF10`
-# ============================================================================
-
-@pytest.mark.parametrize("preco, final_esperado, desconto_esperado", [
-    (0, 0, 0),
-    # Casos críticos onde (preco * 90) // 100 difere de preco - preco // 10:
-    (1, 0, 1),    # 90//100 = 0 (desconto 1). Se preco - preco//10, seria 1 - 0 = 1 (desconto 0)
-    (2, 1, 1),    # 180//100 = 1 (desconto 1)
-    (9, 8, 1),    # 810//100 = 8 (desconto 1). Se preco - preco//10, seria 9 - 0 = 9 (desconto 0)
-    (10, 9, 1),   # 900//100 = 9 (desconto 1)
-    (11, 9, 2),   # 990//100 = 9 (desconto 2). Se preco - preco//10, seria 11 - 1 = 10 (desconto 1)
-    (15, 13, 2),  # 1350//100 = 13 (desconto 2). Se preco - preco//10, seria 15 - 1 = 14 (desconto 1)
-    (19, 17, 2),  # 1710//100 = 17 (desconto 2). Se preco - preco//10, seria 19 - 1 = 18 (desconto 1)
-    (99, 89, 10), # 8910//100 = 89 (desconto 10). Se preco - preco//10, seria 99 - 9 = 90 (desconto 9)
-    (100, 90, 10),
-    (105, 94, 11), # 9450//100 = 94. Se preco - preco//10, seria 105 - 10 = 95
-    (999, 899, 100),
-    (1000, 900, 100),
-])
-def test_off10_calculo_e_arredondamento(preco, final_esperado, desconto_esperado):
-    res = aplicar_desconto(preco, "OFF10", "2024-06-15")
-    _validar_contrato(res, preco)
-    assert res["preco_final"] == final_esperado
-    assert res["desconto"] == desconto_esperado
-    assert res["cupom_aplicado"] == "OFF10"
-    # Garantia da fórmula exata do contrato:
-    assert res["preco_final"] == (preco * 90) // 100
+@pytest.mark.parametrize("preco", [0, 1, 50, 100, 499, 500, 1000])
+def test_cupom_none(preco):
+    res = aplicar_desconto(preco, None, "2024-06-01")
+    _validar_resultado(res, preco, preco, 0, None)
 
 
-# ============================================================================
-# 7. Cupom `OFF5`
-# ============================================================================
-
-@pytest.mark.parametrize("preco, final_esperado, desconto_esperado", [
-    (0, 0, 0),
-    # Casos críticos onde (preco * 95) // 100 difere de outras fórmulas:
-    (1, 0, 1),     # 95//100 = 0 (desconto 1). Se preco - preco//20, seria 1 - 0 = 1 (desconto 0)
-    (20, 19, 1),
-    (21, 19, 2),   # 1995//100 = 19 (desconto 2). Se preco - preco//20, seria 21 - 1 = 20 (desconto 1)
-    (100, 95, 5),
-    (101, 95, 6),  # 9595//100 = 95 (desconto 6, explicitado no enunciado: 101 -> 95)
-    (200, 190, 10),# 200 -> 190 (explicitado no enunciado)
-    (201, 190, 11),# 19095//100 = 190
-    (1000, 950, 50),
-])
-def test_off5_calculo_e_arredondamento(preco, final_esperado, desconto_esperado):
-    res = aplicar_desconto(preco, "OFF5", "2024-06-15")
-    _validar_contrato(res, preco)
-    assert res["preco_final"] == final_esperado
-    assert res["desconto"] == desconto_esperado
-    assert res["cupom_aplicado"] == "OFF5"
-    assert res["preco_final"] == (preco * 95) // 100
+@pytest.mark.parametrize("preco", [0, 1, 50, 100, 499, 500, 1000])
+def test_cupom_vazio(preco):
+    res = aplicar_desconto(preco, "", "2024-06-01")
+    _validar_resultado(res, preco, preco, 0, None)
 
 
-# ============================================================================
-# 8. Cupom `FIXO500`
-# ============================================================================
-
-@pytest.mark.parametrize("preco, final_esperado, desconto_esperado", [
-    (0, 0, 0),       # Piso 0, cupom aplicado
-    (1, 0, 1),       # Piso 0, desconto 1
-    (100, 0, 100),   # Preço 100 -> final 0 e desconto 100 (explicitado no enunciado)
-    (499, 0, 499),   # Piso 0, desconto 499
-    (500, 0, 500),   # Limite exato
-    (501, 1, 500),   # Acima de 500
-    (1000, 500, 500),
-    (2500, 2000, 500),
-])
-def test_fixo500_calculo_e_piso_zero(preco, final_esperado, desconto_esperado):
-    res = aplicar_desconto(preco, "FIXO500", "2024-06-15")
-    _validar_contrato(res, preco)
-    assert res["preco_final"] == final_esperado
-    assert res["desconto"] == desconto_esperado
-    assert res["cupom_aplicado"] == "FIXO500"
-    assert res["preco_final"] == max(0, preco - 500)
-    assert res["desconto"] == preco - res["preco_final"]
+# ---------------------------------------------------------------------------
+# Cupom OFF10: (preco * 90) // 100
+# ---------------------------------------------------------------------------
 
 
-# ============================================================================
-# 9. Cupom `BEMVINDO`
-# ============================================================================
+@pytest.mark.parametrize(
+    "preco,esperado_final,esperado_desconto",
+    [
+        (0, 0, 0),
+        (1, 0, 1),
+        (2, 1, 1),
+        (9, 8, 1),
+        (10, 9, 1),
+        (11, 9, 2),
+        (19, 17, 2),
+        (20, 18, 2),
+        (99, 89, 10),
+        (100, 90, 10),
+        (101, 90, 11),
+        (109, 98, 11),
+        (110, 99, 11),
+        (1000, 900, 100),
+        (12345, 11110, 1235),
+    ],
+)
+def test_off10_valores_especificos(preco, esperado_final, esperado_desconto):
+    res = aplicar_desconto(preco, "OFF10", "2024-06-01")
+    _validar_resultado(res, preco, esperado_final, esperado_desconto, "OFF10")
 
-@pytest.mark.parametrize("hoje_dentro", [
-    "2024-01-01",  # Extremo inicial inclusive
-    "2024-01-02",
-    "2024-02-29",  # Dia bissexto dentro da janela
-    "2024-06-15",  # Meio do ano
-    "2024-12-30",
-    "2024-12-31",  # Extremo final inclusive
-])
-def test_bemvindo_dentro_da_janela(hoje_dentro):
-    for preco in [0, 1, 6, 11, 100, 1000]:
-        res = aplicar_desconto(preco, "BEMVINDO", hoje_dentro)
-        _validar_contrato(res, preco)
+
+def test_off10_varredura():
+    for preco in range(501):
+        esperado_final = (preco * 90) // 100
+        esperado_desconto = preco - esperado_final
+        res = aplicar_desconto(preco, "OFF10", "2024-06-01")
+        _validar_resultado(res, preco, esperado_final, esperado_desconto, "OFF10")
+
+
+# ---------------------------------------------------------------------------
+# Cupom OFF5: (preco * 95) // 100
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "preco,esperado_final,esperado_desconto",
+    [
+        (0, 0, 0),
+        (1, 0, 1),
+        (2, 1, 1),
+        (19, 18, 1),
+        (20, 19, 1),
+        (21, 19, 2),
+        (100, 95, 5),
+        (101, 95, 6),  # Exemplo do enunciado: 101 -> 95
+        (200, 190, 10),  # Exemplo do enunciado: 200 -> 190
+        (1000, 950, 50),
+    ],
+)
+def test_off5_valores_especificos(preco, esperado_final, esperado_desconto):
+    res = aplicar_desconto(preco, "OFF5", "2024-06-01")
+    _validar_resultado(res, preco, esperado_final, esperado_desconto, "OFF5")
+
+
+def test_off5_varredura():
+    for preco in range(501):
+        esperado_final = (preco * 95) // 100
+        esperado_desconto = preco - esperado_final
+        res = aplicar_desconto(preco, "OFF5", "2024-06-01")
+        _validar_resultado(res, preco, esperado_final, esperado_desconto, "OFF5")
+
+
+# ---------------------------------------------------------------------------
+# Cupom FIXO500: max(0, preco - 500)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "preco,esperado_final,esperado_desconto",
+    [
+        (0, 0, 0),  # Exemplo enunciado: Preço 0 continua 0 e conta como aplicado
+        (1, 0, 1),
+        (100, 0, 100),  # Exemplo enunciado: Preço 100 -> final 0 e desconto 100
+        (499, 0, 499),
+        (500, 0, 500),
+        (501, 1, 500),
+        (999, 499, 500),
+        (1000, 500, 500),
+        (1500, 1000, 500),
+    ],
+)
+def test_fixo500_valores_especificos(preco, esperado_final, esperado_desconto):
+    res = aplicar_desconto(preco, "FIXO500", "2024-06-01")
+    _validar_resultado(res, preco, esperado_final, esperado_desconto, "FIXO500")
+
+
+def test_fixo500_varredura():
+    for preco in range(1001):
+        esperado_final = max(0, preco - 500)
+        esperado_desconto = preco - esperado_final
+        res = aplicar_desconto(preco, "FIXO500", "2024-06-01")
+        _validar_resultado(res, preco, esperado_final, esperado_desconto, "FIXO500")
+
+
+# ---------------------------------------------------------------------------
+# Cupom BEMVINDO: (preco * 80) // 100 entre 2024-01-01 e 2024-12-31 inclusive
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "data_valida",
+    [
+        "2024-01-01",  # Extremo inicial (inclusive)
+        "2024-01-02",
+        "2024-02-29",  # Ano bissexto
+        "2024-06-15",
+        "2024-12-30",
+        "2024-12-31",  # Extremo final (inclusive)
+    ],
+)
+def test_bemvindo_dentro_da_janela(data_valida):
+    # Preço 100 -> final 80, desconto 20
+    res = aplicar_desconto(100, "BEMVINDO", data_valida)
+    _validar_resultado(res, 100, 80, 20, "BEMVINDO")
+
+
+@pytest.mark.parametrize(
+    "data_invalida",
+    [
+        "2023-12-31",  # Um dia antes da janela
+        "2025-01-01",  # Um dia depois da janela
+        "2023-01-01",
+        "2023-06-15",
+        "2025-06-15",
+        "2025-12-31",
+        "1999-05-10",
+        "0001-06-01",
+        "9999-06-01",
+    ],
+)
+def test_bemvindo_fora_da_janela(data_invalida):
+    # Fora da janela: não é erro, preço não muda e cupom_aplicado fica None
+    res = aplicar_desconto(100, "BEMVINDO", data_invalida)
+    _validar_resultado(res, 100, 100, 0, None)
+
+    # Preço zero fora da janela
+    res_zero = aplicar_desconto(0, "BEMVINDO", data_invalida)
+    _validar_resultado(res_zero, 0, 0, 0, None)
+
+
+@pytest.mark.parametrize(
+    "preco,esperado_final,esperado_desconto",
+    [
+        (0, 0, 0),
+        (1, 0, 1),
+        (4, 3, 1),
+        (5, 4, 1),
+        (6, 4, 2),
+        (100, 80, 20),
+        (101, 80, 21),
+        (1000, 800, 200),
+    ],
+)
+def test_bemvindo_formula_valores(preco, esperado_final, esperado_desconto):
+    res = aplicar_desconto(preco, "BEMVINDO", "2024-06-01")
+    _validar_resultado(res, preco, esperado_final, esperado_desconto, "BEMVINDO")
+
+
+def test_bemvindo_varredura():
+    for preco in range(501):
         esperado_final = (preco * 80) // 100
-        assert res["preco_final"] == esperado_final
-        assert res["desconto"] == preco - esperado_final
-        assert res["cupom_aplicado"] == "BEMVINDO"
+        esperado_desconto = preco - esperado_final
+        res = aplicar_desconto(preco, "BEMVINDO", "2024-07-01")
+        _validar_resultado(res, preco, esperado_final, esperado_desconto, "BEMVINDO")
 
 
-@pytest.mark.parametrize("preco, final_esperado, desconto_esperado", [
-    (0, 0, 0),
-    # Diferença entre (preco * 80) // 100 e preco - (preco * 20) // 100:
-    (1, 0, 1),    # 80//100 = 0 (desconto 1). Se preco - preco*20//100, seria 1 - 0 = 1 (desconto 0)
-    (5, 4, 1),    # 400//100 = 4 (desconto 1)
-    (6, 4, 2),    # 480//100 = 4 (desconto 2). Se preco - preco*20//100, seria 6 - 1 = 5 (desconto 1)
-    (11, 8, 3),   # 880//100 = 8 (desconto 3). Se preco - preco*20//100, seria 11 - 2 = 9 (desconto 2)
-    (100, 80, 20),
-    (105, 84, 21),
-    (1000, 800, 200),
-])
-def test_bemvindo_arredondamento_e_piso(preco, final_esperado, desconto_esperado):
-    res = aplicar_desconto(preco, "BEMVINDO", "2024-06-15")
-    _validar_contrato(res, preco)
-    assert res["preco_final"] == final_esperado
-    assert res["desconto"] == desconto_esperado
-    assert res["cupom_aplicado"] == "BEMVINDO"
-    assert res["preco_final"] == (preco * 80) // 100
+# ---------------------------------------------------------------------------
+# Cupom NATAL: (preco * 85) // 100 somente em 24 ou 25 de dezembro (ano 1 a 9999)
+# ---------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("hoje_fora", [
-    "2023-12-31",  # Véspera do início da janela
-    "2023-01-01",  # Ano anterior
-    "2025-01-01",  # Dia seguinte ao fim da janela
-    "2025-12-31",  # Ano posterior
-    "2020-05-10",
-    "1999-06-15",
-    "0001-01-01",
-    "9999-12-31",
-])
-def test_bemvindo_fora_da_janela_nao_altera_preco(hoje_fora):
-    for preco in [0, 1, 100, 1000]:
-        res = aplicar_desconto(preco, "BEMVINDO", hoje_fora)
-        _validar_contrato(res, preco)
-        assert res["preco_final"] == preco
-        assert res["desconto"] == 0
-        assert res["cupom_aplicado"] is None
+@pytest.mark.parametrize(
+    "data_natal",
+    [
+        "2024-12-24",
+        "2024-12-25",
+        "2023-12-24",
+        "2023-12-25",
+        "2025-12-24",
+        "2025-12-25",
+        "0001-12-24",
+        "0001-12-25",
+        "1999-12-24",
+        "1999-12-25",
+        "9999-12-24",
+        "9999-12-25",
+    ],
+)
+def test_natal_dentro_da_janela(data_natal):
+    res = aplicar_desconto(100, "NATAL", data_natal)
+    _validar_resultado(res, 100, 85, 15, "NATAL")
 
 
-# ============================================================================
-# 10. Cupom `NATAL`
-# ============================================================================
+@pytest.mark.parametrize(
+    "data_nao_natal",
+    [
+        "2024-12-23",  # Véspera da véspera
+        "2024-12-26",  # Dia seguinte ao Natal
+        "2024-11-24",  # Mesmo dia, mês anterior
+        "2024-11-25",
+        "2024-01-24",
+        "2024-01-25",
+        "2024-06-24",
+        "2024-06-25",
+        "2024-12-01",
+        "2024-12-31",
+        "2023-12-23",
+        "2023-12-26",
+    ],
+)
+def test_natal_fora_da_janela(data_nao_natal):
+    # Fora da janela: não é erro, preço não muda e cupom_aplicado fica None
+    res = aplicar_desconto(100, "NATAL", data_nao_natal)
+    _validar_resultado(res, 100, 100, 0, None)
 
-@pytest.mark.parametrize("ano", ["2024", "2023", "2000", "1900", "0001", "9999"])
-@pytest.mark.parametrize("dia", ["24", "25"])
-def test_natal_datas_validas_qualquer_ano(ano, dia):
-    hoje = f"{ano}-12-{dia}"
-    for preco in [0, 1, 7, 13, 100, 1000]:
-        res = aplicar_desconto(preco, "NATAL", hoje)
-        _validar_contrato(res, preco)
+    res_zero = aplicar_desconto(0, "NATAL", data_nao_natal)
+    _validar_resultado(res_zero, 0, 0, 0, None)
+
+
+@pytest.mark.parametrize(
+    "preco,esperado_final,esperado_desconto",
+    [
+        (0, 0, 0),
+        (1, 0, 1),  # Exemplo enunciado: Preço 1 em 25/12 -> final 0
+        (6, 5, 1),
+        (7, 5, 2),
+        (13, 11, 2),
+        (100, 85, 15),
+        (101, 85, 16),
+        (1000, 850, 150),
+    ],
+)
+def test_natal_formula_valores(preco, esperado_final, esperado_desconto):
+    res_24 = aplicar_desconto(preco, "NATAL", "2024-12-24")
+    _validar_resultado(res_24, preco, esperado_final, esperado_desconto, "NATAL")
+
+    res_25 = aplicar_desconto(preco, "NATAL", "2024-12-25")
+    _validar_resultado(res_25, preco, esperado_final, esperado_desconto, "NATAL")
+
+
+def test_natal_varredura():
+    for preco in range(501):
         esperado_final = (preco * 85) // 100
-        assert res["preco_final"] == esperado_final
-        assert res["desconto"] == preco - esperado_final
-        assert res["cupom_aplicado"] == "NATAL"
-
-
-@pytest.mark.parametrize("preco, final_esperado, desconto_esperado", [
-    (0, 0, 0),
-    # Diferença entre (preco * 85) // 100 e preco - (preco * 15) // 100:
-    (1, 0, 1),    # Preço 1 em 25/12 -> final 0 (explicitado no enunciado)
-    (6, 5, 1),    # 510//100 = 5 (desconto 1)
-    (7, 5, 2),    # 595//100 = 5 (desconto 2). Se preco - preco*15//100, seria 7 - 1 = 6 (desconto 1)
-    (13, 11, 2),  # 1105//100 = 11 (desconto 2). Se preco - preco*15//100, seria 13 - 1 = 12 (desconto 1)
-    (100, 85, 15),
-    (1000, 850, 150),
-])
-def test_natal_arredondamento_e_piso(preco, final_esperado, desconto_esperado):
-    res = aplicar_desconto(preco, "NATAL", "2024-12-25")
-    _validar_contrato(res, preco)
-    assert res["preco_final"] == final_esperado
-    assert res["desconto"] == desconto_esperado
-    assert res["cupom_aplicado"] == "NATAL"
-    assert res["preco_final"] == (preco * 85) // 100
-
-
-@pytest.mark.parametrize("hoje_fora_natal", [
-    "2024-12-23",  # Véspera de 24
-    "2024-12-26",  # Dia seguinte a 25
-    "2024-12-01",
-    "2024-11-24",  # Mesmo dia, outro mês
-    "2024-11-25",
-    "2024-01-24",
-    "2024-01-25",
-    "2024-06-15",
-    "2023-12-23",
-    "0001-12-23",
-    "9999-12-26",
-])
-def test_natal_fora_da_data_nao_altera_preco(hoje_fora_natal):
-    for preco in [0, 1, 100, 1000]:
-        res = aplicar_desconto(preco, "NATAL", hoje_fora_natal)
-        _validar_contrato(res, preco)
-        assert res["preco_final"] == preco
-        assert res["desconto"] == 0
-        assert res["cupom_aplicado"] is None
+        esperado_desconto = preco - esperado_final
+        res = aplicar_desconto(preco, "NATAL", "2024-12-25")
+        _validar_resultado(res, preco, esperado_final, esperado_desconto, "NATAL")

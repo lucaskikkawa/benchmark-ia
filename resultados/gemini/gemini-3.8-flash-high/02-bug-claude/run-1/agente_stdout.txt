@@ -1,0 +1,11 @@
+A tarefa foi concluída com sucesso. O arquivo [`intervalos.py`](file:///tmp/bench-4oxa_v48/intervalos.py) foi atualizado para cumprir todas as especificações das docstrings e do [`enunciado.md`](file:///tmp/bench-4oxa_v48/enunciado.md):
+
+- **Suporte a lista vazia**: [`mesclar_intervalos`](file:///tmp/bench-4oxa_v48/intervalos.py#L4-L48) agora retorna `[]` (e [`total_coberto`](file:///tmp/bench-4oxa_v48/intervalos.py#L51-L57) retorna `0`) quando a entrada for vazia.
+- **Intervalos que se tocam**: corrigida a verificação para `inicio <= ultimo_fim`, unindo intervalos contíguos (ex.: `[(1, 3), (3, 6)]` $\rightarrow$ `[(1, 6)]`).
+- **Intervalos contidos**: corrigida a extensão do fim usando `max(ultimo_fim, fim)`, evitando encolhimento incorreto quando um intervalo engloba outro (ex.: `[(1, 10), (2, 3)]` $\rightarrow$ `[(1, 10)]`).
+- **Imutabilidade e suporte a geradores**: a entrada não é modificada `in-place` (`intervalos.sort()` foi removido); os intervalos são consumidos e validados previamente em uma nova lista.
+- **Validação estrita**:
+  - Rejeita valores que não sejam `int` ou que sejam `bool` levantando `TypeError`.
+  - Rejeita intervalos cujo formato não seja par (tupla ou lista de 2 elementos).
+  - Garante `inicio <= fim` para todos os pares, levantando `ValueError` caso contrário antes de produzir qualquer resultado.
+- **Tipo de retorno**: sempre retorna uma nova lista contendo tuplas `(inicio, fim)`.
