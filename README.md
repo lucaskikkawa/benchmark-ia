@@ -1,72 +1,56 @@
 # Benchmark IA
 
-Projeto hobby de avaliação e benchmark comparativo de modelos de inteligência artificial aplicados à engenharia de software e programação em Python.
+Projeto open-source e hobby que compara modelos de IA em tarefas práticas de programação em Python, considerando corretude, qualidade e tempo de execução. Não mede custo nem consumo de tokens.
 
----
+## Estado atual
 
-## 📌 Status Atual
+As **40 tarefas** foram criadas, o [piloto](resultados/piloto/PILOTO.md) foi realizado e a **Rodada 1 foi concluída e avaliada**. Houve refações de erros de cota e de timeouts; os detalhes e exceções estão nos [resultados da rodada](resultados/RODADA.md) e no [relatório do Avaliador](resultados/RELATORIO_AVALIADOR.md). O [site v2](site/index.html) permite explorar os resultados.
 
-> **Planejamento — nenhuma tarefa criada ainda**
+A Rodada 1 cobriu estes modelos, cada um com esforço `medium` e `high` (16 combinações):
 
-O projeto encontra-se na fase de estruturação e alinhamento de diretrizes. Nenhuma tarefa ou bateria de testes foi instanciada até o momento. Para todos os detalhes metodológicos e regras de execução, consulte o documento oficial [PLANO.md](PLANO.md).
+- **Claude:** `claude-opus-5-5`, `claude-haiku-5-5`.
+- **Codex:** `gpt-6.1-sol`, `gpt-6-luna`.
+- **Gemini:** `gemini-4-argon`, `gemini-3.8-flash`.
+- **Grok:** `grok-4.7`, `grok-4.7-build-fast`.
 
----
+O site apresenta dois cenários: **Ranking A**, com os limites originais de 3 minutos em 31 tarefas e 5 minutos em 9; e **Ranking B**, no qual 70 execuções principais de Claude, Codex e Gemini que atingiram o limite foram refeitas com 7 minutos. O B não inclui Grok e apresenta tanto a regra de timeout igual a zero quanto uma alternativa que avalia a entrega parcial. Há uma regra excepcional para parte das execuções de `grok-4.7-high` no A; consulte os relatórios para os detalhes.
 
-## 🎯 Sobre o Projeto
+No Ranking A, `claude-haiku-5-5-high` ficou em primeiro, com nota 9,75. A tabela completa e suas ressalvas estão em [RODADA.md](resultados/RODADA.md); o [relatório de 7 minutos](resultados/_avaliador/cenario_7min/RELATORIO_7MIN.md) compara os cenários.
 
-O objetivo deste benchmark é mensurar a eficácia de diferentes modelos de linguagem de ponta na resolução de problemas de programação cotidianos, com foco em simplicidade, consistência e precisão. 
+## Próximo passo: v3 planejada
 
-O projeto prioriza:
-- Avaliação prática de corretude de código via testes automatizados e rubrica qualitativa;
-- Avaliação antiviés com criação e resolução cruzadas entre diferentes provedores;
-- Isolamento estrito de ambiente via contêineres Docker descartáveis sem acesso à rede externa;
-- Análise de tempo de resposta sem foco em consumo de tokens ou custos financeiros.
+A v3 está planejada e ainda não foi iniciada: avaliar `gemini-4-hydrogen` e `gemini-4-neon`, ambos em `medium` e `high`, com os mesmos critérios, reaproveitando os resultados de Claude e Codex. O site v3 não terá Grok na disputa; seus dados permanecem no repositório como legado, e Grok continua como autor de tarefas e juiz.
 
----
+## Metodologia
 
-## 🤖 Modelos e Combinações Testadas
+São 10 tipos de tarefa, com uma versão criada por cada uma das quatro empresas. Cada combinação resolve as 30 tarefas das outras empresas, além de três repetições de uma tarefa para medir consistência. O ranking usa as 30 execuções principais, sem as repetições.
 
-O benchmark avalia **8 modelos** distribuídos em 4 ecossistemas/provedores, combinados com **2 níveis de esforço de raciocínio** (`medium` e `high`), resultando em **16 combinações**:
+A nota de 0 a 10 combina **70% de testes e 30% de rubrica**: `0,7 × (% de testes / 10) + 0,3 × rubrica`. Na tarefa de escrever testes, a porcentagem mede mutantes eliminados. O Avaliador analisa código anonimizado com dois juízes de empresas diferentes da autora e da resolvedora; se um juiz falhar duas vezes, vale o outro. Em geral, timeout recebe zero, com as exceções e alternativas descritas acima. Veja a [metodologia e auditoria](resultados/RELATORIO_AVALIADOR.md) e o [plano original](PLANO.md).
 
-- **Codex (OpenAI):** `gpt-6.1-sol`, `gpt-6-luna` (esforço `medium` e `high`)
-- **Claude (Anthropic):** `Opus 5.5`, `Haiku 5.5` (esforço `medium` e `high`)
-- **Gemini (Google):** `gemini-4-argon`, `gemini-3.8-flash` (esforço `medium` e `high`)
-- **Grok (xAI):** `grok-4.7`, `grok-4.7-build-fast` (esforço `medium` e `high`)
+## Como reproduzir
 
-> *Nota operacional:* Para gerenciar limites de cota no Gemini, todas as baterias do `gemini-3.8-flash` são executadas antes de iniciar as do `gemini-4-argon`.
+O plano previa Docker sem rede, mas o runner documentado usou `bwrap` para isolar o agente e `unshare -rn` para executar os testes ocultos sem rede; o agente precisa de acesso à API. O repositório não documenta comandos de Docker para essa execução. São necessários Python 3.12, `uv`, `bwrap`, `unshare` e as CLIs dos provedores configuradas. Veja [scripts/README-runner.md](scripts/README-runner.md).
 
----
-
-## 🔬 Metodologia
-
-Um resumo da abordagem definida na versão 2 do plano de benchmark:
-
-1. **Tipos de Tarefa (Dificuldade Simples):**
-   - 10 tipos de problemas (função do zero, correção de bug, refatoração, manipulação de CSV/JSON, CLI, projeto multi-arquivo de até 3-4 arquivos, algoritmo com limite estrito de tempo de execução, escrita de testes avaliada por mutation testing com ~10 bugs plantados, integração com API mock local determinística e tarefa com requisitos ambíguos exigindo registro em `SUPOSICOES.md`).
-2. **Criação Cruzada Antiviés:**
-   - Cada empresa cria 1 versão de cada tipo (totalizando 40 tarefas).
-   - Cada modelo resolve apenas as 30 tarefas criadas pelos outros 3 provedores (nunca tarefas de sua própria criadora).
-3. **Consistência:**
-   - 1 tarefa fixa executada 3 vezes por combinação (16 combinações × 33 tarefas = 528 execuções totais).
-4. **Ambiente e Isolamento:**
-   - Containers Docker descartáveis, sem acesso à internet e com teto de 5 minutos por execução (ajustável para menos por tarefa).
-5. **Critério de Pontuação:**
-   - $\text{Nota} = 0{,}7 \times (\% \text{ de testes passados}) + 0{,}3 \times (\text{rubrica}/10)$.
-   - A rubrica contém 5 itens objetivos de 0 a 2 pontos avaliados de forma cega por um modelo de empresa neutra.
-
----
-
-## 📂 Estrutura de Pastas Prevista
-
+```bash
+uv venv -p 3.12 .bench-py
+uv pip install -p .bench-py pytest mutmut pyyaml
+.bench-py/bin/python scripts/run.py --empresa grok --modelo grok-4.7-build-fast --esforco medium --tarefa _exemplo
 ```
-benchmark-ia/
-├── PLANO.md                  # Especificações completas do benchmark (v2)
-├── README.md                 # Visão geral, status e documentação de entrada
-└── tarefas/                  # Diretório das tarefas (a ser gerado)
-    └── <tipo>-<autor>/
-        ├── enunciado.md      # Instruções da tarefa fornecidas ao modelo
-        ├── inicial/          # Código-base inicial
-        ├── testes_ocultos/   # Suíte de validação em pytest (>=8 testes)
-        ├── rubrica.yaml      # Critérios objetivos de pontuação da rubrica
-        └── meta.yaml         # Metadados e configurações de timeout
+
+Para o piloto, a rodada e a avaliação, os scripts disponíveis são:
+
+```bash
+bash scripts/piloto.sh
+.bench-py/bin/python scripts/rodada.py --dry-run
+.bench-py/bin/python scripts/avaliador.py
 ```
+
+A rodada retoma execuções existentes; a avaliação pode chamar juízes externos e gerar arquivos de resultados. Consulte os próprios scripts antes de executá-los.
+
+## Organização
+
+- [tarefas/](tarefas/): enunciados, metadados, rubricas, testes ocultos e soluções de referência; algumas tarefas incluem código inicial.
+- [scripts/](scripts/): runner, piloto, rodada, avaliação e relatórios.
+- [resultados/](resultados/): piloto, execuções, avaliações e relatórios.
+- [site/](site/): site v2, construção e verificação.
+- [notas/](notas/): registros de criação, revisão e validação das tarefas.
