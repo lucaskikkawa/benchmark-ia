@@ -33,19 +33,19 @@
   },
   "claude": {
    "modelo": "claude-haiku-5-5",
-   "itens": null,
-   "rubrica_10": null,
-   "justificativa": null,
-   "falhas": [
-    "tentativa 1: exit 1: ",
-    "tentativa 2: exit 1: "
-   ]
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Correto e O(n) com dict de frequências. O caso x+x fica implícito na ordem de contagem, sem ramo isolado. Validação de elementos dentro do laço. Docstring sem nota sobre duplicatas.",
+   "falhas": []
   }
  },
- "obs": [
-  "juiz claude sem resposta válida (tentativa 1: exit 1: ; tentativa 2: exit 1: )",
-  "só 1 juiz neutro válido; usada só a nota dele"
- ],
+ "obs": [],
  "rubrica_media_10": 7.0,
  "nota_final_10": 9.1
 }

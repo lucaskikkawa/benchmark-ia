@@ -1227,7 +1227,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 25,
         "passados": 25
@@ -1241,13 +1241,13 @@
         33,
         33
       ],
-      "nota": 9.7,
-      "rubrica": 9.0,
+      "nota": 9.4,
+      "rubrica": 8.0,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 33,
         "passados": 33
@@ -1287,7 +1287,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 21,
         "passados": 21
@@ -1301,13 +1301,13 @@
         16,
         16
       ],
-      "nota": 9.4,
-      "rubrica": 8.0,
+      "nota": 9.25,
+      "rubrica": 7.5,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 16,
         "passados": 16
@@ -1347,7 +1347,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 19,
         "passados": 19
@@ -1367,7 +1367,7 @@
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 12,
         "passados": 12
@@ -1401,13 +1401,13 @@
         47,
         47
       ],
-      "nota": 9.4,
-      "rubrica": 8.0,
+      "nota": 9.25,
+      "rubrica": 7.5,
       "juizes": [
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 47,
         "passados": 47
@@ -1421,13 +1421,13 @@
         22,
         22
       ],
-      "nota": 9.4,
-      "rubrica": 8.0,
+      "nota": 9.25,
+      "rubrica": 7.5,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 22,
         "passados": 22
@@ -1467,7 +1467,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 28,
         "passados": 28
@@ -1481,13 +1481,13 @@
         15,
         15
       ],
-      "nota": 10.0,
-      "rubrica": 10.0,
+      "nota": 9.55,
+      "rubrica": 8.5,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 15,
         "passados": 15
@@ -1527,7 +1527,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 42,
         "passados": 42
@@ -1541,13 +1541,13 @@
         17,
         17
       ],
-      "nota": 9.4,
-      "rubrica": 8.0,
+      "nota": 9.25,
+      "rubrica": 7.5,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 17,
         "passados": 17
@@ -1587,7 +1587,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 17,
         "passados": 17
@@ -1601,13 +1601,13 @@
         12,
         12
       ],
-      "nota": 9.4,
-      "rubrica": 8.0,
+      "nota": 9.1,
+      "rubrica": 7.0,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 12,
         "passados": 12
@@ -1647,7 +1647,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 15,
         "passados": 15
@@ -1701,7 +1701,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 38,
         "passados": 38
@@ -1715,13 +1715,13 @@
         18,
         18
       ],
-      "nota": 10.0,
-      "rubrica": 10.0,
+      "nota": 9.7,
+      "rubrica": 9.0,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 18,
         "passados": 18
@@ -1749,13 +1749,13 @@
         14,
         14
       ],
-      "nota": 10.0,
-      "rubrica": 10.0,
+      "nota": 9.85,
+      "rubrica": 9.5,
       "juizes": [
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 14,
         "passados": 14
@@ -1775,7 +1775,7 @@
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 11,
         "passados": 11
@@ -2009,13 +2009,13 @@
         22,
         22
       ],
-      "nota": 9.7,
-      "rubrica": 9.0,
+      "nota": 9.4,
+      "rubrica": 8.0,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 22,
         "passados": 22
@@ -2055,7 +2055,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 28,
         "passados": 28
@@ -2069,13 +2069,13 @@
         15,
         15
       ],
-      "nota": 9.7,
-      "rubrica": 9.0,
+      "nota": 9.55,
+      "rubrica": 8.5,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 15,
         "passados": 15
@@ -2115,7 +2115,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 42,
         "passados": 42
@@ -2135,7 +2135,7 @@
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 17,
         "passados": 17
@@ -2175,7 +2175,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 17,
         "passados": 17
@@ -2195,7 +2195,7 @@
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 12,
         "passados": 12
@@ -2277,7 +2277,7 @@
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 38,
         "passados": 38
@@ -2291,13 +2291,13 @@
         18,
         18
       ],
-      "nota": 9.7,
-      "rubrica": 9.0,
+      "nota": 9.4,
+      "rubrica": 8.0,
       "juizes": [
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 18,
         "passados": 18
@@ -2325,13 +2325,13 @@
         14,
         14
       ],
-      "nota": 10.0,
-      "rubrica": 10.0,
+      "nota": 9.85,
+      "rubrica": 9.5,
       "juizes": [
         "claude",
         "grok"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 14,
         "passados": 14
@@ -2351,7 +2351,7 @@
         "codex",
         "claude"
       ],
-      "juizes_validos": 1,
+      "juizes_validos": 2,
       "rerun": {
         "total": 11,
         "passados": 11

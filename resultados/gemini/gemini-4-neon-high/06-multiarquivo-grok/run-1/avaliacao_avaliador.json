@@ -33,19 +33,19 @@
   },
   "claude": {
    "modelo": "claude-haiku-5-5",
-   "itens": null,
-   "rubrica_10": null,
-   "justificativa": null,
-   "falhas": [
-    "tentativa 1: exit 1: ",
-    "tentativa 2: exit 1: "
-   ]
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 0.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Módulos bem separados, prazo, usuário e data sem repetição, bordas corretas. Idiomático cai: data fatiada à mão, sem fromisoformat. Faltam docstrings em Livro, Catalogo e ServicoEmprestimos.",
+   "falhas": []
   }
  },
- "obs": [
-  "juiz claude sem resposta válida (tentativa 1: exit 1: ; tentativa 2: exit 1: )",
-  "só 1 juiz neutro válido; usada só a nota dele"
- ],
+ "obs": [],
  "rubrica_media_10": 7.0,
  "nota_final_10": 9.1
 }

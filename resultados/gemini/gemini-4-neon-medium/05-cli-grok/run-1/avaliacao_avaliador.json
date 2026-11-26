@@ -33,19 +33,19 @@
   },
   "claude": {
    "modelo": "claude-haiku-5-5",
-   "itens": null,
-   "rubrica_10": null,
-   "justificativa": null,
-   "falhas": [
-    "tentativa 1: exit 1: ",
-    "tentativa 2: exit 1: "
-   ]
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Erros e códigos de saída batem com o enunciado. Mensagens de erro ficam espalhadas pelo código, não num lugar só. Prioridades estão em tupla e dict de ordem separados. Docstring e help não descrevem os subcomandos.",
+   "falhas": []
   }
  },
- "obs": [
-  "juiz claude sem resposta válida (tentativa 1: exit 1: ; tentativa 2: exit 1: )",
-  "só 1 juiz neutro válido; usada só a nota dele"
- ],
- "rubrica_media_10": 10.0,
- "nota_final_10": 10.0
+ "obs": [],
+ "rubrica_media_10": 8.5,
+ "nota_final_10": 9.55
 }

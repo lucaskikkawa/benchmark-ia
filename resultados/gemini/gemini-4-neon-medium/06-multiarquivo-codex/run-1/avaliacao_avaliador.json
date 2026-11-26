@@ -20,13 +20,16 @@
  "juizes": {
   "claude": {
    "modelo": "claude-haiku-5-5",
-   "itens": null,
-   "rubrica_10": null,
-   "justificativa": null,
-   "falhas": [
-    "tentativa 1: exit 1: ",
-    "tentativa 2: exit 1: "
-   ]
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes alinhados entre modulos; valida saldos intermediarios e forma do JSON incluindo bool e campos ausentes; dataclass frozen e imports relativos. Falta docstring sobre ordem, imutabilidade e formato.",
+   "falhas": []
   },
   "grok": {
    "modelo": "grok-4.7-build-fast",
@@ -42,10 +45,7 @@
    "falhas": []
   }
  },
- "obs": [
-  "juiz claude sem resposta válida (tentativa 1: exit 1: ; tentativa 2: exit 1: )",
-  "só 1 juiz neutro válido; usada só a nota dele"
- ],
+ "obs": [],
  "rubrica_media_10": 9.0,
  "nota_final_10": 9.7
 }

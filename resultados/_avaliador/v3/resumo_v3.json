@@ -41,13 +41,13 @@
     {
       "pos": 7,
       "combo": "gemini-4-neon-medium",
-      "nota": 8.94,
+      "nota": 8.87,
       "empate_tecnico": true
     },
     {
       "pos": 8,
       "combo": "gemini-4-neon-high",
-      "nota": 8.21,
+      "nota": 8.18,
       "empate_tecnico": false
     }
   ],
@@ -85,7 +85,7 @@
     {
       "pos": 6,
       "combo": "gemini-4-neon-medium",
-      "nota": 9.27,
+      "nota": 9.2,
       "empate_tecnico": true
     },
     {
@@ -97,7 +97,7 @@
     {
       "pos": 8,
       "combo": "gemini-4-neon-high",
-      "nota": 8.87,
+      "nota": 8.84,
       "empate_tecnico": true
     }
   ],
@@ -135,7 +135,7 @@
     {
       "pos": 6,
       "combo": "gemini-4-neon-medium",
-      "nota": 9.27,
+      "nota": 9.2,
       "empate_tecnico": true
     },
     {
@@ -147,15 +147,15 @@
     {
       "pos": 8,
       "combo": "gemini-4-neon-high",
-      "nota": 8.87,
+      "nota": 8.84,
       "empate_tecnico": true
     }
   ],
   "medias_empresa": {
     "Google": {
-      "A": 8.99,
-      "B_ni": 9.24,
-      "B_nii": 9.24
+      "A": 8.97,
+      "B_ni": 9.21,
+      "B_nii": 9.21
     },
     "Anthropic": {
       "A": 9.71,
@@ -186,17 +186,17 @@
       "retries_420": 1
     },
     "gemini-4-neon-medium": {
-      "A": 8.94,
-      "B_ni": 9.27,
-      "B_nii": 9.27,
+      "A": 8.87,
+      "B_ni": 9.2,
+      "B_nii": 9.2,
       "timeouts_A": 2,
       "timeouts_B": 1,
       "retries_420": 2
     },
     "gemini-4-neon-high": {
-      "A": 8.21,
-      "B_ni": 8.87,
-      "B_nii": 8.87,
+      "A": 8.18,
+      "B_ni": 8.84,
+      "B_nii": 8.84,
       "timeouts_A": 4,
       "timeouts_B": 2,
       "retries_420": 4
@@ -226,7 +226,7 @@
     "media_rubrica": {
       "codex": 8.368,
       "grok": 8.566,
-      "claude": 8.489
+      "claude": 8.4
     },
     "diferenca_absoluta": [
       {
@@ -236,16 +236,16 @@
       },
       {
         "juizes": "claude × grok",
-        "n_pares": 24,
-        "media_diferenca_absoluta": 0.167
+        "n_pares": 40,
+        "media_diferenca_absoluta": 0.2
       },
       {
         "juizes": "claude × codex",
-        "n_pares": 23,
-        "media_diferenca_absoluta": 1.217
+        "n_pares": 40,
+        "media_diferenca_absoluta": 1.15
       }
     ],
-    "pendencia": ".motor/chefe-julga-v3/FALTANTES.md: 33 avaliações com 1 juiz; Claude indisponível por política da organização; zero avaliações sem juiz válido."
+    "pendencia": "Refill Claude 26/11/2026 17:53–17:59 America/Sao_Paulo: 33/33 avaliações que tinham 1 juiz agora têm 2 juízes válidos. single_judge_count=0."
   },
   "card_gemini_antigo_vs_novo": {
     "antigo": {
@@ -257,11 +257,11 @@
     "novo": {
       "gemini-4-hydrogen-medium": 9.53,
       "gemini-4-hydrogen-high": 9.29,
-      "gemini-4-neon-medium": 8.94,
-      "gemini-4-neon-high": 8.21
+      "gemini-4-neon-medium": 8.87,
+      "gemini-4-neon-high": 8.18
     },
     "antigo_media": 4.58,
-    "novo_media": 8.99
+    "novo_media": 8.97
   },
   "timeouts_totais": {
     "A": 7,
@@ -272,7 +272,7 @@
     "retry_attempts": 7,
     "retry_with_evaluation": 3,
     "evaluated": 116,
-    "single_judge_count": 33,
+    "single_judge_count": 0,
     "zero_judge_count": 0,
     "incoherencias": 0,
     "rerun_requested": true,
