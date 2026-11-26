@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-hydrogen-high/09-api-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-hydrogen",
+ "esforco": "high",
+ "tarefa": "09-api-grok",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 81.807,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "O código separa timeout, tentativa por pedido e orquestração; trata erros específicos e valida parâmetros. Porém, dorme backoff após a última tentativa de LojaIndisponivel, e política de retry e fórmula ficam no laço.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Timeout, retry e validação ficam em funções separadas, e erros e bordas estão corretos. Backoff com fator 2 e LojaIndisponivel estão fixos no laço. Docstring de baixar_pedidos não diz o que é retentado.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 9.4
+}

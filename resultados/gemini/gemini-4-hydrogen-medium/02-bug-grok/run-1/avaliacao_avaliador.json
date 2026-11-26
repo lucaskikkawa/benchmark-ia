@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-hydrogen-medium/02-bug-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-hydrogen",
+ "esforco": "medium",
+ "tarefa": "02-bug-grok",
+ "tipo": "02-bug",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 36.17,
+ "testes_passados": 16,
+ "testes_total": 16,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Validação, descarte e média estão claros; trata tipos, ausências e arredondamento corretamente. Limiares não estão centralizados e a docstring não detalha o contrato.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Etapas claras, lista intacta, Decimal(str) e HALF_UP corretos. Falha: inteiro gigante gera OverflowError em vez de ValueError. Conceito colado à média; sem docstring da função.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.25
+}

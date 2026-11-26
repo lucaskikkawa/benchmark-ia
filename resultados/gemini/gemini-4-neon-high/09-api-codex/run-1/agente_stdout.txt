@@ -1,0 +1,10 @@
+Implementado [cliente.py](file:///tmp/bench-w01er2i6/cliente.py) conforme [enunciado.md](file:///tmp/bench-w01er2i6/enunciado.md), preservando [fake_api.py](file:///tmp/bench-w01er2i6/fake_api.py) intacto.
+
+### O que foi feito
+- Criada `buscar_com_retry(api, chave: str, *, tentativas: int = 3, timeout: float = 1.0, backoff: float = 0.1, dormir=time.sleep) -> dict` em [cliente.py](file:///tmp/bench-w01er2i6/cliente.py).
+- Validação prévia de `tentativas` (inteiro `>= 1`), `timeout` (número real finito `> 0`) e `backoff` (número real finito `>= 0`), lançando `ValueError` antes de qualquer chamada à API ou a `dormir`.
+- Repetição apenas para `fake_api.ErroTemporario`, `TimeoutError` e suas subclasses, com espera `backoff * (2**indice)` chamada fora do bloco `try/except` (propagando imediatamente exceções vindas de `dormir`, inclusive `TimeoutError`/`ErroTemporario`, além de `ErroPermanente` e demais exceções da API).
+- Retorno direto do objeto devolvido por `api.get(chave, timeout=timeout)` sem transformação, sem dormir após sucesso ou após a última falha, e repropagando a última exceção original ao esgotar as tentativas.
+
+### Verificação
+- Executada bateria de testes cobrindo assinatura/defaults, validações de faixa e valores não finitos (`nan`, `inf`, `-inf`, `0`, negativos), retorno idêntico (incluindo `{}`), backoff exponencial exato até 40 tentativas, `backoff=0`, subclasses de erros transitórios, propagação imediata de erros permanentes e de `dormir`, chaves vazias/Unicode e integração com `FakeAPI` (todos passaram).

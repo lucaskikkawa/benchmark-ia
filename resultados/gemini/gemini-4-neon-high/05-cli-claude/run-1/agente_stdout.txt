@@ -1,0 +1,7 @@
+Criei o script [freq.py](file:///tmp/bench-8iacmmvm/freq.py) seguindo todas as especificações de [enunciado.md](file:///tmp/bench-8iacmmvm/enunciado.md):
+
+- **CLI (`argparse`, apenas biblioteca padrão)**: suporta `ARQUIVO` (incluindo `-` para `stdin`), `-n`/`--top` (inteiro `>= 1`, padrão `10`), `-m`/`--min-len` (inteiro `>= 1`, padrão `1`), `-i`/`--ignore-case`, `-x`/`--excluir` (repetível) e `--formato {texto,json}` (padrão `texto`).
+- **Processamento**: extrai palavras do texto original com `[^\W\d_]+` (sem normalização Unicode), aplica `str.lower()` por palavra quando `-i` está ativo (inclusive às palavras de `-x`), filtra por tamanho mínimo e exclusões, conta e ordena por contagem decrescente e desempate lexicográfico crescente.
+- **Codificação e erros**: decodifica arquivo e `stdin` sempre em UTF-8 estrito (independentemente do locale do terminal), emite saída vazia (`texto`) ou `[]` (`json`) quando não há palavras com código `0`, usa erros do `argparse` (código `2`) para argumentos inválidos e imprime uma única linha `erro: ...` em `stderr` sem nada em `stdout` (código `1`) para erros de leitura ou decodificação UTF-8.
+
+Todos os testes automatizados cobrindo o exemplo do enunciado, regras Unicode (`Straße`/`STRASSE`, `İ`, NFC vs NFD), limites de palavra, filtros, formatos `texto`/`json`, leitura via `stdin`, locale `C`/`ASCII` e códigos de saída `0`, `1` e `2` passaram.

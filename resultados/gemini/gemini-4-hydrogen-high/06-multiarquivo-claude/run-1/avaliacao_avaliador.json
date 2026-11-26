@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-hydrogen-high/06-multiarquivo-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-hydrogen",
+ "esforco": "high",
+ "tarefa": "06-multiarquivo-claude",
+ "tipo": "06-multiarquivo",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 58.886,
+ "testes_passados": 40,
+ "testes_total": 40,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Código claro e bem modularizado, mas Livro omite o campo autor, causando falha na criação; além disso, falta docstring em modelos.Emprestimo.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Métodos curtos e estado em dicts. Serviço cumpre ordem, multa e não muda estado em erro. Livro não declara autor, então __post_init__ lança AttributeError. Sem docstrings de módulo.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 9.4
+}

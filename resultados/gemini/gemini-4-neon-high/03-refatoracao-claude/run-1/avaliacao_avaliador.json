@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-high/03-refatoracao-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "high",
+ "tarefa": "03-refatoracao-claude",
+ "tipo": "03-refatoracao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 160.612,
+ "testes_passados": 32,
+ "testes_total": 32,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Funções curtas e tipadas, taxas centralizadas e lógica composta conforme pedido; preserva o limite estrito, qtd negativa, soma e formatação.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Nomes claros, funções curtas, taxas em constantes e docstrings completas. Bordas (limite, tipo, qtd<0) preservadas. Idiomático incompleto: acúmulo com if/else e concatenação parcial, sem dict.get.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85
+}

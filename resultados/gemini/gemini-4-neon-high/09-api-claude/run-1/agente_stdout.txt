@@ -1,0 +1,8 @@
+Criei [cliente.py](file:///tmp/bench-nswgo0_g/cliente.py) implementando a hierarquia de exceções e `ClienteAPI` conforme especificado em [enunciado.md](file:///tmp/bench-nswgo0_g/enunciado.md), sem alterar [fake_api.py](file:///tmp/bench-nswgo0_g/fake_api.py):
+
+- **Exceções**: `ErroAPI` (com atributo `.status`), `NaoEncontrado(ErroAPI)` (`status=404`) e `FalhaPermanente(ErroAPI)` (com `.tentativas` e `.status`, encadeando `__cause__` quando a última falha for exceção e mantendo `__cause__ = None` quando for status HTTP).
+- **`ClienteAPI.__init__`**: valida `max_tentativas >= 1`, `timeout > 0`, `backoff_base >= 0`, `backoff_max >= 0` e `orcamento_espera >= 0` (quando não `None`), aceitando `max_tentativas` grandes.
+- **`obter_usuario`**: valida `id_usuario` (`int`, excluindo `bool`, e `>= 1`), trata `200`, `404` e demais status não retentáveis sem retry, retenta `{429, 500, 502, 503, 504}` e `(ErroConexao, TempoEsgotado)` com backoff exponencial sem overflow (`math.ldexp`), respeita header `Retry-After` (case-insensitive, finito e `>= 0`) em respostas `429` limitado por `backoff_max`, e aplica `orcamento_espera` por chamada.
+- **`obter_varios`**: materializa e valida todo o iterável antes de requisitar, deduplica preservando a ordem de primeira aparição, mapeia `NaoEncontrado` para `None` e propaga os demais erros.
+
+**Verificação:** executei 95 testes com `pytest` cobrindo validação de argumentos, códigos HTTP, `Retry-After`, overflow de backoff com `max_tentativas=2500`, encadeamento de exceções, orçamento de espera, `obter_varios` e integração com `FakeAPI` — todos passaram (`95 passed`).

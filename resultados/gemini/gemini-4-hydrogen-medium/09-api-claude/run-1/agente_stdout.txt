@@ -1,0 +1,14 @@
+Implementado [cliente.py](file:///tmp/bench-2yx7ug2d/cliente.py) de acordo com as especificações de [enunciado.md](file:///tmp/bench-2yx7ug2d/enunciado.md), mantendo [fake_api.py](file:///tmp/bench-2yx7ug2d/fake_api.py) inalterado.
+
+### O que foi implementado
+- **Exceções** em [cliente.py](file:///tmp/bench-2yx7ug2d/cliente.py#L14-L35):
+  - `ErroAPI` (com atributo `.status` para erros HTTP).
+  - `NaoEncontrado(ErroAPI)` para status `404`.
+  - `FalhaPermanente(ErroAPI)` com `.tentativas` (e encadeamento via `raise ... from exc` quando a última falha for exceção, ou `__cause__ = None` quando for status HTTP).
+- **`ClienteAPI`** em [cliente.py](file:///tmp/bench-2yx7ug2d/cliente.py#L79-L176):
+  - Validação dos parâmetros de `__init__` (`max_tentativas`, `timeout`, `backoff_base`, `backoff_max`, `orcamento_espera`).
+  - `obter_usuario(id_usuario)`: valida `id_usuario` (`int` não-`bool` e `>= 1`), trata `200`, `404`, erros HTTP não retentáveis e retentáveis (`429`, `500`, `502`, `503`, `504`, `ErroConexao`, `TempoEsgotado`), calcula backoff exponencial sem overflow via `math.frexp`/`math.ldexp`, respeita `Retry-After` numérico finito `>= 0` (case-insensitive) em respostas `429` e aplica o limite de `orcamento_espera`.
+  - `obter_varios(ids)`: valida todos os IDs antes de qualquer requisição, deduplica preservando a ordem de primeira aparição, mapeia `NaoEncontrado` para `None` e propaga outros `ErroAPI`/`FalhaPermanente`.
+
+### Verificação
+- Executada suíte de testes unitários em [test_cliente.py](file:///home/box/.gemini/antigravity-cli/brain/75e50f6c-338c-495b-af23-ba79c104a3b6/scratch/test_cliente.py): **15 testes passaram** (`Ran 15 tests in 0.002s - OK`).

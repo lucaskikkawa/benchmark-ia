@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-medium/09-api-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "medium",
+ "tarefa": "09-api-grok",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 98.248,
+ "testes_passados": 18,
+ "testes_total": 18,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Separa chamada com prazo, retry por pedido e orquestração; trata erros específicos, timeout e backoff exponencial. Valida parâmetros e documenta o contrato público.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Funções separadas por chamada, id e lista; 404 sem retry, 503 e timeout até o limite, espera abandonada. Fator 2 e exceções retentáveis ficam inline; baixar_pedidos sem docstring.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7
+}

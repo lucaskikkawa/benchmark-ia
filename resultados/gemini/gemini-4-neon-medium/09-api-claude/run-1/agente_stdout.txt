@@ -1,0 +1,14 @@
+Implementei [cliente.py](file:///tmp/bench-fkjvnkjm/cliente.py) seguindo todas as especificações de [enunciado.md](file:///tmp/bench-fkjvnkjm/enunciado.md), utilizando apenas a biblioteca padrão e sem alterar [fake_api.py](file:///tmp/bench-fkjvnkjm/fake_api.py).
+
+### O que foi implementado
+- **Exceções**:
+  - `ErroAPI(Exception)` com atributo `.status` (quando originado por status HTTP).
+  - `NaoEncontrado(ErroAPI)` para respostas `404` (sem retry).
+  - `FalhaPermanente(ErroAPI)` com `.tentativas`, encadeando `__cause__` via `raise ... from erro` quando a última falha foi exceção e mantendo `__cause__ = None` quando foi status HTTP.
+- **`ClienteAPI`**:
+  - Validação dos parâmetros em `__init__` (`max_tentativas >= 1`, `timeout > 0`, `backoff_base >= 0`, `backoff_max >= 0`, `orcamento_espera >= 0`).
+  - `obter_usuario(id_usuario)`: valida `id` (`int` não-`bool` e `>= 1`) antes de requisitar; retenta apenas em `429`, `500`, `502`, `503`, `504`, `ErroConexao` e `TempoEsgotado`; calcula backoff exponencial com `math.ldexp` para evitar overflow com `max_tentativas` grandes; trata `Retry-After` (case-insensitive) em `429` validando valores finitos `>= 0` e respeitando `backoff_max`; aplica `orcamento_espera` por chamada sem dormir caso o limite fosse excedido.
+  - `obter_varios(ids)`: aceita qualquer iterável/gerador, valida todos os IDs antes da primeira requisição, deduplica mantendo a ordem de primeira aparição, mapeia `NaoEncontrado` para `None` e propaga `FalhaPermanente` e outros `ErroAPI`.
+
+### Verificação
+- Executada suíte com 15 testes unitários cobrindo validação de parâmetros e IDs, status retentáveis e não retentáveis, exceções, `Retry-After`, `max_tentativas=2000` sem overflow, `orcamento_espera`, encadeamento `__cause__` e `obter_varios` (todos aprovados).

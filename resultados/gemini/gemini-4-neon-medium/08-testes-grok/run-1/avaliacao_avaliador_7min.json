@@ -1,0 +1,53 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-medium/08-testes-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "medium",
+ "tarefa": "08-testes-grok",
+ "tipo": "08-testes",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 164.257,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Suíte bem organizada e nomeada, cobre cálculos, pisos, datas-limite, entradas inválidas e estrutura do retorno com parametrização e pytest.raises.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Testes nomeados por regra, fronteiras cobertas (piso, janela, 24/12, datas bissextas), pytest.raises e helper. Manutenibilidade cai: cada cupom tem parametrize próprio, sem estrutura única.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "tipo 08: % de testes = % de mutantes mortos pela suíte do agente (mutation testing com mutantes plantados nos testes ocultos)"
+ ],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85
+}

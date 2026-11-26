@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-hydrogen-medium/01-funcao-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-hydrogen",
+ "esforco": "medium",
+ "tarefa": "01-funcao-codex",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 25.465,
+ "testes_passados": 25,
+ "testes_total": 25,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Fusão tem nomes claros (atual_inicio/atual_fim), mas a ordenação reutiliza 'validos'. Bordas tratadas. Docstring não explica a regra de extremidades.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Ordenados ficam em validos; atual e resultado claros. Vazio, invertidos, duplicatas e geradores sem mutar entrada. Sort nativo, fusão única. Docstring omite a regra de extremidades.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 8.0,
+ "nota_final_10": 9.4
+}

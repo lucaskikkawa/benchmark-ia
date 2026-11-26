@@ -1,0 +1,12 @@
+Implementei [cliente.py](file:///tmp/bench-ksbud7sc/cliente.py) conforme especificado em [enunciado.md](file:///tmp/bench-ksbud7sc/enunciado.md), sem alterar [loja_api.py](file:///tmp/bench-ksbud7sc/loja_api.py) e usando apenas a biblioteca padrão.
+
+### O que foi implementado
+- **`TempoEsgotado(Exception)`**: exceção levantada quando a última tentativa de um pedido estoura `timeout_s`.
+- **`baixar_pedidos(api, ids, *, max_tentativas=5, backoff_s=0.0, timeout_s=1.0)`**:
+  - Valida antes de qualquer chamada à API que `ids` é exatamente `list`, `max_tentativas` é `int >= 1` (rejeitando `bool`), `backoff_s` é `int | float >= 0` (rejeitando `bool` e `NaN`) e `timeout_s` é `int | float > 0` (rejeitando `bool` e `NaN`).
+  - Executa `api.obter_pedido(pedido_id)` em uma thread daemon com espera limitada por `threading.Event.wait(timeout=timeout_s)`, abandonando a espera imediatamente ao expirar o prazo.
+  - Propaga `LojaErroCliente` na hora sem novas tentativas nem backoff; retenta `LojaIndisponivel` e timeouts até `max_tentativas` com backoff exponencial `backoff_s * 2 ** (i - 1)` apenas entre tentativas (sem dormir quando `backoff_s == 0`, após sucesso ou após a última tentativa).
+  - Preserva a ordem dos `ids`, sem cache para IDs repetidos, e interrompe o processamento dos IDs seguintes em caso de falha definitiva.
+
+### Verificação
+- Executada suíte de testes cobrindo lista vazia, ordem e duplicatas, `missing-` / IDs inválidos, `down-`, `flaky-` (múltiplas seeds e precedência de prefixos), `slow-` e `timeout-` (confirmando abandono rápido sem bloquear `ATRASO_S`), backoff exponencial, falhas mistas e todas as validações de parâmetros — todos passaram.

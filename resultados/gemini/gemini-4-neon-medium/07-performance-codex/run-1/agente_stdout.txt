@@ -1,0 +1,12 @@
+Implementei a solução em [pares.py](file:///tmp/bench-v5eew13l/pares.py) conforme especificado em [enunciado.md](file:///tmp/bench-v5eew13l/enunciado.md).
+
+### O que foi feito
+- `contar_pares(valores, alvo: int) -> int` conta frequências em uma única passagem com `collections.Counter` (sem materializar geradores nem modificar listas recebidas, e tratando `Mapping` como iterável de chaves caso passado).
+- Calcula os pares exatos em tempo esperado $O(n)$ e memória $O(k)$ (onde $k$ é a quantidade de valores distintos), usando aritmética inteira exata do Python (compatível com inteiros maiores que 64 bits):
+  - Para `complemento > valor`, soma `qtd * qtd_comp`.
+  - Para `complemento == valor`, soma `qtd * (qtd - 1) // 2`.
+
+### Verificação
+- **Corretude**: casos de borda (vazio, 1 elemento, duplicatas, exemplo do enunciado, não-mutação de listas, geradores de uma passagem, inteiros $> 64$ bits) e 200 casos aleatórios comparados contra força bruta $O(n^2)$.
+- **Desempenho (1.000.000 de elementos)**: ~0,11 s (distintos), ~0,17 s (aleatórios), ~0,02 s (4 distintos), ~0,12 s (inteiros $> 64$ bits) — bem abaixo do limite de 5 s.
+- **Memória (`tracemalloc`, gerador de 1.000.000 de elementos com 4 valores distintos)**: pico de 824 B (~0,0008 MiB), bem abaixo do limite de 4 MiB.

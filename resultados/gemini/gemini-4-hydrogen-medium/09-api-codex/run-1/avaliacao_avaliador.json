@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-hydrogen-medium/09-api-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-hydrogen",
+ "esforco": "medium",
+ "tarefa": "09-api-codex",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 37.907,
+ "testes_passados": 38,
+ "testes_total": 38,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Valida antes de chamar a API, repete só ErroTemporario e TimeoutError, não dorme após a última falha e usa raise. A docstring menciona backoff, mas não explica o timeout por chamada.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Laço com índice, return e raise é direto; valida antes; só transitórios repetem e a última falha é re-raise; dormir é injetável e fica fora do try. Docstring omite timeout por chamada.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7
+}

@@ -1,0 +1,2423 @@
+{
+  "runs": [
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/01-funcao-claude/run-1",
+      "status": "ok",
+      "testes": [
+        23,
+        23
+      ],
+      "nota": 8.65,
+      "rubrica": 5.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 23,
+        "passados": 23
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/01-funcao-codex/run-1",
+      "status": "ok",
+      "testes": [
+        25,
+        25
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 25,
+        "passados": 25
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/01-funcao-grok/run-1",
+      "status": "ok",
+      "testes": [
+        33,
+        33
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 33,
+        "passados": 33
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/02-bug-claude/run-1",
+      "status": "ok",
+      "testes": [
+        26,
+        26
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 26,
+        "passados": 26
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/02-bug-codex/run-1",
+      "status": "ok",
+      "testes": [
+        21,
+        21
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 21,
+        "passados": 21
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/02-bug-grok/run-1",
+      "status": "ok",
+      "testes": [
+        16,
+        16
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 16,
+        "passados": 16
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/03-refatoracao-claude/run-1",
+      "status": "ok",
+      "testes": [
+        32,
+        32
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 32,
+        "passados": 32
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/03-refatoracao-codex/run-1",
+      "status": "ok",
+      "testes": [
+        19,
+        19
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 19,
+        "passados": 19
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/03-refatoracao-grok/run-1",
+      "status": "ok",
+      "testes": [
+        12,
+        12
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 12,
+        "passados": 12
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/04-dados-claude/run-1",
+      "status": "ok",
+      "testes": [
+        32,
+        32
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 32,
+        "passados": 32
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/04-dados-codex/run-1",
+      "status": "ok",
+      "testes": [
+        47,
+        47
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 47,
+        "passados": 47
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/04-dados-grok/run-1",
+      "status": "ok",
+      "testes": [
+        22,
+        22
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 22,
+        "passados": 22
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/05-cli-claude/run-1",
+      "status": "ok",
+      "testes": [
+        27,
+        27
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 27,
+        "passados": 27
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/05-cli-codex/run-1",
+      "status": "ok",
+      "testes": [
+        28,
+        28
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 28,
+        "passados": 28
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/05-cli-grok/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/06-multiarquivo-claude/run-1",
+      "status": "ok",
+      "testes": [
+        40,
+        40
+      ],
+      "nota": 8.8,
+      "rubrica": 6.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 40,
+        "passados": 40
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/06-multiarquivo-codex/run-1",
+      "status": "ok",
+      "testes": [
+        42,
+        42
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 42
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/06-multiarquivo-grok/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/07-performance-claude/run-1",
+      "status": "ok",
+      "testes": [
+        36,
+        36
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 36,
+        "passados": 36
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/07-performance-codex/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/07-performance-grok/run-1",
+      "status": "ok",
+      "testes": [
+        12,
+        12
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 12,
+        "passados": 12
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/08-testes-claude/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/08-testes-codex/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/08-testes-grok/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/09-api-claude/run-1",
+      "status": "ok",
+      "testes": [
+        42,
+        42
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 42
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/09-api-codex/run-1",
+      "status": "ok",
+      "testes": [
+        38,
+        38
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 38,
+        "passados": 38
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/09-api-grok/run-1",
+      "status": "ok",
+      "testes": [
+        18,
+        18
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 18,
+        "passados": 18
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/10-ambigua-claude/run-1",
+      "status": "ok",
+      "testes": [
+        41,
+        42
+      ],
+      "nota": 9.08,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 41
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/10-ambigua-codex/run-1",
+      "status": "ok",
+      "testes": [
+        14,
+        14
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 14,
+        "passados": 14
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-medium/10-ambigua-grok/run-1",
+      "status": "ok",
+      "testes": [
+        11,
+        11
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 11,
+        "passados": 11
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/01-funcao-claude/run-1",
+      "status": "ok",
+      "testes": [
+        23,
+        23
+      ],
+      "nota": 8.95,
+      "rubrica": 6.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 23,
+        "passados": 23
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/01-funcao-codex/run-1",
+      "status": "ok",
+      "testes": [
+        25,
+        25
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 25,
+        "passados": 25
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/01-funcao-grok/run-1",
+      "status": "ok",
+      "testes": [
+        33,
+        33
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 33,
+        "passados": 33
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/02-bug-claude/run-1",
+      "status": "ok",
+      "testes": [
+        26,
+        26
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 26,
+        "passados": 26
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/02-bug-codex/run-1",
+      "status": "ok",
+      "testes": [
+        21,
+        21
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 21,
+        "passados": 21
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/02-bug-grok/run-1",
+      "status": "ok",
+      "testes": [
+        16,
+        16
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 16,
+        "passados": 16
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/03-refatoracao-claude/run-1",
+      "status": "ok",
+      "testes": [
+        32,
+        32
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 32,
+        "passados": 32
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/03-refatoracao-codex/run-1",
+      "status": "ok",
+      "testes": [
+        19,
+        19
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 19,
+        "passados": 19
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/03-refatoracao-grok/run-1",
+      "status": "ok",
+      "testes": [
+        12,
+        12
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 12,
+        "passados": 12
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/04-dados-claude/run-1",
+      "status": "ok",
+      "testes": [
+        32,
+        32
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 32,
+        "passados": 32
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/04-dados-codex/run-1",
+      "status": "ok",
+      "testes": [
+        47,
+        47
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 47,
+        "passados": 47
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/04-dados-grok/run-1",
+      "status": "ok",
+      "testes": [
+        22,
+        22
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 22,
+        "passados": 22
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/05-cli-claude/run-1",
+      "status": "ok",
+      "testes": [
+        27,
+        27
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 27,
+        "passados": 27
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/05-cli-codex/run-1",
+      "status": "ok",
+      "testes": [
+        28,
+        28
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 28,
+        "passados": 28
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/05-cli-grok/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/06-multiarquivo-claude/run-1",
+      "status": "ok",
+      "testes": [
+        40,
+        40
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 40,
+        "passados": 40
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/06-multiarquivo-codex/run-1",
+      "status": "ok",
+      "testes": [
+        42,
+        42
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 42
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/06-multiarquivo-grok/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/07-performance-claude/run-1",
+      "status": "ok",
+      "testes": [
+        36,
+        36
+      ],
+      "nota": 8.65,
+      "rubrica": 5.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 36,
+        "passados": 36
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/07-performance-codex/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/07-performance-grok/run-1",
+      "status": "ok",
+      "testes": [
+        12,
+        12
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 12,
+        "passados": 12
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/08-testes-claude/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/08-testes-codex/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/08-testes-grok/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/09-api-claude/run-1",
+      "status": "ok",
+      "testes": [
+        42,
+        42
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 42
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/09-api-codex/run-1",
+      "status": "ok",
+      "testes": [
+        38,
+        38
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 38,
+        "passados": 38
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/09-api-grok/run-1",
+      "status": "ok",
+      "testes": [
+        18,
+        18
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 18,
+        "passados": 18
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/_timeouts_180s/gemini/gemini-4-hydrogen-high/10-ambigua-claude/run-1",
+      "status": "timeout",
+      "testes": [
+        0,
+        1
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": null,
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/10-ambigua-codex/run-1",
+      "status": "ok",
+      "testes": [
+        14,
+        14
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 14,
+        "passados": 14
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-hydrogen-high/10-ambigua-grok/run-1",
+      "status": "ok",
+      "testes": [
+        11,
+        11
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 11,
+        "passados": 11
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/01-funcao-claude/run-1",
+      "status": "ok",
+      "testes": [
+        23,
+        23
+      ],
+      "nota": 8.65,
+      "rubrica": 5.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 23,
+        "passados": 23
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/01-funcao-codex/run-1",
+      "status": "ok",
+      "testes": [
+        25,
+        25
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 25,
+        "passados": 25
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/01-funcao-grok/run-1",
+      "status": "ok",
+      "testes": [
+        33,
+        33
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 33,
+        "passados": 33
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/02-bug-claude/run-1",
+      "status": "ok",
+      "testes": [
+        26,
+        26
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 26,
+        "passados": 26
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/02-bug-codex/run-1",
+      "status": "ok",
+      "testes": [
+        21,
+        21
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 21,
+        "passados": 21
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/02-bug-grok/run-1",
+      "status": "ok",
+      "testes": [
+        16,
+        16
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 16,
+        "passados": 16
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/03-refatoracao-claude/run-1",
+      "status": "ok",
+      "testes": [
+        32,
+        32
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 32,
+        "passados": 32
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/03-refatoracao-codex/run-1",
+      "status": "ok",
+      "testes": [
+        19,
+        19
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 19,
+        "passados": 19
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/03-refatoracao-grok/run-1",
+      "status": "ok",
+      "testes": [
+        12,
+        12
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 12,
+        "passados": 12
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/04-dados-claude/run-1",
+      "status": "ok",
+      "testes": [
+        32,
+        32
+      ],
+      "nota": 8.95,
+      "rubrica": 6.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 32,
+        "passados": 32
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/04-dados-codex/run-1",
+      "status": "ok",
+      "testes": [
+        47,
+        47
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 47,
+        "passados": 47
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/04-dados-grok/run-1",
+      "status": "ok",
+      "testes": [
+        22,
+        22
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 22,
+        "passados": 22
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/05-cli-claude/run-1",
+      "status": "ok",
+      "testes": [
+        27,
+        27
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 27,
+        "passados": 27
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/05-cli-codex/run-1",
+      "status": "ok",
+      "testes": [
+        28,
+        28
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 28,
+        "passados": 28
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/05-cli-grok/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/06-multiarquivo-claude/run-1",
+      "status": "ok",
+      "testes": [
+        40,
+        40
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 40,
+        "passados": 40
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/06-multiarquivo-codex/run-1",
+      "status": "ok",
+      "testes": [
+        42,
+        42
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 42
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/06-multiarquivo-grok/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/07-performance-claude/run-1",
+      "status": "ok",
+      "testes": [
+        36,
+        36
+      ],
+      "nota": 8.95,
+      "rubrica": 6.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 36,
+        "passados": 36
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/07-performance-codex/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/07-performance-grok/run-1",
+      "status": "ok",
+      "testes": [
+        12,
+        12
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 12,
+        "passados": 12
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/08-testes-claude/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/08-testes-codex/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/_timeouts_180s/gemini/gemini-4-neon-medium/08-testes-grok/run-1",
+      "status": "timeout",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": null,
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/09-api-claude/run-1",
+      "status": "ok",
+      "testes": [
+        42,
+        42
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 42
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/09-api-codex/run-1",
+      "status": "ok",
+      "testes": [
+        38,
+        38
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 38,
+        "passados": 38
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/09-api-grok/run-1",
+      "status": "ok",
+      "testes": [
+        18,
+        18
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 18,
+        "passados": 18
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/_timeouts_180s/gemini/gemini-4-neon-medium/10-ambigua-claude/run-1",
+      "status": "timeout",
+      "testes": [
+        0,
+        1
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": null,
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/10-ambigua-codex/run-1",
+      "status": "ok",
+      "testes": [
+        14,
+        14
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 14,
+        "passados": 14
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/10-ambigua-grok/run-1",
+      "status": "ok",
+      "testes": [
+        11,
+        11
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 11,
+        "passados": 11
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/01-funcao-claude/run-1",
+      "status": "ok",
+      "testes": [
+        23,
+        23
+      ],
+      "nota": 8.5,
+      "rubrica": 5.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 23,
+        "passados": 23
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/01-funcao-codex/run-1",
+      "status": "ok",
+      "testes": [
+        25,
+        25
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 25,
+        "passados": 25
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/01-funcao-grok/run-1",
+      "status": "ok",
+      "testes": [
+        33,
+        33
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 33,
+        "passados": 33
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/02-bug-claude/run-1",
+      "status": "ok",
+      "testes": [
+        26,
+        26
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 26,
+        "passados": 26
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/02-bug-codex/run-1",
+      "status": "ok",
+      "testes": [
+        21,
+        21
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 21,
+        "passados": 21
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/02-bug-grok/run-1",
+      "status": "ok",
+      "testes": [
+        16,
+        16
+      ],
+      "nota": 9.25,
+      "rubrica": 7.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 16,
+        "passados": 16
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/03-refatoracao-claude/run-1",
+      "status": "ok",
+      "testes": [
+        32,
+        32
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 32,
+        "passados": 32
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/03-refatoracao-codex/run-1",
+      "status": "ok",
+      "testes": [
+        19,
+        19
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 19,
+        "passados": 19
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/03-refatoracao-grok/run-1",
+      "status": "ok",
+      "testes": [
+        12,
+        12
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 12,
+        "passados": 12
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/04-dados-claude/run-1",
+      "status": "ok",
+      "testes": [
+        32,
+        32
+      ],
+      "nota": 8.8,
+      "rubrica": 6.0,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 32,
+        "passados": 32
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/04-dados-codex/run-1",
+      "status": "ok",
+      "testes": [
+        47,
+        47
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 47,
+        "passados": 47
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/04-dados-grok/run-1",
+      "status": "ok",
+      "testes": [
+        22,
+        22
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 22,
+        "passados": 22
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/05-cli-claude/run-1",
+      "status": "ok",
+      "testes": [
+        27,
+        27
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 27,
+        "passados": 27
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/05-cli-codex/run-1",
+      "status": "ok",
+      "testes": [
+        28,
+        28
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 28,
+        "passados": 28
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/05-cli-grok/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/06-multiarquivo-claude/run-1",
+      "status": "ok",
+      "testes": [
+        40,
+        40
+      ],
+      "nota": 8.95,
+      "rubrica": 6.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 40,
+        "passados": 40
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/06-multiarquivo-codex/run-1",
+      "status": "ok",
+      "testes": [
+        42,
+        42
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 42
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/06-multiarquivo-grok/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/07-performance-claude/run-1",
+      "status": "ok",
+      "testes": [
+        36,
+        36
+      ],
+      "nota": 8.95,
+      "rubrica": 6.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 36,
+        "passados": 36
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/07-performance-codex/run-1",
+      "status": "ok",
+      "testes": [
+        17,
+        17
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 17,
+        "passados": 17
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/07-performance-grok/run-1",
+      "status": "ok",
+      "testes": [
+        12,
+        12
+      ],
+      "nota": 9.1,
+      "rubrica": 7.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 12,
+        "passados": 12
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/_timeouts_180s/gemini/gemini-4-neon-high/08-testes-claude/run-1",
+      "status": "timeout",
+      "testes": [
+        1,
+        17
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": null,
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/_timeouts_180s/gemini/gemini-4-neon-high/08-testes-codex/run-1",
+      "status": "timeout",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": null,
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/_timeouts_180s/gemini/gemini-4-neon-high/08-testes-grok/run-1",
+      "status": "timeout",
+      "testes": [
+        14,
+        15
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": null,
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/09-api-claude/run-1",
+      "status": "ok",
+      "testes": [
+        42,
+        42
+      ],
+      "nota": 9.55,
+      "rubrica": 8.5,
+      "juizes": [
+        "codex",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 42,
+        "passados": 42
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/09-api-codex/run-1",
+      "status": "ok",
+      "testes": [
+        38,
+        38
+      ],
+      "nota": 9.7,
+      "rubrica": 9.0,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 38,
+        "passados": 38
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/09-api-grok/run-1",
+      "status": "ok",
+      "testes": [
+        18,
+        18
+      ],
+      "nota": 9.4,
+      "rubrica": 8.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 18,
+        "passados": 18
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/_timeouts_180s/gemini/gemini-4-neon-high/10-ambigua-claude/run-1",
+      "status": "timeout",
+      "testes": [
+        0,
+        1
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": null,
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/10-ambigua-codex/run-1",
+      "status": "ok",
+      "testes": [
+        14,
+        14
+      ],
+      "nota": 9.85,
+      "rubrica": 9.5,
+      "juizes": [
+        "claude",
+        "grok"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 14,
+        "passados": 14
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/10-ambigua-grok/run-1",
+      "status": "ok",
+      "testes": [
+        11,
+        11
+      ],
+      "nota": 10.0,
+      "rubrica": 10.0,
+      "juizes": [
+        "codex",
+        "claude"
+      ],
+      "juizes_validos": 2,
+      "rerun": {
+        "total": 11,
+        "passados": 11
+      },
+      "incoerencias": []
+    }
+  ],
+  "retry_420": [
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-medium/08-testes-grok/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/08-testes-codex/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    },
+    {
+      "pasta": "resultados/gemini/gemini-4-neon-high/08-testes-grok/run-1",
+      "status": "ok",
+      "testes": [
+        15,
+        15
+      ],
+      "nota": 0,
+      "rubrica": null,
+      "juizes": [],
+      "juizes_validos": 0,
+      "rerun": {
+        "total": 15,
+        "passados": 15
+      },
+      "incoerencias": []
+    }
+  ],
+  "summary": {
+    "ranking_attempts": 120,
+    "retry_attempts": 7,
+    "retry_with_evaluation": 3,
+    "with_incoherence": 0,
+    "rerun_requested": true,
+    "rerun_errors": 0
+  }
+}

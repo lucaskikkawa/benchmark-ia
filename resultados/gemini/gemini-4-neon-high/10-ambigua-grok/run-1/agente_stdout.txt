@@ -1,0 +1,10 @@
+A tarefa foi concluída com a criação dos dois arquivos solicitados em `/tmp/bench-99ocmk7u`:
+
+- [solucao.py](file:///tmp/bench-99ocmk7u/solucao.py): implementa a função pura `classificar_mensagem(texto: str) -> dict` usando apenas a biblioteca padrão (`re`, `unicodedata`), respeitando todas as regras fechadas:
+  - Levanta `TypeError` para qualquer entrada que não seja `str` (sem codificar o texto).
+  - Calcula `tamanho` como `len(texto)` em code points, sem `strip`, sem normalização e sem falhar em surrogates isolados (`"\ud800"`).
+  - Calcula `urgente` estritamente como `"URGENTE" in texto` sobre o texto original (sensível a maiúsculas e homóglifos).
+  - Retorna `"categoria": "vazia"` exclusivamente para `texto == ""`; qualquer outro texto retorna uma categoria não vazia diferente de `"vazia"` (`"sem_conteudo"`, `"reclamacao"`, `"duvida"`, `"pedido"`, `"elogio"` ou `"outro"`).
+- [SUPOSICOES.md](file:///tmp/bench-99ocmk7u/SUPOSICOES.md): documenta em UTF-8 todas as decisões em aberto (categorias, sinais/palavras-chave, precedência de desempate, normalização NFKD + `casefold` restrita à categoria, tratamento de texto sem caracteres alfanuméricos e ausência de campos extras no `dict`).
+
+Todos os casos de borda do enunciado (incluindo string vazia, espaços/invisíveis, `"vazia"`, `"a\u0301"`, `"🙂"`, `"\ud800"`, `"URGENT\u0415"`, texto com 100.000+ caracteres e tipos inválidos) foram testados e passaram.

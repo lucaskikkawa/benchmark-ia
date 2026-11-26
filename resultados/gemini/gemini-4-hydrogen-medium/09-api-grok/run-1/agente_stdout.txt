@@ -1,0 +1,10 @@
+Criado o arquivo [cliente.py](file:///tmp/bench-j7hj7ljw/cliente.py) usando apenas a biblioteca padrão, mantendo [loja_api.py](file:///tmp/bench-j7hj7ljw/loja_api.py) inalterado.
+
+### Implementação
+- **`TempoEsgotado`**: exceção levantada quando a última tentativa excede `timeout_s`.
+- **`_validar_parametros`**: valida `ids` (exatamente `list`), `max_tentativas` (`int` ≥ 1, rejeitando `bool`), `backoff_s` (`int` ou `float` ≥ 0, rejeitando `bool` e `NaN`) e `timeout_s` (`int` ou `float` > 0, rejeitando `bool` e `NaN`) antes de qualquer chamada à API.
+- **`_chamar_com_timeout`**: executa `api.obter_pedido(pedido_id)` em uma `threading.Thread(..., daemon=True)` e aguarda até `timeout_s` via `threading.Event.wait`, abandonando a espera imediatamente caso o prazo expire.
+- **`baixar_pedidos`**: processa os IDs na ordem da lista sem cache; propaga `LojaErroCliente` imediatamente sem retry/backoff; faz até `max_tentativas` em falhas retentáveis (`LojaIndisponivel` e `TempoEsgotado`) com backoff exponencial `backoff_s * 2 ** (tentativa - 1)` quando `backoff_s > 0` (sem dormir após a última tentativa ou após sucesso), interrompendo o processamento dos IDs seguintes em caso de falha definitiva.
+
+### Verificação
+Executada suíte de testes inline com `python3` cobrindo lista vazia, validação de parâmetros antes de chamadas à API, ordenação e repetição de IDs, `missing-` e ID inválido sem retry, `down-` com backoff exponencial, `backoff_s == 0`, `flaky-`, `slow-` com timeout e recuperação, e `timeout-` esgotando rapidamente sem aguardar `ATRASO_S` (`ALL TESTS PASSED`).

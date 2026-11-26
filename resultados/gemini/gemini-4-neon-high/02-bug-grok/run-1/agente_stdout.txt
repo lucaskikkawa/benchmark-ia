@@ -1,0 +1,8 @@
+A função `fechar_boletim` em [boletim.py](file:///tmp/bench-726fnad0/boletim.py) foi corrigida conforme o contrato descrito em [enunciado.md](file:///tmp/bench-726fnad0/enunciado.md):
+
+- **Validação de entrada**: exige `list` com 1 a 4 elementos (`TypeError` para não-`list`, `bool` ou tipos diferentes de `int`/`float`/`None`; `ValueError` para tamanho inválido, ausência de notas válidas, valores não finitos ou fora do intervalo fechado `[0, 10]`), sem modificar a lista recebida.
+- **Ausências e descarte**: ignora `None` mantendo a ordem original e descarta apenas a primeira ocorrência da menor nota somente quando há exatamente 4 notas válidas, retornando-a como `float` em `descartada` (ou `None` caso contrário).
+- **Cálculo e arredondamento**: converte as notas restantes com `Decimal(str(nota))`, soma, divide por `n` e aplica um único `quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`.
+- **Conceito e aprovação**: classifica a média já arredondada com limites inclusivos (`>= 9` → `"A"`, `>= 7` → `"B"`, `>= 5` → `"C"`, senão `"D"`) e define `aprovado` como `conceito != "D"`.
+
+Todos os exemplos do enunciado e casos de borda adicionais (fronteiras de arredondamento, `-0.0`, `NaN`/`inf`, inteiros grandes, tipos inválidos e imutabilidade da entrada) foram validados com `python3 -B` e passaram.

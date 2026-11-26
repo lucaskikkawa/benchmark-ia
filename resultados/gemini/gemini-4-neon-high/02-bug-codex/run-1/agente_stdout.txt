@@ -1,0 +1,8 @@
+Corrigi o bug de *off-by-one* em [janelas.py](file:///tmp/bench-n9dx_sk1/janelas.py#L9), alterando o limite do laço de `range(tamanho, len(valores) - 1)` para `range(tamanho, len(valores))` para incluir a última janela contígua.
+
+### Verificação
+- Casos básicos e de borda (`[1, 2, 3, 4]` com janelas `1`, `2`, `4`, `5`, lista vazia, valores negativos e elemento único).
+- Validação de `ValueError` para `tamanho <= 0`.
+- Imutabilidade da lista de entrada e independência entre listas retornadas em chamadas consecutivas.
+- Precisão exata com inteiros acima de 64 bits (`10**30`).
+- Desempenho $O(n)$ em lista de 200.000 elementos com janela de 100.000 (~0,0094 s).

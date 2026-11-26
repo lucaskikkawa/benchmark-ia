@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-high/01-funcao-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "high",
+ "tarefa": "01-funcao-claude",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 160.303,
+ "testes_passados": 23,
+ "testes_total": 23,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0,
+   "justificativa": "Parser valida ordem e repetição, mas split com limite aceita silenciosamente mais de cinco componentes; erros não incluem a entrada. Falta docstring, e unidades estão duplicadas por caixa.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0,
+   "justificativa": "Parser seguível, mas com índice manual e inteiro em blocos pouco claro. TypeError e ValueError corretos, porém a mensagem não traz a entrada. Unidade nova exige regex e dict com ordem manual. Sem docstring.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 5.0,
+ "nota_final_10": 8.5
+}

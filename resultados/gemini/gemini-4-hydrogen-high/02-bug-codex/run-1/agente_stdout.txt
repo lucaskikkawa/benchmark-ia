@@ -1,0 +1,10 @@
+O bug em [janelas.py](file:///tmp/bench-d4m8esjt/janelas.py) foi corrigido.
+
+### Alteração realizada
+- Em [janelas.py#L9](file:///tmp/bench-d4m8esjt/janelas.py#L9), o laço da janela deslizante usava `range(tamanho, len(valores) - 1)`, o que omitia a última janela. Alterado para `range(tamanho, len(valores))`, mantendo a assinatura, a complexidade $O(n)$, a exatidão com inteiros grandes, o não compartilhamento da lista retornada e as validações de entrada especificadas em [enunciado.md](file:///tmp/bench-d4m8esjt/enunciado.md).
+
+### Verificação
+Testado via `python3 -c` após a edição:
+- Casos de exemplo e borda (`[1, 2, 3, 4]` com `tamanho` `2`, `1`, `4`, `5`; lista vazia; elemento único; `tamanho <= 0` lançando `ValueError`; não mutação da lista de entrada e independência entre listas retornadas).
+- Inteiros acima de 64 bits (`10**30`, `2**100`), verificando resultados exatos do tipo `int`.
+- Lista com `200.000` elementos e `tamanho = 100.000`, executada com todas as asserções passando em `0.0091s`.

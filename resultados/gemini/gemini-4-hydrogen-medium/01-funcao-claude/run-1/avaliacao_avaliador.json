@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-hydrogen-medium/01-funcao-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-hydrogen",
+ "esforco": "medium",
+ "tarefa": "01-funcao-claude",
+ "tipo": "01-funcao",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 37.681,
+ "testes_passados": 23,
+ "testes_total": 23,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Valida ordem, repetição, tipo e formato; mensagens de ValueError não incluem a entrada completa. O parser é claro, mas usa laços manuais e unidades duplicadas por maiúsculas.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 5.0,
+   "justificativa": "Laços e índices manuais e parser de int próprio reduzem clareza. ValueError nem sempre inclui a entrada. Unidade está no regex e no dict. Docstring não descreve as exceções.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 5.5,
+ "nota_final_10": 8.65
+}

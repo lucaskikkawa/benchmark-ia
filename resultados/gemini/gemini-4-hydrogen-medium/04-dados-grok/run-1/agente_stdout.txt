@@ -1,0 +1,7 @@
+Criado [solucao.py](file:///tmp/bench-dsoz31e7/solucao.py) implementando `consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict` conforme as especificações de [enunciado.md](file:///tmp/bench-dsoz31e7/enunciado.md):
+
+- **Validação de SLA (`_carregar_sla`)**: lê o JSON em UTF-8, exige exatamente a chave `limites_minutos` contendo exatamente `baixa`, `media` e `alta` com valores `int` (excluindo `bool`) `>= 1`, levantando `ValueError` em qualquer desvio e `FileNotFoundError` se o arquivo não existir.
+- **Leitura e validação do CSV (`consolidar`)**: lê com `csv` em UTF-8 sem BOM, valida o cabeçalho exato antes do `strip`, ignora linhas em branco ou com todos os campos vazios após `strip`, valida número de colunas, unicidade e não-vacuidade de `id` e `equipe`, `prioridade` válida, formato exato `YYYY-MM-DDTHH:MM` e `fechado_em >= aberto_em` (`_parse_data_hora`).
+- **Consolidação e saída**: agrupa por equipe (ordenada por `sorted` padrão), calcula `chamados`, `estourados`, `tempo_medio_minutos` (divisão inteira) e `pior_id` (maior duração, desempate por menor `id` lexicográfico), grava em `caminho_saida` com `json.dumps(..., ensure_ascii=False, indent=2) + "\n"` em UTF-8 e retorna o mesmo `dict`.
+
+Verificado com bateria de testes via `python3 -c` cobrindo o exemplo do enunciado, desempates, CSV apenas com cabeçalho/linhas em branco, datas inválidas/cruzando ano, BOM e casos de `ValueError` e `FileNotFoundError` (`ALL TESTS PASSED`).

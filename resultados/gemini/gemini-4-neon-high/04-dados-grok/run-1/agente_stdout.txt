@@ -1,0 +1,7 @@
+Implementei [solucao.py](file:///tmp/bench-8a96k8f_/solucao.py) com a função `consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict` usando apenas a biblioteca padrão, seguindo todas as regras de [enunciado.md](file:///tmp/bench-8a96k8f_/enunciado.md):
+
+- **Validação de SLA (`_carregar_sla`)**: exige JSON UTF-8 válido com exatamente a chave `limites_minutos`, contendo exatamente `baixa`, `media` e `alta` com limites `int` ≥ 1 (rejeitando `bool`, `float`, chaves extras/duplicadas ou BOM).
+- **Leitura e validação de CSV (`consolidar`)**: lê UTF-8 sem BOM (`newline=""` com `csv.reader`), valida o cabeçalho exato antes do `strip`, ignora linhas em branco ou com todos os campos vazios após `strip`, valida quantidade de colunas, `id`/`equipe` não vazios, unicidade de `id` pós-`strip`, prioridade exata pós-`strip`, datas estritas no formato `YYYY-MM-DDTHH:MM` (16 caracteres ASCII e data existente) e `fechado_em >= aberto_em`.
+- **Consolidação e saída**: calcula duração exata em minutos por aritmética inteira, conta estouros (`duracao_minutos > limite`), média inteira (`//`), `pior_id` com desempate lexicográfico, ordena equipes com `sorted` padrão e grava `json.dumps(..., ensure_ascii=False, indent=2) + "\n"` em UTF-8, retornando o mesmo dicionário.
+
+Todos os cenários de teste (exemplo do enunciado, empates, CRLF, campos com aspas/vírgulas, linhas em branco, ano bissexto/virada de ano, ordenação por code point, CSV vazio só com cabeçalho, erros de `ValueError` e `FileNotFoundError`) foram executados e passaram.

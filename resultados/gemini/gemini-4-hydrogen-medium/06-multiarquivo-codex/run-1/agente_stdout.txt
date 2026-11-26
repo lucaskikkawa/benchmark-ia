@@ -1,0 +1,12 @@
+O pacote `estoque/` foi implementado mantendo exatamente os quatro módulos originais (`__init__.py`, `modelos.py`, `operacoes.py` e `persistencia.py`) usando apenas a biblioteca padrão e imports relativos:
+
+- [modelos.py](file:///tmp/bench-o3yzqy6p/estoque/modelos.py): define `Movimento` como `@dataclass(frozen=True)` com os campos `sku: str` e `delta: int`, sem validação no construtor.
+- [operacoes.py](file:///tmp/bench-o3yzqy6p/estoque/operacoes.py): implementa `calcular_saldos(movimentos, iniciais=None)` copiando `iniciais` para um novo `dict`, validando saldos iniciais e intermediários contra valores negativos (lançando `ValueError` sem mutar `iniciais`), aceitando iteráveis de passagem única, mantendo SKUs exatos e saldos zero, com inteiros de precisão arbitrária.
+- [persistencia.py](file:///tmp/bench-o3yzqy6p/estoque/persistencia.py): implementa `carregar_movimentos(caminho)` lendo JSON UTF-8 (`str` ou `Path`), validando que a raiz é uma lista de objetos com `sku` (`str` com ao menos um caractere não branco, preservando a string original) e `delta` (`int`, rejeitando `bool`), ignorando campos extras, preservando a ordem e lançando `ValueError` para JSON ou estrutura inválidos.
+
+### Verificação
+Execução de bateria de testes em `python3` validando:
+- Imutabilidade e igualdade de `Movimento` e exportações em [__init__.py](file:///tmp/bench-o3yzqy6p/estoque/__init__.py);
+- Cópia e não mutação de `iniciais`, iteráveis de passagem única, chaves exatas (espaços/Unicode), precisão arbitrária e rejeição de saldos iniciais/intermediários negativos em `calcular_saldos`;
+- Carregamento via `str` e `Path`, lista vazia, campos extras, rejeição de JSON/formas/tipos inválidos (`bool`, `float`, `None`, `sku` vazio/branco) e propagação de `FileNotFoundError` em `carregar_movimentos`;
+- Carga e cálculo de 20.000 movimentos executados em `0.0192s` (`ALL TESTS PASSED`).

@@ -1,0 +1,14 @@
+Criado [pares.py](file:///tmp/bench-zo5qw640/pares.py) com a implementação de `contar_pares(valores, alvo: int) -> int`.
+
+### Resumo da implementação
+- **Frequências em uma passagem**: usa `collections.Counter(iter(valores))`, evitando materializar geradores (e tratando corretamente qualquer iterável, inclusive dicionários) em tempo esperado $O(n)$ e memória $O(k)$.
+- **Contagem exata sem duplicação**:
+  - Se `alvo` é par, soma $\binom{c}{2} = c(c - 1) // 2$ para `metade = alvo // 2`.
+  - Para os demais valores distintos `valor < limite` (onde `limite = alvo // 2` se `alvo` for par, ou `(alvo + 1) // 2` se for ímpar), consulta `contagens.get(alvo - valor)` e soma `qtd * qtd_comp`.
+- **Inteiros arbitrários**: opera exclusivamente com aritmética inteira exata do Python, preservando precisão acima de 64 bits.
+- **Sem estado e sem mutação**: não modifica coleções recebidas, não mantém estado entre chamadas e usa apenas a biblioteca padrão.
+
+### Verificação
+- Testes de corretude (casos de borda, duplicatas, negativos, geradores de uma passagem, dicionários/conjuntos, não mutação de listas, inteiros $> 64$ bits e 300 casos aleatórios comparados contra força bruta): **todos passaram**.
+- Desempenho em 1.000.000 de elementos: `0,02s` a `0,17s` (limite: `< 5s`).
+- Memória (`tracemalloc`) em gerador de 1.000.000 de elementos com 4 valores distintos: pico de `896 B` (`~0,00085 MiB`, limite: `< 4 MiB`).

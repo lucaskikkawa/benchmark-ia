@@ -1,0 +1,8 @@
+Criei [cli.py](file:///tmp/bench-33a12wrd/cli.py) implementando o contador de palavras pela linha de comando conforme especificado em [enunciado.md](file:///tmp/bench-33a12wrd/enunciado.md):
+
+- **Interface CLI (`argparse`) e `main(argv=None) -> int`**: aceita `ARQUIVO` posicional e as flags `--minimo N`, `--top N`, `--ignorar-caixa`, `--json` e `-h`/`--help` (com `allow_abbrev=False` para rejeitar flags desconhecidas/abreviadas). Encerra com `raise SystemExit(main())` quando executado como script e não possui estado global compartilhado entre chamadas.
+- **Leitura e contagem UTF-8**: lê `ARQUIVO` como UTF-8 sem normalização Unicode, tokenizando com `str.split()` (preservando pontuação, formas compostas/decompostas e espaço de largura zero) e aplicando `str.casefold()` quando `--ignorar-caixa` está ativo.
+- **Filtragem, ordenação e saída**: filtra por contagem `>= --minimo`, ordena por contagem decrescente e palavra em ordem lexicográfica padrão, aplica `--top N` aos dois formatos, emite `PALAVRA\tCONTAGEM\n` (ou stdout vazio se sem resultados) no formato padrão e JSON de uma linha com `ensure_ascii=False` e `\n` final (`[]\n` se vazio) com `--json`.
+- **Tratamento de erros**: arquivos ausentes/ilegíveis, UTF-8 inválido, argumentos ausentes, flags desconhecidas e valores não inteiros ou `<= 0` em `--minimo`/`--top` retornam código `2`, stdout vazio e mensagem no stderr sem traceback.
+
+Validei a implementação com uma bateria automatizada (chamadas diretas a `cli.main` e via subprocesso), cobrindo todos os formatos, casos de Unicode, casos de erro e um arquivo de 100.000 tokens (~13 ms).

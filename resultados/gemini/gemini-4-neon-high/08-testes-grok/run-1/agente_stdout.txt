@@ -1,0 +1,17 @@
+I'm running `pytest` and an in-memory mutation test suite against `tests/test_descontos.py`; waiting for the run to finish.
+A suíte de testes foi criada em [test_descontos.py](file:///tmp/bench-rtgdqt06/tests/test_descontos.py) sem alterar [descontos.py](file:///tmp/bench-rtgdqt06/descontos.py).
+
+### Cobertura implementada
+- **Contrato do retorno**: valida exatamente as chaves `preco_final`, `desconto` e `cupom_aplicado`, tipos exatos (`dict`, `int`, `str | None`), invariante `desconto == preco_centavos - preco_final`, argumentos nomeados e isolamento entre chamadas.
+- **Validação de `preco_centavos`**: rejeita `bool`, `float` (inclusive `0.0`, negativos, `inf`, `nan`) e outros tipos com `TypeError`; rejeita inteiros negativos com `ValueError`; valida o caso de borda `0`.
+- **Validação de `cupom`**: rejeita tipos inválidos (incluindo valores *falsy* como `0`, `False`, `b""`, `[]`, `{}`) com `TypeError`; trata `None` e `""` sem desconto e com `cupom_aplicado is None`; rejeita espaços isolados (`" "`, `"\t"`, `"\n"`), espaços ao redor, variação de caixa e códigos desconhecidos com `ValueError`.
+- **Validação de `hoje`**: rejeita tipos inválidos (incluindo `datetime.date` e `datetime.datetime`) com `TypeError`; rejeita formatos fora de `YYYY-MM-DD` (como `YYYYMMDD`, sem zero à esquerda, semana ISO, separadores incorretos), ano `0000`, meses/dias inexistentes e 29 de fevereiro em anos não bissextos (inclusive regra do século: `1900`, `2100`, etc.) com `ValueError`, mesmo quando o cupom é `None`, `""` ou independente de data e mesmo com preço `0`; aceita extremos (`0001-01-01`, `9999-12-31`) e anos bissextos seculares (`2000-02-29`).
+- **Regras dos cupons**:
+  - `OFF10` e `OFF5`: fórmula inteira com piso (`(preco * 90) // 100` e `(preco * 95) // 100`), diferenciando de `preco - (preco * p) // 100`, `round` e aritmética em ponto flutuante (incluindo valores grandes como `10**18 + 37`), mantendo `cupom_aplicado` mesmo com preço `0` ou `1`.
+  - `FIXO500`: piso em `0`, `desconto == preco_centavos - preco_final` no piso e fora dele, extremos `0`, `1`, `100`, `499`, `500`, `501`, `1000`, `50000`.
+  - `BEMVINDO`: `(preco * 80) // 100` nos extremos inclusivos `2024-01-01` e `2024-12-31` e datas intermediárias; inalterado com `cupom_aplicado is None` fora da janela (`2023-12-31`, `2025-01-01`, etc.).
+  - `NATAL`: `(preco * 85) // 100` em 24 e 25 de dezembro em múltiplos anos de `0001` a `9999` (bissextos e não bissextos); inalterado com `cupom_aplicado is None` em 23/12, 26/12, demais dias de dezembro e dias 24/25 de outros meses.
+
+### Verificação
+- `pytest -q` e `python3 -m pytest -q`: **807 passed in 0.31s** contra [descontos.py](file:///tmp/bench-rtgdqt06/descontos.py).
+- Validada também em memória contra 55 mutantes de bug único cobrindo validações, fórmulas, pisos, janelas de datas e formato do retorno — todos detectados (falharam na suíte).

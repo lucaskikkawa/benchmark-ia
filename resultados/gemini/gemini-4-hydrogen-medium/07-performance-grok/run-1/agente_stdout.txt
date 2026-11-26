@@ -1,0 +1,5 @@
+Implementei [solucao.py](file:///tmp/bench-jn00d5gu/solucao.py) conforme as regras de [enunciado.md](file:///tmp/bench-jn00d5gu/enunciado.md):
+
+- **`pares_com_soma(nums: list[int], alvo: int) -> int`**: percorre `nums` uma única vez mantendo um dicionário de frequências (`vistos`), somando `vistos.get(alvo - x, 0)` antes de incrementar a contagem de `x`.
+- **Validação de tipos**: verifica que `nums` é `list`, `alvo` é `int` (excluindo `bool`) e cada elemento de `nums` é `int` (excluindo `bool`), lançando `TypeError` caso contrário, sem modificar `nums`.
+- **Verificação**: executei os exemplos do enunciado, casos de `TypeError`, imutabilidade de `nums` e testes de desempenho com `n = 200_000` (`0.0184s` para valores iguais e `0.0372s` para valores distintos), sem criar arquivos adicionais no diretório.

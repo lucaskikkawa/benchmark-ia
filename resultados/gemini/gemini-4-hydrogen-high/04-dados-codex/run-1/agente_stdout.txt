@@ -1,0 +1,10 @@
+Implementei a solução em [vendas.py](file:///tmp/bench-dte9l09a/vendas.py) conforme os requisitos de [enunciado.md](file:///tmp/bench-dte9l09a/enunciado.md):
+
+- **`resumir_vendas(entrada, saida, minimo_centavos: int = 0) -> list[dict]`** ([vendas.py](file:///tmp/bench-dte9l09a/vendas.py#L22-L90)):
+  - Valida `type(minimo_centavos) is int` e `minimo_centavos >= 0` antes de abrir arquivos, lançando `ValueError` em caso inválido sem alterar `saida`.
+  - Lê o CSV UTF-8 (com suporte a BOM via `encoding="utf-8-sig"` e `newline=""` para preservar quebras de linha e aspas internas em campos cotados), verifica o cabeçalho obrigatório (`produto`, `quantidade`, `preco_centavos`, `status`) em qualquer ordem e ignora colunas extras.
+  - Ignora linhas não pagas (inclusive linhas vazias ou com campos faltando quando `status` não é `pago` após `strip().lower()`); para linhas pagas, exige todos os campos obrigatórios, aplica `strip()` no produto sem normalizar caixa, Unicode ou espaços/quebras internas, e valida `quantidade` e `preco_centavos` com [`_parse_non_negative_int`](file:///tmp/bench-dte9l09a/vendas.py#L11-L19) (`[+-]?[0-9]+` ASCII, inteiro `>= 0`, aritmética inteira exata).
+  - Agrega por produto, mantém itens com quantidade zero, filtra `receita_centavos >= minimo_centavos` após a agregação, ordena por `produto` e grava o JSON UTF-8 (`ensure_ascii=False`, quebra de linha final) somente após toda a validação.
+
+### Verificação
+Executei uma suíte `unittest` com 7 cenários (reordenação de colunas, BOM UTF-8, colunas extras, status não pagos com campos inválidos/faltantes, aspas/quebras internas/Unicode sem normalização/inteiros acima de 64 bits, filtro `minimo_centavos`, CSV só com cabeçalho, preservação do arquivo de saída em `ValueError`, propagação de `FileNotFoundError` e carga com 30.000 linhas): todos os 7 testes passaram (`OK` em 0.027s).

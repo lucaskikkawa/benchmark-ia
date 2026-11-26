@@ -1,0 +1,6 @@
+Criei [solucao.py](file:///tmp/bench-6vj4_nti/solucao.py) implementando `horas_livres(ocupados, inicio, fim)` usando apenas a biblioteca padrão do Python:
+
+- **Validação estrita de tipos e horários**: exige `list` em `ocupados`, itens `tuple` ou `list` com exatamente duas strings, e horários `HH:MM` de 5 caracteres com dígitos ASCII (`0`-`9`) e `:` (U+003A), aceitando `00:00`–`23:59` e `24:00` (`1440` minutos). Levanta `TypeError` para tipos/formas inválidos e `ValueError` para formatos, faixas ou ordens inválidas (`inicio >= fim` ou `ini > fim` em qualquer item, antes de ignorar ou recortar).
+- **Recorte, fusão e cálculo de folgas**: ignora intervalos válidos de duração zero, recorta os demais para `[inicio, fim)`, funde sobreposições e intervalos adjacentes de forma transitiva sem mutar as entradas, e devolve os intervalos livres ordenados (formatando `1440` como `"24:00"`).
+
+Verifiquei a implementação com os exemplos do [enunciado.md](file:///tmp/bench-6vj4_nti/enunciado.md), casos de borda (`TypeError`, `ValueError`, dígitos não-ASCII, `24:00`, imutabilidade) e 500 testes aleatórios comparados a um oráculo minuto a minuto — todos passaram, e nenhum arquivo adicional foi criado no diretório.

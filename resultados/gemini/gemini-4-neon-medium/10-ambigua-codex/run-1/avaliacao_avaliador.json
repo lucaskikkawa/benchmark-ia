@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-medium/10-ambigua-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "medium",
+ "tarefa": "10-ambigua-codex",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 50.219,
+ "testes_passados": 14,
+ "testes_total": 14,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Núcleo correto, com cópias rasas independentes e repetições preservadas. Ordenação por baldes com laços e índices, não sorted com chave. Empates e validações documentados e coerentes com o código.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Pendentes e prioridade decrescente estão explícitos; cópia rasa estável preserva vazios, repetidas e a entrada; desempate e inválidos em SUPOSICOES.md coincidem com o código.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 9.5,
+ "nota_final_10": 9.85
+}

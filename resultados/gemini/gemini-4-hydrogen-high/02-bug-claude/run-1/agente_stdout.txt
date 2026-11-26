@@ -1,0 +1,14 @@
+Os bugs em [intervalos.py](file:///tmp/bench-cxdo83vd/intervalos.py) foram corrigidos de acordo com as docstrings e os requisitos de [enunciado.md](file:///tmp/bench-cxdo83vd/enunciado.md):
+
+### Alterações realizadas
+- **Validação completa antes da execução** ([_eh_int](file:///tmp/bench-cxdo83vd/intervalos.py#L4-L6) e [_validar_intervalo](file:///tmp/bench-cxdo83vd/intervalos.py#L9-L26)):
+  - Aceita qualquer iterável de pares (`tuple` ou `list` de 2 elementos), levantando `TypeError` se o item não for `tuple`/`list` e `ValueError` se não tiver exatamente 2 elementos.
+  - Verifica se `inicio` e `fim` são `int` e não `bool` antes de comparar os valores, levantando `TypeError` caso contrário.
+  - Valida `inicio <= fim` para todos os elementos antes de ordenar ou mesclar, levantando `ValueError` em intervalos inválidos.
+- **Mesclagem e preservação da entrada** ([mesclar_intervalos](file:///tmp/bench-cxdo83vd/intervalos.py#L29-L56)):
+  - Constrói uma nova lista de tuplas validadas (`validados`), evitando mutar a entrada e permitindo geradores, tuplas e listas de listas.
+  - Retorna `[]` para iteráveis vazios (fazendo com que [total_coberto](file:///tmp/bench-cxdo83vd/intervalos.py#L59-L65) retorne `0`).
+  - Une intervalos que se tocam (`inicio <= ultimo_fim`) usando `max(ultimo_fim, fim)` para não encolher intervalos que contêm outros.
+
+### Verificação
+- Executado script de validação via `python3 -B` cobrindo assinaturas, os exemplos de [enunciado.md](file:///tmp/bench-cxdo83vd/enunciado.md), entradas vazias, geradores, não mutação da entrada, intervalos pontuais/negativos/contidos e casos de `TypeError`/`ValueError` — saída: `ALL TESTS PASSED`.

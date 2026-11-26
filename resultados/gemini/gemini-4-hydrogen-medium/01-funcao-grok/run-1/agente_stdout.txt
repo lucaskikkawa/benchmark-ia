@@ -1,0 +1,10 @@
+A solução foi implementada em [solucao.py](file:///tmp/bench-xr4v1w42/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-xr4v1w42/enunciado.md):
+
+- **`_parse_time` e `_format_time`**: validam estritamente `str` no formato `HH:MM` com dígitos ASCII (`0123456789`), separador `:`, intervalo `00:00`–`23:59` ou `24:00` (levantando `TypeError` para tipos inválidos e `ValueError` para formatos/valores inválidos), convertendo `1440` minutos de volta para `"24:00"`.
+- **`horas_livres`**:
+  - Verifica que `ocupados` é `list` e cada item é `tuple` ou `list` de exatamente 2 strings (`TypeError` caso contrário).
+  - Valida a janela (`inicio < fim`, `ValueError` caso contrário) e todos os pares de `ocupados` (incluindo `ini <= fim`) antes de ignorar durações zero ou recortar para `[inicio, fim)`.
+  - Recorta, ordena e une intervalos sobrepostos ou encostados sem modificar a lista de entrada nem seus itens, retornando os trechos livres ordenados.
+
+### Verificação
+Executado via `python3 -c` (Python 3.13.5) cobrindo os exemplos do enunciado, `24:00`, intervalos fora de ordem/sobrepostos/duplicados/duração zero, imutabilidade da entrada e casos de `TypeError` e `ValueError`: `ALL TESTS PASSED`. Nenhum arquivo extra foi deixado no diretório.

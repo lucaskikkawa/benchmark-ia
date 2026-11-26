@@ -1,0 +1,9 @@
+Implementei a função `unir_intervalos` em [solucao.py](file:///tmp/bench-pb9jjbs2/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-pb9jjbs2/enunciado.md).
+
+### O que foi feito
+- **Assinatura e tipagem**: `unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]` usando apenas a biblioteca padrão, compatível com Python 3.11+.
+- **Validação**: verifica `limites` invertidos (`minimo > maximo`) mesmo com entrada vazia e valida todos os intervalos originais (`inicio > fim`), inclusive os descartados pelo recorte, lançando `ValueError`.
+- **Recorte, ordenação e varredura**: consome `intervalos` em uma única passagem (suportando geradores e sem mutar listas de entrada ou `limites`), mantém precisão arbitrária de inteiros, ordena em $O(n \log n)$ e funde intervalos que se sobrepõem ou compartilham extremidade em $O(n)$ de memória.
+
+### Verificação
+- Testados o exemplo do enunciado, entradas vazias, intervalos adjacentes separados por 1 unidade, duplicatas, pontos nas extremidades de `limites`, imutabilidade das entradas, geradores, `ValueError` em pares/limites invertidos, inteiros de precisão arbitrária (`10**50`) e desempenho com 100.000 intervalos (0,033 s).

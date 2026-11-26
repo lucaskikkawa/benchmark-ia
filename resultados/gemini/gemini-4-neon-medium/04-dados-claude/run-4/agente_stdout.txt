@@ -1,0 +1,8 @@
+Implementei a solução em [solucao.py](file:///tmp/bench-p0gg_e0p/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-p0gg_e0p/enunciado.md):
+
+- **`resumir_vendas(entrada: str | Path, saida: str | Path) -> dict`** usando apenas a biblioteca padrão (`csv`, `json`, `math`, `collections`, `pathlib`).
+- **Leitura e validação do cabeçalho**: suporte a UTF-8 com ou sem BOM (`utf-8-sig`), campos entre aspas com vírgulas e quebras de linha, ordem arbitrária e colunas extras ignoradas; levanta `FileNotFoundError` para arquivo inexistente e `ValueError` para arquivo vazio ou colunas obrigatórias ausentes, sem criar nem alterar `saida`.
+- **Validação e agregação por linha**: ignora linhas totalmente vazias, contabiliza linhas inválidas independentemente do `status`, filtra apenas `status` igual a `concluida` (case-insensitive, sem acento), agrega por `regiao` ordenada alfabeticamente com desempate alfabético em `produto_mais_vendido`, e garante tipos `float`/`int` e arredondamento a 2 casas.
+- **Escrita**: cria os diretórios pais de `saida` e grava o JSON em UTF-8 com `ensure_ascii=False` e `indent=2`.
+
+Testado com [vendas_exemplo.csv](file:///tmp/bench-p0gg_e0p/vendas_exemplo.csv) e cenários de borda (BOM, campos com aspas/quebras de linha, valores `nan`/`inf`/negativos, empates, arquivo vazio/inexistente e preservação de `saida` em erros) — todos passaram.

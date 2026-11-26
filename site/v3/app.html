@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Benchmark 1.0 — IAs que programam</title>
+<style>
+/*__FONTES__*/
+:root{--bg:#FFF8EC;--card:#fff;--ink:#2B2340;--ink2:#5E5573;--sun:#FFD23F;--orange:#FF9F1C;--up:#1E9E57;--down:#D63B40;--line:#E7E0F0;
+  --claude:#E06A1E;--codex:#C3C8D0;--gemini:#3B6FE0;--grok:#1C1B22}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);background-image:radial-gradient(rgba(43,35,64,.07) 1.5px,transparent 1.6px);background-size:18px 18px;
+  color:var(--ink);font-family:Nunito,ui-rounded,system-ui,sans-serif;font-variant-numeric:tabular-nums;min-height:100vh;padding-bottom:92px;font-size:16px;line-height:1.45}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+.f{font-family:Fredoka,Nunito,ui-rounded,sans-serif}
+.box{background:var(--card);border:3px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink)}
+.wrap{max-width:1120px;margin:0 auto}
+.oculto{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px dashed var(--orange);outline-offset:2px}
+/* cabeçalho */
+header{padding:12px 16px 0}
+.topo{display:flex;align-items:center;gap:10px}
+.bubble{position:relative;background:var(--sun);border:3px solid var(--ink);border-radius:18px;padding:4px 12px 2px;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink)}
+.bubble h1{font-family:Fredoka,sans-serif;font-weight:700;font-size:24px;line-height:1.05}
+.bubble small{display:block;font-size:11px;font-weight:800;line-height:1.1}
+.bubble:after{content:"";position:absolute;right:-11px;bottom:6px;width:14px;height:14px;background:var(--sun);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(-45deg)}
+.crew{display:flex;gap:2px;margin-left:auto}.crew svg{width:34px;height:34px}
+.ajuda{margin-left:auto;width:44px;height:44px;border:3px solid var(--ink);border-radius:50%;background:#fff;font-family:Fredoka;font-weight:700;font-size:22px;box-shadow:2px 2px 0 var(--ink);flex:none}
+.crew+.ajuda{margin-left:6px}
+.seg{display:flex;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:2px 2px 0 var(--ink);margin-top:10px}
+.seg button{flex:1;text-align:center;font-size:13px;font-weight:800;padding:5px 4px;line-height:1.15;min-height:44px}
+.seg button small{display:block;font-size:12px;font-weight:700;color:var(--ink2)}
+.seg button+button{border-left:2px solid var(--ink)}.seg button[aria-pressed=true]{background:var(--sun)}
+.seg button[aria-pressed=true] small{color:var(--ink)}
+.seg button[disabled]{opacity:.45;cursor:not-allowed}
+.seletores{display:grid;grid-template-columns:1fr;gap:0}
+.aviso{margin:10px 0 0;padding:8px 12px;border-radius:14px;font-size:14px;font-weight:700;line-height:1.35;border:3px solid var(--ink);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.aviso.alt{background:#FFE1C2}.aviso.pend{background:#E8EEFF}.aviso.mock{background:#FFD6D6}.aviso.erro{background:#FFD6D6}
+.aviso .btn{margin-left:auto}
+.resumo{margin-top:10px;padding:10px 12px;font-size:16px;line-height:1.45}
+.resumo p+p{margin-top:4px}
+.resumo .mais-r{font-size:13px;font-weight:800;color:var(--ink2);text-decoration:underline;margin-top:2px;min-height:32px}
+/* títulos e cartões */
+h2{font-family:Fredoka,sans-serif;font-size:22px;margin:18px 16px 6px;display:flex;align-items:center;gap:8px;line-height:1.15;flex-wrap:wrap}
+h2 .tag{font-family:Nunito;font-size:12px;font-weight:800;background:var(--sun);border:2px solid var(--ink);border-radius:10px;padding:1px 7px;transform:rotate(2deg)}
+h3{font-family:Fredoka,sans-serif;font-size:17px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:6px;flex-wrap:wrap;line-height:1.2}
+h3 small{font-family:Nunito;font-size:12px;font-weight:800;color:var(--ink2)}
+.card{margin:12px 16px 0;padding:12px 14px}
+.lead{margin:4px 16px 0;font-size:16px;font-weight:600;line-height:1.45}
+.insight{margin:10px 16px 0;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;background:#FFF3C4;border-radius:16px}
+.insight svg{flex:none}
+.insight b.man{display:block;font-family:Fredoka;font-size:18px;line-height:1.2;margin-bottom:2px}
+.insight p{font-size:15px;line-height:1.4}
+.nota-p{font-size:13px;font-weight:700;color:var(--ink2);line-height:1.4;margin-top:6px}
+.btn{border:2px solid var(--ink);border-radius:12px;background:#fff;padding:6px 10px;font-size:14px;font-weight:800;box-shadow:2px 2px 0 var(--ink);min-height:44px;text-align:left;line-height:1.2}
+.btn:active{box-shadow:0 0;transform:translate(2px,2px)}
+.btn[aria-pressed=true]{background:var(--orange)}
+.lnk{font-weight:800;text-decoration:underline;font-size:14px;color:var(--ink2);min-height:32px;display:inline-flex;align-items:center}
+/* selo de esforço e chips */
+.ef{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:800;border:2px solid var(--ink);border-radius:8px;padding:0 6px;margin-left:5px;vertical-align:2px;line-height:1.4;white-space:nowrap;letter-spacing:.2px}
+.ef.medium{background:#fff;color:var(--ink)}
+.ef.high{background:var(--ink);color:#fff}
+.ef i{font-style:normal;font-size:10px;letter-spacing:-1px}
+.selo{display:inline-block;font-size:12px;font-weight:800;border:2px solid var(--ink);border-radius:8px;padding:0 6px;background:#E8EEFF;line-height:1.4;white-space:nowrap}
+.selo.emp{background:#FFF3C4}.selo.novo{background:#D9F5E4}
+.ok-ref{font-weight:800;color:var(--up);font-size:15px}
+.ruim{font-weight:800;color:var(--down)}
+/* nav */
+nav{position:fixed;left:8px;right:8px;bottom:8px;height:64px;display:flex;justify-content:space-around;align-items:center;border-radius:22px;background:var(--ink);box-shadow:0 4px 0 #0E0B18;z-index:20;max-width:600px;margin:0 auto}
+nav button{color:#fff;font-size:12px;font-weight:800;text-align:center;line-height:1.15;width:68px;min-height:54px;border:2px solid transparent;padding:3px 0;border-radius:14px}
+nav button span{display:block;font-size:20px;line-height:1.1}
+nav button[aria-current=page]{background:var(--sun);color:var(--ink);border-color:#fff}
+.aba{display:none}.aba.on{display:block;animation:entra .25s ease-out}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}}
+svg text{font-family:Nunito,sans-serif;font-weight:800;fill:var(--ink)}
+/* ranking */
+#lista{padding:2px 10px}
+.lr{display:grid;grid-template-columns:24px 40px minmax(0,1fr) 74px;align-items:center;gap:8px;width:100%;text-align:left;padding:8px 2px;border-bottom:2px dashed var(--line);position:relative;background:#fff;min-height:64px}
+.lr:last-child{border-bottom:0}
+.lr .pos{font-family:Fredoka;font-weight:700;font-size:20px;text-align:center}
+.lr .rb{position:relative;width:40px;height:40px}.lr .rb svg{width:40px;height:40px}
+.lr .nm{min-width:0}
+.lr .nm b{font-size:15px;font-weight:800}
+.bar{display:block;height:14px;border:2px solid var(--ink);border-radius:7px;background:#F3EEF8;margin-top:4px;overflow:hidden;position:relative}
+.bar i{display:block;height:100%;border-right:2px solid var(--ink);width:0;transition:width .6s cubic-bezier(.34,1.3,.64,1)}
+.bar .t10{position:absolute;top:0;bottom:0;border-left:1px dashed rgba(43,35,64,.35)}
+.lr .fr{display:block;font-size:13px;font-weight:700;color:var(--ink2);line-height:1.25;margin-top:3px}
+.lr .fr .to{color:var(--down)}
+.lr .sc{text-align:right;line-height:1.15}.lr .sc b{font-family:Fredoka;font-size:21px;font-weight:600;display:block}
+.lr .sc small{font-size:12px;font-weight:800;display:block;color:var(--ink2)}
+.lr .emp-t{display:inline-block;font-size:11.5px;font-weight:800;background:#FFF3C4;border:2px solid var(--ink);border-radius:8px;padding:0 5px;line-height:1.35;margin-top:3px;white-space:nowrap}
+.lr.top{background:#FFFBEA}
+.lr.pend{opacity:.85;background:repeating-linear-gradient(45deg,#fff 0 8px,#F4F1FA 8px 16px);cursor:default}
+.lr.pend .sc b{font-size:14px;color:var(--ink2)}
+.coroa{position:absolute;left:10px;top:-11px;font-size:17px;animation:pop .5s cubic-bezier(.34,1.6,.64,1) 1}
+@keyframes pop{from{transform:scale(0) translateY(6px)}}
+.pula{animation:pula .5s 1}
+@keyframes pula{40%{transform:translateY(-6px) scale(1.08)}}
+.robo g.corpo{transform-origin:50% 90%}
+.lr:hover .robo g.corpo,.robo:hover g.corpo,.jz:hover .robo g.corpo,.lr:focus-visible .robo g.corpo{animation:balanca .7s ease-in-out 1}
+@keyframes balanca{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+.c-claude{background:var(--claude)}.c-codex{background:var(--codex)}.c-gemini{background:var(--gemini)}.c-grok{background:var(--grok)}
+.h-claude{background:repeating-linear-gradient(45deg,var(--claude) 0 5px,rgba(255,255,255,.65) 5px 8px) var(--claude)}
+.h-codex{background:repeating-linear-gradient(45deg,var(--codex) 0 5px,#fff 5px 8px)}
+.h-gemini{background:repeating-linear-gradient(45deg,var(--gemini) 0 5px,rgba(255,255,255,.6) 5px 8px)}
+.ese{display:grid;grid-template-columns:1fr;gap:8px}
+.ese-txt{min-height:24px;font-size:15px;font-weight:700;line-height:1.4;margin-top:8px}
+.df{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;min-height:40px;width:100%;text-align:left;font-size:15px;font-weight:800;border-bottom:2px dashed var(--line)}
+.df:last-child{border-bottom:0}.df em{font-style:normal;white-space:nowrap}
+.df .nm{display:flex;gap:6px;align-items:center;min-width:0}
+.ga{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ga>div{border:2px dashed var(--line);border-radius:14px;padding:8px}
+.ga h4{font-family:Fredoka;font-size:15px;margin-bottom:4px}
+.gl{display:flex;justify-content:space-between;gap:6px;font-size:14px;font-weight:700;min-height:30px;align-items:center;border-bottom:1px dashed var(--line)}
+.gl:last-child{border-bottom:0}.gl b{font-family:Fredoka;font-size:16px}
+.gl .pd{color:var(--ink2);font-size:13px;font-style:italic}
+svg.grafico{display:block;width:100%}
+.lin{cursor:pointer}.lin:hover rect.hit,.lin:focus-visible rect.hit{fill:#FFF3C4}
+/* comparar */
+.duelo{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr);gap:4px;align-items:center;margin:6px 16px 0}
+.duelo>b{text-align:center;font-family:Fredoka;font-size:20px}
+.carta{position:relative;padding:20px 8px 8px;display:flex;gap:8px;align-items:center;min-height:72px}
+.carta svg{flex:none;width:36px;height:36px}
+.carta .ci{display:flex;gap:8px;align-items:center;min-width:0}
+.carta .ci div{font-size:14px;font-weight:800;line-height:1.25;min-width:0;overflow-wrap:anywhere}
+.carta small{display:block;font-size:12.5px;color:var(--ink2)}
+.carta select{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px}
+.carta:focus-within{outline:3px dashed var(--orange);outline-offset:2px}
+.carta.b{border-style:dashed}
+.carta .tr{position:absolute;right:6px;top:4px;font-size:12px;font-weight:800;color:var(--ink2)}
+.cl{display:grid;grid-template-columns:minmax(0,1fr) 120px;gap:4px 8px;align-items:center;padding:6px 0;border-bottom:2px dashed var(--line)}
+.cl:last-child{border-bottom:0}
+.cl .lb{font-size:15px;font-weight:800;line-height:1.2}
+.cl .lb small{display:block;font-size:12.5px;font-weight:700;color:var(--ink2)}
+.cl .vs{text-align:right;font-size:13px;font-weight:800;line-height:1.25;white-space:nowrap}
+.cl .trilho{grid-column:1/-1;position:relative;height:18px;border-radius:9px;background:#F3EEF8;border:2px solid var(--ink)}
+.cl .trilho i{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border:2.5px solid var(--ink);border-radius:50%;transition:left .5s cubic-bezier(.34,1.3,.64,1)}
+.cl .trilho i.pb{border-radius:3px;transform:rotate(45deg);background:#fff;border-style:solid}
+.cl .ganha{color:var(--up)}
+.placar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 16px 0}
+.placar div{padding:8px 6px;text-align:center}.placar span{font-size:13px;font-weight:800;display:block;line-height:1.2}.placar b{font-family:Fredoka;font-size:24px;display:block}
+.tempoAB{margin:10px 16px 0;padding:10px 12px;font-size:15px;font-weight:700}
+.leg{display:flex;gap:14px;font-size:13px;font-weight:800;color:var(--ink2);align-items:center;flex-wrap:wrap;margin-top:8px}
+.leg i{display:inline-block;width:14px;height:14px;border:2.5px solid var(--ink);border-radius:50%;vertical-align:-2px;margin-right:4px}
+.leg i.q{border-radius:3px;transform:rotate(45deg);background:#fff}
+/* esforço */
+.veredito{margin:12px 16px 0;padding:12px 14px;background:var(--sun)}
+.veredito b.man{font-family:Fredoka;font-size:19px;display:block;line-height:1.2;margin-bottom:6px}
+.veredito ul{list-style:none}.veredito li{font-size:15.5px;font-weight:700;line-height:1.4;padding-left:20px;position:relative;margin-top:4px}
+.veredito li:before{content:"→";position:absolute;left:0}
+/* tarefas */
+.hm{display:grid;gap:4px;align-items:center}
+.hm .rl{font-size:13px;font-weight:800;line-height:1.15;padding:2px 4px;border-radius:8px}
+.hm .ch{text-align:center;font-size:11.5px;font-weight:800;line-height:1.1;color:var(--ink2)}
+.hm .ch svg{width:26px;height:26px;display:block;margin:0 auto}
+.hm .cel{height:36px;border:2px solid var(--ink);border-radius:8px;font-family:Fredoka;font-weight:600;font-size:15px;position:relative;min-width:0}
+.hm .cel sup{position:absolute;right:3px;top:0;font-size:10px}
+.hm .vazia{background:repeating-linear-gradient(45deg,#fff 0 5px,#EEE9F6 5px 10px);display:grid;place-items:center;font-size:11px;color:var(--ink2);font-family:Nunito}
+.hmw{overflow-x:auto;padding-bottom:4px}
+.hm.largo .cel{font-size:13px;width:44px}.hm.largo .ch{writing-mode:vertical-rl;transform:rotate(180deg);height:130px;display:flex;align-items:center;gap:3px;white-space:nowrap}
+.hm.largo .ch svg{width:22px;height:22px}
+.faixas{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12.5px;font-weight:800;margin-top:8px}
+.faixas span{display:inline-flex;align-items:center;gap:4px}
+.faixas i{display:inline-block;width:18px;height:14px;border:2px solid var(--ink);border-radius:4px}
+.tag2{display:inline-block;border:2px solid var(--ink);border-radius:10px;padding:1px 7px;font-size:13px;font-weight:800;background:#E9F8EF;margin:3px 3px 0 0}
+/* mais */
+.sub-seg{margin:10px 16px 0}
+.jzs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 16px 0}
+.jz{padding:10px;display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1.25}
+.jz svg{width:54px;height:76px}
+.jz b{font-family:Fredoka;font-size:16px}.jz span{font-size:13px;font-weight:700;color:var(--ink2)}
+.tec section{scroll-margin-top:90px}
+.tec h3{font-size:18px}
+.tec p,.tec li{font-size:15px;line-height:1.5}
+.tec ul{margin:4px 0 0 20px}
+.tec .cam{display:block;font-family:ui-monospace,monospace;font-size:13px;background:#F3EEF8;border-radius:6px;padding:2px 6px;margin:3px 0;overflow-wrap:anywhere}
+.tec code{font-size:13px;background:#F3EEF8;border-radius:4px;padding:0 3px}
+.indice{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.indice a{font-size:13px;font-weight:800;border:2px solid var(--ink);border-radius:10px;padding:3px 8px;background:#fff;text-decoration:none;min-height:32px;display:inline-flex;align-items:center}
+.peso{display:flex;justify-content:space-between;font-size:15px;font-weight:800;align-items:baseline;flex-wrap:wrap;gap:4px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;margin:2px 0;--v:70%}
+input[type=range]::-webkit-slider-runnable-track{height:14px;border:3px solid var(--ink);border-radius:10px;background:linear-gradient(90deg,var(--sun) var(--v),#fff var(--v))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;margin-top:-12px;border-radius:50%;border:3px solid var(--ink);background:var(--orange);box-shadow:2px 2px 0 var(--ink)}
+input[type=range]::-moz-range-track{height:10px;border:3px solid var(--ink);border-radius:10px;background:#fff}
+input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;border:3px solid var(--ink);background:var(--orange)}
+.tg{display:flex;align-items:center;gap:10px;border:3px solid var(--ink);border-radius:14px;padding:6px 10px;background:#fff;box-shadow:2px 2px 0 var(--ink);font-size:14px;font-weight:800;line-height:1.2;text-align:left;min-height:48px;width:100%;margin-top:8px}
+.sw{flex:none;display:inline-block;width:40px;height:24px;border-radius:12px;border:3px solid var(--ink);background:#EDE6F5;position:relative;transition:background .2s}
+.sw:after{content:"";position:absolute;top:1px;left:1px;width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--ink);transition:left .2s}
+[aria-checked=true] .sw{background:var(--up)}[aria-checked=true] .sw:after{left:17px}
+/* tabela e folha */
+details.vt{margin-top:10px}
+details.vt>summary{font-weight:800;font-size:14px;color:var(--ink);cursor:pointer;min-height:40px;display:flex;align-items:center;gap:6px;border:2px solid var(--ink);border-radius:12px;padding:4px 10px;background:#FFF3C4;width:max-content;max-width:100%}
+details.vt[open]>summary{margin-bottom:6px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;font-size:13.5px;width:100%}
+th,td{padding:4px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:800;background:#FFF3C4}
+#folha{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+#folha[hidden]{display:none}
+#folha .fundo{position:absolute;inset:0;background:rgba(43,35,64,.45);animation:fade .2s}
+#folha .cx{position:relative;width:100%;max-width:600px;max-height:84vh;overflow:auto;margin:0 6px 6px;padding:14px 14px 18px;border-radius:22px;animation:sobe .25s cubic-bezier(.34,1.3,.64,1)}
+#folha .x{position:absolute;right:8px;top:6px;width:44px;height:44px;font-size:20px;font-weight:800}
+#folha h4{font-family:Fredoka;font-size:18px;margin:0 44px 8px 0;line-height:1.2}
+#folha dl dt{font-weight:800;margin-top:8px;font-size:15px}#folha dl dd{font-size:15px;line-height:1.4}
+@keyframes fade{from{opacity:0}}@keyframes sobe{from{transform:translateY(60%)}}
+.st-ok{color:var(--up)}.st-timeout{color:var(--down)}
+.termo{text-decoration:underline dotted 2px;text-underline-offset:3px;cursor:help;font-weight:inherit}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+@media (min-width:768px){
+  body{padding-bottom:24px;padding-top:80px}
+  nav{top:8px;bottom:auto}
+  .seletores{grid-template-columns:1fr 1fr;gap:12px}
+  .grade{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:4px;align-items:start}
+  .grade.meio{grid-template-columns:1fr 1fr}
+  .jzs{grid-template-columns:repeat(4,1fr)}
+  .ese{grid-template-columns:1fr 1fr}
+}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="defs"></defs></svg>
+<div class="wrap">
+<header>
+  <div class="topo">
+    <div class="bubble"><h1 id="titulo">Teste novo</h1><small id="tituloSub">benchmark de IAs que programam</small></div>
+    <div class="crew" id="crew"></div>
+    <button class="ajuda" id="btAjuda" aria-label="glossário: o que significa cada termo" title="glossário">?</button>
+  </div>
+  <div class="seletores">
+    <div class="seg" role="group" aria-label="escolha o teste" id="segTeste">
+      <button data-t="v3" aria-pressed="true">Teste novo<small>v3 · Gemini novos</small></button>
+      <button data-t="r1" aria-pressed="false">Teste anterior<small>Rodada 1</small></button>
+    </div>
+    <div class="seg" role="group" aria-label="escolha o prazo" id="segPrazo">
+      <button data-p="A" aria-pressed="true">Prazo normal<small>3 a 5 min</small></button>
+      <button data-p="B" aria-pressed="false">Prazo estendido<small>7 min</small></button>
+    </div>
+  </div>
+  <div class="aviso alt oculto" id="avisoAlt" role="status"></div>
+  <div class="aviso mock oculto" id="avisoMock" role="status"></div>
+  <div class="aviso pend oculto" id="avisoPend"></div>
+  <div class="resumo box" id="resumo" aria-live="polite"></div>
+</header>
+<main>
+<!-- ============ RANKING ============ -->
+<section class="aba on" id="aba-ranking" aria-labelledby="t-rank">
+  <div class="grade">
+  <div>
+    <h2 id="t-rank">🏆 Ranking oficial <span class="tag" id="tagRank"></span></h2>
+    <p class="lead" id="leadRank"></p>
+    <section class="card box" style="padding:2px 0"><div id="lista"></div></section>
+    <section class="card box"><h3>Ver como tabela <small>os mesmos números, sem desenho</small></h3>
+      <details class="vt"><summary>▸ abrir a tabela</summary><div class="tw" id="tabRank"></div></details></section>
+  </div>
+  <div>
+    <section class="card box" id="cardEse"><h3>E se…? <small>toque e veja o ranking mudar</small></h3>
+      <div class="ese" id="ese"></div><p class="ese-txt" id="eseTxt" aria-live="polite"></p></section>
+    <section class="card box"><h3>Disputa no topo <small id="topoSub"></small></h3>
+      <svg class="grafico" id="topo" role="img" aria-label="disputa no topo"></svg>
+      <p class="nota-p" id="topoTxt"></p></section>
+    <section class="card box" id="cardGem"></section>
+    <section class="card box"><h3>Média por empresa <small>média das versões de cada uma</small></h3><div id="empMed"></div></section>
+    <section class="card box"><p id="seloContas"></p><a class="lnk" href="#tecnico-conferencia" data-tec="tecnico-conferencia">como isso é conferido →</a></section>
+  </div>
+  </div>
+</section>
+<!-- ============ COMPARAR ============ -->
+<section class="aba" id="aba-comparar" aria-labelledby="t-comp">
+  <h2 id="t-comp">⚖️ Compare dois modelos <span class="tag" id="tagComp"></span></h2>
+  <p class="lead">Escolha dois modelos tocando nos cartões. A conta usa as mesmas tarefas e os mesmos juízes para os dois.</p>
+  <div class="duelo">
+    <label class="carta box" id="cartaA"><span class="sr">Modelo A</span><select id="selA"></select><span class="ci"></span><span class="tr">A ▾</span></label>
+    <b aria-hidden="true">×</b>
+    <label class="carta box b" id="cartaB"><span class="sr">Modelo B</span><select id="selB"></select><span class="ci"></span><span class="tr">B ▾</span></label>
+  </div>
+  <div class="insight box" id="compIns"></div>
+  <div class="placar"><div class="box"><span>A foi melhor em</span><b id="pA"></b></div><div class="box"><span>B foi melhor em</span><b id="pB"></b></div><div class="box"><span>empate em</span><b id="pE"></b></div></div>
+  <div class="grade meio">
+  <section class="card box"><h3>Em que cada um foi melhor <small>0% a 100%</small></h3>
+    <div id="crit"></div>
+    <div class="leg"><span><i id="legA"></i>A (bolinha)</span><span><i class="q"></i>B (losango)</span></div>
+    <p class="nota-p">As cinco primeiras linhas vêm da avaliação dos juízes, nas tarefas entregues dentro do prazo.</p></section>
+  <div>
+  <section class="card box"><h3>Diferença por tipo de tarefa <small>toque = ver as tentativas</small></h3>
+    <svg class="grafico" id="difTipo" role="img" aria-label="diferença de nota por tipo de tarefa"></svg>
+    <details class="vt"><summary>▸ ver como tabela</summary><div class="tw" id="tabDif"></div></details></section>
+  <div class="tempoAB box" id="tempoAB"></div>
+  </div></div>
+</section>
+<!-- ============ ESFORÇO ============ -->
+<section class="aba" id="aba-esforco" aria-labelledby="t-esf">
+  <h2 id="t-esf">🔥 Pedir mais capricho ajuda? <span class="tag" id="tagEsf"></span></h2>
+  <p class="lead">Cada modelo foi testado de dois jeitos: <span class="ef medium"><i>▮▯</i> medium</span>, o normal, e <span class="ef high"><i>▮▮</i> high</span>, que pede mais capricho ao modelo e em geral leva mais tempo.</p>
+  <div class="grade meio">
+  <div class="veredito box" id="conclusao"></div>
+  <section class="card box"><h3>Quanto o high mudou a nota <small>em relação ao medium</small></h3>
+    <svg class="grafico" id="hm" role="img" aria-label="diferença entre high e medium por modelo"></svg>
+    <p class="nota-p">A faixa cinza do meio é o empate técnico: diferenças menores que 0,30 ponto podem ser sorte.</p>
+    <details class="vt"><summary>▸ ver os números</summary><div class="tw" id="tabHm"></div></details>
+    <details class="vt"><summary>▸ ver as duas notas de 0 a 10</summary><svg class="grafico" id="dumb" role="img" aria-label="notas medium e high de 0 a 10"></svg></details></section>
+  </div>
+</section>
+<!-- ============ TAREFAS ============ -->
+<section class="aba" id="aba-tarefas" aria-labelledby="t-tar">
+  <h2 id="t-tar">🧩 Mapa de tarefas <span class="tag" id="tagTar"></span></h2>
+  <div class="insight box" id="tarIns"></div>
+  <div class="seg" role="group" aria-label="agrupar colunas por" id="modos" style="margin:12px 16px 0">
+    <button data-m="emp" aria-pressed="true">quem resolveu</button><button data-m="me" aria-pressed="false">cada versão</button><button data-m="aut" aria-pressed="false">quem escreveu a tarefa</button>
+  </div>
+  <div class="grade">
+  <section class="card box"><h3><span id="hmTit">Nota média por tipo de tarefa</span> <small>★ = melhor da linha · toque = tentativas</small></h3>
+    <div class="hmw"><div class="hm" id="mapa"></div></div>
+    <div class="faixas" id="faixas"></div>
+    <details class="vt"><summary>▸ ver como tabela</summary><div class="tw" id="tabMapa"></div></details></section>
+  <div>
+  <section class="card box" id="gabarito"></section>
+  <section class="card box" id="licao"></section>
+  </div></div>
+</section>
+<!-- ============ MAIS ============ -->
+<section class="aba" id="aba-mais" aria-labelledby="t-mais">
+  <h2 id="t-mais">☰ Mais</h2>
+  <div class="seg sub-seg" role="group" aria-label="escolha a seção" id="segSub">
+    <button data-s="confiar" aria-pressed="true">Por que confiar</button><button data-s="tecnico" aria-pressed="false">Técnico</button><button data-s="grok" aria-pressed="false">Por que o Grok saiu</button>
+  </div>
+  <div id="sub-confiar" class="sub"></div>
+  <div id="sub-tecnico" class="sub tec oculto"></div>
+  <div id="sub-grok" class="sub oculto"></div>
+</section>
+</main>
+</div>
+<nav aria-label="abas" id="nav">
+  <button data-aba="ranking"><span aria-hidden="true">🏆</span>Ranking</button><button data-aba="comparar"><span aria-hidden="true">⚖️</span>Comparar</button><button data-aba="esforco"><span aria-hidden="true">🔥</span>Esforço</button><button data-aba="tarefas"><span aria-hidden="true">🧩</span>Tarefas</button><button data-aba="mais"><span aria-hidden="true">☰</span>Mais</button>
+</nav>
+<div id="folha" hidden><div class="fundo"></div><div class="cx box" role="dialog" aria-modal="true" aria-labelledby="folhaT"><button class="x" aria-label="fechar">✕</button><h4 id="folhaT"></h4><div id="folhaC"></div></div></div>
+<div class="sr" aria-live="polite" id="aviso"></div>
+<script id="dados" type="application/json">__DADOS__</script>
+<!-- =====================================================================================
+     BLOCO DE DADOS V3 (Gemini 4 Hydrogen e Gemini 4 Neon, medium e high)
+     Enquanto "status" = "aguardando rodada v3", o site mostra esses 4 modelos como
+     "aguardando rodada v3" e o resto (Claude e Codex) normalmente.
+     Para plugar os números: veja site/v3/LEIA-ME.md (python3 site/v3/build_v3.py
+     ou colar aqui o JSON no formato descrito lá). Não mexa no bloco "dados" acima.
+     ===================================================================================== -->
+<script id="dados-v3" type="application/json">
+__DADOS_V3__
+</script>
+<script>
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const D=JSON.parse($('#dados').textContent);
+const PLACEHOLDER='aguardando rodada v3';
+let V3RAW,V3ERRO=null;
+try{V3RAW=JSON.parse($('#dados-v3').textContent)}catch(e){V3ERRO='o bloco dados-v3 não é um JSON válido ('+e.message+')';V3RAW={status:'erro',modelos:[],runsA:[],runsB:[]}}
+const MANCHETE='A'; // prazo em que o site abre (A = normal, mesmo limite para todos; decisões v3, item 8). 'B' = estendido, 7 min.
+const TIE=0.30;     // empate técnico: diferença menor que isso (≈ uma tarefa zerada em 30, 9,7/30 ≈ 0,32)
+const reduz=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const INK='#2B2340';
+const COR={claude:'#E06A1E',codex:'#C3C8D0',gemini:'#3B6FE0',grok:'#1C1B22'};
+const EMPN={claude:'Claude',codex:'Codex',gemini:'Gemini',grok:'Grok'};
+const DONO={claude:'Anthropic',codex:'OpenAI',gemini:'Google',grok:'xAI'};
+const COMP=['claude','codex','gemini'];          // competidores (o Grok está fora da disputa)
+const EMPS=['claude','codex','gemini','grok'];   // empresas: autoras de tarefas e juízes (o Grok continua aqui)
+const MOD={
+  'claude-haiku-5-5':{nome:'Claude Haiku 5.5',curto:'Haiku',mono:'Hk',e:'claude'},
+  'claude-opus-5-5':{nome:'Claude Opus 5.5',curto:'Opus',mono:'Op',e:'claude'},
+  'gpt-6-luna':{nome:'GPT-6 Luna',curto:'Luna',mono:'Lu',e:'codex'},
+  'gpt-6.1-sol':{nome:'GPT-6.1 Sol',curto:'Sol',mono:'So',e:'codex'},
+  'gemini-4-argon':{nome:'Gemini 4 Argon',curto:'Argon',mono:'Ar',e:'gemini',antigo:1},
+  'gemini-3.8-flash':{nome:'Gemini 3.8 Flash',curto:'Flash',mono:'Fl',e:'gemini',antigo:1},
+  'gemini-4-hydrogen':{nome:'Gemini 4 Hydrogen',curto:'Hydrogen',mono:'H',e:'gemini',novo:1},
+  'gemini-4-neon':{nome:'Gemini 4 Neon',curto:'Neon',mono:'Ne',e:'gemini',novo:1},
+  'grok-4.7-build-fast':{nome:'Grok 4.7 build-fast',curto:'Grok bf',mono:'Gb',e:'grok'}};
+const TIPO={'01':'Escrever uma função','02':'Corrigir um bug','03':'Reorganizar código','04':'Análise de dados','05':'Programa de terminal',
+  '06':'Mexer em vários arquivos','07':'Deixar o código mais rápido','08':'Escrever testes','09':'Criar uma API','10':'Pedido ambíguo'};
+const TIPO_C={'01':'Função','02':'Bug','03':'Reorganizar','04':'Dados','05':'Terminal','06':'Vários arquivos','07':'Mais rápido','08':'Testes','09':'API','10':'Ambíguo'};
+const TK=['01','02','03','04','05','06','07','08','09','10'];
+const ITENS_L=[['Fácil de ler','o código é claro'],['Pensa nos casos difíceis','trata entradas estranhas e erros'],['Escrito do jeito da linguagem','segue o estilo de quem programa nela'],['Fácil de mexer depois','bem organizado para manutenção'],['Explica o que fez','documentação e instruções']];
+const split=me=>{const i=me.lastIndexOf('-');return [me.slice(0,i),me.slice(i+1)]};
+const info=m=>MOD[m]||{nome:m,curto:m,mono:m.slice(0,2),e:'gemini'};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// ---------- números: média exata (como statistics.mean do Python) e round(x, 2) do Python
+const K60=2**60,DV=new DataView(new ArrayBuffer(8));
+const bi=v=>BigInt(Math.round(v*K60));
+const vizinho=(v,dir)=>{DV.setFloat64(0,v);DV.setBigUint64(0,DV.getBigUint64(0)+BigInt(dir));return DV.getFloat64(0)};
+function mean(a){
+  if(!a.length)return 0;const n=BigInt(a.length);let S=0n;for(const x of a)S+=bi(x);
+  if(S<=0n)return Number(S)/K60/a.length;
+  let d=Number(S)/K60/a.length;const err=v=>{const e=bi(v)*n-S;return e<0n?-e:e};
+  for(;;){const lo=vizinho(d,-1),hi=vizinho(d,1);if(err(lo)<err(d))d=lo;else if(err(hi)<err(d))d=hi;else return d}
+}
+const sd=a=>{const m=mean(a);return Math.sqrt(mean(a.map(x=>(x-m)**2)))};
+function r2(v){
+  const s=Math.abs(v).toFixed(70),i=s.indexOf('.');
+  if(!/^50*$/.test(s.slice(i+3)))return +v.toFixed(2);
+  let k=BigInt(s.slice(0,i)+s.slice(i+1,i+3));if(k%2n)k+=1n;return Math.sign(v)*Number(k)/100;
+}
+const virg=s=>s.replace('.',',');
+const f2=v=>virg(r2(v).toFixed(2)), f1=v=>virg((Math.round(v*10)/10).toFixed(1));
+const sinal=v=>(v>=0?'+':'−')+f2(Math.abs(v));
+const minseg=s=>{s=Math.round(s);const m=Math.floor(s/60),r=s%60;return m?`${m} min${r?` ${r} s`:''}`:`${r} s`};
+const pct=v=>Math.round(v*100)+'%';
+
+// ---------- conferência com os relatórios (dados completos da Rodada 1, Grok incluído como legado)
+let confereA=true,confereB=true;
+(function conferir(){
+  const RA=D.runs,me=r=>r.m+'-'+r.x;
+  const notaA=r=>{const b=r.rb===null?0:r2(.7*r.p/10+.3*r.rb);if(r.g)return r2(b*r.g[1]);return r.s==='timeout'?0:b};
+  const fail=(f,...m)=>{console.assert(false,...m);return false};
+  for(const r of RA)if(Math.abs(notaA(r)-r.n)>1e-9)confereA=fail(0,'nota por tentativa diverge',me(r),r.t);
+  const g={},ga={};for(const r of RA.filter(r=>r.r===1)){(g[me(r)]=g[me(r)]||[]).push(r.n);(ga[me(r)]=ga[me(r)]||[]).push(r.na)}
+  const med={};for(const k in g){med[k]=mean(g[k]);if(g[k].length!==30||f2(med[k])!==f2(D.ref[k][0])||f2(mean(ga[k]))!==f2(D.ref[k][1]))confereA=fail(0,'média diverge do relatório',k)}
+  const ord=Object.keys(med).sort((a,b)=>r2(med[b])-r2(med[a])||med[b]-med[a]);
+  ord.forEach((k,i)=>{if(D.ref[k][2]!==i+1)confereA=fail(0,'posição diverge do relatório',k)});
+  const empDe={};RA.forEach(r=>empDe[me(r)]=r.e);
+  for(const e in D.refEmp)if(f2(mean(Object.keys(med).filter(k=>empDe[k]===e).map(k=>r2(med[k]))))!==f2(D.refEmp[e][0]))confereA=fail(0,'empresa diverge',e);
+  const RB=D.runsB,gb={i:{},ii:{}};
+  for(const r of RB){const nii=r2(.7*r.p/10+.3*r.rb),ni=r.s==='timeout'?0:nii;
+    if(Math.abs(nii-r.nii)>1e-9||Math.abs(ni-r.ni)>1e-9)confereB=fail(0,'B: nota por tentativa diverge',me(r),r.t);
+    (gb.i[me(r)]=gb.i[me(r)]||[]).push(r.ni);(gb.ii[me(r)]=gb.ii[me(r)]||[]).push(r.nii)}
+  for(const v of['i','ii']){const k='nota_'+v,m={};for(const x in gb[v])m[x]=mean(gb[v][x]);
+    Object.keys(m).sort((a,b)=>m[b]-m[a]).forEach((x,i)=>{if(Math.abs(m[x]-D.refB[x][k][0])>.005||D.refB[x][k][1]!==i+1)confereB=fail(0,'B diverge',k,x)});
+    for(const b in D.refBhm)if(Math.abs(m[b+'-high']-m[b+'-medium']-D.refBhm[b][k])>.005)confereB=fail(0,'B high−medium diverge',k,b)}
+})();
+
+// ---------- tentativas por teste e prazo
+function prep(r,extra){const o=Object.assign({r:1},r,extra);o.me=o.m+'-'+o.x;o.tipo=o.t.slice(0,2);o.aut=o.t.split('-').pop();if(!o.e)o.e=info(o.m).e;return o}
+const R1A=D.runs.filter(r=>r.r===1&&r.e!=='grok').map(r=>prep(r,{of:r.n}));
+const R1B=D.runsB.filter(r=>r.e!=='grok').map(r=>prep(r,{of:r.ni,B:1}));
+// bloco v3: só entram os modelos com as 30 tarefas completas e válidas
+const V3={status:String(V3RAW.status||''),modelos:Array.isArray(V3RAW.modelos)?V3RAW.modelos:[],ok:{A:[],B:[]},runs:{A:[],B:[]},problemas:[]};
+V3.placeholder=V3.status===PLACEHOLDER;V3.mock=/^MOCK/i.test(V3.status);
+if(V3ERRO)V3.problemas.push(V3ERRO);
+for(const P of['A','B']){
+  const lista=Array.isArray(V3RAW['runs'+P])?V3RAW['runs'+P]:[];
+  for(const me of V3.modelos){
+    const rs=lista.filter(r=>r&&r.m+'-'+r.x===me);if(!rs.length)continue;
+    const okCampos=rs.every(r=>typeof r.t==='string'&&!r.t.endsWith('-gemini')&&typeof r.p==='number'&&typeof r.d==='number'&&['ok','timeout'].includes(r.s)&&(r.rb===null||typeof r.rb==='number')&&typeof (P==='A'?r.n:r.ni)==='number');
+    const tarefas=new Set(rs.map(r=>r.t));
+    if(rs.length===30&&tarefas.size===30&&okCampos){V3.ok[P].push(me);V3.runs[P].push(...rs.map(r=>prep(r,{e:'gemini',of:P==='A'?r.n:r.ni,B:P==='B'?1:0,j:r.j||{},ji:r.ji||{}})))}
+    else V3.problemas.push(`${me} (prazo ${P==='A'?'normal':'estendido'}): ${rs.length} tentativas, ${tarefas.size} tarefas diferentes${okCampos?'':', campos faltando ou tarefa do próprio Gemini'}`);
+  }
+}
+const prazoOk=(t,p)=>t==='r1'||V3.placeholder||V3ERRO!==null||V3.ok[p].length>0||(p==='A'&&!V3.ok.B.length);
+const VCACHE={};
+function vista(t,p){
+  const k=t+p;if(VCACHE[k])return VCACHE[k];
+  const base=p==='A'?R1A:R1B;
+  const runs=t==='r1'?base:base.filter(r=>r.e!=='gemini').concat(V3.runs[p]);
+  const mes=[...new Set(runs.map(r=>r.me))];
+  const pend=t==='r1'?[]:V3.modelos.filter(me=>!mes.includes(me));
+  const JV={};runs.forEach(r=>{for(const[j,v]of Object.entries(r.j||{}))(JV[j]=JV[j]||[]).push(v)});
+  const MU={};for(const j in JV)MU[j]=mean(JV[j]);const MU0=mean(Object.values(JV).flat());
+  return VCACHE[k]={t,p,runs,mes,pend,emp:COMP.filter(e=>mes.some(me=>info(split(me)[0]).e===e)),MU,MU0,JV};
+}
+// ---------- nota: oficial = a do Avaliador; experimentos (aba técnica) recalculam com a mesma fórmula
+const OF={wp:70,vies:false,parcial:false};
+const S={t:'v3',p:MANCHETE,wp:70,vies:false,parcial:false,a:null,b:null,modo:'emp',aba:'ranking',sub:'confiar'};
+const st=()=>({wp:S.wp,vies:S.vies,parcial:S.parcial});
+const ehOficial=s=>s.wp===70&&!s.vies&&!s.parcial;
+function nota(r,s,V){
+  if(ehOficial(s))return r.of;
+  let rb=r.rb;
+  if(rb!==null&&s.vies){const v=Object.entries(r.j||{}).map(([k,x])=>Math.min(10,Math.max(0,x-V.MU[k]+V.MU0)));if(v.length)rb=mean(v)}
+  if(r.s==='timeout'&&!(s.parcial&&r.B))return 0;
+  if(rb===null)return 0;
+  return r2(s.wp/100*r.p/10+(100-s.wp)/100*rb);
+}
+function stats(rs,s,V){
+  const jul=rs.filter(r=>r.rb!==null&&r.s==='ok');
+  return {n:rs.length,nota:mean(rs.map(r=>nota(r,s,V))),pct:mean(rs.map(r=>r.p)),rub:jul.length?mean(jul.map(r=>r.rb)):0,
+    tempo:mean(rs.map(r=>r.d)),to:rs.filter(r=>r.s==='timeout').length,comp:rs.filter(r=>r.s==='ok'&&r.p===100).length,rs};
+}
+function porMe(V,s){const o={};for(const me of V.mes)o[me]=stats(V.runs.filter(r=>r.me===me),s,V);return o}
+const ordem=(pm,mes)=>mes.slice().sort((a,b)=>r2(pm[b].nota)-r2(pm[a].nota)||pm[b].nota-pm[a].nota||a.localeCompare(b));
+const V=()=>vista(S.t,S.p);
+const empDe=me=>info(split(me)[0]).e;
+
+// ---------- robôs com monograma (cor = empresa; monograma = modelo)
+const EXTRA={
+ claude:'<line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><path d="M20 0.5 l1.3 2.9 2.9 1.3 -2.9 1.3 -1.3 2.9 -1.3 -2.9 -2.9 -1.3 2.9 -1.3z" fill="#FFD23F" stroke="#2B2340" stroke-width="1.1" stroke-linejoin="round"/>',
+ codex:'<line x1="20" y1="5" x2="20" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="20" cy="4.5" r="2.8" fill="#FFD23F" stroke="#2B2340" stroke-width="1.5"/><rect x="1.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/><rect x="34.5" y="18" width="4" height="9" rx="2" fill="#2B2340"/>',
+ gemini:'<line x1="13" y1="4" x2="13" y2="10" stroke="#2B2340" stroke-width="2.5"/><line x1="27" y1="4" x2="27" y2="10" stroke="#2B2340" stroke-width="2.5"/><circle cx="13" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/><circle cx="27" cy="4" r="2.4" fill="#8FB0FF" stroke="#2B2340" stroke-width="1.4"/>',
+ grok:'<rect x="10" y="5.5" width="20" height="5" rx="2.5" fill="#6B6280" stroke="#2B2340" stroke-width="1.8"/><circle cx="3.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/><circle cx="36.5" cy="22.5" r="3" fill="#FFD23F" stroke="#2B2340" stroke-width="1.6"/>'};
+const ROSTO={claude:INK,codex:INK,gemini:'#fff',grok:'#fff'};
+// o: s (px), mono (2 letras), toga, coroa, rot (nome acessível; sem ele o robô é decorativo)
+function robo(e,o={}){
+  const f=ROSTO[e],sw=`stroke="${f}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"`;
+  const rosto=o.mono?`<text x="20" y="${o.mono.length>1?27:28.5}" text-anchor="middle" font-size="${o.mono.length>1?12.5:15}" style="fill:${f};font-family:Fredoka,Nunito,sans-serif;font-weight:700">${esc(o.mono)}</text>`
+    :`<path d="M12 18 l5.5 4 -5.5 4" ${sw}/><line x1="20.5" y1="28" x2="28" y2="28" ${sw}/>`;
+  const toga=o.toga?'<path d="M7 36 h26 l5 20 h-36z" fill="#2B2340"/><path d="M14 36 l6 8 6-8" fill="#fff" stroke="#2B2340" stroke-width="1.5" stroke-linejoin="round"/>':'';
+  const vb=o.toga?'0 0 40 56':'0 0 40 40';
+  const a11y=o.rot?`role="img" aria-label="${esc(o.rot)}"`:'aria-hidden="true"';
+  return `<svg class="robo" viewBox="${vb}" ${o.s?`width="${o.s}" height="${o.s*(o.toga?1.4:1)}"`:''} ${a11y} overflow="visible"><g class="corpo">${toga}${EXTRA[e]}
+  <rect x="5" y="10" width="30" height="25" rx="7" fill="${COR[e]}" stroke="#2B2340" stroke-width="2.5"/>
+  <path d="M8 14 q0-2 2-2 h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>${rosto}</g></svg>`;
+}
+const roboMe=(me,o={})=>{const[m]=split(me),I=info(m);return robo(I.e,Object.assign({mono:I.mono},o))};
+$('#defs').innerHTML=EMPS.map(e=>`<pattern id="hp-${e}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="${COR[e]}"/><rect width="2.4" height="6" fill="#fff" fill-opacity="${e==='codex'?1:.6}"/></pattern>`).join('');
+const ef=x=>`<span class="ef ${x==='high'?'high':'medium'}" aria-label="esforço ${x}"><i aria-hidden="true">${x==='high'?'▮▮':'▮▯'}</i> ${x}</span>`;
+const nomeV=me=>{const[m,x]=split(me);return `<b>${esc(info(m).nome)}</b>${ef(x)}`};
+const nomeTxt=me=>{const[m,x]=split(me);return `${info(m).nome} ${x}`};
+const tarefaLeiga=t=>`${TIPO[t.slice(0,2)]||t} · escrita pelo ${EMPN[t.split('-').pop()]||t.split('-').pop()}`;
+const preenche=(me,cls)=>`${split(me)[1]==='high'?'h-':'c-'}${empDe(me)}`;
+
+// ---------- folha (detalhes ao toque)
+function abrir(titulo,html){$('#folhaT').textContent=titulo;$('#folhaC').innerHTML=html;$('#folha').hidden=false;$('#folha .x').focus()}
+function fecharFolha(){$('#folha').hidden=true}
+$('#folha .fundo').onclick=fecharFolha;$('#folha .x').onclick=fecharFolha;
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#folha').hidden)fecharFolha()});
+function tabela(cab,linhas){return `<table><thead><tr>${cab.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${linhas.map(l=>`<tr>${l.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`}
+function listaTent(rs,col){
+  const s=st(),Vv=V();
+  return `<div class="tw">${tabela([col==='me'?'versão':'tarefa','resultado','testes que passaram','tempo','nota'],
+    rs.slice().sort((a,b)=>(col==='me'?a.me.localeCompare(b.me):a.t.localeCompare(b.t))).map(r=>[
+      col==='me'?nomeV(r.me):esc(tarefaLeiga(r.t)),
+      r.s==='timeout'?'<span class="st-timeout">⏱ estourou o tempo</span>':'<span class="st-ok">✔ entregou</span>',
+      `${r.tp} de ${r.tt}`,minseg(r.d),`<b>${f2(nota(r,s,Vv))}</b>`]))}</div>`;
+}
+// ---------- glossário
+const GLOSS=[['Teste novo e teste anterior','O teste anterior é a Rodada 1. O teste novo (v3) traz o Gemini Neon e o Gemini Hydrogen; Claude e Codex aparecem com as mesmas tentativas do teste anterior, sem rodar de novo.'],
+  ['Prazo normal e prazo estendido','No prazo normal cada tarefa tinha 3 minutos (5 em nove tarefas maiores). No estendido, quem estourou o tempo pôde tentar de novo com 7 minutos.'],
+  ['medium e high','São dois níveis de esforço do mesmo modelo. high pede mais capricho ao modelo, e em geral leva mais tempo.'],
+  ['Versão','Um modelo num nível de esforço, por exemplo Claude Haiku 5.5 high.'],
+  ['Nota (0 a 10)','70% vem dos testes automáticos e 30% da avaliação dos juízes. A nota da versão é a média das 30 tarefas.'],
+  ['Testes automáticos','Programas que conferem sozinhos se o código faz o que a tarefa pede. O modelo não vê esses testes.'],
+  ['Avaliação dos juízes','Duas IAs de outras empresas leem o código, sem saber quem o escreveu, e dão nota para clareza, cuidado com erros, organização e explicação.'],
+  ['Estourou o tempo','O modelo não terminou dentro do prazo. A tarefa vale zero.'],
+  ['Empate técnico','Diferença menor que 0,30 ponto. Isso é menos do que uma única tarefa zerada muda a média, então pode ser sorte.'],
+  ['Autora da tarefa','A empresa cujo modelo escreveu a tarefa. Ninguém resolve tarefa escrita pela própria empresa.']];
+function abrirGloss(foco){abrir('O que significa cada termo',`<dl>${GLOSS.map(([t,d])=>`<dt${foco===t?' style="background:#FFF3C4"':''}>${t}</dt><dd>${d}</dd>`).join('')}</dl>`)}
+$('#btAjuda').onclick=()=>abrirGloss();
+document.addEventListener('click',e=>{const t=e.target.closest('.termo');if(t)abrirGloss(t.dataset.g)});
+const termo=(txt,g)=>`<button class="termo" data-g="${esc(g)}">${txt}</button>`;
+
+// ---------- cabeçalho: teste, prazo, avisos e resumo
+$('#crew').innerHTML=COMP.map(e=>robo(e,{s:34,rot:EMPN[e]})).join('');
+const tituloT=()=>S.t==='v3'?'Teste novo':'Teste anterior';
+const prazoTxt=p=>p==='A'?'prazo normal':'prazo estendido (7 min)';
+function sincTopo(){
+  $$('#segTeste button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===S.t));
+  $$('#segPrazo button').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.p===S.p);const ok=prazoOk(S.t,b.dataset.p);b.disabled=!ok;b.title=ok?'':'este teste não teve prazo estendido'});
+  $('#titulo').textContent=tituloT();$('#tituloSub').textContent=S.t==='v3'?'v3 · benchmark 1.0':'Rodada 1 · benchmark';
+  const tag=`${S.t==='v3'?'teste novo':'teste anterior'} · ${prazoTxt(S.p)}`;
+  for(const id of['#tagRank','#tagComp','#tagEsf','#tagTar'])$(id).textContent=tag;
+  const alt=!ehOficial(st());
+  $('#avisoAlt').classList.toggle('oculto',!alt);
+  if(alt)$('#avisoAlt').innerHTML=`<span>⚠️ <b>Você está vendo uma versão com regras alteradas</b> (${[S.wp!==70?`${S.wp}% testes e ${100-S.wp}% juízes`:'',S.vies?'viés dos juízes corrigido':'',S.parcial?'entrega pela metade contando':''].filter(Boolean).join(', ')}). Não é o ranking oficial.</span><button class="btn" id="btOficial">voltar ao oficial</button>`;
+  if(alt)$('#btOficial').onclick=voltarOficial;
+  const Vv=V(),pend=S.t==='v3'&&Vv.pend.length;
+  $('#avisoPend').classList.toggle('oculto',!(S.t==='v3'&&(pend||V3.problemas.length)));
+  $('#avisoPend').innerHTML=pend?`<span>⏳ <b>Gemini Neon e Gemini Hydrogen: ${V3.placeholder?'aguardando rodada v3':'dados incompletos'}.</b> Por enquanto o teste novo mostra Claude e Codex, com as mesmas tentativas do teste anterior.${V3.problemas.length?' Problemas no bloco de dados: '+esc(V3.problemas.join('; ')):''}</span>`
+    :`<span>Aviso: ${esc(V3.problemas.join('; '))}</span>`;
+  $('#avisoMock').classList.toggle('oculto',!(V3.mock&&S.t==='v3'));
+  $('#avisoMock').innerHTML='<span>🧪 <b>DADOS DE TESTE (MOCK)</b>: os números do Gemini novo nesta página são falsos, só para conferir o site.</span>';
+}
+let resumoAberto=false;
+function frasesResumo(pm,ord){
+  const Vv=V(),s1=[],lid=ord[0];if(!lid)return ['Ainda não há números para este teste.'];
+  const grupo=ord.filter(me=>pm[lid].nota-pm[me].nota<TIE);
+  let f;
+  if(grupo.length===1)f=`${nomeV(lid)} ficou em 1º, com ${f2(pm[lid].nota)} de 10, ${f2(pm[lid].nota-pm[ord[1]].nota)} ponto à frente do 2º.`;
+  else{const es=[...new Set(grupo.map(empDe))];
+    f=es.length===1&&grupo.length===Vv.mes.filter(me=>empDe(me)===es[0]).length?`As ${grupo.length} versões do <b>${EMPN[es[0]]}</b> ficaram na frente, praticamente empatadas (de ${f2(pm[grupo[grupo.length-1]].nota)} a ${f2(pm[lid].nota)}).`
+     :`${grupo.length} versões ficaram praticamente empatadas na frente: ${grupo.map(me=>`<b>${esc(info(split(me)[0]).curto)}</b> ${split(me)[1]}`).join(', ')} (de ${f2(pm[grupo[grupo.length-1]].nota)} a ${f2(pm[lid].nota)}).`}
+  const hm=linhasHM(pm,Vv),mel=hm.filter(o=>o.d>=TIE).length,pio=hm.filter(o=>o.d<=-TIE).length,emp=hm.length-mel-pio;
+  const partes=[emp?`quase não mudou a nota em ${emp}`:'',mel?`melhorou em ${mel}`:'',pio?`piorou em ${pio}`:''].filter(Boolean);
+  const fe=hm.length?`Com este prazo, pedir mais capricho (high) ${partes.join(', ').replace(/, ([^,]*)$/,' e $1')} de ${hm.length} modelos.`:'';
+  const fc='As notas vêm de juízes de outras empresas, que não sabem quem fez o código; diferenças pequenas podem ser sorte, por isso marcamos empates.';
+  if(S.t==='v3'&&Vv.pend.length)return [`Os números do Gemini Neon e do Gemini Hydrogen ainda estão chegando. Por enquanto: ${f.charAt(0).toLowerCase()+f.slice(1)}`,fe,fc].filter(Boolean);
+  return [f,fe,fc].filter(Boolean);
+}
+function renderResumo(pm,ord){
+  const fr=frasesResumo(pm,ord);
+  $('#resumo').innerHTML=`<p>${fr[0]}</p>${fr.slice(1).map(x=>`<p class="r2${resumoAberto?'':' oculto'}">${x}</p>`).join('')}${fr.length>1?`<button class="mais-r" id="btResumo" aria-expanded="${resumoAberto}">${resumoAberto?'mostrar menos ▴':'mais 2 frases ▾'}</button>`:''}`;
+  const b=$('#btResumo');if(b)b.onclick=()=>{resumoAberto=!resumoAberto;renderResumo(pm,ord)};
+}
+
+// ---------- 1. ranking
+const lista=$('#lista'),LINHA={};
+let primeira=true;
+function linha(me){
+  if(LINHA[me])return LINHA[me];
+  const[m,x]=split(me),el=document.createElement('button');el.className='lr';el.dataset.me=me;
+  el.innerHTML=`<span class="pos"></span><span class="rb">${roboMe(me)}</span><span class="nm">${nomeV(me)}<span class="bar">${[2.5,5,7.5].map(v=>`<s class="t10" style="left:${v*10}%"></s>`).join('')}<i class="${preenche(me)}"></i></span><span class="fr"></span></span><span class="sc"><b></b><small class="dl"></small></span>`;
+  el.onclick=()=>{if(el.classList.contains('pend'))return;S.a=me;const o=ordem(PMcur,V().mes);if(S.b===me||!S.b)S.b=o.find(z=>z!==me);ir('comparar')};
+  return LINHA[me]=el;
+}
+let PMcur={};
+function renderRanking(pm){
+  const Vv=V(),ord=ordem(pm,Vv.mes),lid=ord[0],vis=S.aba==='ranking';
+  const antes=new Map();if(vis&&!primeira&&!reduz)for(const me in LINHA)if(LINHA[me].isConnected)antes.set(me,LINHA[me].getBoundingClientRect().top);
+  lista.innerHTML='';
+  ord.forEach((me,i)=>{
+    const el=linha(me),s=pm[me],pos=i+1,dif=pm[lid].nota-s.nota,prev=i?pm[ord[i-1]].nota-s.nota:null;
+    el.classList.remove('pend');el.classList.toggle('top',pos===1);el.disabled=false;
+    el.querySelector('.pos').textContent=pos+'º';
+    el.querySelector('.rb').innerHTML=(pos===1?'<span class="coroa" aria-hidden="true">👑</span>':'')+roboMe(me);
+    const bi_=el.querySelector('.bar i');
+    if(primeira&&!reduz){bi_.style.width='0';requestAnimationFrame(()=>requestAnimationFrame(()=>bi_.style.width=(s.nota*10)+'%'))}else bi_.style.width=(s.nota*10)+'%';
+    el.querySelector('.sc b').textContent=f2(s.nota);
+    const empTop=pos>1&&dif<TIE,empCima=pos>1&&!empTop&&prev<TIE;
+    el.querySelector('.dl').innerHTML=pos===1?'1º lugar':`−${f2(dif)} do 1º`;
+    el.querySelector('.fr').innerHTML=`resolveu por completo <b>${s.comp} de ${s.n}</b>${s.to?` · <span class="to">${s.to} estour${s.to>1?'aram':'ou'} o tempo</span>`:''}${empTop?'<br><span class="emp-t">≈ empate técnico com o 1º</span>':empCima?'<br><span class="emp-t">≈ empate técnico com o de cima</span>':''}`;
+    el.setAttribute('aria-label',`${pos}º lugar: ${nomeTxt(me)}, nota ${f2(s.nota)} de 10${pos>1?`, ${f2(dif)} abaixo do 1º`:''}. Resolveu por completo ${s.comp} de ${s.n} tarefas${s.to?`, ${s.to} estouraram o tempo`:''}${empTop?'. Empate técnico com o 1º':''}. Toque para comparar.`);
+    lista.appendChild(el);
+  });
+  for(const me of Vv.pend){const el=linha(me);el.classList.add('pend');el.classList.remove('top');
+    el.querySelector('.pos').textContent='–';el.querySelector('.rb').innerHTML=roboMe(me);el.querySelector('.bar i').style.width='0';
+    el.querySelector('.sc b').textContent='⏳';el.querySelector('.dl').textContent='';
+    el.querySelector('.fr').innerHTML='<b>aguardando rodada v3</b>';el.setAttribute('aria-label',`${nomeTxt(me)}: aguardando rodada v3`);el.setAttribute('aria-disabled','true');lista.appendChild(el)}
+  if(antes.size){const mov=[];
+    for(const me of ord){const el=LINHA[me];if(!antes.has(me))continue;const dy=antes.get(me)-el.getBoundingClientRect().top;
+      if(Math.abs(dy)>1){el.style.transition='none';el.style.transform=`translateY(${dy}px)`;el.style.zIndex=dy>0?3:1;mov.push([el,dy])}}
+    lista.offsetHeight;
+    for(const[el,dy]of mov){el.style.transition='transform 420ms cubic-bezier(.34,1.3,.64,1)';el.style.transform='';
+      if(dy>0){const r=el.querySelector('.rb');r.classList.remove('pula');void r.offsetWidth;r.classList.add('pula')}
+      setTimeout(()=>{el.style.zIndex='';el.style.transition=''},440)}}
+  $('#leadRank').innerHTML=`A barra vai de 0 a 10. Ao lado de cada nota, quanto falta para o 1º. ${termo('Empate técnico','Empate técnico')} = diferença menor que 0,30 ponto.`;
+  $('#tabRank').innerHTML=tabela(['#','versão','nota','distância do 1º','resolveu por completo','estourou o tempo','testes que passaram','nota dos juízes*','tempo médio'],
+    ord.map((me,i)=>{const s=pm[me];return [i+1+'º',nomeV(me),`<b>${f2(s.nota)}</b>`,i?'−'+f2(pm[lid].nota-s.nota):'—',`${s.comp} de ${s.n}`,s.to,f1(s.pct)+'%',f2(s.rub),minseg(s.tempo)]})
+    .concat(Vv.pend.map(me=>['–',nomeV(me),'aguardando rodada v3','','','','','',''])))+'<p class="nota-p">* nota dos juízes: média só das tarefas entregues no prazo.</p>';
+  renderTopo(pm,ord);renderGem(pm);renderEmp(pm);renderEse(pm,ord);
+  $('#seloContas').innerHTML=confereA&&confereB?'<span class="ok-ref">✔ As contas deste site batem com o relatório oficial.</span>':'<span class="ruim">✖ Atenção: as contas não bateram com o relatório oficial.</span>';
+}
+function renderTopo(pm,ord){
+  const lo=8.5,hi=10,cima=ord.filter(me=>pm[me].nota>=lo),lid=ord[0],W=340,L=96,R=300,H=24,top=26,X=v=>L+(R-L)*(v-lo)/(hi-lo);
+  $('#topoSub').textContent='o eixo começa em 8,5';
+  let g='';
+  if(lid){const z0=Math.max(lo,pm[lid].nota-TIE);g+=`<rect x="${X(z0)}" y="${top-8}" width="${X(pm[lid].nota)-X(z0)}" height="${cima.length*H+8}" fill="#FFF3C4" stroke="#E2C866" stroke-dasharray="4 3"/>`}
+  for(const v of[8.5,9,9.5,10])g+=`<line x1="${X(v)}" y1="${top-8}" x2="${X(v)}" y2="${top+cima.length*H}" stroke="#E7E0F0" stroke-width="1.5"/><text x="${X(v)}" y="${top-12}" font-size="11" text-anchor="middle" style="fill:#5E5573">${f1(v)}</text>`;
+  cima.forEach((me,i)=>{const y=top+i*H+H/2,[m,x]=split(me),c=COR[empDe(me)];
+    g+=`<svg x="0" y="${y-10}" width="20" height="20">${roboMe(me).replace('<svg ','<svg width="20" height="20" ')}</svg><text x="24" y="${y+4}" font-size="12">${esc(info(m).curto)} ${x==='high'?'▮▮':'▮▯'}</text>
+      <line x1="${L}" y1="${y}" x2="${X(pm[me].nota)}" y2="${y}" stroke="#E7E0F0" stroke-width="2"/>
+      <circle cx="${X(pm[me].nota)}" cy="${y}" r="7.5" fill="${x==='high'?`url(#hp-${empDe(me)})`:c}" stroke="${INK}" stroke-width="2.5"/>
+      <text x="${W-2}" y="${y+4}" font-size="12" text-anchor="end">${f2(pm[me].nota)}</text>`});
+  const sv=$('#topo');sv.setAttribute('viewBox',`0 0 ${W} ${top+cima.length*H+6}`);sv.innerHTML=g;
+  const fora=ord.length-cima.length,grupo=ord.filter(me=>pm[lid].nota-pm[me].nota<TIE).length;
+  $('#topoTxt').innerHTML=`A faixa amarela marca quem está em empate técnico com o 1º (${grupo} ${grupo>1?'versões':'versão'}). ${fora?`Mais ${fora} ${fora>1?'versões ficaram':'versão ficou'} abaixo de 8,5 e não aparece${fora>1?'m':''} aqui (veja a lista).`:''}`;
+}
+function renderGem(pm){
+  const card=$('#cardGem');card.classList.toggle('oculto',S.t!=='v3');if(S.t!=='v3')return;
+  const Va=vista('r1',S.p),pa=porMe(Va,OF),antigos=Va.mes.filter(me=>empDe(me)==='gemini').sort((a,b)=>pa[b].nota-pa[a].nota);
+  const Vv=V(),novos=V3.modelos.slice(),temNovo=novos.filter(me=>pm[me]).sort((a,b)=>pm[b].nota-pm[a].nota);
+  const lin=(me,p)=>`<div class="gl"><span>${roboMe(me,{s:22})} ${esc(info(split(me)[0]).curto)}${ef(split(me)[1])}</span>${p?`<b>${f2(p.nota)}</b>`:'<span class="pd">aguardando</span>'}</div>`;
+  let man='Gemini antigo × Gemini novo';
+  let txt=`Mesmas tarefas, mesmos juízes e mesmo prazo. Os antigos vêm do teste anterior.`;
+  if(temNovo.length&&antigos.length){const n=temNovo[0],a=antigos[0],d=pm[n].nota-pa[a].nota;
+    txt=`O melhor Gemini novo (${esc(info(split(n)[0]).curto)} ${split(n)[1]}) tirou <b>${f2(pm[n].nota)}</b>, contra ${f2(pa[a].nota)} do melhor antigo: ${Math.abs(d)<TIE?'empate técnico':d>0?`<b>${sinal(d)} ponto</b>, o Gemini novo melhorou`:`<b>${sinal(d)} ponto</b>, o Gemini novo ficou atrás`}. Mesmas tarefas, mesmos juízes e mesmo prazo.`}
+  else txt+=' Os números do Neon e do Hydrogen ainda não chegaram (aguardando rodada v3).';
+  card.innerHTML=`<h3>${man} <small>${prazoTxt(S.p)}</small></h3><p style="font-size:15px;line-height:1.4">${txt}</p>
+    <div class="ga" style="margin-top:8px"><div><h4>Antigos (teste anterior)</h4>${antigos.map(me=>lin(me,pa[me])).join('')}</div><div><h4>Novos (teste novo)</h4>${novos.map(me=>lin(me,pm[me])).join('')}</div></div>`;
+}
+function renderEmp(pm){
+  const Vv=V(),eo=COMP.slice().map(e=>{const ms=Vv.mes.filter(me=>empDe(me)===e);return {e,ms,m:ms.length?mean(ms.map(me=>r2(pm[me].nota))):null}}).sort((a,b)=>(b.m??-1)-(a.m??-1));
+  $('#empMed').innerHTML=eo.map(o=>`<div class="df"><span class="nm">${robo(o.e,{s:26})}<span>${EMPN[o.e]} <small style="color:var(--ink2);font-weight:700">${DONO[o.e]}${o.ms.length?` · ${o.ms.length} versões`:''}</small></span></span><em>${o.m===null?'<span style="color:var(--ink2);font-size:13px">aguardando rodada v3</span>':`<b class="f" style="font-size:18px">${f2(o.m)}</b>`}</em></div>`).join('');
+}
+// "E se…?" — presets que reordenam o ranking (os controles finos ficam na aba Técnico)
+let eseMsg='';
+function renderEse(pm,ord){
+  const outro=S.p==='A'?'B':'A',podeOutro=prazoOk(S.t,outro);
+  const bts=[podeOutro?['prazo',S.p==='A'?'⏱ E se o prazo fosse de 7 minutos?':'⏱ E se o prazo fosse o normal (3 a 5 min)?']:null,
+    ['testes','🧪 E se só valessem os testes automáticos?'],['juizes','🧑‍⚖️ E se só valesse a avaliação dos juízes?'],
+    !ehOficial(st())?['oficial','↺ Voltar ao ranking oficial']:null].filter(Boolean);
+  $('#ese').innerHTML=bts.map(([k,t])=>`<button class="btn" data-k="${k}" aria-pressed="${(k==='testes'&&S.wp===100)||(k==='juizes'&&S.wp===0)}">${t}</button>`).join('');
+  $$('#ese button').forEach(b=>b.onclick=()=>ese(b.dataset.k));
+  $('#eseTxt').innerHTML=eseMsg;
+}
+function ese(k){
+  const Vv0=V(),pm0=porMe(Vv0,st()),o0=ordem(pm0,Vv0.mes);
+  if(k==='prazo'){S.p=S.p==='A'?'B':'A'}
+  else if(k==='testes'){S.wp=S.wp===100?70:100}
+  else if(k==='juizes'){S.wp=S.wp===0?70:0}
+  else if(k==='oficial'){Object.assign(S,OF)}
+  const Vv=V(),pm=porMe(Vv,st()),o=ordem(pm,Vv.mes);
+  const comuns=o.filter(me=>o0.includes(me));
+  let sobe=null,g=0;for(const me of comuns){const d=o0.indexOf(me)-o.indexOf(me);if(d>g){g=d;sobe=me}}
+  const lider=o[0]===o0[0]?`O 1º continua ${nomeV(o[0])}.`:`Novo 1º lugar: ${nomeV(o[0])} (antes era ${esc(nomeTxt(o0[0]))}).`;
+  eseMsg=k==='oficial'?'De volta ao ranking oficial.':`${lider} ${sobe?`Quem mais sobe: ${nomeV(sobe)}, do ${o0.indexOf(sobe)+1}º para o ${o.indexOf(sobe)+1}º.`:'Ninguém sobe de posição.'}`;
+  $('#aviso').textContent=eseMsg.replace(/<[^>]+>/g,'');
+  mudou();
+}
+function voltarOficial(){Object.assign(S,OF);eseMsg='De volta ao ranking oficial.';mudou()}
+
+// ---------- 2. comparar
+function perfil(me){
+  const rs=V().runs.filter(r=>r.me===me),jul=rs.filter(r=>r.s==='ok'&&Object.keys(r.ji||{}).length);
+  const it=[0,1,2,3,4].map(i=>jul.length?mean(jul.map(r=>mean(Object.values(r.ji).map(a=>a[i]))))/2:0);
+  return {it,testes:mean(rs.map(r=>r.p))/100,pont:rs.length?1-rs.filter(r=>r.s==='timeout').length/rs.length:0,rs};
+}
+function usarSel(pm,ord){
+  if(!ord.includes(S.a))S.a=ord[0];
+  if(!ord.includes(S.b)||S.b===S.a)S.b=ord.find(me=>me!==S.a&&empDe(me)!==empDe(S.a))||ord.find(me=>me!==S.a);
+}
+function renderComparar(pm){
+  const Vv=V(),ord=ordem(pm,Vv.mes);usarSel(pm,ord);
+  for(const[k,id]of[['a','#selA'],['b','#selB']]){
+    $(id).innerHTML=ord.map((me,i)=>`<option value="${me}"${S[k]===me?' selected':''}>${i+1}º · ${esc(nomeTxt(me))} (${f2(pm[me].nota)})</option>`).join('')
+      +Vv.pend.map(me=>`<option disabled>${esc(nomeTxt(me))} (aguardando rodada v3)</option>`).join('');
+    const me=S[k];
+    $(id).parentNode.querySelector('.ci').innerHTML=`${roboMe(me)}<div>${nomeV(me)}<small>${f2(pm[me].nota)} de 10 · ${ord.indexOf(me)+1}º lugar</small></div>`;
+  }
+  const A=perfil(S.a),B=perfil(S.b),ca=COR[empDe(S.a)];
+  const crit=ITENS_L.map(([n,d],i)=>[n,d,A.it[i],B.it[i]]).concat([['Passou nos testes','testes automáticos',A.testes,B.testes],['Terminou no prazo','tarefas sem estourar o tempo',A.pont,B.pont]]);
+  $('#crit').innerHTML=crit.map(([n,d,a,b])=>{const dd=a-b,w=Math.abs(dd)<.03?'empate':dd>0?'A':'B';
+    return `<div class="cl"><span class="lb">${n}<small>${d}</small></span><span class="vs"><span class="${w==='A'?'ganha':''}">A ${pct(a)}</span> · <span class="${w==='B'?'ganha':''}">B ${pct(b)}</span><br><small>${w==='empate'?'empate':w+' melhor'}</small></span>
+      <span class="trilho" aria-hidden="true"><i class="pb" style="left:${b*100}%"></i><i style="left:${a*100}%;background:${ca}"></i></span></div>`}).join('');
+  $('#legA').style.background=ca;
+  // diferença por tipo de tarefa (A − B, em torno de zero)
+  const tipos=TK.map(t=>{const ra=A.rs.filter(r=>r.tipo===t),rb=B.rs.filter(r=>r.tipo===t),s=st();
+    const a=ra.length?mean(ra.map(r=>nota(r,s,Vv))):null,b=rb.length?mean(rb.map(r=>nota(r,s,Vv))):null;return {t,a,b,d:a!==null&&b!==null?a-b:null,ra,rb}});
+  const vals=tipos.filter(o=>o.d!==null),M=Math.max(1,Math.ceil(Math.max(...vals.map(o=>Math.abs(o.d)))));
+  const W=340,L=112,R=330,C=(L+R)/2,H=26,top=30,X=v=>C+(R-L)/2*v/M;
+  let g=`<text x="${C-6}" y="12" font-size="11" text-anchor="end" style="fill:#5E5573">◀ B melhor</text><text x="${C+6}" y="12" font-size="11" style="fill:#5E5573">A melhor ▶</text>`;
+  g+=`<rect x="${X(-TIE)}" y="${top-8}" width="${X(TIE)-X(-TIE)}" height="${tipos.length*H+8}" fill="#EEE9F6"/>`;
+  for(const v of[-M,0,M])g+=`<line x1="${X(v)}" y1="${top-8}" x2="${X(v)}" y2="${top+tipos.length*H}" stroke="${v===0?INK:'#E7E0F0'}" stroke-width="${v===0?2:1.5}"/><text x="${X(v)}" y="${top-11}" font-size="10" text-anchor="middle" style="fill:#5E5573">${v>0?'+':v<0?'−':''}${Math.abs(v)}</text>`;
+  let va=0,vb=0,ve=0;
+  tipos.forEach((o,i)=>{const y=top+i*H+H/2;
+    g+=`<g class="lin" data-t="${o.t}" role="button" tabindex="0" aria-label="${TIPO[o.t]}: A ${o.a===null?'sem tarefa':f2(o.a)}, B ${o.b===null?'sem tarefa':f2(o.b)}"><rect class="hit" x="0" y="${y-H/2}" width="${W}" height="${H}" fill="transparent" rx="6"/><text x="2" y="${y+4}" font-size="12">${TIPO_C[o.t]}</text>`;
+    if(o.d===null){g+=`<text x="${C}" y="${y+4}" font-size="11" text-anchor="middle" style="fill:#5E5573">sem tarefa deste tipo para um dos dois</text></g>`;return}
+    const emp=Math.abs(o.d)<TIE;if(emp)ve++;else if(o.d>0)va++;else vb++;
+    const x0=Math.min(X(0),X(o.d)),w=Math.max(3,Math.abs(X(o.d)-X(0))),cor=o.d>0?ca:'#fff';
+    g+=`<rect x="${x0}" y="${y-7}" width="${w}" height="14" rx="4" fill="${emp?'#C9C2D6':cor}" stroke="${INK}" stroke-width="2"${o.d<0&&!emp?' stroke-dasharray="4 2"':''}/>`;
+    g+=`<text x="${o.d>=0?Math.min(X(o.d)+4,R-30):Math.max(X(o.d)-4,L+30)}" y="${y+4}" font-size="11" text-anchor="${o.d>=0?'start':'end'}">${emp?'≈':o.d>0?'A ':'B '}${f2(Math.abs(o.d))}</text></g>`});
+  const sv=$('#difTipo');sv.setAttribute('viewBox',`0 0 ${W} ${top+tipos.length*H+4}`);sv.innerHTML=g;
+  const det=t=>{const o=tipos.find(x=>x.t===t);abrir(`${TIPO[t]}: A × B`,`<p style="font-weight:800;margin-bottom:4px">A · ${nomeV(S.a)}</p>${o.ra.length?listaTent(o.ra):'<p>sem tarefa deste tipo</p>'}<p style="font-weight:800;margin:10px 0 4px">B · ${nomeV(S.b)}</p>${o.rb.length?listaTent(o.rb):'<p>sem tarefa deste tipo</p>'}`)};
+  $$('#difTipo .lin').forEach(el=>{el.onclick=()=>det(el.dataset.t);el.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();det(el.dataset.t)}}});
+  $('#tabDif').innerHTML=tabela(['tipo de tarefa','A','B','diferença'],tipos.map(o=>[TIPO[o.t],o.a===null?'—':f2(o.a),o.b===null?'—':f2(o.b),o.d===null?'—':Math.abs(o.d)<TIE?'empate':(o.d>0?'A ':'B ')+f2(Math.abs(o.d))]));
+  const n=vals.length;$('#pA').textContent=`${va} de ${n}`;$('#pB').textContent=`${vb} de ${n}`;$('#pE').textContent=`${ve} de ${n}`;
+  const dA=pm[S.a].nota-pm[S.b].nota;
+  $('#compIns').innerHTML=roboMe(S.a,{s:40})+`<div><b class="man">${Math.abs(dA)<TIE?'Empate técnico na nota geral':`${dA>0?'A':'B'} está ${f2(Math.abs(dA))} ponto à frente`}</b><p>A foi melhor em ${va}, B em ${vb} e houve empate em ${ve} dos ${n} tipos de tarefa que os dois fizeram. A resolveu por completo ${pm[S.a].comp} de ${pm[S.a].n} tarefas; B, ${pm[S.b].comp} de ${pm[S.b].n}.</p></div>`;
+  $('#tempoAB').innerHTML=`⏱ <b>Tempo médio por tarefa:</b> A ${minseg(pm[S.a].tempo)} · B ${minseg(pm[S.b].tempo)}${Math.abs(pm[S.a].tempo-pm[S.b].tempo)>=10?` (${pm[S.a].tempo<pm[S.b].tempo?'A':'B'} foi mais rápido)`:''}.`;
+}
+$('#selA').onchange=e=>{S.a=e.target.value;if(S.b===S.a)S.b=null;mudou()};$('#selB').onchange=e=>{S.b=e.target.value;if(S.b===S.a)S.a=null;mudou()};
+
+// ---------- 3. esforço
+function linhasHM(pm,Vv){
+  const bases=[...new Set(Vv.mes.map(me=>split(me)[0]))].filter(m=>pm[m+'-medium']&&pm[m+'-high']);
+  return bases.map(m=>({m,e:info(m).e,a:pm[m+'-medium'],b:pm[m+'-high'],d:S.p==='A'?r2(pm[m+'-high'].nota)-r2(pm[m+'-medium'].nota):pm[m+'-high'].nota-pm[m+'-medium'].nota})).sort((x,y)=>y.d-x.d);
+}
+const juntaE=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' e '+a[a.length-1];
+function nomesGrupo(ms,todos){ // "no Claude e no Codex" quando o grupo cobre a empresa inteira
+  const out=[];for(const e of COMP){const da=todos.filter(m=>info(m).e===e),aqui=ms.filter(m=>info(m).e===e);if(!aqui.length)continue;
+    if(aqui.length===da.length&&da.length>1)out.push(`no <b>${EMPN[e]}</b>`);else aqui.forEach(m=>out.push(`no <b>${esc(info(m).nome)}</b>`))}
+  return juntaE(out);
+}
+function renderEsforco(pm){
+  const Vv=V(),rows=linhasHM(pm,Vv),todos=rows.map(o=>o.m),pendB=[...new Set(Vv.pend.map(me=>split(me)[0]))];
+  // conclusão em frases curtas, sempre sobre a vista oficial
+  const pmOf=porMe(Vv,OF),rOf=linhasHM(pmOf,Vv);
+  let pmPar=null;if(S.p==='B')pmPar=porMe(Vv,{wp:70,vies:false,parcial:true});
+  const cls=o=>o.d>-TIE?'ok':o.d<=-1?'ruim':'atras';
+  const g={ok:[],atras:[],ruim:[]};rOf.forEach(o=>g[cls(o)].push(o.m));
+  const fr=[];const prazoF=S.p==='B'?'Com 7 minutos':'Com o prazo normal';
+  if(g.ok.length)fr.push(`${prazoF}, o high empata ou melhora um pouco ${nomesGrupo(g.ok,todos)}.`);
+  if(g.atras.length){const parc=pmPar?g.atras.filter(m=>pmPar[m+'-high'].nota-pmPar[m+'-medium'].nota>-TIE):[];
+    const sem=g.atras.filter(m=>!parc.includes(m));
+    if(parc.length)fr.push(`${nomesGrupo(parc,todos).replace(/^no/,'No')}, o high fica atrás, a não ser que se conte o que ficou pela metade.`);
+    if(sem.length)fr.push(`${nomesGrupo(sem,todos).replace(/^no/,'No')}, o high fica atrás.`)}
+  if(g.ruim.length)fr.push(`${nomesGrupo(g.ruim,todos).replace(/^no/,'No')}, o high ${S.p==='B'?'continua bem pior':'é bem pior'}.`);
+  const outro=S.p==='A'?'B':'A';
+  if(prazoOk(S.t,outro)){const Vo=vista(S.t,outro),po=porMe(Vo,OF),ro=linhasHM(po,Vo).filter(o=>todos.includes(o.m));
+    const pi=ro.filter(o=>outro==='A'?r2(o.b.nota)-r2(o.a.nota)<0:o.d<0).length;
+    fr.push(outro==='A'?`Com o prazo normal, o high piorava (mesmo que pouco) em ${pi} de ${ro.length} modelos.`:`Com 7 minutos, o high piora (mesmo que pouco) em ${pi} de ${ro.length} modelos.`)}
+  if(pendB.length)fr.push(`Gemini Neon e Hydrogen: aguardando rodada v3.`);
+  const man=g.ok.length>rOf.length/2?'Mais capricho quase não muda a nota da maioria':'Mais capricho mais atrapalha do que ajuda';
+  $('#conclusao').innerHTML=`<b class="man">${man}</b><ul>${fr.map(x=>`<li>${x}</li>`).join('')}</ul><a class="lnk" href="#tecnico-nota" data-tec="tecnico-nota">como a nota é calculada →</a>`;
+  // gráfico principal: high − medium em torno de zero
+  const lin=rows.concat(pendB.map(m=>({m,e:'gemini',pend:1})));
+  const ds=rows.map(o=>Math.abs(o.d)),M=Math.max(1,Math.ceil(Math.max(0,...ds)));
+  const W=340,L=118,R=300,C=L+(R-L)/2,H=30,top=30,X=v=>C+(R-L)/2*v/M;
+  let h=`<text x="${C-6}" y="12" font-size="11" text-anchor="end" style="fill:#5E5573">◀ high pior</text><text x="${C+6}" y="12" font-size="11" style="fill:#5E5573">high melhor ▶</text>`;
+  h+=`<rect x="${X(-TIE)}" y="${top-8}" width="${X(TIE)-X(-TIE)}" height="${lin.length*H+8}" fill="#EEE9F6"/>`;
+  for(const v of[-M,0,M])h+=`<line x1="${X(v)}" y1="${top-8}" x2="${X(v)}" y2="${top+lin.length*H}" stroke="${v===0?INK:'#E7E0F0'}" stroke-width="${v===0?2:1.5}"/><text x="${X(v)}" y="${top-11}" font-size="10" text-anchor="middle" style="fill:#5E5573">${v>0?'+':v<0?'−':''}${Math.abs(v)}</text>`;
+  lin.forEach((o,i)=>{const y=top+i*H+H/2,I=info(o.m);
+    h+=`<g class="lin" data-m="${o.m}" role="button" tabindex="0" aria-label="${esc(I.nome)}: ${o.pend?'aguardando rodada v3':`medium ${f2(o.a.nota)}, high ${f2(o.b.nota)}, diferença ${sinal(o.d)}`}"><rect class="hit" x="0" y="${y-H/2}" width="${W}" height="${H}" fill="transparent" rx="6"/>
+      <svg x="0" y="${y-11}" width="22" height="22">${robo(o.e,{mono:I.mono}).replace('<svg ','<svg width="22" height="22" ')}</svg><text x="26" y="${y+4}" font-size="12">${esc(I.curto)}</text>`;
+    if(o.pend){h+=`<text x="${C}" y="${y+4}" font-size="11" text-anchor="middle" style="fill:#5E5573">aguardando rodada v3</text></g>`;return}
+    const emp=Math.abs(o.d)<TIE,c=emp?'#C9C2D6':o.d>0?'#1E9E57':'#D63B40',x0=Math.min(X(0),X(o.d)),w=Math.max(3,Math.abs(X(o.d)-X(0)));
+    h+=`<rect x="${x0}" y="${y-8}" width="${w}" height="16" rx="4" fill="${c}" stroke="${INK}" stroke-width="2"/>
+      <text x="${W-2}" y="${y+4}" font-size="12" text-anchor="end" style="fill:${emp?'#5E5573':c}">${emp?'≈ ':o.d>0?'▲ ':'▼ '}${sinal(o.d)}</text></g>`});
+  const sv=$('#hm');sv.setAttribute('viewBox',`0 0 ${W} ${top+lin.length*H+4}`);sv.innerHTML=h;
+  const det=m=>{const o=rows.find(x=>x.m===m);if(!o)return abrir(info(m).nome,'<p>Aguardando rodada v3.</p>');
+    abrir(`${info(m).nome}: medium × high`,tabela(['','medium','high'],[['nota',f2(o.a.nota),f2(o.b.nota)],['resolveu por completo',`${o.a.comp} de ${o.a.n}`,`${o.b.comp} de ${o.b.n}`],['estourou o tempo',o.a.to,o.b.to],['testes que passaram',f1(o.a.pct)+'%',f1(o.b.pct)+'%'],['nota dos juízes',f2(o.a.rub),f2(o.b.rub)],['tempo médio',minseg(o.a.tempo),minseg(o.b.tempo)]]))};
+  $$('#hm .lin').forEach(el=>{el.onclick=()=>det(el.dataset.m);el.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();det(el.dataset.m)}}});
+  $('#tabHm').innerHTML=tabela(['modelo','medium','high','diferença','tempo medium → high','estourou o tempo (medium/high)'],rows.map(o=>[esc(info(o.m).nome),f2(o.a.nota),f2(o.b.nota),Math.abs(o.d)<TIE?`${sinal(o.d)} (empate)`:sinal(o.d),`${minseg(o.a.tempo)} → ${minseg(o.b.tempo)}`,`${o.a.to}/${o.b.to}`]))
+    +(pmPar?`<p class="nota-p">Contando o que ficou pela metade (detalhe na aba Técnico): ${rows.map(o=>`${esc(info(o.m).curto)} ${sinal(pmPar[o.m+'-high'].nota-pmPar[o.m+'-medium'].nota)}`).join(' · ')}.</p>`:'');
+  // haltere 0–10 (detalhe)
+  const Wd=340,Ld=96,Rd=290,Hd=24,td=22,Xd=v=>Ld+(Rd-Ld)*v/10;
+  let d='';for(const v of[0,2.5,5,7.5,10])d+=`<line x1="${Xd(v)}" y1="${td-6}" x2="${Xd(v)}" y2="${td+rows.length*Hd}" stroke="#E7E0F0" stroke-width="1.5"/><text x="${Xd(v)}" y="${td-10}" font-size="10" text-anchor="middle" style="fill:#5E5573">${virg(String(v))}</text>`;
+  rows.forEach((o,i)=>{const y=td+i*Hd+Hd/2;d+=`<text x="2" y="${y+4}" font-size="12">${esc(info(o.m).curto)}</text><line x1="${Xd(o.a.nota)}" y1="${y}" x2="${Xd(o.b.nota)}" y2="${y}" stroke="${INK}" stroke-width="3"/><circle cx="${Xd(o.a.nota)}" cy="${y}" r="7" fill="${COR[o.e]}" stroke="${INK}" stroke-width="2.5"/><circle cx="${Xd(o.b.nota)}" cy="${y}" r="7" fill="url(#hp-${o.e})" stroke="${INK}" stroke-width="2.5"/><text x="${Wd-2}" y="${y+4}" font-size="11" text-anchor="end">${f2(o.a.nota)} → ${f2(o.b.nota)}</text>`});
+  d+=`<text x="2" y="${td+rows.length*Hd+16}" font-size="11" style="fill:#5E5573">cor cheia = medium · listrada = high</text>`;
+  const sd_=$('#dumb');sd_.setAttribute('viewBox',`0 0 ${Wd} ${td+rows.length*Hd+22}`);sd_.innerHTML=d;
+}
+
+// ---------- 4. tarefas
+const FAIXAS=[[0,5,'#FFF3C4','abaixo de 5'],[5,7,'#FFD23F','5 a 7'],[7,8,'#9BD3AE','7 a 8'],[8,9,'#3B9C9C','8 a 9'],[9,9.5,'#2B6E8F','9 a 9,5'],[9.5,10.01,'#2B2340','9,5 ou mais']];
+const faixa=v=>FAIXAS.find(f=>v>=f[0]&&v<f[1])||FAIXAS[FAIXAS.length-1];
+$('#faixas').innerHTML=FAIXAS.map(f=>`<span><i style="background:${f[2]}"></i>${f[3]}</span>`).join('');
+$$('#modos button').forEach(b=>b.onclick=()=>{S.modo=b.dataset.m;mudou()});
+function renderTarefas(pm){
+  const Vv=V(),s=st(),modo=S.modo;$$('#modos button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===modo));
+  const ord=ordem(pm,Vv.mes);
+  const cols=modo==='me'?ord.concat(Vv.pend):modo==='emp'?COMP.slice():EMPS.slice(),campo=modo==='me'?'me':modo==='aut'?'aut':'e';
+  $('#hmTit').textContent=modo==='aut'?'Nota média por tipo, pela empresa que escreveu a tarefa':modo==='me'?'Nota média por tipo, por versão':'Nota média por tipo, pela empresa que resolveu';
+  const M={};for(const t of TK){M[t]={};for(const c of cols){const rs=Vv.runs.filter(r=>r.tipo===t&&r[campo]===c);M[t][c]={v:rs.length?mean(rs.map(r=>nota(r,s,Vv))):null,rs}}}
+  const hm=$('#mapa');hm.className='hm'+(modo==='me'?' largo':'');
+  hm.style.gridTemplateColumns=modo==='me'?`118px repeat(${cols.length},44px)`:`118px repeat(${cols.length},minmax(0,1fr))`;
+  let h='<span></span>'+cols.map(c=>{if(modo==='me'){const[m,x]=split(c);return `<span class="ch">${roboMe(c,{rot:nomeTxt(c)})}${esc(info(m).curto)} ${x==='high'?'high':'med.'}</span>`}
+    return `<span class="ch">${robo(c,{rot:EMPN[c]})}${EMPN[c]}</span>`}).join('');
+  for(const t of TK){const vs=cols.map(c=>M[t][c].v??-1),mx=Math.max(...vs);
+    h+=`<span class="rl">${TIPO[t]}</span>`;
+    for(const c of cols){const v=M[t][c].v,pend=modo==='me'?Vv.pend.includes(c):(modo==='emp'&&!Vv.emp.includes(c));
+      if(v===null){h+=`<span class="cel vazia" title="${pend?'aguardando rodada v3':'sem tarefas'}">${pend?'⏳':'–'}</span>`;continue}
+      const fx=faixa(v);h+=`<button class="cel" data-t="${t}" data-c="${c}" style="background:${fx[2]};color:${v>=8?'#fff':INK}" aria-label="${TIPO[t]} · ${modo==='me'?esc(nomeTxt(c)):EMPN[c]}: ${f2(v)} (faixa ${fx[3]})${v===mx?', melhor da linha':''}">${f1(v)}${v===mx&&cols.length>1?'<sup>★</sup>':''}</button>`}}
+  hm.innerHTML=h;
+  $$('#mapa .cel[data-t]').forEach(b=>b.onclick=()=>{const{t,c}=b.dataset,x=M[t][c];
+    abrir(`${TIPO[t]} · ${modo==='aut'?'tarefas escritas pelo '+EMPN[c]:modo==='me'?nomeTxt(c):'resolvidas pelo '+EMPN[c]} — ${f2(x.v)}`,listaTent(x.rs,modo==='me'?'t':'me'))});
+  $('#tabMapa').innerHTML=tabela(['tipo',...cols.map(c=>modo==='me'?esc(nomeTxt(c)):EMPN[c])],TK.map(t=>[TIPO[t],...cols.map(c=>M[t][c].v===null?'–':f2(M[t][c].v))]));
+  // insight: tipo mais difícil e mais fácil (todas as versões juntas)
+  const porT=TK.map(t=>({t,v:mean(Vv.runs.filter(r=>r.tipo===t).map(r=>nota(r,s,Vv)))})).sort((a,b)=>a.v-b.v);
+  const porA=EMPS.map(e=>({e,v:mean(Vv.runs.filter(r=>r.aut===e).map(r=>nota(r,s,Vv)))})).filter(o=>!isNaN(o.v)).sort((a,b)=>a.v-b.v);
+  $('#tarIns').innerHTML=robo('codex',{s:40,mono:'?'})+`<div><b class="man">O tipo mais difícil foi “${TIPO[porT[0].t]}”</b><p>Média de ${f2(porT[0].v)} somando todas as versões. O mais fácil foi “${TIPO[porT[porT.length-1].t]}” (${f2(porT[porT.length-1].v)}). As tarefas escritas pelo ${EMPN[porA[0].e]} foram as mais difíceis de resolver.</p></div>`;
+  const bt={};for(const r of Vv.runs)(bt[r.t]=bt[r.t]||[]).push(r.p===100&&r.s==='ok');
+  const tod=Object.keys(bt).sort().filter(t=>bt[t].every(Boolean));
+  $('#gabarito').innerHTML=`<h3>✅ Todo mundo acertou tudo <small>passou em 100% dos testes, dentro do prazo</small></h3><p style="font-size:15px">${tod.length?`Em ${tod.length} das ${Object.keys(bt).length} tarefas, todas as versões deste teste acertaram tudo:`:'Nenhuma tarefa foi acertada por todas as versões.'}</p>${tod.map(t=>`<span class="tag2">${esc(tarefaLeiga(t))}</span>`).join('')}`;
+  const c=consist();
+  $('#licao').innerHTML=`<h3>🎲 A mesma IA nem sempre tira a mesma nota</h3><p style="font-size:15px;line-height:1.45">No teste anterior, uma mesma tarefa foi repetida 4 vezes por cada versão. Em <b>${c.dif} de ${c.n}</b> versões, as notas das repetições não foram todas iguais; a maior variação foi de <b>${f2(c.max)} pontos</b> (${nomeV(c.maxMe)}). Por isso diferenças pequenas no ranking são tratadas como empate.</p><a class="lnk" href="#tecnico-consistencia" data-tec="tecnico-consistencia">ver as 4 repetições →</a>`;
+}
+function consist(){
+  const RA=D.runs.filter(r=>r.e!=='grok').map(r=>prep(r,{of:r.n}));
+  const mes=[...new Set(RA.map(r=>r.me))];
+  const cs=mes.map(me=>{const e=empDe(me),t=e==='claude'?'04-dados-grok':'04-dados-claude',rs=RA.filter(r=>r.me===me&&r.t===t).sort((a,b)=>a.r-b.r),n=rs.map(r=>r.n);
+    return {me,t,rs,n,amp:Math.max(...n)-Math.min(...n),d:sd(n),m:mean(n)}}).sort((a,b)=>b.amp-a.amp);
+  return {cs,n:cs.length,dif:cs.filter(o=>o.amp>=.005).length,max:cs[0].amp,maxMe:cs[0].me};
+}
+
+// ---------- 5. mais: por que confiar · técnico · Grok
+function renderConfiar(){
+  const Va=vista('r1','A'),J=Object.keys(Va.MU).sort((a,b)=>EMPS.indexOf(a)-EMPS.indexOf(b)),mod=D.juiz_modelo;
+  const pares=Va.runs.filter(r=>Object.keys(r.j).length===2).map(r=>Object.values(r.j)),perto=pares.filter(([a,b])=>Math.abs(a-b)<=1).length;
+  const mx=J.reduce((a,b)=>Va.MU[a]>Va.MU[b]?a:b),mn=J.reduce((a,b)=>Va.MU[a]<Va.MU[b]?a:b);
+  const nome=k=>info(mod[k]||k).nome;
+  $('#sub-confiar').innerHTML=`<div class="insight box">${robo('claude',{s:44,toga:true})}<div><b class="man">Quem dá a nota não torce para ninguém</b>
+    <p>Cada solução é lida por <b>dois juízes</b>. Os juízes são IAs, não pessoas. A regra é simples: nenhum juiz é da empresa que escreveu a tarefa, nem da empresa que tentou resolver. E eles não sabem qual modelo fez o código.</p></div></div>
+  <section class="card box"><h3>Por que isso importa</h3>
+    <p style="font-size:16px;line-height:1.5">Se o Claude julgasse o próprio Claude, ou se o juiz soubesse quem escreveu o código, a nota poderia puxar para um lado. Com juízes de fora e às cegas, esse risco diminui bastante.</p>
+    <p style="font-size:16px;line-height:1.5;margin-top:8px">Mas é bom ser honesto: isso <b>reduz</b> o viés, não o elimina. Como ninguém julga a própria empresa, cada empresa é avaliada por um conjunto diferente de juízes, e um juiz que dá notas mais altas pode ajudar uns mais que outros. Além disso, existe sorte: a mesma IA, na mesma tarefa, nem sempre tira a mesma nota. Por isso diferenças de poucos centésimos aparecem como empate.</p>
+    <p style="font-size:16px;line-height:1.5;margin-top:8px">A maior parte da nota (70%) nem depende de juiz: vem de <b>testes automáticos</b> que o modelo não vê e que conferem se o código funciona.</p></section>
+  <h2>🧑‍⚖️ Os quatro juízes</h2>
+  <div class="jzs">${J.map(k=>`<button class="jz box" data-j="${k}" aria-label="juiz ${esc(nome(k))}, da empresa ${EMPN[k]}: viu ${Va.JV[k].length} soluções, nota média ${f2(Va.MU[k])}">${robo(k,{toga:true,mono:info(mod[k]||k).mono})}<b>${esc(nome(k))}</b><span>${DONO[k]} · viu ${Va.JV[k].length} soluções</span><span>média ${f2(Va.MU[k])}${k===mx?' · dá notas mais altas':k===mn?' · dá notas mais baixas':''}</span></button>`).join('')}</div>
+  <p class="lead" style="font-size:14px;color:var(--ink2)">“Dá notas mais altas” quer dizer que, em média, esse juiz foi mais generoso que os outros nas mesmas condições. O ${EMPN.grok} saiu da disputa, mas continua como juiz: julgar não favorece ninguém.</p>
+  <section class="card box"><h3>Os dois juízes concordam?</h3><p style="font-size:16px;line-height:1.5">Em <b>${Math.round(perto/pares.length*100)}%</b> das ${pares.length} soluções do teste anterior, os dois juízes deram notas a no máximo 1 ponto de distância um do outro.</p>
+  <a class="lnk" href="#tecnico-juizes" data-tec="tecnico-juizes">como os juízes são escolhidos →</a></section>
+  <section class="card box"><p>${confereA&&confereB?'<span class="ok-ref">✔ As contas deste site batem com o relatório oficial.</span>':'<span class="ruim">✖ As contas não bateram com o relatório oficial.</span>'}</p></section>`;
+  $$('#sub-confiar .jz').forEach(b=>b.onclick=()=>{const k=b.dataset.j,v=Va.JV[k];
+    abrir(`Juiz ${nome(k)} (${DONO[k]})`,`<p style="font-size:15px">Viu ${v.length} soluções no teste anterior. Nota média que deu: <b>${f2(Va.MU[k])}</b> (média de todos os juízes: ${f2(Va.MU0)}). Nunca julgou tarefas escritas pela própria empresa nem soluções de modelos da própria empresa.</p>`)});
+}
+function renderTecnico(){
+  const RA=D.runs,c=consist(),ids=Object.keys(MOD);
+  const posSite=(()=>{const Va=vista('r1','A'),pm=porMe(Va,OF);return ordem(pm,Va.mes)})();
+  const posB=(()=>{const Vb=vista('r1','B'),pm=porMe(Vb,OF);return ordem(pm,Vb.mes)})();
+  const v3st=V3.placeholder?'<b>aguardando rodada v3</b> (placeholder)':V3.mock?'<b>MOCK de teste</b>':V3ERRO?'<span class="ruim">erro</span>':`<b>${esc(V3.status)}</b>`;
+  $('#sub-tecnico').innerHTML=`<section class="card box"><h3>Índice</h3><div class="indice">${[['tecnico-nota','Como a nota é calculada'],['tecnico-fontes','De onde vêm os dados'],['tecnico-juizes','Como os juízes são escolhidos'],['tecnico-conferencia','Auditoria e conferência'],['tecnico-regras','Regras especiais'],['tecnico-consistencia','Consistência'],['tecnico-experimentos','Experimentos'],['tecnico-v3','Bloco de dados v3'],['tecnico-nomes','Nomes e IDs']].map(([a,t])=>`<a href="#${a}" data-tec="${a}">${t}</a>`).join('')}</div></section>
+  <section class="card box" id="tecnico-nota"><h3>Como a nota é calculada</h3>
+    <p>Por tentativa: <b>nota = 0,7 × (% de testes que passaram) / 10 + 0,3 × rubrica</b>, arredondada em 2 casas. A rubrica é a média dos 2 juízes neutros (5 itens de 0 a 2: legibilidade, erros e bordas, idiomático, manutenibilidade, documentação). Estourou o tempo = 0 (a rubrica nem é julgada).</p>
+    <p>Por versão: média simples das <b>30 tentativas principais</b> (run-1). As runs 2–4 da tarefa de consistência ficam fora. <b>Média por empresa</b> = mesmo método do <code>resultados/RODADA.md</code>: a média de cada versão é arredondada em 2 casas e a empresa recebe a média simples dessas médias arredondadas (cada versão pesa igual), arredondada em 2 casas. Vale para os dois prazos e os dois testes. Por isso pode diferir em 0,01 da média direta das tentativas: o Gemini na Rodada 1, prazo normal, dá 4,58 assim e 4,59 com a média direta dos 120 resultados. No prazo estendido o Codex dá 9,29 assim; o <code>RELATORIO_7MIN.md</code>, que faz a média sem arredondar as versões, mostra 9,30.</p>
+    <p><b>Prazo normal (Ranking A)</b>: 3 min em 31 tarefas, 5 min nas 9 de <code>resultados/_timeouts_300s</code>. <b>Prazo estendido (Ranking B)</b>: todo timeout refeito com 420 s. Nota oficial do B = <code>nota_i</code> (timeout = 0). <code>nota_ii</code> = a entrega parcial do timeout é julgada (%testes + rubrica); só aparece na parte principal na frase “a não ser que se conte o que ficou pela metade”.</p>
+    <p><b>Empate técnico</b>: diferença menor que ${f2(TIE)} ponto. É um pouco menos que o peso de uma tarefa zerada numa média de 30 (≈ 9,7 / 30 ≈ 0,32). Regra simples, provisória; um intervalo por bootstrap pareado pode substituí-la.</p></section>
+  <section class="card box" id="tecnico-fontes"><h3>De onde vêm os dados</h3>
+    <p>Teste anterior (Rodada 1), prazo normal:</p><span class="cam">resultados/_avaliador/notas_avaliador.csv</span><span class="cam">resultados/&lt;empresa&gt;/&lt;versão&gt;/&lt;tarefa&gt;/run-N/avaliacao_avaliador.json</span>
+    <p>Prazo estendido (7 min):</p><span class="cam">resultados/_avaliador/cenario_7min/notas_7min.csv</span><span class="cam">resultados/_avaliador/cenario_7min/resumo_7min.json</span><span class="cam">…/run-1/avaliacao_avaliador_7min.json (as ${D.runsB.filter(r=>r.rf).length} refeitas)</span>
+    <p>Teste novo (v3): bloco <code>&lt;script id="dados-v3"&gt;</code> neste HTML, gerado por <code>site/v3/build_v3.py</code> (ver <code>site/v3/LEIA-ME.md</code>). Claude e Codex do teste novo são as mesmas tentativas do teste anterior.</p>
+    <p>Gerador: <code>site/v3/build_v3.py</code> + <code>site/v3/app.html</code>. O site v2 (<code>site/index.html</code>) não muda.</p>
+    <p style="margin-top:6px"><button class="btn" id="baixar">⬇ baixar os dados (JSON)</button></p></section>
+  <section class="card box" id="tecnico-juizes"><h3>Como os juízes são escolhidos</h3>
+    <p>4 juízes, um por empresa: ${Object.entries(D.juiz_modelo).map(([k,v])=>`<code>${esc(v)}</code> (${EMPN[k]})`).join(', ')}, todos com esforço medium. Para cada tentativa são elegíveis os juízes que não são da empresa resolvedora nem da autora da tarefa (sobram 2), e o código vai anonimizado. O Grok build-fast continua juiz: ele julga cerca de 2 em cada 3 soluções de Claude, Codex e Gemini.</p>
+    <div class="tw">${tabela(['juiz','modelo','avaliações (prazo normal)','rubrica média'],Object.keys(vista('r1','A').MU).map(k=>[EMPN[k],esc(D.juiz_modelo[k]||'?'),vista('r1','A').JV[k].length,f2(vista('r1','A').MU[k])]))}</div>
+    <details class="vt"><summary>▸ metodologia do Avaliador (copiada do relatório)</summary><ul>${D.metodo.map(x=>`<li>${x}</li>`).join('')}</ul></details></section>
+  <section class="card box" id="tecnico-conferencia"><h3>Auditoria e conferência</h3>
+    <p class="${confereA?'ok-ref':'ruim'}">${confereA?'✔':'✖'} Prazo normal: as ${RA.length} notas por tentativa, as 16 médias (nova e antiga), as posições e as 4 médias por empresa conferem com <code>RELATORIO_AVALIADOR.md</code> (conta feita com o Grok incluído, como no relatório).</p>
+    <p class="${confereB?'ok-ref':'ruim'}">${confereB?'✔':'✖'} Prazo estendido: as ${D.runsB.length} notas (nota_i e nota_ii), as 12 médias e posições e o high − medium conferem com <code>resumo_7min.json</code> (tolerância 0,005).</p>
+    <p>O build (<code>build_v3.py</code>) repete essas conferências em Python e para com erro se algo não bater. <b>Posições sem o Grok</b>: o relatório tem 16 versões (com 4 do Grok); o site mostra 12, então algumas posições mudam:</p>
+    <div class="tw">${tabela(['versão (ID)','nota','posição no relatório (com Grok)','posição no site (prazo normal)','posição no prazo estendido'],posSite.map((me,i)=>[esc(me),f2(D.ref[me][0]),D.ref[me][2]+'º',i+1+'º',(posB.indexOf(me)+1)+'º']))}</div></section>
+  <section class="card box" id="tecnico-regras"><h3>Regras especiais</h3>
+    <p><b>10-ambigua-claude</b>: a nota 0% continua valendo. Os Gemini do teste anterior estouraram o tempo sem gravar nenhum arquivo; os 4 Codex resolvem com 40 a 42 de 42 testes. O Avaliador conferiu enunciado e testes ocultos: sem defeito na tarefa (<code>_avaliador/analise_10_ambigua_claude.md</code>). O Claude é a autora e não a resolve.</p>
+    <p>Regras copiadas de <code>resultados/RODADA.md</code>:</p><ul>${D.regras.map(x=>`<li>${x}</li>`).join('')}</ul></section>
+  <section class="card box" id="tecnico-consistencia"><h3>Consistência (a mesma tarefa 4 vezes)</h3>
+    <p>Tarefa <code>04-dados-claude</code> (o Claude faz a <code>04-dados-grok</code>), 4 runs por versão, prazo normal. Runs 2–4 não entram no ranking. Ordem: maior variação primeiro.</p>
+    <div class="tw">${tabela(['versão','run 1','run 2','run 3','run 4','média','σ','amplitude'],c.cs.map(o=>[esc(o.me),...o.rs.map(r=>r.s==='timeout'?'⏱ 0':f2(r.n)),f2(o.m),f2(o.d),f2(o.amp)]))}</div></section>
+  <section class="card box" id="tecnico-experimentos"><h3>Experimentos (não são o critério oficial)</h3>
+    <p>Mexer aqui muda as notas de todas as abas e mostra o aviso “regras alteradas” no topo (também em links compartilhados).</p>
+    <div class="peso" style="margin-top:8px"><span>Peso da nota</span><b id="pesoTxt"></b></div>
+    <input type="range" id="slider" min="0" max="100" step="5" value="70" aria-label="peso dos testes automáticos (%)">
+    <button class="tg" role="switch" id="tgVies" aria-checked="false"><span class="sw"></span>Corrigir o viés dos juízes (cada nota vira nota − média do juiz + média geral)</button>
+    <button class="tg" role="switch" id="tgParcial" aria-checked="false"><span class="sw"></span>Contar o que ficou pela metade (nota_ii; só no prazo estendido)</button>
+    <p style="margin-top:8px"><button class="btn" id="btReset">↺ padrão do relatório</button></p></section>
+  <section class="card box" id="tecnico-v3"><h3>Bloco de dados v3</h3>
+    <p>Status: ${v3st}. Modelos esperados: ${V3.modelos.map(m=>`<code>${esc(m)}</code>`).join(', ')}.</p>
+    <p>Com as 30 tarefas válidas — prazo normal: ${V3.ok.A.length?V3.ok.A.map(m=>`<code>${esc(m)}</code>`).join(', '):'nenhum'}; prazo estendido: ${V3.ok.B.length?V3.ok.B.map(m=>`<code>${esc(m)}</code>`).join(', '):'nenhum'}.</p>
+    ${V3.problemas.length?`<p class="ruim">Problemas: ${esc(V3.problemas.join('; '))}</p>`:''}
+    <p>Como plugar: <code>site/v3/LEIA-ME.md</code>. Se o teste novo não tiver prazo estendido, o botão “Prazo estendido” fica desligado nele.</p></section>
+  <section class="card box" id="tecnico-nomes"><h3>Nomes e IDs</h3>
+    <div class="tw">${tabela(['nome no site','ID','monograma','empresa'],ids.map(m=>[esc(MOD[m].nome),`<code>${esc(m)}</code>`,MOD[m].mono,EMPN[MOD[m].e]+(MOD[m].e==='grok'?' (só juiz)':'')]))}</div></section>`;
+  $('#baixar').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({rodada1:D,v3:V3RAW})],{type:'application/json'}));a.download='benchmark-v3-dados.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+  const sl=$('#slider');
+  const sinc=()=>{sl.value=S.wp;sl.style.setProperty('--v',S.wp+'%');$('#pesoTxt').textContent=`${S.wp}% testes · ${100-S.wp}% juízes`;
+    $('#tgVies').setAttribute('aria-checked',S.vies);$('#tgParcial').setAttribute('aria-checked',S.parcial)};
+  sinc();sincExp=sinc;
+  sl.oninput=()=>{S.wp=+sl.value;mudou()};
+  $('#tgVies').onclick=()=>{S.vies=!S.vies;mudou()};$('#tgParcial').onclick=()=>{S.parcial=!S.parcial;mudou()};
+  $('#btReset').onclick=voltarOficial;
+}
+let sincExp=()=>{};
+function renderGrok(){
+  $('#sub-grok').innerHTML=`<div class="insight box">${robo('grok',{s:44})}<div><b class="man">O Grok saiu da disputa, mas não sumiu</b>
+    <p>No teste anterior, o Grok teve uma regra de tempo diferente da dos outros e não entrou no teste de 7 minutos. Com regras diferentes, colocar ele lado a lado com os outros não seria uma comparação justa. Por isso ele não aparece nos rankings, nos gráficos nem nas comparações.</p></div></div>
+  <section class="card box"><h3>Onde o Grok continua</h3>
+    <p style="font-size:16px;line-height:1.5"><b>Como autor de tarefas.</b> Um quarto das 40 tarefas foi escrito pelo Grok. Elas continuam no teste, porque quem resolve nunca é o autor, então isso não favorece ninguém. No Mapa de tarefas, o modo “quem escreveu a tarefa” mostra o Grok.</p>
+    <p style="font-size:16px;line-height:1.5;margin-top:8px"><b>Como juiz.</b> O Grok build-fast é um dos 4 juízes do Avaliador. Ele julga às cegas e nunca julga a própria empresa. Sem ele, faltaria o segundo juiz em boa parte das soluções.</p></section>
+  <section class="card box"><h3>Os dados antigos</h3>
+    <p style="font-size:16px;line-height:1.5">Nada foi apagado. As tentativas e notas do Grok continuam no repositório, como versão antiga (legado):</p>
+    <span class="cam" style="display:block;font-family:ui-monospace,monospace;font-size:13px;background:#F3EEF8;border-radius:6px;padding:2px 6px;margin-top:4px">resultados/grok/</span>
+    <p style="font-size:15px;line-height:1.5;margin-top:8px">As contas de conferência do site ainda incluem o Grok, para bater com o relatório oficial.</p>
+    <details class="vt"><summary>▸ reler a regra de tempo antiga do Grok</summary><p style="font-size:15px;line-height:1.5">Só o grok-4.7-high teve 13 tentativas refeitas com limite maior: 1ª tentativa concluída em até 300 s = nota cheia; 2ª tentativa (limite 900 s) = no máximo 70% (até 600 s ×0,7; de 600 a 900 s ×0,5; acima de 900 s com entrega parcial ×0,5; sem entrega, zero). Os outros modelos seguiram a regra geral: estourou o tempo, vale zero.</p></details></section>`;
+}
+
+// ---------- abas, hash e render
+let PMs=null;
+function renderTudo(){
+  const Vv=V(),pm=porMe(Vv,st()),ord=ordem(pm,Vv.mes);PMcur=pm;
+  sincTopo();renderResumo(pm,ord);
+  if(S.aba==='ranking')renderRanking(pm);
+  if(S.aba==='comparar')renderComparar(pm);
+  if(S.aba==='esforco')renderEsforco(pm);
+  if(S.aba==='tarefas')renderTarefas(pm);
+  if(S.aba==='mais'){$$('#segSub button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===S.sub));$$('.sub').forEach(x=>x.classList.toggle('oculto',x.id!=='sub-'+S.sub));sincExp()}
+  primeira=false;
+}
+let agendado=false;
+function mudou(){if(agendado)return;agendado=true;requestAnimationFrame(()=>{agendado=false;renderTudo();salvarHash()})}
+function ir(aba,semRolar){
+  if(!$('#aba-'+aba))aba='ranking';
+  S.aba=aba;
+  $$('.aba').forEach(s=>s.classList.toggle('on',s.id==='aba-'+aba));
+  $$('#nav button').forEach(b=>b.dataset.aba===aba?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  renderTudo();if(!semRolar)scrollTo(0,0);salvarHash();
+}
+$$('#nav button').forEach(b=>b.onclick=()=>ir(b.dataset.aba));
+$$('#segTeste button').forEach(b=>b.onclick=()=>{if(S.t===b.dataset.t)return;S.t=b.dataset.t;if(!prazoOk(S.t,S.p))S.p=S.p==='A'?'B':'A';eseMsg='';mudou()});
+$$('#segPrazo button').forEach(b=>b.onclick=()=>{if(S.p===b.dataset.p||!prazoOk(S.t,b.dataset.p))return;S.p=b.dataset.p;eseMsg='';mudou()});
+$$('#segSub button').forEach(b=>b.onclick=()=>{S.sub=b.dataset.s;mudou()});
+document.addEventListener('click',e=>{const a=e.target.closest('[data-tec]');if(!a)return;e.preventDefault();S.sub='tecnico';ir('mais',true);
+  requestAnimationFrame(()=>{const el=document.getElementById(a.dataset.tec);if(el)el.scrollIntoView({behavior:reduz?'auto':'smooth',block:'start'})})});
+function salvarHash(){
+  const p=new URLSearchParams({t:S.t,p:S.p});
+  if(S.a)p.set('a',S.a);if(S.b)p.set('b',S.b);if(S.modo!=='emp')p.set('modo',S.modo);if(S.aba==='mais')p.set('sub',S.sub);
+  if(S.wp!==70)p.set('w',S.wp);if(S.vies)p.set('vies',1);if(S.parcial)p.set('parcial',1);
+  history.replaceState(null,'','#'+S.aba+'&'+p.toString());
+}
+function lerHash(){
+  const[aba0,...resto]=location.hash.slice(1).split('&');const p=new URLSearchParams(resto.join('&'));
+  let aba=aba0;if(aba==='juizes'){aba='mais';S.sub='confiar'}
+  if(['v3','r1'].includes(p.get('t')))S.t=p.get('t');
+  const pz=p.get('p')||p.get('r');if(['A','B'].includes(pz))S.p=pz;   // 'r' = parâmetro antigo da v2
+  if(!prazoOk(S.t,S.p))S.p=S.p==='A'?'B':'A';
+  if(p.has('w')){const w=Math.round(+p.get('w')/5)*5;if(w>=0&&w<=100)S.wp=w}
+  S.vies=p.get('vies')==='1';S.parcial=p.get('parcial')==='1';
+  for(const k of['a','b']){const v=p.get(k);if(v&&!v.startsWith('grok')&&MOD[split(v)[0]])S[k]=v}  // ids do Grok e desconhecidos: ignora
+  if(['emp','me','aut'].includes(p.get('modo')))S.modo=p.get('modo');
+  if(['confiar','tecnico','grok'].includes(p.get('sub')))S.sub=p.get('sub');
+  return ['ranking','comparar','esforco','tarefas','mais'].includes(aba)?aba:'ranking';
+}
+renderConfiar();renderTecnico();renderGrok();
+const abaIni=lerHash();
+ir(abaIni,true);
+</script>
+</body></html>

@@ -1,0 +1,13 @@
+Implementei [cliente.py](file:///tmp/bench-omckwma2/cliente.py) conforme especificado em [enunciado.md](file:///tmp/bench-omckwma2/enunciado.md), sem alterar [loja_api.py](file:///tmp/bench-omckwma2/loja_api.py) e usando apenas a biblioteca padrão.
+
+### O que foi feito
+- **`TempoEsgotado`**: exceção levantada quando a última tentativa de um pedido estoura `timeout_s`.
+- **`baixar_pedidos(api, ids, *, max_tentativas=5, backoff_s=0.0, timeout_s=1.0)`**:
+  - Valida todos os argumentos antes de qualquer chamada à API (`ids` exatamente `list`, `max_tentativas` `int >= 1` sem `bool`, `backoff_s` finito `>= 0` sem `bool`, `timeout_s` finito `> 0` sem `bool`).
+  - Executa cada tentativa em uma `threading.Thread` daemon aguardando `concluido.wait(timeout_s)`, abandonando a espera imediatamente em caso de timeout sem bloquear pelo tempo de `ATRASO_S`.
+  - Propaga `LojaErroCliente` (e erros não retentáveis) imediatamente, sem retry e sem backoff, interrompendo o processamento dos IDs seguintes.
+  - Retenta `LojaIndisponivel` e timeout até `max_tentativas`, aplicando backoff exponencial `backoff_s * 2 ** (i - 1)` apenas entre falhas retentáveis quando `backoff_s > 0`, e propagando a exceção da última tentativa em caso de esgotamento.
+  - Preserva a ordem dos IDs e não usa cache para IDs repetidos.
+
+### Verificação
+Executei uma bateria de testes cobrindo validação prévia de argumentos, lista vazia, preservação de ordem, IDs repetidos, prefixos `missing-`, `down-`, `flaky-`, `slow-` (seeds par e ímpar) e `timeout-`, falhas mistas retentáveis, não bloqueio em timeout e intervalos exatos de backoff exponencial (tanto com `time.sleep` mockado quanto em tempo real). Todos os testes passaram.

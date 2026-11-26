@@ -1,0 +1,13 @@
+Implementei `contar_pares(valores, alvo: int) -> int` em [pares.py](file:///tmp/bench-fpv0wyzq/pares.py) conforme os requisitos de [enunciado.md](file:///tmp/bench-fpv0wyzq/enunciado.md).
+
+### Implementação
+- [contar_pares](file:///tmp/bench-fpv0wyzq/pares.py#L1-L12) percorre `valores` em uma única passagem mantendo um dicionário local `vistos` (`dict[int, int]`) com as contagens dos valores já observados.
+- Para cada `valor`, soma ao total a contagem atual de `alvo - valor` (garantindo apenas pares `i < j` sem dupla contagem ou autopareamento) e então incrementa `vistos[valor]`.
+- Opera em tempo esperado $O(n)$ e memória $O(k)$ (onde $k$ é a quantidade de valores distintos), sem modificar listas recebidas, aceitando geradores de uma passagem, comparando inteiros arbitrários (>64 bits) com exatidão e sem reter estado entre chamadas.
+
+### Verificação
+Testes executados em Python 3.13.5 após a criação de [pares.py](file:///tmp/bench-fpv0wyzq/pares.py):
+- Casos do enunciado, vazio, elemento único, duplicatas, negativos, listas inalteradas, tuplas, conjuntos, dicionários e geradores de uma passagem.
+- Inteiros maiores que 64 bits (`1 << 100`, `1 << 128`) e 50 casos aleatórios comparados contra força bruta $O(n^2)$.
+- 1.000.000 de elementos distintos: `0.1082s` (limite: `< 5s`).
+- Gerador de 1.000.000 de valores com 4 valores distintos via `tracemalloc`: pico de `792 B` (limite: `< 4 MiB`).

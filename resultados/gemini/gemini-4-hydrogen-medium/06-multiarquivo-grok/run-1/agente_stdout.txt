@@ -1,0 +1,8 @@
+O pacote `biblioteca` foi criado em `/tmp/bench-5bbfxevc/biblioteca` com os quatro arquivos solicitados usando apenas a biblioteca padrão e imports relativos:
+
+- [__init__.py](file:///tmp/bench-5bbfxevc/biblioteca/__init__.py): exporta `Livro`, `ErroBiblioteca`, `Catalogo` e `ServicoEmprestimos`.
+- [models.py](file:///tmp/bench-5bbfxevc/biblioteca/models.py): define `ErroBiblioteca` e a dataclass congelada `Livro`, validando ISBN (13 dígitos ASCII exatos, sem `strip`), título (`strip` não vazio) e exemplares (`int >= 1`, rejeitando `bool`).
+- [catalogo.py](file:///tmp/bench-5bbfxevc/biblioteca/catalogo.py): implementa `Catalogo` (`adicionar`, `buscar` sem `strip`, e `listar` retornando uma nova lista ordenada por ISBN).
+- [emprestimos.py](file:///tmp/bench-5bbfxevc/biblioteca/emprestimos.py): implementa `ServicoEmprestimos` com estado independente por instância, normalização de usuário via `strip`, validação estrita de datas `YYYY-MM-DD` no calendário gregoriano, prazo de 14 dias corridos, atomicidade em caso de `ErroBiblioteca` e ordenação de `ativos` por `(dia, isbn, usuario)`.
+
+Os testes de validação, regras de negócio, atomicidade, datas limite (incluindo `2024-02-29` e rejeição de `1900-02-29`) e ordenação foram executados via `python3`, com saída `ALL TESTS PASSED`.

@@ -1,0 +1,12 @@
+Suíte de testes criada em [test_carrinho.py](file:///tmp/bench-281v59s1/tests/test_carrinho.py) (com suporte de importação em [conftest.py](file:///tmp/bench-281v59s1/tests/conftest.py)), sem alterar [carrinho.py](file:///tmp/bench-281v59s1/carrinho.py).
+
+### Cobertura implementada
+- **Carrinho vazio, argumentos padrão/nomeados e bordas de desconto (`0`, `1`, `99`, `100`)** com verificação de tipo exato (`int`).
+- **Truncamento para baixo e agregado** entre linhas e unidades (evitando arredondamento, `ceil`, subtração de desconto truncado e erro de ponto flutuante).
+- **Regras de frete**: sem desconto, cobrado uma única vez somente quando a soma de quantidades é positiva (incluindo itens gratuitos e líquido zerado por desconto, excluindo carrinho vazio e linhas apenas com quantidade zero).
+- **Validações (`ValueError`)**: desconto fora de `[0, 100]`, frete negativo, quantidade negativa e preço negativo — inclusive em carrinho vazio, linhas com quantidade zero e linhas posteriores a uma linha de quantidade zero.
+- **Precisão arbitrária** acima de `2**53` (em preços, produtos e frete).
+- **Preservação da lista de entrada** (em chamadas bem-sucedidas e após `ValueError`) e **independência entre chamadas**.
+
+### Verificação
+- `pytest -v` e `python3 -m pytest -v`: **39 passed in 0.03s**.

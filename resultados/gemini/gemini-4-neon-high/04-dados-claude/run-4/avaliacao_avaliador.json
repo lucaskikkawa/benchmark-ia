@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-high/04-dados-claude/run-4",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "high",
+ "tarefa": "04-dados-claude",
+ "tipo": "04-dados",
+ "run": 4,
+ "consistencia_extra": true,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 175.114,
+ "testes_passados": 32,
+ "testes_total": 32,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Valida corretamente cabeçalho e linhas, usa csv, pathlib e json idiomaticamente. Porém, mistura etapas numa função extensa, não centraliza status e colunas, e falta docstring.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 1.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 1.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 6.0,
+   "justificativa": "Validação e agregação no mesmo bloco, sem funções separadas nem docstring. csv.reader e acúmulo com get; status literal. Erros, round, ordem alfabética e JSON estão corretos.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 6.5,
+ "nota_final_10": 8.95
+}

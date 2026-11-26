@@ -1,0 +1,10 @@
+A solução foi implementada em [solucao.py](file:///tmp/bench-6mya7q_o/solucao.py) conforme as especificações de [enunciado.md](file:///tmp/bench-6mya7q_o/enunciado.md):
+
+- **`unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]`**:
+  - Valida `limites=(minimo, maximo)` (lançando `ValueError` se `minimo > maximo`, inclusive para entrada vazia) e todos os pares `(inicio, fim)` da entrada (lançando `ValueError` se `inicio > fim`, mesmo fora de `limites`).
+  - Consome qualquer iterável finito (incluindo geradores) sem modificar listas ou `limites` recebidos, operando apenas com inteiros de precisão arbitrária.
+  - Quando `limites` é informado, recorta cada intervalo pela interseção fechada antes da ordenação, descartando interseções vazias e preservando pontos nas extremidades.
+  - Ordena os intervalos válidos e realiza uma varredura linear (`O(n log n)` em tempo e `O(n)` em memória), fundindo intervalos que se sobrepõem ou compartilham extremidade.
+
+### Verificação
+- Executada suíte de 13 testes unitários com `python3` (`Python 3.13.5`) cobrindo o exemplo do enunciado, entrada vazia, intervalos separados por 1 unidade, duplicatas, geradores, não mutação, `limites` somente por nome, pontos na extremidade, inteiros de precisão arbitrária (`10**100`), erros de validação e desempenho com 100.000 intervalos: todos os 13 testes passaram (`OK` em `0.125s`).

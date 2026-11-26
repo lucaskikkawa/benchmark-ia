@@ -1,0 +1,10 @@
+Refatorei [pedidos.py](file:///tmp/bench-ode50cbr/pedidos.py) conforme as instruções de [enunciado.md](file:///tmp/bench-ode50cbr/enunciado.md):
+
+- **`subtotal(quantidade: int, preco_centavos: int, desconto_percentual: int = 0) -> int`** ([pedidos.py](file:///tmp/bench-ode50cbr/pedidos.py#L5-L11)): calcula `quantidade * preco_centavos * (100 - desconto_percentual) // 100` usando apenas aritmética inteira.
+- **`resumo_pedidos(pedidos)`** ([pedidos.py](file:///tmp/bench-ode50cbr/pedidos.py#L14-L39)):
+  - Substitui os nomes opacos (`a`, `b`, `c`, `x`, `y`) por nomes descritivos (`total_itens`, `total_centavos`, `por_categoria`, `pedido`, `subtotal_pedido`).
+  - Delega o cálculo chamando `subtotal(quantidade, preco_centavos, desconto_percentual)` uma vez por item, na ordem do iterável (incluindo `quantidade == 0`), e reutiliza o valor retornado em `total_centavos` e `por_categoria`.
+  - Mantém suporte a iteráveis de passagem única, entrada vazia, preservação exata das chaves de `categoria`, ausência de mutação na entrada e acumuladores isolados por chamada, usando apenas a biblioteca padrão compatível com Python 3.11.
+
+### Verificação
+- Executado um script de teste em Python (`python3`, Python 3.13.5 no ambiente) validando: assinatura e valores padrão de `subtotal`, truncamento por linha, inteiros de precisão arbitrária, iterável de passagem única, preservação exata de categorias (espaços e NFC/NFD), categorias somando zero, independência entre chamadas e substituição de `pedidos.subtotal` em tempo de execução — todas as asserções passaram (`ALL TESTS PASSED`).

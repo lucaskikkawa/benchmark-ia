@@ -1,0 +1,8 @@
+A função `fechar_boletim` em [boletim.py](file:///tmp/bench-ct38bivf/boletim.py) foi corrigida conforme o contrato de [enunciado.md](file:///tmp/bench-ct38bivf/enunciado.md):
+
+- **Validação e imutabilidade**: valida que `provas` é `list` com 1 a 4 itens, não altera a lista original, rejeita `bool` e tipos fora de `int`/`float`/`None` com `TypeError`, ignora `None` (lançando `ValueError` se não restar nenhuma nota) e valida finitude e intervalo fechado `[0, 10]` (`ValueError`).
+- **Descarte**: descarta apenas a primeira ocorrência do menor valor quando há exatamente 4 notas válidas, retornando-o como `float` em `descartada` (ou `None` caso contrário).
+- **Cálculo e arredondamento**: converte as notas restantes com `Decimal(str(nota))`, soma, divide por `n` e arredonda uma única vez com `quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`.
+- **Conceito e aprovação**: aplica limites inclusivos (`>= 9` → `"A"`, `>= 7` → `"B"`, `>= 5` → `"C"`, demais → `"D"`) sobre a média já arredondada, com `aprovado = conceito != "D"`.
+
+Todos os exemplos do enunciado e casos de borda/erro foram verificados com `python3` e passaram.

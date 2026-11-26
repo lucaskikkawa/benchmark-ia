@@ -1,0 +1,10 @@
+Implementei a solução em [solucao.py](file:///tmp/bench-parsvimi/solucao.py) com a função `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict`, usando apenas a biblioteca padrão do Python.
+
+### O que foi implementado
+- **Leitura e validação de cabeçalho**: leitura em UTF-8 com suporte a BOM (`utf-8-sig`), separador vírgula e aspas duplas no padrão CSV (incluindo vírgulas e quebras de linha em campos entre aspas). Valida a presença de todas as colunas obrigatórias (`data`, `regiao`, `produto`, `quantidade`, `preco_unitario`, `status`) após `.strip()` diferenciando maiúsculas/minúsculas, levantando `ValueError` se faltar alguma coluna ou se o arquivo estiver vazio e `FileNotFoundError` se o arquivo não existir — sem criar ou alterar `saida` em caso de erro.
+- **Processamento linha a linha**: aplica `.strip()` em todos os campos, ignora linhas totalmente vazias, contabiliza em `linhas_invalidas` qualquer linha com número incorreto de campos, `regiao`/`produto` vazios, `quantidade` inválida via `int(...)` ou `<= 0`, ou `preco_unitario` inválido via `float(...)`, não finito ou `< 0` (independentemente do `status`).
+- **Filtragem e agregação**: considera na agregação apenas linhas válidas com `status.lower() == "concluida"`, agrega por `regiao` (ordenada alfabeticamente), calcula `quantidade_total`, `total_vendas` (`round(..., 2)` como `float`), `produto_mais_vendido` (maior quantidade somada, desempate por menor `str`), e `total_geral` como soma arredondada a 2 casas dos `total_vendas` das regiões.
+- **Saída JSON**: cria diretórios pais de `saida` se necessário e grava o JSON em UTF-8 com `ensure_ascii=False` e `indent=2`, retornando o mesmo dicionário.
+
+### Verificação
+- Validado com [vendas_exemplo.csv](file:///tmp/bench-parsvimi/vendas_exemplo.csv) (resultado exato conforme o enunciado) e bateria de testes cobrindo BOM UTF-8, colunas reordenadas/extras, campos entre aspas com vírgulas/quebras de linha, linhas vazias, casos inválidos com vários `status`, `nan`/`inf`/`-0.0`, desempate de produto, arredondamento de `total_geral` e preservação de `saida` em erros (`FileNotFoundError` e `ValueError`).

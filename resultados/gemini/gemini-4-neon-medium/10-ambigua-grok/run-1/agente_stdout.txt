@@ -1,0 +1,6 @@
+Tarefa concluída no diretório de trabalho com os dois arquivos solicitados:
+
+- [solucao.py](file:///tmp/bench-62gggssh/solucao.py): implementa a função pura `classificar_mensagem(texto: str) -> dict` usando apenas a biblioteca padrão (`re`, `unicodedata`), respeitando todas as regras fechadas (`TypeError` para entradas não-`str`, `tamanho == len(texto)` sem strip/normalização/codificação, `urgente` por substring exata `"URGENTE"`, `"vazia"` exclusiva para `""` e suporte a surrogates isolados como `"\ud800"` e strings longas).
+- [SUPOSICOES.md](file:///tmp/bench-62gggssh/SUPOSICOES.md): documenta em UTF-8 as decisões para os pontos em aberto (categorias adotadas, sinais e ordem de prioridade no desempate, normalização apenas para `categoria`, tratamento de textos sem palavras como `"sem_conteudo"` e ausência de campos extras no dicionário retornado).
+
+A implementação foi verificada com testes cobrindo todos os casos de borda do [enunciado.md](file:///tmp/bench-62gggssh/enunciado.md) (todos aprovados).

@@ -1,0 +1,290 @@
+{
+  "formula": "0.7 × (%testes/10) + 0.3 × rubrica; timeout=0",
+  "N_por_combo": 30,
+  "rankingA": [
+    {
+      "pos": 1,
+      "combo": "claude-haiku-5-5-high",
+      "nota": 9.75,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 2,
+      "combo": "claude-haiku-5-5-medium",
+      "nota": 9.66,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 3,
+      "combo": "gemini-4-hydrogen-medium",
+      "nota": 9.53,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 4,
+      "combo": "gemini-4-hydrogen-high",
+      "nota": 9.29,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 5,
+      "combo": "gpt-6-luna-medium",
+      "nota": 9.09,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 6,
+      "combo": "gpt-6-luna-high",
+      "nota": 9.0,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 7,
+      "combo": "gemini-4-neon-medium",
+      "nota": 8.87,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 8,
+      "combo": "gemini-4-neon-high",
+      "nota": 8.18,
+      "empate_tecnico": false
+    }
+  ],
+  "rankingB_ni": [
+    {
+      "pos": 1,
+      "combo": "claude-haiku-5-5-high",
+      "nota": 9.75,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 2,
+      "combo": "claude-haiku-5-5-medium",
+      "nota": 9.66,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 3,
+      "combo": "gemini-4-hydrogen-medium",
+      "nota": 9.53,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 4,
+      "combo": "gemini-4-hydrogen-high",
+      "nota": 9.29,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 5,
+      "combo": "gpt-6-luna-high",
+      "nota": 9.29,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 6,
+      "combo": "gemini-4-neon-medium",
+      "nota": 9.2,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 7,
+      "combo": "gpt-6-luna-medium",
+      "nota": 9.09,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 8,
+      "combo": "gemini-4-neon-high",
+      "nota": 8.84,
+      "empate_tecnico": true
+    }
+  ],
+  "rankingB_nii": [
+    {
+      "pos": 1,
+      "combo": "claude-haiku-5-5-high",
+      "nota": 9.75,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 2,
+      "combo": "claude-haiku-5-5-medium",
+      "nota": 9.66,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 3,
+      "combo": "gemini-4-hydrogen-medium",
+      "nota": 9.53,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 4,
+      "combo": "gemini-4-hydrogen-high",
+      "nota": 9.29,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 5,
+      "combo": "gpt-6-luna-high",
+      "nota": 9.29,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 6,
+      "combo": "gemini-4-neon-medium",
+      "nota": 9.2,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 7,
+      "combo": "gpt-6-luna-medium",
+      "nota": 9.09,
+      "empate_tecnico": true
+    },
+    {
+      "pos": 8,
+      "combo": "gemini-4-neon-high",
+      "nota": 8.84,
+      "empate_tecnico": true
+    }
+  ],
+  "medias_empresa": {
+    "Google": {
+      "A": 8.97,
+      "B_ni": 9.21,
+      "B_nii": 9.21
+    },
+    "Anthropic": {
+      "A": 9.71,
+      "B_ni": 9.71,
+      "B_nii": 9.71
+    },
+    "OpenAI": {
+      "A": 9.04,
+      "B_ni": 9.19,
+      "B_nii": 9.19
+    }
+  },
+  "notas_combo": {
+    "gemini-4-hydrogen-medium": {
+      "A": 9.53,
+      "B_ni": 9.53,
+      "B_nii": 9.53,
+      "timeouts_A": 0,
+      "timeouts_B": 0,
+      "retries_420": 0
+    },
+    "gemini-4-hydrogen-high": {
+      "A": 9.29,
+      "B_ni": 9.29,
+      "B_nii": 9.29,
+      "timeouts_A": 1,
+      "timeouts_B": 1,
+      "retries_420": 1
+    },
+    "gemini-4-neon-medium": {
+      "A": 8.87,
+      "B_ni": 9.2,
+      "B_nii": 9.2,
+      "timeouts_A": 2,
+      "timeouts_B": 1,
+      "retries_420": 2
+    },
+    "gemini-4-neon-high": {
+      "A": 8.18,
+      "B_ni": 8.84,
+      "B_nii": 8.84,
+      "timeouts_A": 4,
+      "timeouts_B": 2,
+      "retries_420": 4
+    }
+  },
+  "reutilizados_R1": {
+    "A": {
+      "claude-haiku-5-5-high": 9.75,
+      "claude-haiku-5-5-medium": 9.66,
+      "gpt-6-luna-high": 9.0,
+      "gpt-6-luna-medium": 9.09
+    },
+    "B_ni": {
+      "claude-haiku-5-5-high": 9.75,
+      "claude-haiku-5-5-medium": 9.66,
+      "gpt-6-luna-high": 9.29,
+      "gpt-6-luna-medium": 9.09
+    },
+    "referencia_pos_B": {
+      "claude-haiku-5-5-high": 1,
+      "claude-haiku-5-5-medium": 4,
+      "gpt-6-luna-high": 7,
+      "gpt-6-luna-medium": 8
+    }
+  },
+  "juizes": {
+    "media_rubrica": {
+      "codex": 8.368,
+      "grok": 8.566,
+      "claude": 8.4
+    },
+    "diferenca_absoluta": [
+      {
+        "juizes": "codex × grok",
+        "n_pares": 36,
+        "media_diferenca_absoluta": 0.972
+      },
+      {
+        "juizes": "claude × grok",
+        "n_pares": 40,
+        "media_diferenca_absoluta": 0.2
+      },
+      {
+        "juizes": "claude × codex",
+        "n_pares": 40,
+        "media_diferenca_absoluta": 1.15
+      }
+    ],
+    "pendencia": "Refill Claude 26/11/2026 17:53–17:59 America/Sao_Paulo: 33/33 avaliações que tinham 1 juiz agora têm 2 juízes válidos. single_judge_count=0."
+  },
+  "card_gemini_antigo_vs_novo": {
+    "antigo": {
+      "gemini-3.8-flash-medium": 2.85,
+      "gemini-3.8-flash-high": 1.31,
+      "gemini-4-argon-medium": 7.22,
+      "gemini-4-argon-high": 6.96
+    },
+    "novo": {
+      "gemini-4-hydrogen-medium": 9.53,
+      "gemini-4-hydrogen-high": 9.29,
+      "gemini-4-neon-medium": 8.87,
+      "gemini-4-neon-high": 8.18
+    },
+    "antigo_media": 4.58,
+    "novo_media": 8.97
+  },
+  "timeouts_totais": {
+    "A": 7,
+    "B": 4
+  },
+  "auditoria": {
+    "ranking_attempts": 120,
+    "retry_attempts": 7,
+    "retry_with_evaluation": 3,
+    "evaluated": 116,
+    "single_judge_count": 0,
+    "zero_judge_count": 0,
+    "incoherencias": 0,
+    "rerun_requested": true,
+    "rerun_errors": 0
+  },
+  "completude": {
+    "run1_esperados": 120,
+    "run1_avaliacoes_preenchidas": 113,
+    "run1_timeouts_sem_avaliacao": 7,
+    "retry420_esperados": 7,
+    "retry420_avaliacoes_preenchidas": 3,
+    "retry420_timeouts_sem_avaliacao": 4,
+    "avaliacoes_sem_juiz_valido": 0
+  }
+}

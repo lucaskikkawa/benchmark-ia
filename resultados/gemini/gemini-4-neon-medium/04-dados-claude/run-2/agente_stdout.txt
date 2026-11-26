@@ -1,0 +1,7 @@
+Implementei a função `resumir_vendas` em [solucao.py](file:///tmp/bench-d446xrjc/solucao.py) conforme as especificações de [enunciado.md](file:///tmp/bench-d446xrjc/enunciado.md):
+
+- **Leitura e validação de cabeçalho**: lê CSV em `utf-8-sig` (suportando UTF-8 com ou sem BOM) com `csv.reader`, aceita colunas em qualquer ordem e colunas extras, valida todas as colunas obrigatórias (com `strip()` e diferenciação de maiúsculas/minúsculas) e lança `ValueError`/`FileNotFoundError` sem criar nem alterar `saida`.
+- **Validação e filtragem linha a linha**: ignora linhas totalmente vazias, aplica `strip()` nos valores, contabiliza linhas inválidas independentemente do `status` (número de campos divergente, `regiao`/`produto` vazios, `quantidade` não inteira ou `<= 0`, `preco_unitario` não finito ou `< 0`) e agrega apenas registros válidos com `status` igual a `concluida` (case-insensitive, sem acento).
+- **Agregação e saída JSON**: ordena `regioes` alfabeticamente, calcula `quantidade_total`, `total_vendas` arredondado a 2 casas (`float`), `produto_mais_vendido` (com desempate alfabético) e `total_geral` (`float`), cria os diretórios pais de `saida` quando necessário e grava o JSON em UTF-8 com `ensure_ascii=False` e `indent=2`.
+
+A solução foi validada com [vendas_exemplo.csv](file:///tmp/bench-d446xrjc/vendas_exemplo.csv) e casos de borda (BOM, campos entre aspas com vírgulas e quebras de linha, linhas vazias, erros sem alterar `saida`, desempates, `nan`/`inf`, `0.0` e `status` com acento).

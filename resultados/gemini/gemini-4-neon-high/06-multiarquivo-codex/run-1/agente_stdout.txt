@@ -1,0 +1,9 @@
+O pacote `estoque/` foi concluído conforme [enunciado.md](file:///tmp/bench-fv6p_qmi/enunciado.md), mantendo exatamente os quatro módulos existentes e apenas a biblioteca padrão:
+
+- [modelos.py](file:///tmp/bench-fv6p_qmi/estoque/modelos.py): implementada a dataclass imutável `Movimento(sku: str, delta: int)` com `@dataclass(frozen=True)`, igualdade por campos e sem validação no construtor.
+- [operacoes.py](file:///tmp/bench-fv6p_qmi/estoque/operacoes.py): implementada `calcular_saldos(movimentos, iniciais=None)` copiando `iniciais` sem mutá-lo (inclusive em falhas), aceitando iteráveis de passagem única, validando saldos iniciais e intermediários negativos com `ValueError`, preservando chaves exatas, precisão arbitrária de inteiros, saldos zero e SKUs iniciais sem movimentos.
+- [persistencia.py](file:///tmp/bench-fv6p_qmi/estoque/persistencia.py): implementada `carregar_movimentos(caminho)` lendo JSON UTF-8 (`str` ou `PathLike`), validando lista de objetos, presença de `sku` (`str` com ao menos um caractere não branco, preservado exatamente) e `delta` (`int` excluindo `bool`), ignorando campos extras, mantendo a ordem e propagando erros de arquivo e `ValueError` em JSON ou formato inválidos.
+- [__init__.py](file:///tmp/bench-fv6p_qmi/estoque/__init__.py): mantido com os imports relativos e exportação de `Movimento`, `calcular_saldos` e `carregar_movimentos`.
+
+### Verificação
+Executada uma bateria de testes em Python cobrindo imutabilidade e ausência de validação em `Movimento`, iteráveis de passagem única, não mutação de `iniciais`, detecção de saldos negativos iniciais/intermediários, precisão arbitrária de inteiros, preservação exata de SKUs (espaços, caixa e NFC/NFD), rejeição de formas/campos/tipos inválidos em JSON (incluindo `bool` e `float` em `delta`), propagação de erros de arquivo e carga + cálculo de 20.000 movimentos (~0,02 s). Todos os testes passaram.

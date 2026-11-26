@@ -1,0 +1,9 @@
+Implementei [solucao.py](file:///tmp/bench-vmmd7cha/solucao.py) com a função `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict`, utilizando apenas a biblioteca padrão do Python (`csv`, `json`, `math`, `collections`, `pathlib`).
+
+### O que foi implementado
+- **Leitura e validação do cabeçalho**: leitura em UTF-8 com suporte a BOM (`utf-8-sig`), remoção de espaços nas bordas dos nomes das colunas, suporte a qualquer ordem de colunas e colunas extras, levantando `FileNotFoundError` se o arquivo não existir e `ValueError` se o arquivo estiver vazio ou faltar alguma coluna obrigatória (`data`, `regiao`, `produto`, `quantidade`, `preco_unitario`, `status`), sem criar ou alterar `saida` em caso de erro.
+- **Validação e filtragem linha a linha**: ignora linhas totalmente vazias, contabiliza em `linhas_invalidas` linhas com contagem de colunas diferente do cabeçalho, `regiao`/`produto` vazios, `quantidade` não inteira ou `<= 0`, ou `preco_unitario` não finito / `< 0` / inválido para `float(...)`, e agrega apenas linhas válidas com `status.lower() == "concluida"`.
+- **Agregação e escrita**: agrupa por `regiao` em ordem alfabética, calcula `quantidade_total`, `total_vendas` (`round(..., 2)` como `float`), `produto_mais_vendido` (com desempate alfabético) e `total_geral`, criando os diretórios pais de `saida` e gravando o JSON com `ensure_ascii=False` e `indent=2`.
+
+### Verificação
+Executei um script de testes em Python contra [vendas_exemplo.csv](file:///tmp/bench-vmmd7cha/vendas_exemplo.csv) e casos de borda (BOM UTF-8, colunas reordenadas/extras, campos entre aspas com vírgula e quebra de linha, `+3`/`007`/`1e2`, `nan`/`inf`/vírgula decimal, empate de produtos, CSV só com cabeçalho, arquivo vazio, coluna ausente e arquivo inexistente): todos os casos passaram.

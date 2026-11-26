@@ -1,0 +1,32 @@
+"""Cliente resiliente com retentativas e backoff exponencial."""
+
+import math
+import time
+
+import fake_api
+
+
+def buscar_com_retry(
+    api,
+    chave: str,
+    *,
+    tentativas: int = 3,
+    timeout: float = 1.0,
+    backoff: float = 0.1,
+    dormir=time.sleep,
+) -> dict:
+    """Busca uma chave na API repetindo em falhas transitórias com backoff exponencial."""
+    if tentativas < 1:
+        raise ValueError("tentativas deve ser >= 1")
+    if not math.isfinite(timeout) or timeout <= 0:
+        raise ValueError("timeout deve ser um número real finito > 0")
+    if not math.isfinite(backoff) or backoff < 0:
+        raise ValueError("backoff deve ser um número real finito >= 0")
+
+    for indice in range(tentativas):
+        try:
+            return api.get(chave, timeout=timeout)
+        except (fake_api.ErroTemporario, TimeoutError):
+            if indice == tentativas - 1:
+                raise
+        dormir(backoff * 2**indice)

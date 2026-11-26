@@ -1,0 +1,8 @@
+Refatorei [frete.py](file:///tmp/bench-5c21z5uy/frete.py) conforme especificado em [enunciado.md](file:///tmp/bench-5c21z5uy/enunciado.md):
+
+- **`TabelaFrete`**: adicionada a classe com o atributo de classe `FAIXAS` (tupla com `carta`, `pac`, `sedex` e `transportadora` nos limites e valores exatos) e o método `cotar(self, peso_g, distancia_km, expresso)`.
+- **`faixa_de_peso(peso_g)`**: exposta validando tipo (`int`, rejeitando `bool`) e intervalo (`1..30000`) do peso e consultando `TabelaFrete.FAIXAS` dinamicamente.
+- **`cotar(peso_g, distancia_km, expresso)`**: mantida com o mesmo contrato, delegando para `TabelaFrete().cotar(...)`.
+- **Leitura dinâmica**: `cotar`, `TabelaFrete.cotar` e `faixa_de_peso` consultam `TabelaFrete.FAIXAS` a cada chamada, preservando a validação global e levantando `ValueError` quando o peso não se encaixa em nenhuma faixa da tabela corrente.
+
+Todos os exemplos, limites, validações de tipo/intervalo e cenários de substituição dinâmica de `TabelaFrete.FAIXAS` foram verificados via `python3`.

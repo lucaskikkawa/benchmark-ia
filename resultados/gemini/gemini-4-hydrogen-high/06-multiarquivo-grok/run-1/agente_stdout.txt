@@ -1,0 +1,8 @@
+O pacote `biblioteca` foi criado em `/tmp/bench-3chd4a5w` seguindo exatamente a especificação de [enunciado.md](file:///tmp/bench-3chd4a5w/enunciado.md), utilizando apenas a biblioteca padrão e imports relativos:
+
+- [__init__.py](file:///tmp/bench-3chd4a5w/biblioteca/__init__.py): exporta `Livro`, `ErroBiblioteca`, `Catalogo` e `ServicoEmprestimos`.
+- [models.py](file:///tmp/bench-3chd4a5w/biblioteca/models.py): define `ErroBiblioteca` e a dataclass imutável `Livro`, validando ISBN (exatamente 13 dígitos ASCII `0-9`, sem `strip`), `titulo` (armazenado com `strip` e rejeitando vazio) e `exemplares` (`int >= 1`, rejeitando `bool`).
+- [catalogo.py](file:///tmp/bench-3chd4a5w/biblioteca/catalogo.py): implementa `Catalogo` com `adicionar`, `buscar` (comparação exata de ISBN) e `listar` (retorna nova lista ordenada por ISBN), sem conhecimento de empréstimos.
+- [emprestimos.py](file:///tmp/bench-3chd4a5w/biblioteca/emprestimos.py): implementa `ServicoEmprestimos` com estado isolado por instância, validação estrita de datas `YYYY-MM-DD` no calendário gregoriano e de usuários via `str.strip`, controle de duplicidade/disponibilidade por serviço, prazo de 14 dias corridos em `devolver`, preservação de estado em caso de `ErroBiblioteca` e ordenação por `(dia, isbn, usuario)` em `ativos`.
+
+A suíte de verificação (`4` testes em `unittest` cobrindo validações de modelo, catálogo, isolamento entre serviços, datas limite/bissextos, unicidade de usuário, atrasos e ordenação) foi executada com `PYTHONPATH=/tmp/bench-3chd4a5w python3 -B` e passou integralmente (`OK`).

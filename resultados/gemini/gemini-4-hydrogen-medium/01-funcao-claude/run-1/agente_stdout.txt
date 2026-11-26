@@ -1,0 +1,12 @@
+A solução foi implementada em [solucao.py](file:///tmp/bench-6tjs07w3/solucao.py) com a função `parse_duracao(texto: str) -> int`.
+
+### Implementação
+- **Validação de tipo e entrada**: `parse_duracao` verifica `isinstance(texto, str)` (lançando `TypeError` caso contrário, aceitando subclasses de `str`) e usa `str.split(texto, None, 6)` para separar por espaços em branco em tempo linear e rejeitar entradas vazias ou com mais de 5 tokens.
+- **Parsing de componentes**: cada token é percorrido com a regex `([0-9]+)([wWdDhHmMsS])` (apenas dígitos ASCII `0-9` e unidades `w`, `d`, `h`, `m`, `s` em maiúsculas/minúsculas), garantindo ordem estrita `w > d > h > m > s` sem repetição e sem espaços entre número e unidade.
+- **Inteiros arbitrários**: `_parse_ascii_int` remove zeros à esquerda e converte strings com mais de 4000 dígitos em blocos (`_CHUNK_SIZE = 4000`), evitando o limite padrão de `sys.get_int_max_str_digits()` (4300 dígitos no Python 3.13).
+
+### Verificação
+Todos os casos de teste executados após a criação de [solucao.py](file:///tmp/bench-6tjs07w3/solucao.py) passaram:
+- Exemplos do enunciado, zeros à esquerda, subclasses de `str` e inteiros com 5000–10000 dígitos.
+- Rejeição com `TypeError` (tipos não-`str`) e `ValueError` (string vazia/só espaços, número sem unidade, unidade desconhecida/repetida, ordem errada, espaço entre número e unidade, dígitos não-ASCII, texto extra).
+- Testes de desempenho com 500 mil a 1 milhão de caracteres de espaço/tokens concluídos em menos de `0.001s` cada (`valid_500k=0.0009s`, `invalid_500k=0.0004s`, `spaces_1M=0.0008s`, `many_tokens=0.0003s`).

@@ -1,0 +1,14 @@
+Criei [solucao.py](file:///tmp/bench-75kqmjxw/solucao.py) implementando `consolidar(caminho_csv: str, caminho_sla: str, caminho_saida: str) -> dict` utilizando apenas a biblioteca padrão (`csv`, `json`, `re`, `datetime`), conforme especificado em [enunciado.md](file:///tmp/bench-75kqmjxw/enunciado.md).
+
+### O que foi implementado em [solucao.py](file:///tmp/bench-75kqmjxw/solucao.py)
+- **`_carregar_sla`**: valida UTF-8, JSON válido, existência exata da chave raiz `limites_minutos`, presença exata das prioridades `baixa`, `media` e `alta`, e garante que cada limite seja `int >= 1` (rejeitando `bool`, `float` e demais tipos com `ValueError`).
+- **`_analisar_data_hora`**: valida o formato estrito de 16 caracteres `YYYY-MM-DDTHH:MM` com dígitos ASCII via regex (`[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}`) e analisa a data/hora com `datetime.strptime`.
+- **`consolidar`**:
+  - Lê o CSV em UTF-8 sem BOM (`encoding="utf-8", newline=""`), comparando o cabeçalho antes do `strip` contra `["id", "equipe", "aberto_em", "fechado_em", "prioridade"]`.
+  - Ignora linhas em branco ou cujos campos fiquem todos vazios após `strip`.
+  - Valida contagem de colunas, `id` e `equipe` não vazios após `strip`, unicidade de `id` após `strip`, prioridade válida e `fechado_em >= aberto_em`.
+  - Calcula duração exata em minutos, contabiliza estouros (`duracao_minutos > limite`), média inteira (`soma_duracao // chamados`) e `pior_id` (maior duração, desempate por menor `id` lexicográfico).
+  - Ordena `equipes` com `sorted()` padrão, preserva a ordem exata das chaves, grava `caminho_saida` em UTF-8 com `json.dumps(..., ensure_ascii=False, indent=2) + "\n"` e retorna o `dict`.
+
+### Verificação
+- Executei uma suíte de 9 testes `unittest` em memória (com arquivos temporários via `tempfile.TemporaryDirectory`, sem deixar amostras no diretório) cobrindo o exemplo do enunciado, desempate de `pior_id`, `strip`, `\r\n`, aspas, linhas em branco/`,,,,`, ordenação Unicode, CSV só com cabeçalho, BOM UTF-8, erros de cabeçalho/linhas/datas/SLA e `FileNotFoundError`: `Ran 9 tests in 0.006s — OK`.

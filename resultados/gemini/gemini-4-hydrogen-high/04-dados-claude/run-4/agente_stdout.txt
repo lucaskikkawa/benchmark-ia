@@ -1,0 +1,16 @@
+Implementei a solução em [solucao.py](file:///tmp/bench-g2lds_qi/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-g2lds_qi/enunciado.md).
+
+### O que foi implementado
+- **`resumir_vendas(entrada: str | Path, saida: str | Path) -> dict`** em [solucao.py](file:///tmp/bench-g2lds_qi/solucao.py#L46-L110) usando apenas a biblioteca padrão (`csv`, `json`, `math`, `collections.defaultdict`, `pathlib.Path`):
+  - Leitura em UTF-8 com suporte opcional a BOM (`encoding="utf-8-sig"`), validação do cabeçalho (ordem arbitrária, colunas extras ignoradas, comparação exata após `strip()`) e levantamento de `FileNotFoundError` ou `ValueError` antes de criar diretórios ou escrever em `saida`.
+  - Validação linha a linha via [`_processar_linha`](file:///tmp/bench-g2lds_qi/solucao.py#L19-L43), ignorando linhas totalmente vazias, descartando e contando linhas inválidas independentemente do `status`, e filtrando `status.lower() == "concluida"`.
+  - Agregação por `regiao` em ordem alfabética, desempate de `produto_mais_vendido` pelo menor nome em `str`, arredondamento a 2 casas decimais para `total_vendas` e `total_geral` (garantindo tipos `float` e `int` esperados) e escrita JSON UTF-8 com `ensure_ascii=False` e `indent=2`.
+
+### Verificação
+Executei um conjunto de testes via `python3 -B -c ...` cobrindo:
+- [vendas_exemplo.csv](file:///tmp/bench-g2lds_qi/vendas_exemplo.csv) (resultado exato do enunciado e criação de diretório pai);
+- CSV com BOM UTF-8, colunas reordenadas e extras, campos com aspas/vírgulas/quebras de linha, espaços nas bordas, `"+3"`, `"007"`, `"1e2"`, `"-0.0"`, `nan`, `inf`, negativo, vírgula decimal, `status` `"concluída"` com acento e `"cancelada"` inválido, e empate de produto;
+- CSV apenas com cabeçalho;
+- Erros (`ValueError` em arquivo vazio ou cabeçalho inválido; `FileNotFoundError` em arquivo inexistente) sem criar nem alterar `saida`.
+
+Resultado observado: `ALL TESTS PASSED`.

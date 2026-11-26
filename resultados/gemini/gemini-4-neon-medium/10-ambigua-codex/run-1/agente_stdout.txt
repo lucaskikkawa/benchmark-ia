@@ -1,0 +1,6 @@
+Tarefa concluída no diretório de trabalho com os arquivos exigidos:
+
+- [organizador.py](file:///tmp/bench-odw3jctp/organizador.py): implementa `organizar_tarefas(tarefas: list[dict]) -> list[dict]` usando apenas a biblioteca padrão. Filtra somente tarefas com `concluida == False`, ordena em ordem decrescente de `prioridade` (`5` a `0`) preservando a ordem relativa original em empates (em tempo linear $O(n)$), mantém duplicatas e campos extras sem normalizar títulos, não modifica a entrada e retorna uma nova lista com cópias rasas independentes (`dict(tarefa)`) preservando a identidade dos objetos internos.
+- [SUPOSICOES.md](file:///tmp/bench-odw3jctp/SUPOSICOES.md): documenta as políticas adotadas para desempate (ordenação estável), validação estrita de entradas fora do domínio (`TypeError` e `ValueError`) e semântica de cópia rasa.
+
+**Verificação:** testado com cenários de lista vazia, apenas concluídas, empates, preservação de campos extras e identidade de objetos internos, referências repetidas ao mesmo `dict`, validação de entradas inválidas e carga de 30.000 itens (~12 ms).

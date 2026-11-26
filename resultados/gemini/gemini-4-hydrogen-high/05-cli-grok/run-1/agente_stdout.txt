@@ -1,0 +1,13 @@
+Implementei a CLI em [agenda_cli.py](file:///tmp/bench-zdm8el14/agenda_cli.py) usando apenas a biblioteca padrão do Python, seguindo todas as regras descritas em [enunciado.md](file:///tmp/bench-zdm8el14/enunciado.md):
+
+- **Subcomandos (`argparse`)**: `adicionar`, `listar` e `concluir` em `construir_parser()`, encerrando com código `2` para subcomando ausente, argumentos desconhecidos, opções obrigatórias faltantes, prioridade inválida ou `--id` não inteiro.
+- **Validação e persistência JSON (`ler_arquivo`, `validar_estrutura_arquivo`, `gravar_arquivo`)**:
+  - Leitura e escrita em UTF-8 (`indent=2`, `ensure_ascii=False`, quebra de linha final).
+  - Validação estrita de chaves exatas, tipos (`proximo_id` e `id` inteiros `>= 1` sem `bool`/`float`, `proximo_id` maior que todos os `id` existentes, `id` únicos), normalização de `titulo`, `prioridade`, `prazo` (data gregoriana real `YYYY-MM-DD` em `datetime.date` ou `null`) e `concluida` booleano, além de rejeição de chaves duplicadas e constantes inválidas (`NaN`/`Infinity`).
+  - `adicionar` cria arquivo novo quando ausente e preserva arquivos inválidos existentes byte a byte; `listar` apenas lê o arquivo sem reescrevê-lo.
+- **Comportamento e erros de regra (`ErroRegra`)**:
+  - `adicionar` (`cmd_adicionar`), `listar` (`cmd_listar`) com ordenação (`alta`, `media`, `baixa`, depois `id` crescente) e filtros `--prioridade` / `--somente-abertas`, e `concluir` (`cmd_concluir`).
+  - Erros de regra retornam código `2`, stdout vazio e `erro: MENSAGEM\n` no stderr.
+
+### Verificação
+Executei os testes via `subprocess` em [test_agenda.py](file:///home/box/.gemini/antigravity-cli/brain/cf09e12a-2a65-43e5-a884-d89aca058e73/scratch/test_agenda.py) após a última edição (`ALL TESTS PASSED`), cobrindo erros de `argparse`, arquivos ausentes e inválidos (incluindo preservação byte a byte), normalização de título com `\u00a0`, validação de datas (`2000-02-29`, `1900-02-29`, `2100-02-29`, `0001-01-01`, `9999-12-31`), buracos de ID, ordenação/filtros de `listar` (inclusive com `LC_ALL=C`) e `concluir`.

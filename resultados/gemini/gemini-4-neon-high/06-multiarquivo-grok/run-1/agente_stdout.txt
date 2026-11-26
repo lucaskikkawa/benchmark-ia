@@ -1,0 +1,8 @@
+O pacote `biblioteca` foi criado no diretório de trabalho com os quatro arquivos especificados, usando apenas a biblioteca padrão e imports relativos:
+
+- [__init__.py](file:///tmp/bench-9bfklftu/biblioteca/__init__.py): exporta `Livro`, `ErroBiblioteca`, `Catalogo` e `ServicoEmprestimos`.
+- [models.py](file:///tmp/bench-9bfklftu/biblioteca/models.py): define `ErroBiblioteca` e a dataclass imutável `Livro` com validação em `__post_init__` (ISBN com exatamente 13 dígitos ASCII `0-9` sem `strip`, título normalizado com `strip` e não vazio, `exemplares` inteiro $\ge 1$ rejeitando `bool`).
+- [catalogo.py](file:///tmp/bench-9bfklftu/biblioteca/catalogo.py): implementa `Catalogo` (`adicionar`, `buscar` sem `strip` e `listar` retornando nova lista ordenada por ISBN), independente de empréstimos.
+- [emprestimos.py](file:///tmp/bench-9bfklftu/biblioteca/emprestimos.py): implementa `ServicoEmprestimos` com isolamento de estado por instância, normalização de usuário com `str.strip` preservando espaços internos, validação estrita de datas `YYYY-MM-DD` no calendário gregoriano, prazo de 14 dias corridos, cálculo de atraso na devolução, atomicidade em caso de `ErroBiblioteca`, `disponiveis` e `ativos` ordenados por `(dia, isbn, usuario)`.
+
+Uma bateria de testes foi executada via `python3 -B` cobrindo todas as regras, validações, casos de borda (anos bissextos/século, viradas de mês/ano, anos `0001` e `9999`, dígitos Unicode, múltiplos serviços no mesmo catálogo, ordenação em code point e preservação de estado em erro), passando integralmente.

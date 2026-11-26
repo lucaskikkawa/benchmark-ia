@@ -1,0 +1,7 @@
+Implementei a função `consolidar` em [solucao.py](file:///tmp/bench-xuccd8vo/solucao.py) usando apenas a biblioteca padrão, seguindo todas as regras de [enunciado.md](file:///tmp/bench-xuccd8vo/enunciado.py):
+
+- **Validação do SLA (`_carregar_sla`)**: lê o JSON em UTF-8, exige objeto com exatamente a chave `limites_minutos` contendo exatamente `baixa`, `media` e `alta` com inteiros `>= 1` (rejeitando `bool` e `float`).
+- **Leitura e validação do CSV (`consolidar` / `_parse_timestamp`)**: lê em UTF-8 sem BOM (`newline=""`), exige cabeçalho exato antes do `strip`, ignora linhas em branco ou com todos os campos vazios após `strip`, valida contagem de colunas, `id`/`equipe` não vazios, unicidade de `id` após `strip`, prioridade exata após `strip`, formato estrito `YYYY-MM-DDTHH:MM` (16 caracteres ASCII e data válida) e `fechado_em >= aberto_em`.
+- **Consolidação e saída**: agrupa por equipe após `strip`, ordena equipes com `sorted` padrão, calcula contagem, estouros (`duracao > limite`), média inteira (`//`) e `pior_id` com desempate lexicográfico, grava o JSON em UTF-8 com `ensure_ascii=False`, `indent=2` e `\n` ao final, e retorna o dicionário gerado.
+
+Todos os testes unitários (exemplo do enunciado, desempates, limites exatos, `\r\n`, aspas/vírgulas, Unicode, arquivo só com cabeçalho e todos os casos de `ValueError` e `FileNotFoundError`) passaram.

@@ -1,0 +1,10 @@
+Criei [solucao.py](file:///tmp/bench-2yio1b2p/solucao.py) implementando `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict` usando apenas a biblioteca padrão do Python, conforme [enunciado.md](file:///tmp/bench-2yio1b2p/enunciado.md).
+
+### O que foi implementado
+- Leitura de CSV UTF-8 (incluindo suporte a BOM via `utf-8-sig`, campos entre aspas com vírgulas/quebras de linha, colunas em qualquer ordem e colunas extras).
+- Validação do cabeçalho obrigatório (com `strip()` e diferenciação de maiúsculas/minúsculas), lançando `ValueError` em caso de cabeçalho ausente ou incompleto e `FileNotFoundError` se o arquivo não existir, sem criar ou alterar `saida` em caso de erro.
+- Validação linha a linha (ignorando linhas totalmente vazias, contabilizando linhas inválidas independentemente do `status`, filtrando `status` igual a `concluida` sem diferenciar maiúsculas/minúsculas e sem acento).
+- Agregação por região em ordem alfabética, com cálculo de `quantidade_total`, `total_vendas`, `produto_mais_vendido` (com desempate alfabético) e `total_geral`, gravando o JSON em UTF-8 (`ensure_ascii=False`, `indent=2`) e criando diretórios pais de `saida` quando necessário.
+
+### Verificação
+- Validado com [vendas_exemplo.csv](file:///tmp/bench-2yio1b2p/vendas_exemplo.csv) e casos de borda (BOM, campos com vírgulas/quebras de linha, colunas reordenadas/extras, valores inválidos como `nan`/`inf`/`2,50`/`<= 0`, empates de produto, arredondamento, arquivo vazio, colunas faltantes e arquivo inexistente): todos os testes passaram.

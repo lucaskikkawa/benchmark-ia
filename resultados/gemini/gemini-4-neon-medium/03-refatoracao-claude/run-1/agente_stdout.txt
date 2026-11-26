@@ -1,0 +1,9 @@
+Refatorei [relatorio.py](file:///tmp/bench-gwi1kbqk/relatorio.py) conforme as especificações de [enunciado.md](file:///tmp/bench-gwi1kbqk/enunciado.md), preservando exatamente o comportamento observável original:
+
+- **Constantes de módulo**: definidas `LIMITE_FAIXA_ALTA = 1000`, `TAXAS_DESCONTO = {"vip": (0.10, 0.15), "atacado": (0.05, 0.08)}` e `TAXAS_PADRAO = (0.0, 0.02)`, consultadas dinamicamente em `calcular_desconto`.
+- **Funções públicas**:
+  - `calcular_subtotal(itens)` soma `preco * qtd` na ordem original (preservando a aritmética `float` e a ordem de validação/acesso às chaves) e lança `ValueError` para `qtd < 0`.
+  - `calcular_desconto(subtotal, tipo_cliente)` calcula o valor do desconto (`subtotal * taxa`) usando as constantes do módulo e comparação exata do tipo.
+  - `formatar_relatorio(totais_por_cliente)` ordena os clientes, acumula o total nessa mesma ordem e formata com 2 casas decimais.
+  - `gerar_relatorio(pedidos)` orquestra essas funções no escopo do módulo, mantendo `subtotal - desconto` e a imutabilidade da entrada.
+- **Verificação**: executados testes diferenciais contra a implementação original (casos de borda de ponto flutuante como `inf`/`-inf`/`nan`/`-0.0`, valores grandes, chaves ausentes, tipos desconhecidos e 500 entradas aleatórias), além de testes de alteração dinâmica das constantes e das funções no módulo — todos aprovados.

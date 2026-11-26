@@ -1,0 +1,8 @@
+A implementação de [`fechar_boletim`](file:///tmp/bench-supvfwvk/boletim.py#L7-L52) em [boletim.py](file:///tmp/bench-supvfwvk/boletim.py) foi corrigida conforme o contrato de [enunciado.md](file:///tmp/bench-supvfwvk/enunciado.md):
+
+- **Validação de entrada**: verifica `list` (`TypeError`), tamanho entre `1` e `4` (`ValueError`), rejeita `bool` e tipos diferentes de `int`/`float`/`None` (`TypeError`), exige notas finitas em `[0, 10]` e ao menos uma nota válida após ignorar `None` (`ValueError`), sem alterar a lista recebida.
+- **Descarte**: remove apenas a primeira ocorrência da menor nota somente quando há exatamente 4 notas válidas, retornando o valor em `float` em `descartada` (ou `None` caso contrário).
+- **Cálculo e arredondamento**: converte cada nota restante com `Decimal(str(nota))`, soma e divide por `n`, arredondando uma única vez com `quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)`.
+- **Conceito e aprovação**: aplica os limites inclusivos (`>= 9` → `"A"`, `>= 7` → `"B"`, `>= 5` → `"C"`, caso contrário `"D"`) sobre a média arredondada e define `aprovado` como `conceito != "D"`.
+
+**Verificação**: executados testes via `python3 -c` cobrindo todos os exemplos de [enunciado.md](file:///tmp/bench-supvfwvk/enunciado.md) e casos de borda (`-0.0`, `nan`/`inf`, `bool`, não mutação da entrada e tipos inválidos), com resultado `ALL TESTS PASSED`.

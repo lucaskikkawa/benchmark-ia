@@ -1,0 +1,11 @@
+A suíte de testes foi criada em [test_descontos.py](file:///tmp/bench-6w27x7zz/tests/test_descontos.py) sem alterar [descontos.py](file:///tmp/bench-6w27x7zz/descontos.py).
+
+### Cobertura implementada
+- **Estrutura e tipos (`TestEstruturaETipos`)**: valida as chaves exatas (`preco_final`, `desconto`, `cupom_aplicado`), tipos inteiros estritos (rejeitando `bool`, `float`, `str`, `None` etc. com `TypeError`) e preços negativos (`ValueError`).
+- **Datas (`TestValidacaoData`)**: valida formato estrito `YYYY-MM-DD`, limites de `datetime.date` (`0001-01-01` a `9999-12-31`), regras de ano bissexto (`2000-02-29` e `2024-02-29` válidos; `1900-02-29`, `2100-02-29` e `2023-02-29` inválidos) e formatos rejeitados (`20240101`, `2024-1-1`, `2024/01/01`, espaços etc.).
+- **Cupom vazio e desconhecido (`TestCupomVazioEDesconhecido`)**: valida `None` e `""` sem alteração de preço (`cupom_aplicado is None`), e rejeição com `ValueError` para espaços (`" "`, `"\t"`), falta de `strip`, caixa diferente e códigos inexistentes.
+- **Cupons percentuais e fixo (`TestCuponsPercentuais`, `TestCupomFixo500`)**: testa `OFF10`, `OFF5` e `FIXO500` incluindo arredondamento inteiro para baixo, preço `0`, preços que zeram no piso e cálculo de `desconto = preco_centavos - preco_final`.
+- **Janelas de validade (`TestCupomBemvindo`, `TestCupomNatal`)**: testa os extremos inclusivos de `BEMVINDO` (`2024-01-01` e `2024-12-31`, além de `2023-12-31` e `2025-01-01` fora da janela) e as datas `24` e `25` de dezembro de `NATAL` em múltiplos anos, além de datas fora da janela retornando `cupom_aplicado is None`.
+
+### Verificação
+- Executado `python3 -m pytest -v`: **195 passed in 0.10s**.

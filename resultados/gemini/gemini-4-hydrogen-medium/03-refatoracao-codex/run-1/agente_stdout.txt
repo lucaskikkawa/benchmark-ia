@@ -1,0 +1,6 @@
+Refatoração concluída em [pedidos.py](file:///tmp/bench-2oredmxn/pedidos.py) conforme [enunciado.md](file:///tmp/bench-2oredmxn/enunciado.md):
+
+- Criada a função pública [`subtotal`](file:///tmp/bench-2oredmxn/pedidos.py#L5-L11) (`quantidade: int, preco_centavos: int, desconto_percentual: int = 0 -> int`) realizando o cálculo inteiro `quantidade * preco_centavos * (100 - desconto_percentual) // 100` com truncamento por linha.
+- Refatorada [`resumo_pedidos`](file:///tmp/bench-2oredmxn/pedidos.py#L14-L33) para usar nomes descritivos (`total_itens`, `total_centavos`, `por_categoria`, `pedido`, `quantidade`, `valor_subtotal`, `categoria`), delegando a `subtotal` uma vez por pedido em ordem (inclusive quando `quantidade == 0`), reutilizando o valor retornado em `total_centavos` e `por_categoria`, preservando categorias exatas e suportando iteráveis de passagem única e inteiros de precisão arbitrária.
+
+Verificado via `python3 -c` cobrindo assinatura de `subtotal`, entrada vazia, truncamento por linha, gerador de passagem única, quantidade zero, inteiros grandes (`10**30 + 7`), categorias com espaços/Unicode sem normalização, substituição de `subtotal` em tempo de execução e independência de acumuladores entre chamadas (`ALL TESTS PASSED`).

@@ -1,0 +1,8 @@
+Implementei [cli.py](file:///tmp/bench-u_2_mf9p/cli.py) conforme as especificações de [enunciado.md](file:///tmp/bench-u_2_mf9p/enunciado.md):
+
+- **Interface CLI e `main(argv=None) -> int`**: construída com `argparse`, aceitando o argumento posicional `ARQUIVO` e as flags `--minimo N`, `--top N`, `--ignorar-caixa`, `--json` e `-h`/`--help`. Ao ser executado como script, encerra com o código retornado por `main()`.
+- **Leitura e tokenização**: lê `ARQUIVO` em UTF-8 estrito, divide tokens usando `str.split()` (preservando pontuação, espaço de largura zero e formas Unicode compostas/decompostas distintas) e aplica `str.casefold()` antes de contar quando `--ignorar-caixa` está ativo.
+- **Filtragem, ordenação e saída**: filtra por contagem `>= --minimo`, ordena por contagem decrescente e palavra crescente, limita aos `--top N` primeiros itens e emite `PALAVRA\tCONTAGEM\n` (ou stdout vazio se sem resultados) no formato padrão ou JSON em linha única com `ensure_ascii=False` (`[]\n` se vazio) com `--json`.
+- **Tratamento de erros**: argumentos inválidos/ausentes, `--minimo`/`--top` não inteiros ou `<= 0`, e arquivos ausentes, ilegíveis ou com UTF-8 inválido retornam código `2`, stdout vazio e mensagem de erro no stderr sem traceback.
+
+Validei todos os cenários (incluindo importação sem efeitos colaterais, múltiplas chamadas a `main`, Unicode/casefold, erros com código 2 e arquivo com 100.000 tokens processado em ~0,01s).

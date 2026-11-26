@@ -1,0 +1,8 @@
+Refatorei [frete.py](file:///tmp/bench-d1pnhy_w/frete.py) conforme [enunciado.md](file:///tmp/bench-d1pnhy_w/enunciado.md):
+
+- **Tabela centralizada (`TabelaFrete.FAIXAS`)**: exposta como atributo de classe em `TabelaFrete` com as quatro faixas (`carta`, `pac`, `sedex`, `transportadora`) na ordem e valores exatos, sem argumentos no construtor.
+- **Leitura dinâmica em cada chamada**: `TabelaFrete.cotar`, `cotar` e `faixa_de_peso` consultam `FAIXAS` a cada invocação (via `_buscar_faixa`), refletindo substituições do atributo de classe imediatamente e levantando `ValueError` caso um peso válido não caia em nenhuma faixa da tabela corrente.
+- **Compatibilidade integral**: mantidas as validações de tipo (`int` sem aceitar `bool`, `expresso` estritamente `bool`), limites globais (`1..30000` para peso e `0..3000` para distância), ordem das exceções, cálculo inteiro `(valor * 3) // 2` para expresso e formato exato do retorno.
+
+### Verificação
+Executei testes em Python verificando todos os exemplos do enunciado, equivalência completa com a implementação original em entradas válidas e inválidas, `faixa_de_peso`, substituição dinâmica de `TabelaFrete.FAIXAS` (incluindo lacunas, tabela vazia e manutenção das validações globais) e limpeza do diretório (nenhum módulo adicional criado).

@@ -1,0 +1,8 @@
+Corrigi os bugs em [intervalos.py](file:///tmp/bench-yvko9in8/intervalos.py) para que `mesclar_intervalos` e `total_coberto` sigam integralmente as docstrings:
+
+- **Validação completa antes do processamento**: cada item é validado como `tuple` ou `list` de 2 elementos, com `inicio` e `fim` do tipo `int` (rejeitando `bool`, `float`, etc. com `TypeError`) e `inicio <= fim` (levantando `ValueError` caso contrário).
+- **Suporte a qualquer iterável sem mutação**: os intervalos validados são copiados para uma nova lista antes da ordenação, preservando a entrada original e suportando listas, tuplas, conjuntos e geradores.
+- **Entrada vazia**: retorna `[]` em `mesclar_intervalos` e `0` em `total_coberto`.
+- **Fusão de intervalos que se tocam ou ficam contidos**: alterada a condição de sobreposição para `inicio <= atual_fim` e atualizado o limite superior com `if fim > atual_fim: atual_fim = fim` para não encolher intervalos já cobertos.
+
+Validei a implementação com testes cobrindo os exemplos de [enunciado.md](file:///tmp/bench-yvko9in8/enunciado.md), entradas vazias, imutabilidade, geradores, intervalos pontuais/negativos/contidos/adjacentes e casos de `TypeError` e `ValueError`.

@@ -1,0 +1,12 @@
+Foi criada a suíte de testes em [test_carrinho.py](file:///tmp/bench-wz67y9lo/tests/test_carrinho.py) para validar o comportamento público de `calcular_total` em [carrinho.py](file:///tmp/bench-wz67y9lo/carrinho.py) (sem alterá-lo).
+
+### Cobertura implementada
+- **Contrato e cálculo básico**: carrinho vazio, argumentos padrão/posicionais/nomeados, tipo de retorno exato (`int`), linhas duplicadas e independência de ordem.
+- **Desconto e truncamento**: bordas (`0%`, `1%`, `99%`, `100%`), truncamento para baixo vs. arredondamento/teto/truncamento do desconto, e truncamento agregado sobre o bruto entre múltiplas linhas e unidades.
+- **Regras de frete**: frete sem desconto, cobrado uma única vez quando a soma de quantidades é positiva (inclusive com item gratuito ou líquido truncado para `0`), sem cobrança em carrinho vazio ou apenas com linhas de quantidade zero, e misturas com quantidade zero em qualquer posição.
+- **Precisão arbitrária**: valores acima de `2**53` (sem e com desconto/frete) e inteiros acima da precisão padrão de `Decimal`.
+- **Validações (`ValueError`)**: `desconto < 0` ou `> 100`, `frete < 0`, `quantidade < 0` e `preco < 0` inclusive em carrinho vazio, quantidade zero, desconto `100%` e linhas posteriores a uma linha de quantidade zero.
+- **Imutabilidade e independência**: preservação da lista recebida tanto em chamadas válidas quanto quando `ValueError` é lançado, independência entre chamadas e ausência de contaminação de estado após erros.
+
+### Verificação
+- `python3 -m pytest -v`: **101 passed in 0.09s**.

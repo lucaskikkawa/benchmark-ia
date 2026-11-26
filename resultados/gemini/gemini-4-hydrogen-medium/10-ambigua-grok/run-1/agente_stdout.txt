@@ -1,0 +1,11 @@
+Criei os dois arquivos solicitados no diretório de trabalho:
+
+- [solucao.py](file:///tmp/bench-_7lmy4yj/solucao.py): implementa `classificar_mensagem(texto: str) -> dict` usando apenas a biblioteca padrão (`re` e `unicodedata`), garantindo:
+  - `TypeError` para entradas que não sejam `str` (`None`, `bytes`, `bytearray`, `int`, etc.).
+  - `tamanho` igual a `len(texto)` em code points, sem `strip`, normalização ou codificação (incluindo surrogates como `"\ud800"` e caracteres invisíveis).
+  - `urgente` igual a `"URGENTE" in texto`, exatamente sensível a maiúsculas e sem normalização prévia.
+  - `categoria == "vazia"` exclusivamente para `""`, e categorias `"reclamacao"`, `"pedido"`, `"duvida"`, `"elogio"`, `"sem_palavras"` ou `"outro"` para os demais textos.
+- [SUPOSICOES.md](file:///tmp/bench-_7lmy4yj/SUPOSICOES.md): documenta em UTF-8 as decisões tomadas para os pontos em aberto (categorias, sinais e ordem de desempate, normalização apenas para `categoria`, tratamento de textos sem palavras e ausência de campos extras).
+
+### Verificação
+Executei um script Python validando os requisitos fechados (tipos inválidos, `""`, espaços/pontuação, surrogates, code points, detecção exata de `"URGENTE"` inclusive após 100.000 caracteres e classificação por categoria) além da estrutura de [SUPOSICOES.md](file:///tmp/bench-_7lmy4yj/SUPOSICOES.md), obtendo `ALL CHECKS PASSED`.

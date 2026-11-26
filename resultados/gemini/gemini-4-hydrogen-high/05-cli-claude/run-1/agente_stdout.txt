@@ -1,0 +1,15 @@
+O script [freq.py](file:///tmp/bench-6ofms2lh/freq.py) foi criado conforme especificado em [enunciado.md](file:///tmp/bench-6ofms2lh/enunciado.md).
+
+### O que foi implementado
+- **CLI com `argparse`** (`build_parser` e `positive_int` em [freq.py](file:///tmp/bench-6ofms2lh/freq.py#L14-L74)):
+  - Posicional obrigatório `ARQUIVO` (aceita `-` para `stdin`).
+  - `-n`/`--top` e `-m`/`--min-len` validados como inteiros `>= 1` via `positive_int` (padrões `10` e `1`).
+  - `-i`/`--ignore-case`, `-x`/`--excluir` (repetível via `action="append"`) e `--formato {texto,json}` (padrão `texto`).
+- **Leitura UTF-8 estrita** (`read_utf8_input` e `configure_streams` em [freq.py](file:///tmp/bench-6ofms2lh/freq.py#L77-L130)):
+  - Lê bytes de arquivo ou `sys.stdin.buffer` e decodifica com `utf-8` estrito, sem depender da codificação/locale do terminal.
+  - Em `OSError` ou `UnicodeDecodeError`, imprime uma única linha iniciando com `erro: ` em `stderr`, nada em `stdout`, e retorna código `1`.
+- **Contagem, ordenação e formatação** (`count_words`, `format_output` e `main` em [freq.py](file:///tmp/bench-6ofms2lh/freq.py#L89-L157)):
+  - Extrai palavras com `[^\W\d_]+` no texto original, aplica `str.lower()` quando `-i` está ativo (incluindo nas palavras de `-x`), filtra por `--min-len` e exclusões, ordena por contagem decrescente e palavra crescente, e imprime em formato `texto` (`palavra\tcontagem`, vazio quando não há resultados) ou `json` (`[]` quando vazio).
+
+### Verificação
+- Executada bateria de testes via `python3` cobrindo o exemplo do enunciado, sensibilidade a maiúsculas/minúsculas (`str.lower()` vs `casefold()`), ordem das etapas (`-i` antes de `-m`), separação por dígitos/`_`/pontuação com letras Unicode, `-x` repetido com e sem `-i`, saída vazia em `texto` e `json`, leitura via `stdin` (`-`) sob `LC_ALL=C` e `PYTHONIOENCODING=ascii`, erros de leitura/UTF-8 inválido (código `1`), e argumentos inválidos no `argparse` (código `2`): resultado `ALL_TESTS_PASSED`.

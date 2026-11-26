@@ -1,0 +1,8 @@
+Implementei a solução em [vendas.py](file:///tmp/bench-vpow3o3b/vendas.py) com a função `resumir_vendas(entrada, saida, minimo_centavos: int = 0) -> list[dict]` usando apenas a biblioteca padrão do Python:
+
+- **Validação prévia de `minimo_centavos`**: exige tipo exato `int` (`type(minimo_centavos) is int`, rejeitando `bool`, `float`, `str`, `None` e subclasses) e valor `>= 0`, lançando `ValueError` antes de tocar na saída.
+- **Leitura e cabeçalho CSV**: abre `entrada` com `encoding="utf-8-sig"` e `newline=""` (aceitando BOM UTF-8 opcional e preservando quebras de linha e aspas internas em campos cotados), validando presença de cabeçalho e das colunas obrigatórias `produto`, `quantidade`, `preco_centavos` e `status` em qualquer ordem e ignorando colunas extras.
+- **Filtragem e validação de linhas**: ignora linhas sem `status` ou com `status.strip().lower() != "pago"` antes de validar os demais campos; em linhas pagas, rejeita campos obrigatórios ausentes, produto vazio após `strip()`, e números fora da gramática `[+-]?[0-9]+` (dígitos ASCII) ou `< 0`.
+- **Agregação e saída JSON**: agrega por produto (sensível a maiúsculas/Unicode/espaços internos) com aritmética inteira exata arbitrária, mantém produtos de quantidade zero, filtra por `receita_centavos >= minimo_centavos` após agregação, ordena por `produto` e grava o JSON UTF-8 (`ensure_ascii=False`) com quebra de linha final somente após todas as validações.
+
+Validei todos os requisitos e casos de borda (incluindo BOM, aspas/quebras internas, NFD vs NFC, inteiros > 64 bits, integridade do arquivo de saída em `ValueError` e desempenho com 30.000 linhas em ~0,03s).

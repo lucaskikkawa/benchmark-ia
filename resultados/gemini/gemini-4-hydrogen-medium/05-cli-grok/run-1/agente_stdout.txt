@@ -1,0 +1,7 @@
+Implementado [agenda_cli.py](file:///tmp/bench-qnwue7sk/agenda_cli.py) conforme especificado em [enunciado.md](file:///tmp/bench-qnwue7sk/enunciado.md), utilizando apenas a biblioteca padrão do Python:
+
+- **CLI (`argparse`)**: subcomandos `adicionar`, `listar` e `concluir`, com `--arquivo` obrigatório e código de saída `2` para erros de sintaxe, subcomando ausente/inválido ou prioridade inválida.
+- **Validação e persistência JSON**: leitura e validação estrita de estrutura, tipos (`proximo_id`, `id` únicos e menores que `proximo_id`, `titulo` normalizado sem `\n`/`\r`/`\t` nem espaços nas pontas, `prioridade`, `prazo` via `datetime.date`, `concluida` booleano) em UTF-8 com `indent=2`, `ensure_ascii=False` e quebra de linha final; arquivos inválidos não são modificados e `listar` não reescreve o arquivo.
+- **Regras e mensagens de erro**: tratamento via `RuleError` retornando código `2`, stdout vazio e stderr `erro: <mensagem>\n` para todos os casos especificados.
+
+Verificado com a suíte de testes em [test_agenda.py](file:///home/box/.gemini/antigravity-cli/brain/4f4c429c-eacf-4a31-ba02-198bc803d692/scratch/test_agenda.py) via `python3` (`ALL TESTS PASSED`).

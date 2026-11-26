@@ -1,0 +1,11 @@
+O arquivo [intervalos.py](file:///tmp/bench-f71o92jn/intervalos.py) foi corrigido para seguir todas as especificações das docstrings e de [enunciado.md](file:///tmp/bench-f71o92jn/enunciado.md):
+
+- **Suporte a qualquer iterável sem mutação da entrada**: `mesclar_intervalos` agora materializa e valida os pares em uma nova lista antes de ordenar, funcionando com listas, tuplas e geradores sem alterar a entrada original.
+- **Validação completa antes de produzir resultado**:
+  - Verifica que cada elemento é `tuple` ou `list` (`TypeError` caso contrário) e tem exatamente 2 elementos (`ValueError` caso contrário).
+  - Verifica que `inicio` e `fim` são `int` e não `bool` (`TypeError` caso contrário).
+  - Verifica `inicio <= fim` (`ValueError` caso contrário).
+- **Entrada vazia**: retorna `[]` em `mesclar_intervalos` e `0` em `total_coberto`.
+- **Mesclagem de intervalos**: corrigida a condição de toque/sobreposição para `inicio <= ult_fim` e a atualização do fim para `fim > ult_fim` (evitando encolher intervalos como `[(1, 10), (2, 3)]`).
+
+Todos os casos de teste executados via `python3 -c` (exemplos do enunciado, entradas vazias, geradores, não mutação da entrada e validações de `TypeError`/`ValueError`) passaram (`ALL TESTS PASSED`).

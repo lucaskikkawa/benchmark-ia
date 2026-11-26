@@ -1,0 +1,14 @@
+Criado [solucao.py](file:///tmp/bench-zs1o06ao/solucao.py) com a implementação de `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict` utilizando apenas a biblioteca padrão do Python.
+
+### O que foi implementado
+- **Leitura e validação do cabeçalho** ([solucao.py](file:///tmp/bench-zs1o06ao/solucao.py#L46-L66)): leitura em `utf-8-sig` (suportando BOM UTF-8), remoção de espaços nas bordas dos nomes das colunas, suporte a colunas em qualquer ordem ou extras e lançamento de `ValueError` quando falta alguma coluna obrigatória ou o arquivo está vazio (e `FileNotFoundError` se o arquivo não existir), sem criar ou alterar `saida` em caso de erro.
+- **Validação e filtragem linha a linha** ([solucao.py](file:///tmp/bench-zs1o06ao/solucao.py#L18-L88)): descarte de linhas totalmente vazias sem contar como inválidas, remoção de espaços nas bordas dos valores, contagem em `linhas_invalidas` independentemente do `status` para linhas com número incorreto de campos, `regiao`/`produto` vazio, `quantidade` não inteira ou `<= 0`, ou `preco_unitario` não finito / `< 0` / inválido para `float(...)`, e filtragem por `status.lower() == "concluida"`.
+- **Agregação e escrita JSON** ([solucao.py](file:///tmp/bench-zs1o06ao/solucao.py#L90-L114)): regiões ordenadas alfabeticamente, desempate de `produto_mais_vendido` em ordem alfabética de `str`, arredondamento a 2 casas decimais garantindo `float` para `total_vendas` e `total_geral` e `int` para `quantidade_total` e `linhas_invalidas`, criação dos diretórios pais de `saida` e gravação com `ensure_ascii=False` e `indent=2`.
+
+### Verificação
+Executada suíte de testes inline via `python3` validando:
+- Resultado de [vendas_exemplo.csv](file:///tmp/bench-zs1o06ao/vendas_exemplo.csv) conforme esperado em [enunciado.md](file:///tmp/bench-zs1o06ao/enunciado.md);
+- Arquivo com BOM UTF-8, colunas reordenadas/extras, aspas com vírgulas/quebras de linha, notação científica (`1e2`), `+3`, `007`, `-0.0`, `nan`, `inf`, vírgula decimal, `concluída` com acento e linhas vazias;
+- Desempate alfabético em `produto_mais_vendido` e distinção de maiúsculas/minúsculas em `regiao`;
+- CSV contendo apenas cabeçalho e preservação de `saida` em cenários de `FileNotFoundError` e `ValueError`.
+Todos os casos passaram (`All tests passed!`).

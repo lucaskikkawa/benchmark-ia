@@ -4,28 +4,34 @@ Projeto open-source e hobby que compara modelos de IA em tarefas práticas de pr
 
 ## Estado atual
 
-As **40 tarefas** foram criadas, o [piloto](resultados/piloto/PILOTO.md) foi realizado e a **Rodada 1 foi concluída e avaliada**. Houve refações de erros de cota e de timeouts; os detalhes e exceções estão nos [resultados da rodada](resultados/RODADA.md) e no [relatório do Avaliador](resultados/RELATORIO_AVALIADOR.md). O [site v2](site/index.html) permite explorar os resultados.
+As **40 tarefas** foram criadas, o [piloto](resultados/piloto/PILOTO.md) foi realizado e a **v3 foi julgada**. O [site 1.0](site/v3/index.html) apresenta os resultados; o [site v2](site/index.html) permanece disponível.
 
-A Rodada 1 cobriu estes modelos, cada um com esforço `medium` e `high` (16 combinações):
+A v3 avaliou `gemini-4-hydrogen` e `gemini-4-neon` em `medium` e `high` e reaproveitou os resultados de Claude e Codex da Rodada 1. Grok está fora dos rankings, com seus dados mantidos no repositório como legado. Nesta versão, `grok-4.7-build-fast` ainda atua como juiz, e Grok também é autor de tarefas; por decisão de Lucas em 26/11/2026, não será usado como juiz nas próximas versões.
 
-- **Claude:** `claude-opus-5-5`, `claude-haiku-5-5`.
-- **Codex:** `gpt-6.1-sol`, `gpt-6-luna`.
-- **Gemini:** `gemini-4-argon`, `gemini-3.8-flash`.
-- **Grok:** `grok-4.7`, `grok-4.7-build-fast`.
+O **Ranking A**, de manchete, usa o prazo normal de 180 ou 300 segundos. O **Ranking B** refaz os timeouts com até 420 segundos, sem teto adicional para essas tentativas; 0,7 é o peso dos testes na nota. Há empate técnico quando a diferença entre notas é de até 0,30 ponto.
 
-O site apresenta dois cenários: **Ranking A**, com os limites originais de 3 minutos em 31 tarefas e 5 minutos em 9; e **Ranking B**, no qual 70 execuções principais de Claude, Codex e Gemini que atingiram o limite foram refeitas com 7 minutos. O B não inclui Grok e apresenta tanto a regra de timeout igual a zero quanto uma alternativa que avalia a entrega parcial. Há uma regra excepcional para parte das execuções de `grok-4.7-high` no A; consulte os relatórios para os detalhes.
+| Ranking A | Combinação | Nota |
+| ---: | --- | ---: |
+| 1 | `claude-haiku-5-5-high` | 9,75 |
+| 2 | `claude-opus-5-5-medium` | 9,70 |
+| 3 | `claude-haiku-5-5-medium` | 9,66 |
+| 4 | `gemini-4-hydrogen-medium` | 9,53 |
+| 5 | `claude-opus-5-5-high` | 9,39 |
+| 6 | `gemini-4-hydrogen-high` | 9,29 |
+| 7 | `gpt-6-luna-medium` | 9,09 |
+| 8 | `gpt-6-luna-high` | 9,00 |
+| 9 | `gemini-4-neon-medium` | 8,87 |
+| 10 | `gpt-6.1-sol-medium` | 8,79 |
+| 11 | `gemini-4-neon-high` | 8,18 |
+| 12 | `gpt-6.1-sol-high` | 8,16 |
 
-No Ranking A, `claude-haiku-5-5-high` ficou em primeiro, com nota 9,75. A tabela completa e suas ressalvas estão em [RODADA.md](resultados/RODADA.md); o [relatório de 7 minutos](resultados/_avaliador/cenario_7min/RELATORIO_7MIN.md) compara os cenários.
-
-## Próximo passo: v3 planejada
-
-A v3 está planejada e ainda não foi iniciada: avaliar `gemini-4-hydrogen` e `gemini-4-neon`, ambos em `medium` e `high`, com os mesmos critérios, reaproveitando os resultados de Claude e Codex. O site v3 não terá Grok na disputa; seus dados permanecem no repositório como legado, e Grok continua como autor de tarefas e juiz.
+As médias no A são Claude **9,62**, Codex **8,76** e Gemini novo **8,97**; o Gemini antigo, presente apenas na Rodada 1, teve média **4,58**. Detalhes e Ranking B estão em [RODADA_V3.md](resultados/RODADA_V3.md); consulte também a [Rodada 1](resultados/RODADA.md) e o [relatório do Avaliador](resultados/RELATORIO_AVALIADOR.md).
 
 ## Metodologia
 
 São 10 tipos de tarefa, com uma versão criada por cada uma das quatro empresas. Cada combinação resolve as 30 tarefas das outras empresas, além de três repetições de uma tarefa para medir consistência. O ranking usa as 30 execuções principais, sem as repetições.
 
-A nota de 0 a 10 combina **70% de testes e 30% de rubrica**: `0,7 × (% de testes / 10) + 0,3 × rubrica`. Na tarefa de escrever testes, a porcentagem mede mutantes eliminados. O Avaliador analisa código anonimizado com dois juízes de empresas diferentes da autora e da resolvedora; se um juiz falhar duas vezes, vale o outro. Em geral, timeout recebe zero, com as exceções e alternativas descritas acima. Veja a [metodologia e auditoria](resultados/RELATORIO_AVALIADOR.md) e o [plano original](PLANO.md).
+A nota de 0 a 10 combina **70% de testes e 30% de rubrica**: `0,7 × (% de testes / 10) + 0,3 × rubrica`. Na tarefa de escrever testes, a porcentagem mede mutantes eliminados. O Avaliador analisa código anonimizado com dois juízes de empresas diferentes da autora e da resolvedora; se um juiz falhar duas vezes, vale o outro. Na v3, timeout recebe zero. Veja a [metodologia e auditoria](resultados/RELATORIO_AVALIADOR.md) e o [plano original](PLANO.md).
 
 ## Como reproduzir
 
@@ -52,5 +58,5 @@ A rodada retoma execuções existentes; a avaliação pode chamar juízes extern
 - [tarefas/](tarefas/): enunciados, metadados, rubricas, testes ocultos e soluções de referência; algumas tarefas incluem código inicial.
 - [scripts/](scripts/): runner, piloto, rodada, avaliação e relatórios.
 - [resultados/](resultados/): piloto, execuções, avaliações e relatórios.
-- [site/](site/): site v2, construção e verificação.
+- [site/](site/): site v2, construção e verificação; [site/v3/](site/v3/) contém o site 1.0.
 - [notas/](notas/): registros de criação, revisão e validação das tarefas.

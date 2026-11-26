@@ -1,0 +1,20 @@
+Criei a suíte de testes em [test_senhas.py](file:///tmp/bench-oudn03iw/tests/test_senhas.py) sem alterar [senhas.py](file:///tmp/bench-oudn03iw/senhas.py).
+
+### Cobertura implementada
+- **`ESPECIAIS`**: verificação de tipo (`frozenset`), conteúdo exato (`!@#$%&*?-_`) e rejeição de pontuação/caracteres fora do conjunto.
+- **`validar_senha`**:
+  - Validação de tipos (`TypeError` para entradas não-`str`) e `tamanho_minimo < 1` (`ValueError`), incluindo a borda `tamanho_minimo=1` e o padrão `8`.
+  - Fronteiras de comprimento (incluindo contagem de espaços no tamanho).
+  - Cada código de problema isoladamente, múltiplos problemas, ausência de duplicatas e ordem exata dos 6 códigos.
+  - Maiúsculas/minúsculas ASCII e Unicode (`isupper`/`islower`), dígitos estritamente `"0"`–`"9"` (rejeitando dígitos Unicode como `²`, `٠`, `０`), cada caractere de `ESPECIAIS`, e espaços ASCII/Unicode (`isspace`) em qualquer posição.
+- **`pontuar_senha`**:
+  - Pontos por comprimento (`+2`/char) e teto em 20 caracteres (40 pontos), inclusive com categorias e trincas após o 20º caractere.
+  - Bônus de `+15` por categoria (uma vez por categoria), seguindo as mesmas definições de `validar_senha`.
+  - Penalidade de `-10` por trinca consecutiva em janela deslizante (`"aaa"`, `"aaaa"`, `"aaaaa"`, início/meio/fim, múltiplas trincas, sensibilidade a maiúsculas/minúsculas).
+  - Limitação ao intervalo `[0, 100]`.
+- **`classificar`**:
+  - Retorno `"invalida"` exclusivamente quando há `"espaco"` (independentemente da pontuação e para diferentes tipos de whitespace), sem confundir com outros problemas de `validar_senha`.
+  - Fronteiras exatas `49`/`50`/`51`, `79`/`80`/`81` e `100` entre `"fraca"`, `"media"` e `"forte"`, além de redução de faixa por trincas e propagação de `TypeError`.
+
+### Verificação
+Executado `python3 -m pytest -q tests` no diretório de trabalho: **201 passed in 0.11s**.

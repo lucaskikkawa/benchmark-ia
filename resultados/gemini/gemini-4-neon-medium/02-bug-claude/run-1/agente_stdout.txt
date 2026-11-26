@@ -1,0 +1,8 @@
+Corrigi os bugs em [intervalos.py](file:///tmp/bench-4_r2k0s2/intervalos.py) para que `mesclar_intervalos` e `total_coberto` sigam integralmente as especificações das docstrings:
+
+- **Entrada vazia**: retorna `[]` em `mesclar_intervalos` (e `0` em `total_coberto`) sem levantar `IndexError`.
+- **Iteráveis e imutabilidade**: consome `intervalos` uma única vez em uma nova lista de tuplas, suportando listas, tuplas, geradores etc., sem modificar a entrada original.
+- **Validação completa**: verifica antes de produzir qualquer resultado que cada item é uma `tuple` ou `list` de 2 elementos, que `inicio` e `fim` são `int` e não `bool` (levantando `TypeError`), e que `inicio <= fim` (levantando `ValueError`).
+- **Mesclagem correta**: une intervalos que se tocam (`inicio <= atual_fim`) e preserva o maior fim (`if fim > atual_fim: atual_fim = fim`) quando um intervalo está contido em outro.
+
+Todos os casos de teste (exemplos do [enunciado.md](file:///tmp/bench-4_r2k0s2/enunciado.md), entradas vazias, geradores, imutabilidade, negativos, intervalos degenerados e validações de `TypeError`/`ValueError`) passaram.

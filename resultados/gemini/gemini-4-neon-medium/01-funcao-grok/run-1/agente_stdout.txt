@@ -1,0 +1,5 @@
+Criei [solucao.py](file:///tmp/bench-qfc4wql5/solucao.py) implementando `horas_livres(ocupados, inicio, fim)` conforme especificado em [enunciado.md](file:///tmp/bench-qfc4wql5/enunciado.md):
+
+- **Validação estrita**: aceita apenas `list` em `ocupados`, itens `tuple` ou `list` de exatamente 2 `str`, e horários no formato exato `HH:MM` com dígitos ASCII (`00:00`–`23:59` e `24:00`), levantando `TypeError` ou `ValueError` conforme os casos descritos.
+- **Processamento**: valida todos os intervalos e sua ordem antes de ignorar durações zero ou recortar para `[inicio, fim)`, sem mutar a entrada; ordena, funde sobreposições e intervalos adjacentes após o recorte, e retorna os trechos livres formatados (com `1440` como `"24:00"`).
+- **Verificação**: todos os exemplos do enunciado e casos de borda/erro (formatos inválidos, dígitos Unicode, intervalos invertidos fora da janela, `24:00`, tipos inválidos e imutabilidade) passaram nos testes sem criar arquivos extras no diretório.

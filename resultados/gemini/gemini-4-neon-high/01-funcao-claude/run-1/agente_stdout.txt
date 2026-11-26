@@ -1,0 +1,7 @@
+Implementei `parse_duracao(texto: str) -> int` em [solucao.py](file:///tmp/bench-6fu3cx_l/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-6fu3cx_l/enunciado.py).
+
+### Principais pontos da implementação
+- **Validação de tipo**: aceita `str` e subclasses (`isinstance(texto, str)`), lançando `TypeError` caso contrário, e chama `str.split(texto, None, 5)` diretamente para evitar dependência de métodos sobrescritos em subclasses.
+- **Formato e validação sem backtracking**: divide em até 5 tokens separados por espaços em branco e percorre cada token com a regex possessiva `([0-9]++)([wWdDhHmMsS])`, aceitando apenas dígitos ASCII `0-9` e as unidades exatas `w/d/h/m/s` (case-insensitive, sem armadilhas de casefolding Unicode), exigindo ordem estrita e ausência de duplicatas.
+- **Inteiros de tamanho arbitrário**: `_parse_ascii_int` remove zeros à esquerda e converte inteiros acima do limite por divisão e conquista em blocos (respeitando `sys.get_int_max_str_digits()`), garantindo exatidão mesmo com milhares de dígitos.
+- **Desempenho linear**: testado com entradas de ~1 MB (válidas e inválidas, incluindo `"1d" + " " * 1_000_000 + "x"` e números com 50.000–200.000 dígitos), executando em milissegundos.

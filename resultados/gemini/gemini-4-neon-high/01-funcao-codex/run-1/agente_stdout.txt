@@ -1,0 +1,10 @@
+Criei [solucao.py](file:///tmp/bench-wnp24mtq/solucao.py) implementando `unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]` conforme especificado em [enunciado.md](file:///tmp/bench-wnp24mtq/enunciado.md).
+
+### O que foi implementado
+- Validação de `limites` invertidos (`minimo > maximo` lança `ValueError`, inclusive para entrada vazia) sem modificar o objeto recebido.
+- Consumo em passagem única de `intervalos` (suportando geradores e preservando listas recebidas), validando todos os pares originais (`inicio > fim` lança `ValueError`, mesmo fora de `limites`).
+- Recorte opcional fechado por `limites`, retendo interseções de um único ponto nas extremidades e descartando interseções vazias.
+- Ordenação e varredura em $O(n \log n)$ de tempo e $O(n)$ de memória, usando apenas aritmética/comparações de inteiros de precisão arbitrária e sem dependências externas.
+
+### Verificação
+- Executada bateria de testes cobrindo assinatura (`limites` somente por nome), exemplo do enunciado, entradas vazias, geradores de uso único, imutabilidade das entradas, casos de fronteira e `ValueError`, inteiros de precisão arbitrária (`10**100`), 500 testes aleatórios comparados com referência e desempenho com 100.000 intervalos (~0,05 s).
