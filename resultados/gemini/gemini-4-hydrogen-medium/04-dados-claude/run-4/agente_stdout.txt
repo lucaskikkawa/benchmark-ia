@@ -1,0 +1,14 @@
+A tarefa foi concluída com a criação de [solucao.py](file:///tmp/bench-7hd8kbeh/solucao.py) implementando `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict` utilizando apenas a biblioteca padrão do Python.
+
+### O que foi implementado
+- **Leitura e validação do cabeçalho**: leitura em `utf-8-sig` (suporte opcional a BOM UTF-8) via `csv.reader`, normalização de espaços nas bordas do cabeçalho mantendo diferenciação de maiúsculas/minúsculas, e validação de todas as colunas obrigatórias (`data`, `regiao`, `produto`, `quantidade`, `preco_unitario`, `status`), levantando `ValueError` em caso de ausência ou arquivo vazio e `FileNotFoundError` quando o arquivo de entrada não existe, sem criar ou alterar `saida`.
+- **Processamento linha a linha** (`_processar_linha`): descarte de linhas totalmente vazias, remoção de espaços nas bordas dos campos, contagem em `linhas_invalidas` para linhas com número incorreto de colunas, `regiao`/`produto` vazios, `quantidade` não inteira ou `<= 0`, ou `preco_unitario` não numérico/não finito/`< 0` (independentemente do `status`).
+- **Agregação e saída**: filtragem de `status.lower() == "concluida"`, cálculo de `quantidade_total`, `total_vendas` (arredondado a 2 casas), `produto_mais_vendido` (com desempate alfabético), ordenação alfabética das chaves de `regioes`, cálculo de `total_geral` e escrita do JSON (`ensure_ascii=False`, `indent=2`, UTF-8) criando diretórios pais de `saida` quando necessário.
+
+### Verificação
+- Executado script de verificação em Python validando:
+  - Resultado exato para [vendas_exemplo.csv](file:///tmp/bench-7hd8kbeh/vendas_exemplo.csv) (`Norte`, `Sul`, `total_geral: 63.4`, `linhas_invalidas: 2`).
+  - CSV com BOM UTF-8, colunas reordenadas e extras, campos entre aspas com vírgula e quebra de linha, formatos `"+3"`, `"007"`, `"1e2"`, preço `0`, empate de produto, linhas vazias, diferenciação entre `concluída` e `concluida`, e linhas inválidas com status `cancelada`.
+  - CSV apenas com cabeçalho (`{"regioes": {}, "total_geral": 0.0, "linhas_invalidas": 0}`).
+  - Casos de erro (`FileNotFoundError` e `ValueError`) garantindo que o arquivo/diretório de saída não é criado.
+- Saída observada: `ALL TESTS PASSED`.

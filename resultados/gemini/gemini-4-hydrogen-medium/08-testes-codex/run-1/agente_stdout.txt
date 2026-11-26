@@ -1,0 +1,12 @@
+A suíte de testes foi criada em [test_carrinho.py](file:///tmp/bench-eupbi6u_/tests/test_carrinho.py) sem alterar [carrinho.py](file:///tmp/bench-eupbi6u_/carrinho.py).
+
+### Cobertura implementada
+- Carrinho vazio (com e sem desconto/frete), argumentos padrão e nomeados, e múltiplos itens.
+- Regras de frete sem desconto, cobrança de frete para itens gratuitos com quantidade positiva e isenção para linhas com quantidade zero.
+- Desconto aplicado uma única vez sobre o total bruto agregado com truncamento para baixo (`// 100`), incluindo bordas válidas (`0`, `1`, `99`, `100`).
+- Validação de `ValueError` para `desconto < 0` ou `> 100`, `frete < 0`, `quantidade < 0` e `preco < 0`, inclusive em carrinho vazio e em linhas após itens com quantidade zero.
+- Precisão arbitrária com inteiros acima de `2**53`.
+- Preservação da lista recebida (em chamadas válidas e com `ValueError`) e independência entre chamadas após erro.
+
+### Verificação
+- `python3 -m pytest -v`: **24 passed in 0.05s**.

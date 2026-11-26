@@ -1,0 +1,10 @@
+A suíte de testes foi criada em [test_senhas.py](file:///tmp/bench-6jtvhd09/tests/test_senhas.py) sem alterar [senhas.py](file:///tmp/bench-6jtvhd09/senhas.py).
+
+### Cobertura implementada
+- **`ESPECIAIS`**: verificação de tipo (`frozenset`), conteúdo exato e cardinalidade.
+- **`validar_senha`**: senha válida no padrão (`tamanho_minimo=8`), limites de `tamanho_minimo` (padrão e customizados), `ValueError` para `tamanho_minimo < 1`, `TypeError` para `senha` não-`str`, ordem e unicidade dos 6 códigos de problema, string vazia, todos os dígitos `"0"`–`"9"` (e rejeição de dígitos Unicode como `"²"` e `"٢"`), `str.isupper()`/`str.islower()` com Unicode, todos os caracteres de `ESPECIAIS` vs. pontuações fora do conjunto, e diferentes caracteres de espaço (`" "`, `"\t"`, `"\n"`, `"\r"`, `"\v"`, `"\f"`, `"\xa0"`).
+- **`pontuar_senha`**: string vazia, `+2` por caractere com teto em 20 caracteres, `+15` por categoria (individual, combinada e sem contagem duplicada), penalidade de `-10` por trinca em janela deslizante (incluindo trincas após o 20º caractere, múltiplas trincas e case-sensitivity) e limitação ao intervalo `[0, 100]`.
+- **`classificar`**: retorno `"invalida"` quando há `"espaco"` mesmo com pontuação alta, classificação normal quando há outros problemas sem espaço, fronteiras exatas (`0`, `49` -> `"fraca"`; `50`, `79` -> `"media"`; `80`, `100` -> `"forte"`) e `TypeError` para entrada não-`str`.
+
+### Verificação
+- `python3 -m pytest -q tests`: **101 passed in 0.08s**.

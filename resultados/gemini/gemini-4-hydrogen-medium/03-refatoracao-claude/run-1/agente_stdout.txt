@@ -1,0 +1,10 @@
+O arquivo [relatorio.py](file:///tmp/bench-jiablc75/relatorio.py) foi refatorado conforme especificado em [enunciado.md](file:///tmp/bench-jiablc75/enunciado.md), preservando o comportamento original:
+
+- **Constantes de módulo** em [relatorio.py](file:///tmp/bench-jiablc75/relatorio.py#L1-L6): `LIMITE_FAIXA_ALTA = 1000`, `TAXAS_DESCONTO` (`"vip"` e `"atacado"`) e `TAXAS_PADRAO` (`(0.0, 0.02)`).
+- **`calcular_subtotal(itens)`** ([relatorio.py](file:///tmp/bench-jiablc75/relatorio.py#L9-L15)): soma `preco * qtd` na ordem dos itens a partir de `0`, validando `qtd < 0` antes de acessar `preco`.
+- **`calcular_desconto(subtotal, tipo_cliente)`** ([relatorio.py](file:///tmp/bench-jiablc75/relatorio.py#L18-L22)): consulta `TAXAS_DESCONTO`, `TAXAS_PADRAO` e `LIMITE_FAIXA_ALTA` em tempo de chamada (comparação exata de `tipo_cliente` e `subtotal > LIMITE_FAIXA_ALTA`) e retorna `subtotal * taxa`.
+- **`formatar_relatorio(totais_por_cliente)`** ([relatorio.py](file:///tmp/bench-jiablc75/relatorio.py#L25-L33)): ordena os clientes, formata com 2 casas decimais e acumula o total geral na ordem ordenada.
+- **`gerar_relatorio(pedidos)`** ([relatorio.py](file:///tmp/bench-jiablc75/relatorio.py#L36-L47)): delega para `calcular_subtotal`, `calcular_desconto` e `formatar_relatorio`, mantendo a ordem original de acesso às chaves e sem mutar a entrada.
+
+### Verificação
+Executada suíte diferencial e de unidade via `python3 -c` comparando `relatorio.gerar_relatorio` com a implementação original em 19 casos (lista vazia, limites `1000`/`1000.01`, `inf`, `nan`, `-0.0`, `1e308`, tipos desconhecidos/`"VIP"`, pedidos/itens malformados com `KeyError`/`ValueError`), além de checagens diretas das funções públicas e alteração dinâmica das constantes — todos os casos passaram (`ALL TESTS PASSED`).

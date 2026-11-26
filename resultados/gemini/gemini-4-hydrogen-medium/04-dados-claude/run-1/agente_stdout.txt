@@ -1,0 +1,12 @@
+A função `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict` foi implementada em [solucao.py](file:///tmp/bench-t4nzb97z/solucao.py) usando apenas a biblioteca padrão do Python (`csv`, `json`, `math`, `collections.defaultdict` e `pathlib.Path`).
+
+### O que foi implementado
+- Leitura de CSV em UTF-8 com suporte a BOM (`encoding="utf-8-sig"`), separador `,` e aspas duplas padrão.
+- Validação do cabeçalho (após `strip()`, sensível a maiúsculas/minúsculas) exigindo `data`, `regiao`, `produto`, `quantidade`, `preco_unitario` e `status`, levantando `ValueError` em arquivo vazio ou coluna ausente e `FileNotFoundError` para arquivo inexistente, sem criar ou alterar `saida` em caso de erro.
+- Processamento linha a linha ignorando linhas totalmente vazias, removendo espaços nas bordas, contabilizando linhas inválidas em `linhas_invalidas` independentemente do `status`, e filtrando `status.lower() == "concluida"`.
+- Agregação por região em ordem alfabética, com `quantidade_total` (`int`), `total_vendas` (`float` arredondado a 2 casas), `produto_mais_vendido` (desempate alfabético) e `total_geral` (`float` arredondado a 2 casas), gravando o JSON em UTF-8 (`ensure_ascii=False`, `indent=2`) e criando diretórios pais quando necessário.
+
+### Verificação
+- Executado script de teste em Python validando:
+  - Resultado exato para [vendas_exemplo.csv](file:///tmp/bench-t4nzb97z/vendas_exemplo.csv) (`total_geral: 63.4`, `linhas_invalidas: 2`, regiões `Norte` e `Sul`).
+  - BOM UTF-8, colunas reordenadas e extras, campos entre aspas com vírgulas e quebras de linha, espaços nas bordas, `"+3"`, `"007"`, `"1e2"`, `nan`/`inf`/negativos/vírgula decimal, empate de produtos, arquivo só com cabeçalho, arquivo vazio, coluna ausente (preservando `saida` existente) e arquivo inexistente. Todos os casos passaram (`ALL TESTS PASSED!`).

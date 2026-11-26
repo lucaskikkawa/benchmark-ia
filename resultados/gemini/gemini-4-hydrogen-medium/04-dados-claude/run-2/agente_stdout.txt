@@ -1,0 +1,9 @@
+A função `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict` foi implementada em [solucao.py](file:///tmp/bench-ovdmoy9j/solucao.py) usando apenas a biblioteca padrão do Python (`csv`, `json`, `math`, `collections.defaultdict`, `pathlib.Path`).
+
+### O que foi implementado
+- **Leitura e validação do cabeçalho**: abre `entrada` em UTF-8 com suporte a BOM (`encoding="utf-8-sig"`), normaliza os nomes das colunas com `.strip()` e valida a presença de `data`, `regiao`, `produto`, `quantidade`, `preco_unitario` e `status` (lançando `ValueError` se o arquivo estiver vazio ou faltar alguma coluna, e `FileNotFoundError` se não existir, sem criar nem alterar `saida`).
+- **Validação e filtragem linha a linha**: ignora linhas totalmente vazias, contabiliza em `linhas_invalidas` linhas com número de campos divergente, `regiao`/`produto` vazios, `quantidade` não inteira ou `<= 0`, ou `preco_unitario` não finito / `< 0` / inválido (independentemente do `status`). Entre as linhas válidas, agrega apenas as com `status` igual a `concluida` (case-insensitive, sem acento).
+- **Agregação e escrita**: agrupa por `regiao` em ordem alfabética, calcula `quantidade_total` (`int`), `total_vendas` (`float`, arredondado a 2 casas), `produto_mais_vendido` (com desempate alfabético) e `total_geral` (`float`), criando diretórios pais de `saida` e gravando o JSON com `ensure_ascii=False` e `indent=2`.
+
+### Verificação
+- Executado um conjunto de testes via `python3` cobrindo [vendas_exemplo.csv](file:///tmp/bench-ovdmoy9j/vendas_exemplo.csv), BOM UTF-8, colunas reordenadas/extras, campos entre aspas com vírgula e quebra de linha, linhas vazias, casos de linhas inválidas (`nan`, `inf`, preço negativo, vírgula decimal, quantidade `<= 0`), desempate de produto, CSV só com cabeçalho e erros (`ValueError` e `FileNotFoundError`) sem alteração de `saida` — todos passaram (`ALL TESTS PASSED`).

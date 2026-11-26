@@ -1,0 +1,8 @@
+O pacote `biblioteca/` foi criado conforme especificado em [enunciado.md](file:///tmp/bench-y475v_qc/enunciado.md), contendo exatamente os 4 módulos com imports relativos e apenas a biblioteca padrão:
+
+- [biblioteca/modelos.py](file:///tmp/bench-y475v_qc/biblioteca/modelos.py): dataclasses congeladas `Livro` (com validação de tipos e strings não vazias em `__post_init__`) e `Emprestimo`, além da hierarquia de exceções (`BibliotecaErro`, `LivroNaoEncontrado`, `LivroIndisponivel`, `LimiteEmprestimos`, `EmprestimoNaoEncontrado`, `RenovacaoNegada`).
+- [biblioteca/acervo.py](file:///tmp/bench-y475v_qc/biblioteca/acervo.py): classe `Acervo` com `adicionar`, `obter`, `buscar_por_autor` (usando `str.casefold()` e ordenação por `(titulo, isbn)`), `__len__` e `__contains__`.
+- [biblioteca/emprestimos.py](file:///tmp/bench-y475v_qc/biblioteca/emprestimos.py): classe `ServicoEmprestimos` com validação de parâmetros, referência direta ao `Acervo` recebido, e os métodos `emprestar`, `devolver`, `disponivel`, `emprestimos_de`, `renovar` e `atrasados` respeitando todas as ordens de verificação, regras de multa e ordenações.
+- [biblioteca/\_\_init\_\_.py](file:///tmp/bench-y475v_qc/biblioteca/__init__.py): reexportação da API pública e definição de `__all__` com exatamente os 10 nomes exigidos.
+
+Todos os testes de validação, exceções, ordenações, renovações, atrasos e cálculo de multas passaram sem criar arquivos extras no diretório.

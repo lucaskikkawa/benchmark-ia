@@ -1,0 +1,8 @@
+[frete.py](file:///tmp/bench-j8fex072/frete.py) foi refatorado conforme [enunciado.md](file:///tmp/bench-j8fex072/enunciado.md):
+
+- Adicionada a classe `TabelaFrete` com o atributo de classe `FAIXAS` contendo as quatro faixas (`carta`, `pac`, `sedex`, `transportadora`) e o método `cotar(self, peso_g: int, distancia_km: int, expresso: bool) -> dict`.
+- Adicionada a função `faixa_de_peso(peso_g: int) -> str` com as mesmas regras de validação de tipo e intervalo de peso de `cotar`.
+- Mantida a função `cotar(peso_g: int, distancia_km: int, expresso: bool) -> dict` delegando para `TabelaFrete().cotar(...)`.
+- `cotar`, `TabelaFrete.cotar` e `faixa_de_peso` consultam `TabelaFrete.FAIXAS` em cada chamada via `_buscar_faixa`, preservando as validações globais (`TypeError` para tipos inválidos inclusive `bool` em peso/distância, `ValueError` para peso fora de `1..30000`, distância fora de `0..3000` ou peso não coberto pela tabela corrente).
+
+Verificação executada com `python3 -c` (`ALL_OK`) cobrindo os exemplos do enunciado, limites de todas as faixas, entradas inválidas de tipo e intervalo, e substituição dinâmica de `TabelaFrete.FAIXAS`. Nenhum módulo adicional foi criado.

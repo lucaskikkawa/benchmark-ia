@@ -1,0 +1,14 @@
+A suíte de testes foi criada em [tests/test_carrinho.py](file:///tmp/bench-vntyu68y/tests/test_carrinho.py), com suporte de importação em [tests/conftest.py](file:///tmp/bench-vntyu68y/tests/conftest.py), sem alterar [carrinho.py](file:///tmp/bench-vntyu68y/carrinho.py).
+
+### Cobertura implementada
+- Cálculo padrão, argumentos posicionais/nomeados e retorno do tipo exato `int`.
+- Bordas de `desconto` (`0` e `100`), truncamento para baixo e casos sensíveis a ponto flutuante.
+- Truncamento agregado entre múltiplas linhas e quantidades.
+- Regras de `frete`: sem desconto sobre o frete, cobrado apenas quando a soma das quantidades é maior que zero (incluindo item gratuito com quantidade positiva, e isento em carrinho vazio ou com apenas linhas de quantidade zero).
+- Precisão arbitrária com inteiros acima de `2**53`.
+- Validação com `ValueError` para `desconto < 0`, `desconto > 100`, `frete < 0`, `quantidade < 0` e `preco < 0` (inclusive em carrinho vazio, com `desconto == 100` e em linhas posteriores a linhas de quantidade zero).
+- Preservação da lista de entrada (tanto em sucesso quanto após `ValueError`) e independência entre chamadas sucessivas após erros.
+
+### Verificação
+- `pytest -v`: 35 passed in 0.03s.
+- `python3 -m pytest -v`: 35 passed in 0.03s.

@@ -1,0 +1,10 @@
+O pacote `biblioteca/` foi criado com os 4 módulos especificados em [enunciado.md](file:///tmp/bench-xwoqcmdo/enunciado.md), utilizando apenas a biblioteca padrão e imports relativos:
+
+- [modelos.py](file:///tmp/bench-xwoqcmdo/biblioteca/modelos.py): define a hierarquia de exceções (`BibliotecaErro`, `LivroNaoEncontrado`, `LivroIndisponivel`, `LimiteEmprestimos`, `EmprestimoNaoEncontrado`, `RenovacaoNegada`) e as dataclasses congeladas `Livro` (com validação de tipos e espaços em `__post_init__`) e `Emprestimo`.
+- [acervo.py](file:///tmp/bench-xwoqcmdo/biblioteca/acervo.py): implementa `Acervo` com `adicionar`, `obter`, `buscar_por_autor` (usando `str.casefold()` e ordenação por `(titulo, isbn)`), `__len__` e `__contains__`.
+- [emprestimos.py](file:///tmp/bench-xwoqcmdo/biblioteca/emprestimos.py): implementa `ServicoEmprestimos` com validação dos parâmetros do construtor, referência direta ao `Acervo` recebido e métodos `emprestar`, `devolver`, `disponivel`, `emprestimos_de`, `renovar` e `atrasados` seguindo a ordem de verificações e regras de cálculo de multa/renovação especificadas.
+- [__init__.py](file:///tmp/bench-xwoqcmdo/biblioteca/__init__.py): reexporta os 10 símbolos públicos e define `__all__`.
+
+### Verificação
+- Executado `PYTHONPATH=/tmp/bench-xwoqcmdo python3 -B .../test_biblioteca.py -v`: 8 testes executados e aprovados (`OK`).
+- Confirmado via `ls -la biblioteca/` que o pacote contém exatamente os 4 arquivos solicitados.

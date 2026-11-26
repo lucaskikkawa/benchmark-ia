@@ -1,0 +1,7 @@
+A tarefa foi concluída com a criação dos arquivos solicitados no diretório de trabalho:
+
+- [organizador.py](file:///tmp/bench-tb6w53yv/organizador.py): implementa `organizar_tarefas(tarefas: list[dict]) -> list[dict]` usando apenas a biblioteca padrão, filtrando tarefas com `concluida == False`, ordenando em ordem decrescente de `prioridade` (`5` a `0`) por baldes em tempo linear `O(n)` (estável em empates) e retornando cópias rasas (`dict.copy()`) independentes por ocorrência, sem alterar a entrada nem normalizar títulos e preservando campos extras e identidades internas.
+- [SUPOSICOES.md](file:///tmp/bench-tb6w53yv/SUPOSICOES.md): documenta o critério de desempate (preservação da ordem original de entrada) e a política *fail-fast* de validação (`TypeError`/`ValueError` para lista inválida, itens não `dict`, chaves ausentes, `titulo` não `str` ou vazio, `prioridade` fora de `0..5` ou não `int`/`bool`, e `concluida` não `bool`).
+
+### Verificação
+- Executado `pytest -v` com 16 casos de teste em [test_organizador.py](file:///home/box/.gemini/antigravity-cli/brain/bb5b3940-ebc4-4e0c-a385-f27e9a84a8cc/scratch/test_organizador.py) cobrindo entrada vazia, somente concluídas, ordenação, cópia rasa com campos extras e preservação de identidade, referências repetidas ao mesmo `dict`, desempate estável, escala com 30.000 itens e entradas inválidas: **16 passed in 0.05s**.

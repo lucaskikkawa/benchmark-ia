@@ -1,0 +1,8 @@
+Implementei [solucao.py](file:///tmp/bench-oq86esb8/solucao.py) com a função `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict` usando apenas a biblioteca padrão, seguindo todas as regras de [enunciado.md](file:///tmp/bench-oq86esb8/enunciado.md):
+
+- Leitura CSV em UTF-8 com suporte a BOM (`utf-8-sig`), campos entre aspas com vírgulas/quebras de linha, colunas obrigatórias em qualquer ordem (com `strip()` e diferenciação de maiúsculas/minúsculas) e descarte de colunas extras.
+- Validação prévia do arquivo/cabeçalho (`FileNotFoundError` e `ValueError`) sem criar ou modificar `saida` em caso de erro.
+- Remoção de espaços nas bordas, descarte de linhas totalmente vazias, contabilização de `linhas_invalidas` independentemente do `status`, filtragem por `status` igual a `concluida` (case-insensitive, sem acento) e agregação por `regiao` ordenada alfabeticamente com desempate alfabético para `produto_mais_vendido`.
+- Escrita do JSON em UTF-8 (`ensure_ascii=False`, `indent=2`), criando diretórios pais de `saida` quando necessário, e retorno do dicionário resultante.
+
+Validei a implementação com [vendas_exemplo.csv](file:///tmp/bench-oq86esb8/vendas_exemplo.csv) e casos de borda (BOM, campos com aspas/quebras de linha, empates, arredondamento, valores inválidos como `nan`/`inf`/`2,50`, CSV só com cabeçalho e erros de entrada) — todos passaram.

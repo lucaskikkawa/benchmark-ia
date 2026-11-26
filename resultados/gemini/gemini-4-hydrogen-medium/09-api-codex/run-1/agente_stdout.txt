@@ -1,0 +1,13 @@
+Implementei [cliente.py](file:///tmp/bench-g3ch34m4/cliente.py) preservando [fake_api.py](file:///tmp/bench-g3ch34m4/fake_api.py).
+
+### O que foi implementado em `buscar_com_retry`
+- **Validação prévia de parâmetros** ([cliente.py](file:///tmp/bench-g3ch34m4/cliente.py#L19-L24)): valida `tentativas` (inteiro `>= 1`, rejeitando `bool` e não inteiros), `timeout` (número real finito `> 0`) e `backoff` (número real finito `>= 0`) lançando `ValueError` antes de chamar `api.get` ou `dormir`.
+- **Retries e backoff exponencial** ([cliente.py](file:///tmp/bench-g3ch34m4/cliente.py#L26-L32)):
+  - Repete apenas para `fake_api.ErroTemporario`, `TimeoutError` e suas subclasses.
+  - Chama `dormir(backoff * (2 ** indice))` antes da próxima tentativa (inclusive quando o atraso é zero), sem dormir após sucesso ou após a última falha.
+  - Mantém `dormir(...)` fora do bloco `try/except`, garantindo que exceções lançadas por `dormir` (mesmo `TimeoutError` ou `ErroTemporario`) propaguem imediatamente.
+  - Propaga imediatamente `ErroPermanente` e demais exceções, e re-lança a última exceção original ao esgotar `tentativas`.
+  - Repassa `chave` e `timeout` intactos (incluindo chaves vazias ou Unicode) e devolve o objeto retornado por `api.get` sem alterações.
+
+### Verificação
+Executei um conjunto de testes via `python3` cobrindo assinatura, validação de parâmetros antes de efeitos colaterais, retorno exato de `{}` e chaves Unicode com `FakeAPI`, subclasses de exceções transitórias, propagação imediata de `ErroPermanente` e de erros de `dormir`, além de 40 tentativas sem arredondamento/teto e independência entre chamadas (`ALL TESTS PASSED`).

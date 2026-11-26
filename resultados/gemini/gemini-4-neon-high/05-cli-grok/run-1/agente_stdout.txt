@@ -1,0 +1,13 @@
+Implementei o script [agenda_cli.py](file:///tmp/bench-unpjez6r/agenda_cli.py) usando apenas a biblioteca padrão do Python, atendendo integralmente às especificações de [enunciado.md](file:///tmp/bench-unpjez6r/enunciado.md):
+
+- **CLI (`argparse`)**: subcomandos obrigatórios `adicionar`, `listar` e `concluir`, todos exigindo `--arquivo`, encerrando com código `2` em erros de argumentos/escolhas.
+- **Persistência e validação rigorosa de JSON**:
+  - Gravação em UTF-8 com `indent=2`, `ensure_ascii=False` e quebra de linha final (`\n`).
+  - Validação estrita na leitura (chaves exatas, rejeição de chaves duplicadas e constantes não padrão, tipos exatos rejeitando `bool`/`float` para IDs e inteiros para `concluida`, `proximo_id` estritamente maior que todos os `id` existentes, IDs únicos ≥ 1, títulos normalizados sem espaços nas pontas nem `\n`/`\r`/`\t`, prioridades válidas e datas gregorianas reais `YYYY-MM-DD` entre anos `0001` e `9999`).
+  - Preservação byte a byte do arquivo quando inválido no `adicionar` e ausência de reescrita no `listar`.
+- **Regras dos subcomandos e erros**:
+  - `adicionar`: normalização de `--titulo` com `str.strip()`, validação de `titulo vazio`, `titulo invalido` e `prazo invalido`, criação automática de arquivo inexistente e saída `ok id=N\n`.
+  - `listar`: filtragem combinada (`--prioridade` e `--somente-abertas`), ordenação por prioridade (`alta`, `media`, `baixa`) e `id` crescente, saída TSV sem cabeçalho (ou vazia se sem resultados).
+  - `concluir`: conversão de `--id` inteiro (ex.: `01` → `1`), verificação de `id inexistente` e `ja concluida`, atualização e saída `ok id=N\n`.
+
+Validei todos os subcomandos, filtros, ordenação, tratamento de arquivos inexistentes, 42 casos de JSON inválido e regras de saída/código de retorno via `subprocess` — todos os testes passaram.

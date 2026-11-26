@@ -1,0 +1,7 @@
+Implementei [agenda_cli.py](file:///tmp/bench-uz6a1zqw/agenda_cli.py) conforme especificado em [enunciado.md](file:///tmp/bench-uz6a1zqw/enunciado.md), utilizando apenas a biblioteca padrão do Python:
+
+- **Subcomandos (`argparse`)**: `adicionar`, `listar` e `concluir`, com `--arquivo` obrigatório em todos e validação de opções/tipos encerrando com código `2`.
+- **Persistência e validação JSON**: gravação em UTF-8 (`indent=2`, `ensure_ascii=False`, `\n` final) e validação estrita na leitura (chaves exatas, sem chaves duplicadas, `proximo_id` inteiro ≥ 1 maior que todos os IDs, IDs únicos, títulos normalizados sem `\n`/`\r`/`\t` ou espaços nas pontas, prioridade válida, datas `YYYY-MM-DD` reais no calendário gregoriano e `concluida` booleano estrito). Arquivos inválidos não são alterados.
+- **Comportamento e erros**: listagem ordenada por prioridade (`alta`, `media`, `baixa`) e `id` crescente separada por `\t`, filtros combináveis (`--prioridade` e `--somente-abertas`), conclusão por `--id` inteiro e todas as mensagens de erro de regra exatamente no formato `erro: MENSAGEM\n` com código `2`.
+
+Todos os cenários foram verificados via `subprocess` (criação, formatação, ordenação, filtros, buracos de ID, datas bissextas/inválidas, títulos com espaços Unicode/caracteres de controle e 32 casos de JSON inválido com preservação byte a byte).

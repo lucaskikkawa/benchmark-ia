@@ -1,0 +1,13 @@
+[relatorio.py](file:///tmp/bench-50sr2ws2/relatorio.py) foi refatorado conforme [enunciado.md](file:///tmp/bench-50sr2ws2/enunciado.md), mantendo exatamente o comportamento observável da implementação original.
+
+### Alterações realizadas em [relatorio.py](file:///tmp/bench-50sr2ws2/relatorio.py)
+
+- **Constantes de desconto no escopo do módulo**: definidas `LIMITE_FAIXA_ALTA = 1000`, `TAXAS_DESCONTO = {"vip": (0.10, 0.15), "atacado": (0.05, 0.08)}` e `TAXAS_PADRAO = (0, 0.02)` ([L1-L5](file:///tmp/bench-50sr2ws2/relatorio.py#L1-L5)).
+- [`calcular_subtotal`](file:///tmp/bench-50sr2ws2/relatorio.py#L8-L15): soma `preco * qtd` na ordem dos itens a partir de `0` (retornando `0` para lista vazia) e valida `qtd < 0` antes de acessar `preco`, levantando `ValueError("qtd negativa")` ou `KeyError` na mesma ordem da versão original.
+- [`calcular_desconto`](file:///tmp/bench-50sr2ws2/relatorio.py#L18-L25): consulta `TAXAS_DESCONTO`, `TAXAS_PADRAO` e `LIMITE_FAIXA_ALTA` dinamicamente no momento da chamada, tratando tipos não hasháveis via fallback para `TAXAS_PADRAO` e aplicando `taxa_alta` apenas quando `subtotal > LIMITE_FAIXA_ALTA`.
+- [`formatar_relatorio`](file:///tmp/bench-50sr2ws2/relatorio.py#L28-L36): ordena as chaves de `totais_por_cliente`, formata cada linha e acumula `total_geral` na mesma ordem ordenada usando `"%.2f" % ...` e concatenação com `cliente + ": "`.
+- [`gerar_relatorio`](file:///tmp/bench-50sr2ws2/relatorio.py#L39-L50): delega para `calcular_subtotal`, `calcular_desconto` e `formatar_relatorio` no escopo do módulo, preservando `subtotal - desconto`, a ordem de acesso às chaves (`cliente`, `itens`, `tipo`) e sem modificar a entrada.
+
+### Verificação
+
+- Executada bateria de testes via `python3 -c` comparando `gerar_relatorio` com a lógica original em 32 casos de borda (`[]`, limites `1000` / `1000.0000000000001`, `-0.0`, `inf`, `-inf`, `nan`, `1e308`, inteiros grandes `-(2**54 + 1)`, tipos desconhecidos/não hasháveis e dicts malformados), 1000 entradas aleatórias com valores `float` próximos de `.xx5`, verificação de não mutação da entrada, testes unitários das funções/constantes, mutação em runtime das constantes e monkeypatching das funções delegadas — todas as asserções passaram (`ALL CHECKS PASSED!`).

@@ -1,0 +1,10 @@
+Implementei a função `resumir_vendas(entrada, saida, minimo_centavos: int = 0) -> list[dict]` em [vendas.py](file:///tmp/bench-e1a8__66/vendas.py) conforme os requisitos de [enunciado.md](file:///tmp/bench-e1a8__66/enunciado.md):
+
+- **Validação prévia sem alterar a saída**: valida que `minimo_centavos` é exatamente `int` (`type(minimo_centavos) is int`) e `>= 0`, que o arquivo não está vazio e que o cabeçalho contém `produto`, `quantidade`, `preco_centavos` e `status` (em qualquer ordem, ignorando colunas extras) antes de abrir ou sobrescrever `saida`.
+- **Leitura UTF-8 com BOM e regras de CSV**: usa `encoding="utf-8-sig"` e `csv.reader` com `newline=""`, preservando quebras de linha e aspas internas em campos cotados.
+- **Filtragem e validação de linhas**: ignora linhas cujo `status` (ou ausência dele) não seja `"pago"` após `strip().lower()`. Nas linhas pagas, exige todos os campos obrigatórios, `produto` não vazio após `strip()` (preservando caixa, Unicode e espaços/quebras internos), e inteiros não negativos na gramática `[+-]?[0-9]+` (aritmética inteira exata).
+- **Agregação e saída JSON**: agrega `quantidade` e `quantidade * preco_centavos` por `produto`, mantém produtos com quantidade zero, filtra por `receita >= minimo_centavos`, ordena por `produto` e grava o JSON UTF-8 (`ensure_ascii=False`) com quebra de linha final.
+
+### Verificação
+Executei os testes em [test_vendas.py](file:///home/box/.gemini/antigravity-cli/brain/bc46febb-0e2b-4ae9-8dd3-4f49407deff1/scratch/test_vendas.py):
+- `Ran 6 tests in 0.035s` (`OK`), cobrindo ordenação, colunas extras, BOM UTF-8, produtos cotados com quebras de linha e aspas internas, inteiros maiores que 64 bits, quantidade zero, linhas com campos faltando, erros de validação preservando a saída anterior e desempenho com 30.000 linhas.

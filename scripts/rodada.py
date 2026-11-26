@@ -43,11 +43,11 @@ def tarefas_de(empresa, filtro):
     return out
 
 
-def jobs_de(empresa, filtro, consistencia):
+def jobs_de(empresa, filtro, consistencia, modelos=None, esforcos=None):
     jobs = []
     cons = CONSIST.get(empresa, CONSIST["default"])
-    for m in MODELOS[empresa]:
-        for e in ESFORCOS:
+    for m in (modelos or MODELOS[empresa]):
+        for e in (esforcos or ESFORCOS):
             ts = tarefas_de(empresa, filtro)
             for t in ts:
                 jobs.append((empresa, m, e, t, 1))
@@ -96,6 +96,8 @@ def main():
     ap.add_argument("--paralelo", type=int, default=2)
     ap.add_argument("--sem-consistencia", action="store_true")
     ap.add_argument("--timeout", type=int, default=0, help="força timeout (s) do agente, máx 900")
+    ap.add_argument("--modelos", default="", help="filtra modelos desta empresa, separados por vírgula")
+    ap.add_argument("--esforcos", default="", help="filtra esforços (medium,high), separados por vírgula")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
     if a.timeout:
@@ -103,9 +105,15 @@ def main():
     LOG.parent.mkdir(exist_ok=True)
     filtro = set(filter(None, a.tarefas.split(",")))
     emps = a.empresas.split(",")
-    log(f"=== rodada: empresas={emps} paralelo={a.paralelo} dry={a.dry_run}")
+    modelos = [x for x in a.modelos.split(",") if x] or None
+    esforcos = [x for x in a.esforcos.split(",") if x] or None
+    if esforcos:
+        bad = [e for e in esforcos if e not in ESFORCOS]
+        if bad:
+            ap.error(f"esforço inválido: {bad}")
+    log(f"=== rodada: empresas={emps} modelos={modelos or 'default'} esforcos={esforcos or 'default'} paralelo={a.paralelo} dry={a.dry_run}")
     ths = [threading.Thread(target=empresa_worker,
-                            args=(e, jobs_de(e, filtro, not a.sem_consistencia), a.dry_run, a.paralelo)) for e in emps]
+                            args=(e, jobs_de(e, filtro, not a.sem_consistencia, modelos, esforcos), a.dry_run, a.paralelo)) for e in emps]
     t0 = time.time()
     for t in ths: t.start()
     for t in ths: t.join()

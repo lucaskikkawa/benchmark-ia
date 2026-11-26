@@ -1,0 +1,21 @@
+A suíte de testes foi criada em [tests/test_senhas.py](file:///tmp/bench-_l6v81b0/tests/test_senhas.py) sem alterar [senhas.py](file:///tmp/bench-_l6v81b0/senhas.py).
+
+### Cobertura implementada
+- **`ESPECIAIS`**: verifica tipo (`frozenset`), tamanho (`10`) e conjunto exato de caracteres (`!@#$%&*?-_`).
+- **`validar_senha`**:
+  - tamanho mínimo padrão (`8`) e customizado (limites exatos `tamanho_minimo - 1` e `tamanho_minimo`, posicional e nomeado);
+  - exceções `TypeError` para entradas não `str` e `ValueError` para `tamanho_minimo < 1`;
+  - string vazia, todos os 6 códigos juntos, cada problema isolado, pares adjacentes para garantir a ordem exata e unicidade dos códigos;
+  - maiúsculas e minúsculas ASCII e Unicode em qualquer posição, todos os dígitos `"0"` a `"9"` (rejeitando dígitos Unicode fora de `"0".."9"` como `"²"` e `"٣"`), todos os caracteres de `ESPECIAIS` (rejeitando símbolos externos como `.`, `+`, `=`, etc.) e diferentes caracteres `isspace()` (`" "`, `"\t"`, `"\n"`, `"\r"`, `"\v"`, `"\f"`, `"\u00a0"`, `"\u2003"`).
+- **`pontuar_senha`**:
+  - pontuação por tamanho (`+2` por caractere até o teto de 20 caracteres / 40 pontos);
+  - bônus de `+15` por categoria (1 a 4 categorias, sem multiplicar por repetições na mesma categoria, incluindo categorias que aparecem após o 20º caractere e contando espaços no tamanho);
+  - penalidade de `-10` por trinca consecutiva em janela deslizante (incluindo início, fim, sobreposições `"aaa"`/`"aaaa"`/`"aaaaa"`, sensibilidade a maiúsculas/minúsculas, espaços e trincas após o 20º caractere);
+  - limites `[0, 100]`.
+- **`classificar`**:
+  - prioridade de `"invalida"` quando há `"espaco"` (mesmo com pontuação 100) e classificação normal pela pontuação quando há outros problemas sem espaço;
+  - fronteiras exatas `48`, `49` (`"fraca"`), `50`, `78`, `79` (`"media"`), `80`, `81`, `100` (`"forte"`);
+  - propagação de `TypeError` para entradas não `str`.
+
+### Verificação
+Executado `python3 -m pytest -q tests` no diretório de trabalho: **132 passed in 0.09s**.

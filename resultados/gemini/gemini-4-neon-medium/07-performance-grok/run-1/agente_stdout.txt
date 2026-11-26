@@ -1,0 +1,5 @@
+Criei [solucao.py](file:///tmp/bench-pdqd03q2/solucao.py) com a função `pares_com_soma(nums: list[int], alvo: int) -> int` conforme especificado em [enunciado.md](file:///tmp/bench-pdqd03q2/enunciado.md):
+
+- Valida que `nums` é `list` e que `alvo` e todos os elementos de `nums` são `int` (rejeitando `bool` e outros tipos com `TypeError`), sem alterar `nums`.
+- Conta pares de índices `i < j` em uma única passagem $O(n)$ usando um dicionário de frequências, suportando inteiros arbitrários, negativos, zeros e elementos repetidos sem materializar os pares.
+- Validado com todos os exemplos do enunciado, checagens de `TypeError`, imutabilidade de `nums` e testes de desempenho com `n = 200_000` (~0,02–0,03 s).

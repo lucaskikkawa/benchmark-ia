@@ -1,0 +1,9 @@
+O bug em [janelas.py](file:///tmp/bench-7jrkmgw5/janelas.py#L9) foi corrigido: o laço usava `range(tamanho, len(valores) - 1)`, omitindo a última janela quando `tamanho < len(valores)`. Ele foi alterado para `range(tamanho, len(valores))`.
+
+### Verificação
+Foram executados testes validando:
+- O exemplo do enunciado (`somas_janelas([1, 2, 3, 4], 2) == [3, 5, 7]`) e casos de borda (`tamanho == 1`, `tamanho == len(valores)`, `tamanho > len(valores)`, lista vazia e valores negativos).
+- Lançamento de `ValueError` para `tamanho <= 0`.
+- Preservação da lista de entrada e independência das listas retornadas entre chamadas.
+- Precisão exata com inteiros acima de 64 bits (`10**30`) sem conversão para `float`.
+- Desempenho $O(n)$ com 200.000 elementos e janela de tamanho 100.000 (~0,009 s).

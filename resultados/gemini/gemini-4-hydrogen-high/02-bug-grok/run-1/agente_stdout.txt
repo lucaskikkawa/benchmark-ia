@@ -1,0 +1,9 @@
+O arquivo [boletim.py](file:///tmp/bench-49rkhisr/boletim.py) foi corrigido para seguir integralmente o contrato definido em [enunciado.md](file:///tmp/bench-49rkhisr/enunciado.md):
+
+- **Validação de entrada**: verifica se `provas` é `list` (`TypeError`), se possui entre 1 e 4 itens (`ValueError`), ignora `None` sem tratá-lo como zero, rejeita `bool` e tipos diferentes de `int`/`float`/`None` (`TypeError`), e valida finitude e intervalo fechado `[0, 10]` além da presença de ao menos uma nota válida (`ValueError`), sem alterar a lista recebida.
+- **Descarte**: remove apenas a primeira ocorrência do menor valor quando há exatamente 4 notas válidas, retornando-o em `descartada` como `float` (ou `None` caso contrário).
+- **Cálculo e arredondamento**: converte cada nota restante via `Decimal(str(nota))`, soma antes de dividir por `len(notas)` e aplica `.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)` uma única vez sobre a média, convertendo o resultado para `float`.
+- **Conceito e aprovação**: aplica os limites inclusivos (`>= 9` → `"A"`, `>= 7` → `"B"`, `>= 5` → `"C"`, caso contrário `"D"`) sobre a média já arredondada e define `aprovado` como `conceito != "D"`.
+
+### Verificação
+Todos os exemplos de [enunciado.md](file:///tmp/bench-49rkhisr/enunciado.md), casos de fronteira (`0`, `10`, `None`, imutabilidade da lista de entrada, tipos de retorno) e exceções (`TypeError` e `ValueError`) foram executados via `python3 -B` em [boletim.py](file:///tmp/bench-49rkhisr/boletim.py) com resultado `ALL TESTS PASSED`.

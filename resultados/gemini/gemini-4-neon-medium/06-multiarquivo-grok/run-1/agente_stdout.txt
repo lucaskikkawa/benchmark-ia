@@ -1,0 +1,8 @@
+O pacote `biblioteca` foi criado conforme especificado em [enunciado.md](file:///tmp/bench-00c6ckm7/enunciado.md), contendo exatamente os quatro arquivos solicitados, usando apenas a biblioteca padrão e imports relativos:
+
+- [biblioteca/models.py](file:///tmp/bench-00c6ckm7/biblioteca/models.py): define `ErroBiblioteca` e o dataclass imutável `Livro`, validando ISBN (exatamente 13 dígitos ASCII sem `strip`), título (com `strip` e não vazio) e exemplares (`int >= 1`, rejeitando `bool`).
+- [biblioteca/catalogo.py](file:///tmp/bench-00c6ckm7/biblioteca/catalogo.py): implementa `Catalogo` (`adicionar`, `buscar` por comparação exata sem `strip` e `listar` retornando uma nova lista ordenada por ISBN).
+- [biblioteca/emprestimos.py](file:///tmp/bench-00c6ckm7/biblioteca/emprestimos.py): implementa `ServicoEmprestimos` com estado independente por instância, validação estrita de datas gregorianas `YYYY-MM-DD` (anos 1–9999), normalização de usuário via `str.strip`, controle de duplicidade/estoque sem mutação parcial em caso de erro, cálculo de atraso com prazo de 14 dias corridos e listagem ordenada em `ativos`.
+- [biblioteca/__init__.py](file:///tmp/bench-00c6ckm7/biblioteca/__init__.py): exporta `Livro`, `ErroBiblioteca`, `Catalogo` e `ServicoEmprestimos`.
+
+Todos os cenários e casos de borda do enunciado foram verificados em bateria de testes automatizados (sem deixar arquivos extras no diretório).

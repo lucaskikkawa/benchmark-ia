@@ -1,0 +1,7 @@
+[frete.py](file:///tmp/bench-0ano_u_q/frete.py) foi refatorado conforme o especificado em [enunciado.md](file:///tmp/bench-0ano_u_q/enunciado.md), sem criar outros módulos:
+
+- **`TabelaFrete`** ([frete.py](file:///tmp/bench-0ano_u_q/frete.py#L25-L49)): define o atributo de classe `FAIXAS` com as quatro faixas (`carta`, `pac`, `sedex`, `transportadora`) e o método `cotar(self, peso_g: int, distancia_km: int, expresso: bool) -> dict`, lendo `self.FAIXAS` em cada chamada (refletindo substituições em `TabelaFrete.FAIXAS`).
+- **`faixa_de_peso(peso_g: int) -> str`** ([frete.py](file:///tmp/bench-0ano_u_q/frete.py#L52-L56)): valida `peso_g` (`type(peso_g) is not int` → `TypeError`, fora de `1..30000` → `ValueError`) e consulta `TabelaFrete.FAIXAS` a cada chamada.
+- **`cotar(peso_g: int, distancia_km: int, expresso: bool) -> dict`** ([frete.py](file:///tmp/bench-0ano_u_q/frete.py#L59-L61)): delega para `TabelaFrete().cotar(peso_g, distancia_km, expresso)`, preservando validação, cálculo inteiro (`(valor * 3) // 2` para expresso) e ordem de exceções.
+
+Verificado via `python3 -c` com todos os exemplos do enunciado, limites de faixas, validação de tipos (`bool`, `float`, `str`, `None`), intervalos inválidos, equivalência entre `cotar` e `TabelaFrete().cotar`, e substituição dinâmica de `TabelaFrete.FAIXAS` (`ALL_TESTS_PASSED`).

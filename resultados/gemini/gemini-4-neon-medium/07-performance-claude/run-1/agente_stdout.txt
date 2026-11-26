@@ -1,0 +1,5 @@
+Criei [solucao.py](file:///tmp/bench-ofqoduzx/solucao.py) com a implementação de `contar_subarrays_soma` em $O(n)$ usando somas de prefixo (`itertools.accumulate`) e janela deslizante sobre um dicionário de frequências (`dict`), além de caminhos diretos para os casos sem limite de comprimento e de comprimento fixo.
+
+### Verificações realizadas
+- **Corretude**: validados todos os exemplos de [enunciado.md](file:///tmp/bench-ofqoduzx/enunciado.md), casos de borda (`ValueError` para `comprimento_min < 1` ou `comprimento_max < 1`, `comprimento_min > comprimento_max`, listas vazias, inteiros $> 2^{63}$, não modificação de `nums`) e 500 testes aleatórios comparados contra força bruta.
+- **Desempenho ($n = 300\,000$)**: todos os cenários (zeros, uns, aleatórios pequenos/grandes, inteiros $> 2^{63}$, com e sem limites de comprimento) executaram entre **0,017s e 0,059s** (bem abaixo do limite de 2s).

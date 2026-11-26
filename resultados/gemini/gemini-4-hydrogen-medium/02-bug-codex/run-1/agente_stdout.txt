@@ -1,0 +1,7 @@
+Corrigido o bug em [janelas.py](file:///tmp/bench-ryn048kg/janelas.py#L9):
+
+- **Causa:** O laço `for indice in range(tamanho, len(valores) - 1):` interrompia a iteração antes do último elemento, omitindo a última janela contígua.
+- **Correção:** Alterado para `for indice in range(tamanho, len(valores)):`, preservando a assinatura de `somas_janelas`, a complexidade $O(n)$, a exatidão para inteiros arbitrários, a imutabilidade da entrada e a independência das listas retornadas.
+
+**Verificação:**
+- Executado script de validação em Python verificando o exemplo do enunciado (`[1, 2, 3, 4], 2 -> [3, 5, 7]`), janela igual ao tamanho da lista, janela maior que a lista, lista vazia, `ValueError` para `tamanho <= 0`, independência das listas retornadas, inteiros maiores que 64 bits (`10**30`) e desempenho em lista de 200.000 elementos com janela de 100.000 (`0.0085s`), com todas as asserções aprovadas.

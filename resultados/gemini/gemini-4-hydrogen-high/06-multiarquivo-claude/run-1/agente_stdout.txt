@@ -1,0 +1,10 @@
+O pacote `biblioteca/` foi criado conforme especificado em [enunciado.md](file:///tmp/bench-fco0b6f3/enunciado.md), contendo exatamente os 4 módulos usando apenas a biblioteca padrão e imports relativos:
+
+- [modelos.py](file:///tmp/bench-fco0b6f3/biblioteca/modelos.py): dataclasses congeladas `Livro` (com validação de `str` e não vazio/espaços em `__post_init__`) e `Emprestimo`, além da hierarquia `BibliotecaErro` (`LivroNaoEncontrado`, `LivroIndisponivel`, `LimiteEmprestimos`, `EmprestimoNaoEncontrado`, `RenovacaoNegada`).
+- [acervo.py](file:///tmp/bench-fco0b6f3/biblioteca/acervo.py): classe `Acervo` com `adicionar`, `obter`, `buscar_por_autor` (usando `str.casefold()` e ordenação por `(titulo, isbn)`), `__len__` e `__contains__`.
+- [emprestimos.py](file:///tmp/bench-fco0b6f3/biblioteca/emprestimos.py): classe `ServicoEmprestimos` com validação dos parâmetros do construtor, referência direta ao `Acervo` recebido, e os métodos `emprestar`, `devolver`, `disponivel`, `emprestimos_de`, `renovar` e `atrasados` respeitando a ordem de validações, cálculo de multa e preservação de estado em caso de erro.
+- [__init__.py](file:///tmp/bench-fco0b6f3/biblioteca/__init__.py): reexporta os 10 símbolos públicos e define `__all__`.
+
+### Verificação
+- Executados 9 testes unitários (`unittest` via `PYTHONDONTWRITEBYTECODE=1 python3`) cobrindo exportações em `__all__`, herança das exceções, validações de `Livro` e `ServicoEmprestimos`, busca com `casefold()`, ordem de erros, renovações, multas e listagens: `Ran 9 tests in 0.001s - OK`.
+- Verificado com `ls -la` que `biblioteca/` contém apenas `__init__.py`, `acervo.py`, `emprestimos.py` e `modelos.py`.

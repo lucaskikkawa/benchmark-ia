@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-medium/09-api-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "medium",
+ "tarefa": "09-api-codex",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 66.695,
+ "testes_passados": 38,
+ "testes_total": 38,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": null,
+   "rubrica_10": null,
+   "justificativa": null,
+   "falhas": [
+    "tentativa 1: exit 1: ",
+    "tentativa 2: exit 1: "
+   ]
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Laço limitado, validação antes da API, retry só em transitórios e raise da última exceção. Docstring não explica timeout por chamada nem tentativas.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "juiz claude sem resposta válida (tentativa 1: exit 1: ; tentativa 2: exit 1: )",
+  "só 1 juiz neutro válido; usada só a nota dele"
+ ],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7
+}

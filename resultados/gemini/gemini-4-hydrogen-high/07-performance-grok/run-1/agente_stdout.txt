@@ -1,0 +1,5 @@
+Implementei `pares_com_soma` em [solucao.py](file:///tmp/bench-wsyljh71/solucao.py#L1-L16) seguindo os requisitos de [enunciado.md](file:///tmp/bench-wsyljh71/enunciado.md):
+
+- **Algoritmo**: passagem única com tabela de frequências (`dict[int, int]`), acumulando `contagem.get(alvo - x, 0)` antes de incrementar a contagem de `x`, sem alterar `nums` nem materializar os pares.
+- **Validação de tipos**: verifica se `nums` é `list` e se `alvo` e todos os elementos de `nums` são `int` (rejeitando `bool` e outros tipos com `TypeError`).
+- **Verificação**: executei com `python3 -B` os 9 casos de exemplo, teste de imutabilidade, 12 casos de `TypeError` (incluindo `bool`, `float`, `str`, `tuple`, `set`, `None`) e testes de desempenho com `n = 200_000` (valores iguais em `0.0200s` e distintos em `0.0333s`), sem criar arquivos extras no diretório.

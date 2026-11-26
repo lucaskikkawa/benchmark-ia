@@ -1,0 +1,14 @@
+Criado [cliente.py](file:///tmp/bench-ozbjs9cf/cliente.py) implementando `TempoEsgotado` e `baixar_pedidos` usando apenas a biblioteca padrão, mantendo [loja_api.py](file:///tmp/bench-ozbjs9cf/loja_api.py) inalterado.
+
+### O que foi implementado em [cliente.py](file:///tmp/bench-ozbjs9cf/cliente.py)
+- **`TempoEsgotado`** ([L11-L12](file:///tmp/bench-ozbjs9cf/cliente.py#L11-L12)): exceção levantada quando a última tentativa de um pedido excede `timeout_s`.
+- **`_validar_parametros`** ([L19-L38](file:///tmp/bench-ozbjs9cf/cliente.py#L19-L38)): valida antes de qualquer chamada à API que `ids` é exatamente `list`, `max_tentativas` é `int` ≥ 1 (rejeitando `bool`), `backoff_s` é `int`/`float` ≥ 0 (rejeitando `bool` e `NaN`) e `timeout_s` é `int`/`float` > 0 (rejeitando `bool` e `NaN`).
+- **`_obter_pedido_com_timeout`** ([L41-L63](file:///tmp/bench-ozbjs9cf/cliente.py#L41-L63)): executa `api.obter_pedido(pedido_id)` em `threading.Thread(..., daemon=True)` e aguarda até `timeout_s` via `threading.Event.wait`, abandonando a espera em caso de timeout sem bloquear pelo `ATRASO_S` da API.
+- **`_baixar_um_pedido` e `baixar_pedidos`** ([L66-L104](file:///tmp/bench-ozbjs9cf/cliente.py#L66-L104)):
+  - Processa os IDs em ordem e sem cache, interrompendo imediatamente em falha definitiva.
+  - Propaga `LojaErroCliente` na hora, sem retry e sem backoff.
+  - Retenta `LojaIndisponivel` e timeouts até `max_tentativas`, aplicando `time.sleep(backoff_s * 2 ** (tentativa - 1))` somente entre falhas retentáveis quando `backoff_s > 0` (nunca após sucesso ou última tentativa).
+  - Propaga `LojaIndisponivel` se for a falha da última tentativa, ou levanta `TempoEsgotado` se a última tentativa estourar `timeout_s`.
+
+### Verificação
+- Executados 12 testes unitários em [test_cliente.py](file:///home/box/.gemini/antigravity-cli/brain/f2a434e6-bfe7-4dd6-b451-0c363192e079/scratch/test_cliente.py) (`python3 .../test_cliente.py`): todos passaram (`Ran 12 tests in 0.513s`, `OK`), cobrindo lista vazia, validações de tipos/valores, argumentos keyword-only, ordem, repetição sem cache, `missing-`/IDs inválidos, `flaky-` com backoff exponencial, `backoff_s == 0`, `down-`, `max_tentativas=1`, recuperação de `slow-` com timeout e esgotamento de `timeout-`.

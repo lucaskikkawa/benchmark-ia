@@ -1,0 +1,10 @@
+A solução foi implementada em [solucao.py](file:///tmp/bench-9n1c_f_3/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-9n1c_f_3/enunciado.md).
+
+### O que foi feito
+- Criada `contar_subarrays_soma(nums, k, comprimento_min=1, comprimento_max=None)` usando apenas a biblioteca padrão (`itertools.accumulate` e `itertools.islice`), sem modificar `nums`.
+- **Validação e casos de borda:** valida `comprimento_min >= 1` e `comprimento_max >= 1` (levantando `ValueError` antes de qualquer retorno antecipado), trata lista vazia, `comprimento_min > comprimento_max`, `comprimento_min > len(nums)`, limites muito grandes e inteiros de magnitude arbitrária (`> 2**63`).
+- **Complexidade $O(n)$:** usa somas de prefixo com janela deslizante sobre um dicionário de frequências para manter apenas os índices válidos `[r - comprimento_max, r - comprimento_min]`, além de caminhos diretos para `comprimento_min == comprimento_max` e para casos sem limite superior efetivo.
+
+### Verificação
+- Validada contra todos os exemplos do enunciado, casos de borda (`ValueError`, inteiros `> 2**63`, imutabilidade de `nums`) e 2.000 testes aleatórios comparados com referência força bruta $O(n^2)$: todos passaram.
+- Benchmark com `len(nums) = 300_000` em 12 cenários (zeros, aleatórios pequenos/grandes, inteiros `> 2**63`, alternantes, janelas fixas e variáveis): todos concluíram entre **1,7 ms e 78,3 ms** (muito abaixo do limite de 2 s).

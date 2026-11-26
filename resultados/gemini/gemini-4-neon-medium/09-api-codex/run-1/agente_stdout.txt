@@ -1,0 +1,11 @@
+Implementei [cliente.py](file:///tmp/bench-8es27azn/cliente.py) conforme especificado em [enunciado.md](file:///tmp/bench-8es27azn/enunciado.md), preservando [fake_api.py](file:///tmp/bench-8es27azn/fake_api.py).
+
+### O que foi implementado
+- `buscar_com_retry(api, chave, *, tentativas=3, timeout=1.0, backoff=0.1, dormir=time.sleep)` em [cliente.py](file:///tmp/bench-8es27azn/cliente.py):
+  - Valida `tentativas` (inteiro `>= 1`, excluindo `bool`), `timeout` (real finito `> 0`) e `backoff` (real finito `>= 0`) lançando `ValueError` antes de qualquer chamada a `api.get` ou `dormir`.
+  - Repassa `chave` e `timeout` intactos para `api.get(chave, timeout=timeout)` e retorna o objeto original sem transformação.
+  - Realiza retry apenas em `fake_api.ErroTemporario` e `TimeoutError` (e suas subclasses), aguardando `backoff * (2**indice)` via `dormir` entre tentativas — inclusive quando o atraso é zero — e nunca após sucesso ou na última falha.
+  - Executa `dormir` fora do bloco `try`/`except`, garantindo que qualquer exceção lançada por `dormir` (incluindo `TimeoutError` ou `ErroTemporario`) propague imediatamente, assim como `ErroPermanente` e demais exceções de `api.get`.
+
+### Verificação
+- Executados testes cobrindo assinatura/defaults, validação prévia de parâmetros inválidos (`0`, negativos, `NaN`, `inf`, `bool`, `float` em `tentativas`), preservação de identidade de retorno (incluindo `{}`), chaves vazias e Unicode, retry em subclasses, `backoff == 0`, propagação da última exceção original, exceções de `dormir`, 40 tentativas com backoff exponencial exato, independência entre chamadas e integração com `FakeAPI`. Todos passaram.

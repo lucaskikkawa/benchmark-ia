@@ -1,0 +1,9 @@
+O pacote `estoque/` foi implementado conforme o [enunciado.md](file:///tmp/bench-ln1hcmwn/enunciado.md), mantendo exatamente os quatro módulos existentes e apenas a biblioteca padrão:
+
+- [modelos.py](file:///tmp/bench-ln1hcmwn/estoque/modelos.py): define a dataclass imutável (`@dataclass(frozen=True)`) `Movimento(sku: str, delta: int)` sem validação no construtor.
+- [operacoes.py](file:///tmp/bench-ln1hcmwn/estoque/operacoes.py): implementa `calcular_saldos(movimentos, iniciais=None) -> dict[str, int]`, copiando `iniciais` sem mutá-lo, validando saldos iniciais e intermediários contra valores negativos (`ValueError`), preservando chaves exatas, saldos zero e SKUs sem movimentos, e suportando iteráveis de passagem única e inteiros de precisão arbitrária.
+- [persistencia.py](file:///tmp/bench-ln1hcmwn/estoque/persistencia.py): implementa `carregar_movimentos(caminho) -> list[Movimento]`, lendo JSON UTF-8 (`str` ou `PathLike`), rejeitando constantes JSON não padrão (`NaN`/`Infinity`), validando lista de objetos com `sku` string contendo ao menos um caractere não branco (preservado sem alterações) e `delta` inteiro (rejeitando `bool`), ignorando campos extras e preservando a ordem.
+- [__init__.py](file:///tmp/bench-ln1hcmwn/estoque/__init__.py): mantém as exportações `Movimento`, `calcular_saldos` e `carregar_movimentos` via imports relativos.
+
+### Verificação
+- Testados todos os casos de borda (imutabilidade, não mutação de `iniciais` em sucesso/erro, saldos negativos iniciais e intermediários, preservação de zeros e chaves Unicode/espaços, iterável gerador, inteiros grandes, rejeição de JSON/formas/tipos inválidos, propagação de `FileNotFoundError`) e carga de 20.000 movimentos (~0,017s).

@@ -1,0 +1,10 @@
+Refatorei [pedidos.py](file:///tmp/bench-ikdd17ep/pedidos.py) conforme especificado em [enunciado.md](file:///tmp/bench-ikdd17ep/enunciado.md):
+
+- **Nova função pública `subtotal`** ([pedidos.py](file:///tmp/bench-ikdd17ep/pedidos.py#L5-L7)): calcula `quantidade * preco_centavos * (100 - desconto_percentual) // 100` com aritmética inteira de precisão arbitrária e truncamento por linha.
+- **Refatoração de `resumo_pedidos`** ([pedidos.py](file:///tmp/bench-ikdd17ep/pedidos.py#L10-L31)):
+  - Nomes opacos (`a`, `b`, `c`, `x`, `y`) substituídos por nomes descritivos (`total_itens`, `total_centavos`, `por_categoria`, `pedido`, `subtotal_pedido`).
+  - Delega o cálculo chamando `subtotal` exatamente uma vez por pedido, na ordem do iterável (incluindo quantidade zero e sem agrupamento prévio), reutilizando o valor retornado em `total_centavos` e `por_categoria`.
+  - Mantém suporte a iteráveis de passagem única, preservação exata de categorias (inclusive soma zero e diferenças de espaços/caixa/Unicode), imutabilidade da entrada e acumuladores isolados por chamada.
+
+### Verificação
+Foram executados testes automatizados em Python validando assinatura de `subtotal`, truncamento por linha, inteiros acima de 64 bits, entrada vazia, iterável de passagem única, preservação exata de categorias, isolamento entre chamadas e substituição de `pedidos.subtotal` em tempo de execução (`ALL TESTS PASSED`).

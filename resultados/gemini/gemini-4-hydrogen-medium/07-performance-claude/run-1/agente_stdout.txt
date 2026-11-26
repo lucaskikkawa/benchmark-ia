@@ -1,0 +1,10 @@
+A função `contar_subarrays_soma` foi implementada em [solucao.py](file:///tmp/bench-vqqfxp4n/solucao.py#L4-L42).
+
+### Abordagem
+- Valida `comprimento_min >= 1` e `comprimento_max >= 1` (quando informado), lançando `ValueError` caso contrário, e retorna `0` imediatamente quando `comprimento_min > len(nums)` ou `comprimento_min > comprimento_max`.
+- Calcula as somas de prefixo com `itertools.accumulate(nums, initial=0)` em $O(n)$ e percorre os índices finais contando quantos prefixos anteriores satisfazem `prefix[i] - k` dentro da janela deslizante $[i - \text{comprimento\_max},\, i - \text{comprimento\_min}]$ mantida em um dicionário de frequências (`dict`), garantindo complexidade $O(n)$ em tempo e $O(n)$ em espaço sem modificar `nums`.
+
+### Verificação
+Testado com `python3` sobre:
+- Os 7 exemplos de [enunciado.md](file:///tmp/bench-vqqfxp4n/enunciado.md#L29-L37), casos de borda (`ValueError`, `comprimento_min > comprimento_max`, inteiros grandes `10**30` e imutabilidade de `nums`) e 300 casos aleatórios comparados contra força bruta.
+- Benchmarks com `len(nums) = 300_000` (aleatórios e zeros, com e sem limites de comprimento), todos concluídos em ~0.025s a ~0.060s (abaixo de 2s).

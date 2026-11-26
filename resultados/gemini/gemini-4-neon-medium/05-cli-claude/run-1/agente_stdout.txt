@@ -1,0 +1,7 @@
+Criei o script [freq.py](file:///tmp/bench-qk8mmcv6/freq.py) atendendo a todos os requisitos de [enunciado.md](file:///tmp/bench-qk8mmcv6/enunciado.md):
+
+- **CLI com `argparse` e biblioteca padrão**: suporta `ARQUIVO` (incluindo `-` para `stdin`), `-n`/`--top`, `-m`/`--min-len`, `-i`/`--ignore-case`, `-x`/`--excluir` (repetível) e `--formato {texto,json}`.
+- **Regras de extração e contagem**: extrai palavras com `[^\W\d_]+` do texto original (sem normalização Unicode), aplica `str.lower()` por palavra quando `-i` está ativo, filtra por tamanho mínimo e exclusões, ordena por contagem decrescente com desempate lexicográfico crescente e formata em `texto` (`palavra\tcontagem`, saída vazia sem palavras) ou `json` (`[{"palavra": ..., "contagem": ...}]`, `[]` quando vazio).
+- **Decodificação e erros**: lê arquivo/`stdin` em modo binário com decodificação UTF-8 estrita (independente do locale), retornando código `2` via `argparse` para argumentos inválidos e código `1` com uma única linha `erro: ...` em `stderr` (e nada em `stdout`) para falhas de leitura/UTF-8.
+
+Todos os cenários foram verificados com testes automatizados (exemplo do enunciado, `Straße`/`STRASSE`, ordem `lower()` → `min-len`, separadores Unicode/dígitos/`_`, `-x` com e sem `-i`, saída `texto`/`json` vazia e não vazia, `stdin`, erros de E/S e UTF-8, erros de `argparse` e locale `C`/ASCII).

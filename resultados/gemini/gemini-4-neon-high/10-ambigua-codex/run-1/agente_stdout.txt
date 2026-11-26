@@ -1,0 +1,8 @@
+A tarefa foi concluída com a criação dos arquivos solicitados no diretório de trabalho:
+
+- [organizador.py](file:///tmp/bench-5ymr4hr0/organizador.py): implementa `organizar_tarefas(tarefas: list[dict]) -> list[dict]` usando apenas a biblioteca padrão (compatível com Python 3.11+), filtrando tarefas com `concluida == False`, ordenando por `prioridade` decrescente em tempo linear `O(n)` por faixas (`0..5`), preservando a ordem original em empates, mantendo campos extras, títulos originais sem normalização e a identidade dos valores por meio de cópias rasas independentes (`dict(tarefa)`).
+- [SUPOSICOES.md](file:///tmp/bench-5ymr4hr0/SUPOSICOES.md): registra as políticas escolhidas para desempate (ordenação estável) e tratamento estrito (*fail-fast* com `TypeError`/`ValueError`) de entradas inválidas.
+
+**Verificação:**
+- Executados testes funcionais cobrindo lista vazia, somente concluídas, ordenação decrescente (`0..5`), estabilidade em empates, imutabilidade da entrada, cópia rasa independente (incluindo o mesmo objeto `dict` repetido e identidade de objetos em campos extras), títulos com espaços sem normalização e casos de validação.
+- Testado com 30.000 tarefas e empates extensos (~12 ms).

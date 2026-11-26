@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-high/09-api-codex/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "high",
+ "tarefa": "09-api-codex",
+ "tipo": "09-api",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "codex",
+ "status": "ok",
+ "duracao_agente_s": 100.753,
+ "testes_passados": 38,
+ "testes_total": 38,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "claude",
+  "grok"
+ ],
+ "juizes": {
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": null,
+   "rubrica_10": null,
+   "justificativa": null,
+   "falhas": [
+    "tentativa 1: exit 1: ",
+    "tentativa 2: exit 1: "
+   ]
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 9.0,
+   "justificativa": "Valida antes dos efeitos, repete só transitórios e relança a instância original; dormir é injetável e fica fora do except. A docstring não explica timeout por tentativa nem o backoff entre falhas.",
+   "falhas": []
+  }
+ },
+ "obs": [
+  "juiz claude sem resposta válida (tentativa 1: exit 1: ; tentativa 2: exit 1: )",
+  "só 1 juiz neutro válido; usada só a nota dele"
+ ],
+ "rubrica_media_10": 9.0,
+ "nota_final_10": 9.7
+}

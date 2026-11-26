@@ -1,0 +1,8 @@
+Criado [vendas.py](file:///tmp/bench-l7evcrng/vendas.py) com a função `resumir_vendas(entrada, saida, minimo_centavos: int = 0) -> list[dict]` usando apenas a biblioteca padrão do Python:
+
+- Valida `minimo_centavos` como exatamente `int` (`>= 0`) e todo o conteúdo do CSV antes de criar ou sobrescrever `saida`, preservando a saída anterior em caso de `ValueError`.
+- Lê CSV UTF-8 com suporte a BOM (`utf-8-sig`), cabeçalho em qualquer ordem com colunas extras ignoradas, regras de aspas do módulo `csv` (preservando quebras de linha, aspas internas, espaços internos, caixa e forma Unicode) e erro em arquivo vazio ou cabeçalho incompleto.
+- Ignora linhas cujo `status` (`strip().lower()`) não seja `pago` (inclusive com campos faltando) antes de validar os demais campos; em linhas pagas, valida presença dos campos obrigatórios, produto não vazio após `strip()` e inteiros não negativos na gramática ASCII `[+-]?[0-9]+` com aritmética inteira exata.
+- Agrega por produto (mantendo quantidade zero), filtra por `receita_centavos >= minimo_centavos`, ordena por `produto`, grava JSON UTF-8 sem escapes ASCII com quebra de linha final e retorna a lista.
+
+Verificado com bateria de testes cobrindo todos os casos de borda e benchmark de 30.000 linhas (~26 ms).

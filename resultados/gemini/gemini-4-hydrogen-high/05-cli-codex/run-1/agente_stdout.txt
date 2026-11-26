@@ -1,0 +1,11 @@
+Implementei a CLI em [cli.py](file:///tmp/bench-_8uugz3t/cli.py) conforme especificado em [enunciado.md](file:///tmp/bench-_8uugz3t/enunciado.md), usando apenas a biblioteca padrão do Python (`argparse`, `collections.Counter`, `json`, `sys`).
+
+### O que foi implementado em [cli.py](file:///tmp/bench-_8uugz3t/cli.py)
+- [`main(argv=None) -> int`](file:///tmp/bench-_8uugz3t/cli.py#L91-L120): cria um parser novo por chamada (`_build_parser`), captura `SystemExit` do `argparse` (retornando `0` para `-h`/`--help` e `2` em erros de argumentos) e encerra o processo com o código retornado quando executado como script (`if __name__ == "__main__": raise SystemExit(main())`).
+- [`_count_words`](file:///tmp/bench-_8uugz3t/cli.py#L58-L71): lê `ARQUIVO` em UTF-8 estrito, divide tokens com `str.split()` sem normalização Unicode adicional e aplica `str.casefold()` antes de contar quando `--ignorar-caixa` está ativo.
+- Filtragem, ordenação e limite: filtra `contagem >= --minimo`, ordena por contagem decrescente e token crescente (`(-contagem, palavra)`), e aplica `--top N` após a ordenação.
+- [`_format_and_write`](file:///tmp/bench-_8uugz3t/cli.py#L74-L88): emite `PALAVRA\tCONTAGEM\n` no formato padrão (stdout vazio se não houver resultados) ou lista JSON em uma linha com `ensure_ascii=False` e quebra de linha final (`[]\n` se vazio) com `--json`.
+- Tratamento de erros: arquivos ausentes/ilegíveis/diretórios/UTF-8 inválido, argumentos obrigatórios ausentes, flags desconhecidas e valores não inteiros ou `<= 0` em `--minimo` e `--top` retornam código `2` com stdout vazio e mensagem no stderr, sem traceback.
+
+### Verificação
+Executei uma bateria de verificações em Python 3.13 (`python3`) cobrindo importação silenciosa, ordenação, pontuação e separadores Unicode, distinção entre formas Unicode compostas e decompostas, `--ignorar-caixa` (`Straße`/`STRASSE`), `--minimo`, `--top`, `--json` com acentos e resultados vazios, chamadas repetidas a `main()`, `argv=None`, `-h`/`--help`, todos os casos de erro (in-process e via subprocesso) e entrada com 100.000 tokens (executada em ~0,0084s); todas as asserções passaram.

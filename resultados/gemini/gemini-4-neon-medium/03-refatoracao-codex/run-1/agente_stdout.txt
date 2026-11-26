@@ -1,0 +1,7 @@
+Refatorei [pedidos.py](file:///tmp/bench-l6nptsyo/pedidos.py) conforme o especificado em [enunciado.md](file:///tmp/bench-l6nptsyo/enunciado.md):
+
+- Criada a função pública `subtotal(quantidade: int, preco_centavos: int, desconto_percentual: int = 0) -> int` usando aritmética inteira exata (`quantidade * preco_centavos * (100 - desconto_percentual) // 100`), com truncamento por linha.
+- `resumo_pedidos(pedidos)` agora usa nomes descritivos (`total_itens`, `total_centavos`, `por_categoria`, `pedido`, `subtotal_pedido`), percorre o iterável em passagem única sem mutar a entrada, delega o cálculo de cada linha a `subtotal` na ordem dos pedidos (inclusive com `quantidade == 0`) e usa o valor retornado em `total_centavos` e `por_categoria`.
+- Categorias são preservadas exatamente como recebidas (inclusive com soma zero, espaços, caixa e formas Unicode distintas) e cada chamada usa acumuladores próprios.
+
+**Verificação:** testado com Python 3 cobrindo assinatura/padrão de `subtotal`, truncamento por linha, inteiros maiores que 64 bits, entrada vazia, iterador de passagem única, preservação exata de categorias, isolamento de acumuladores e substituição de `pedidos.subtotal` em tempo de execução (`ALL TESTS PASSED`).

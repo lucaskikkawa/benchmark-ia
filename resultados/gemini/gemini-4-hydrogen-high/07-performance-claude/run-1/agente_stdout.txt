@@ -1,0 +1,12 @@
+Implementei [`contar_subarrays_soma`](file:///tmp/bench-1ceh2i7c/solucao.py#L5-L68) em [solucao.py](file:///tmp/bench-1ceh2i7c/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-1ceh2i7c/enunciado.md).
+
+### Abordagem
+- **Validação e casos extremos**: valida `comprimento_min >= 1` e `comprimento_max >= 1` (quando informado), levantando `ValueError` caso contrário; retorna `0` se `comprimento_min > len(nums)` ou `comprimento_min > comprimento_max`, sem modificar `nums`.
+- **Complexidade $O(n)$**:
+  - Quando `comprimento_min == comprimento_max`, utiliza janela deslizante de tamanho fixo (ou `nums.count(k)` para comprimento `1`) em $O(1)$ de espaço extra.
+  - Nos demais casos, mantém uma tabela de frequências (`defaultdict(int)`) sobre as somas de prefixo em uma janela deslizante de índices iniciais `[r - l_max, r - comprimento_min]`, inserindo o prefixo que entra na janela e removendo (com `del` quando a contagem chega a `0`) o que sai.
+  - Utiliza apenas a biblioteca padrão (`collections.defaultdict`, `itertools.accumulate`, `itertools.islice`).
+
+### Verificação
+- Todos os exemplos de [enunciado.md](file:///tmp/bench-1ceh2i7c/enunciado.md), validações de `ValueError`, inteiros arbitrários (`10**25`) e 500 casos aleatórios comparados contra força bruta passaram.
+- Benchmarks com `len(nums) = 300_000` executados em Python 3.13.5 ficaram entre `0.0017s` e `0.0855s` em todos os cenários testados (sem limites, apenas `comprimento_min`, `comprimento_max=5000`, intervalo `100..250000`, zeros, inteiros grandes e comprimento fixo).

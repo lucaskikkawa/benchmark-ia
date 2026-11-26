@@ -1,0 +1,9 @@
+Implementado [cli.py](file:///tmp/bench-xrmwe066/cli.py) conforme especificado em [enunciado.md](file:///tmp/bench-xrmwe066/enunciado.md):
+
+- **Interface e ponto de entrada**: usa `argparse`, expõe `main(argv=None) -> int` sem estado compartilhado entre chamadas e encerra com o código retornado quando executado como script (`python cli.py ARQUIVO [flags]`).
+- **Leitura e tokenização**: lê `ARQUIVO` em UTF-8 linha a linha com `str.split()`, preservando pontuação, espaço de largura zero e distinção entre formas Unicode NFC/NFD; aplica `str.casefold()` quando `--ignorar-caixa` é informado.
+- **Filtros, ordenação e saída**: valida `--minimo` (padrão `1`) e `--top` como inteiros positivos, ordena por contagem decrescente e palavra crescente, e emite `PALAVRA\tCONTAGEM\n` (ou stdout vazio quando sem resultados) ou JSON em uma linha com `ensure_ascii=False` e quebra de linha final quando `--json` está ativo.
+- **Tratamento de erros**: falhas de argumento/flags, valores inválidos em `--minimo`/`--top` e erros de leitura/UTF-8 (`OSError`, `UnicodeDecodeError`) escrevem mensagem em `stderr`, mantêm `stdout` vazio e retornam código `2` sem traceback.
+
+### Verificação
+- Executada suíte de testes via `python3` cobrindo contagem básica, separadores Unicode (`\u00a0`, `\f`), espaço de largura zero (`\u200b`), `--ignorar-caixa`, distinção NFC vs NFD, `--minimo`, `--top`, `--json`, `-h`/`--help`, todos os casos de erro com código `2`, chamadas repetidas a `cli.main(argv)` e arquivo com 100.000 tokens (concluído em `0.038s`): todos passaram.

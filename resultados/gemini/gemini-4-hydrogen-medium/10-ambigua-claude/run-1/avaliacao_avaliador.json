@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-hydrogen-medium/10-ambigua-claude/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-hydrogen",
+ "esforco": "medium",
+ "tarefa": "10-ambigua-claude",
+ "tipo": "10-ambigua",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "claude",
+ "status": "ok",
+ "duracao_agente_s": 107.915,
+ "testes_passados": 41,
+ "testes_total": 42,
+ "pct_testes": 97.62,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "grok"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 1.0
+   },
+   "rubrica_10": 7.0,
+   "justificativa": "Código claro e idiomático, com deduplicação ordenada e extração delegando à normalização. Há regras espalhadas e ambiguidades no SUPOSICOES.md: CPF formatado pode ser extraído, e 55 como DDD conflita com o tratamento de país.",
+   "falhas": []
+  },
+  "grok": {
+   "modelo": "grok-4.7-build-fast",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 1.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 1.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 8.0,
+   "justificativa": "Etapas nomeadas, regex no módulo, dedupe com set e delegação a normalizar. SUPOSICOES.md traz dúvida, decisão e motivo, com docstrings. Regras de 55, tamanho e separadores estão duplicadas, e extrair ainda aceita 015 11..., contra a suposição 3.",
+   "falhas": []
+  }
+ },
+ "obs": [],
+ "rubrica_media_10": 7.5,
+ "nota_final_10": 9.08
+}

@@ -1,0 +1,16 @@
+Implementei a solução em [cliente.py](file:///tmp/bench-sr30gao9/cliente.py) e adicionei os testes unitários em [test_cliente.py](file:///tmp/bench-sr30gao9/test_cliente.py), mantendo [fake_api.py](file:///tmp/bench-sr30gao9/fake_api.py) inalterado conforme [enunciado.md](file:///tmp/bench-sr30gao9/enunciado.md).
+
+### O que foi implementado
+
+- **Exceções em [cliente.py](file:///tmp/bench-sr30gao9/cliente.py#L15-L38):**
+  - `ErroAPI` (com atributo `.status`), `NaoEncontrado` (HTTP `404`, `.status == 404`) e `FalhaPermanente` (com `.tentativas` e `.status`).
+- **`ClienteAPI` em [cliente.py](file:///tmp/bench-sr30gao9/cliente.py#L62-L162):**
+  - Validação no `__init__` para `max_tentativas < 1` (incluindo `bool`), `timeout <= 0`, `backoff_base < 0`, `backoff_max < 0`, `orcamento_espera < 0` e valores `NaN`.
+  - `obter_usuario(id_usuario)`: valida `int >= 1` (rejeitando `bool`), chama `api.requisitar("GET", f"/usuarios/{id_usuario}", timeout=self.timeout)`, trata `200`, `404` (`NaoEncontrado`), status não retentáveis (`ErroAPI`), status retentáveis (`429`, `500`, `502`, `503`, `504`) e exceções retentáveis (`ErroConexao`, `TempoEsgotado`).
+  - Backoff exponencial sem overflow mesmo para `max_tentativas` elevados (`_calcular_backoff`), suporte case-insensitive ao header `Retry-After` numérico finito `>= 0` em respostas `429` (`_obter_retry_after`) e controle de `orcamento_espera` com `Decimal` para evitar imprecisão de ponto flutuante na soma das esperas.
+  - Encadeamento em `FalhaPermanente`: `from ultima_excecao` quando a última falha foi exceção e `from None` (`__cause__ is None`) quando a última falha foi status HTTP.
+  - `obter_varios(ids)`: consome qualquer iterável uma única vez, valida todos os IDs antes de qualquer requisição, preserva a ordem de primeira aparição, deduplica requisições e mapeia `NaoEncontrado` para `None`.
+
+### Verificação
+
+- Executado `python3 -m unittest -v test_cliente.py`: todos os 16 testes em [test_cliente.py](file:///tmp/bench-sr30gao9/test_cliente.py) passaram (`Ran 16 tests in 0.004s`, `OK`).

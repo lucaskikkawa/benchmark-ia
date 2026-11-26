@@ -1,0 +1,11 @@
+A solução foi implementada em [solucao.py](file:///tmp/bench-6fhtcqk3/solucao.py), atendendo às especificações de [enunciado.md](file:///tmp/bench-6fhtcqk3/enunciado.md).
+
+### O que foi implementado
+- **`_parse_horario`** ([solucao.py](file:///tmp/bench-6fhtcqk3/solucao.py#L7-L29)): valida que o horário é `str` (caso contrário, `TypeError`), possui exatamente 5 caracteres no formato `HH:MM` com dígitos ASCII (`0123456789`) e `:` (U+003A), respeitando `00:00`–`23:59` e `24:00` (`ValueError` nos demais casos).
+- **`_format_horario`** ([solucao.py](file:///tmp/bench-6fhtcqk3/solucao.py#L32-L37)): formata minutos em `HH:MM`, convertendo `1440` para `"24:00"`.
+- **`_parse_ocupado`** ([solucao.py](file:///tmp/bench-6fhtcqk3/solucao.py#L40-L48)): valida itens como `tuple` ou `list` de exatamente 2 strings (`TypeError` caso contrário) e exige `ini <= fim` (`ValueError` caso contrário) antes de qualquer descarte ou recorte.
+- **`horas_livres`** ([solucao.py](file:///tmp/bench-6fhtcqk3/solucao.py#L51-L91)): exige `ocupados` do tipo `list`, valida a janela `[inicio, fim)` com `inicio < fim`, ignora intervalos válidos de duração zero, recorta os demais para a janela, ordena e une intervalos sobrepostos ou encostados (transitivamente), e retorna as lacunas livres sem modificar a entrada.
+
+### Verificação
+- Executada bateria de testes via `python3 -B -c` cobrindo todos os exemplos de [enunciado.md](file:///tmp/bench-6fhtcqk3/enunciado.md), limites com `00:00` e `24:00`, intervalos fora de ordem/sobrepostos/encostados/duplicados/fora da janela/duração zero, não mutação das listas de entrada e casos de `TypeError`/`ValueError`: `ALL TESTS PASSED`.
+- Verificado com `ls -la` que nenhum arquivo adicional foi criado no diretório além de [solucao.py](file:///tmp/bench-6fhtcqk3/solucao.py).

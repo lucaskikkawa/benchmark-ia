@@ -1,0 +1,49 @@
+...........................F..............                               [100%]
+=================================== FAILURES ===================================
+__ test_separadores_repetidos_e_combinados[((11)) 98765-4321-+5511987654321] ___
+
+entrada = '((11)) 98765-4321', esperado = '+5511987654321'
+
+    @pytest.mark.parametrize(
+        "entrada, esperado",
+        [
+            ("( 11 )  98765 - 4321", "+5511987654321"),
+            ("11..98765..4321", "+5511987654321"),
+            ("+55  (21)  3456--7890", "+552134567890"),
+            ("((11)) 98765-4321", "+5511987654321"),
+            ("+55 55 3456-7890", "+555534567890"),
+            ("(99) 5999-0000", "+559959990000"),
+        ],
+    )
+    def test_separadores_repetidos_e_combinados(entrada, esperado):
+>       assert normalizar_telefone(entrada) == esperado
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+testes_ocultos/test_telefones.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+texto = '((11)) 98765-4321'
+
+    def normalizar_telefone(texto: str) -> str:
+        """Normaliza um único telefone brasileiro para o formato E.164 ('+55...').
+    
+        Levanta ValueError se o texto não puder ser interpretado como um telefone válido.
+        """
+        if not isinstance(texto, str):
+            raise ValueError("O telefone deve ser uma string.")
+    
+        limpo = texto.strip()
+        if not limpo:
+            raise ValueError("Telefone vazio.")
+    
+        if not _ALLOWED_CHARS_RE.match(limpo):
+            raise ValueError(f"Caracteres inválidos no telefone: {texto!r}.")
+    
+        if not _validate_parens_and_plus(limpo):
+>           raise ValueError(f"Formatação inválida de parênteses ou '+' no telefone: {texto!r}.")
+E           ValueError: Formatação inválida de parênteses ou '+' no telefone: '((11)) 98765-4321'.
+
+telefones.py:106: ValueError
+=========================== short test summary info ============================
+FAILED testes_ocultos/test_telefones.py::test_separadores_repetidos_e_combinados[((11)) 98765-4321-+5511987654321]
+1 failed, 41 passed in 0.06s

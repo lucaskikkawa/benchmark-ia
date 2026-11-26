@@ -1,0 +1,7 @@
+Criei [solucao.py](file:///tmp/bench-64r1j4z5/solucao.py) implementando `resumir_vendas(entrada: str | Path, saida: str | Path) -> dict` usando apenas a biblioteca padrão, conforme especificado em [enunciado.md](file:///tmp/bench-64r1j4z5/enunciado.md):
+
+- **Leitura e validação de cabeçalho**: lê CSV em UTF-8 com suporte a BOM (`utf-8-sig`), ignora colunas extras, aceita qualquer ordem e valida a presença das colunas obrigatórias após `strip()` (diferenciando maiúsculas/minúsculas). Levanta `FileNotFoundError` ou `ValueError` antes de criar/alterar `saida`.
+- **Regras linha a linha**: ignora linhas totalmente vazias, faz `strip()` em todos os campos, valida quantidade de campos, `regiao`/`produto` não vazios, `quantidade` via `int(...) > 0` e `preco_unitario` via `float(...)` finito e `>= 0` (contando linhas inválidas independentemente do `status`), e agrega apenas linhas válidas com `status.lower() == "concluida"`.
+- **Agregação e escrita**: ordena `regioes` em ordem alfabética simples, resolve empates de `produto_mais_vendido` pelo menor nome em ordem alfabética, arredonda `total_vendas` e `total_geral` para 2 casas decimais garantindo `float`/`int`, cria diretórios pais de `saida` e grava JSON UTF-8 com `ensure_ascii=False` e `indent=2`.
+
+Testado com [vendas_exemplo.csv](file:///tmp/bench-64r1j4z5/vendas_exemplo.csv) e casos de borda (BOM, campos com vírgulas/quebras de linha, colunas reordenadas/extras, empates, CSV só com cabeçalho e erros sem modificar `saida`).

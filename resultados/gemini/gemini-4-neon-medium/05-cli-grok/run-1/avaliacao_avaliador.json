@@ -1,0 +1,51 @@
+{
+ "pasta": "resultados/gemini/gemini-4-neon-medium/05-cli-grok/run-1",
+ "empresa": "gemini",
+ "modelo": "gemini-4-neon",
+ "esforco": "medium",
+ "tarefa": "05-cli-grok",
+ "tipo": "05-cli",
+ "run": 1,
+ "consistencia_extra": false,
+ "autora_tarefa": "grok",
+ "status": "ok",
+ "duracao_agente_s": 110.734,
+ "testes_passados": 15,
+ "testes_total": 15,
+ "pct_testes": 100.0,
+ "juizes_neutros_elegiveis": [
+  "codex",
+  "claude"
+ ],
+ "juizes": {
+  "codex": {
+   "modelo": "gpt-6-luna",
+   "itens": {
+    "legibilidade": 2.0,
+    "erros_bordas": 2.0,
+    "idiomatico": 2.0,
+    "manutenibilidade": 2.0,
+    "documentacao_instrucoes": 2.0
+   },
+   "rubrica_10": 10.0,
+   "justificativa": "Funções separadas, erros literais com código 2, subcomandos e validações idiomáticas; prioridades e schema centralizados, com TSV e JSON no formato pedido.",
+   "falhas": []
+  },
+  "claude": {
+   "modelo": "claude-haiku-5-5",
+   "itens": null,
+   "rubrica_10": null,
+   "justificativa": null,
+   "falhas": [
+    "tentativa 1: exit 1: ",
+    "tentativa 2: exit 1: "
+   ]
+  }
+ },
+ "obs": [
+  "juiz claude sem resposta válida (tentativa 1: exit 1: ; tentativa 2: exit 1: )",
+  "só 1 juiz neutro válido; usada só a nota dele"
+ ],
+ "rubrica_media_10": 10.0,
+ "nota_final_10": 10.0
+}

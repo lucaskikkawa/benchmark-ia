@@ -1,0 +1,9 @@
+Implementei a função `resumir_vendas` em [solucao.py](file:///tmp/bench-a8ak0_uu/solucao.py) conforme especificado em [enunciado.md](file:///tmp/bench-a8ak0_uu/enunciado.md).
+
+### O que foi feito
+- **Leitura e validação de entrada**: lê CSV UTF-8 com suporte opcional a BOM (`utf-8-sig`), separador vírgula e aspas duplas padrão via `csv.reader` (suportando vírgulas e quebras de linha em campos entre aspas). Valida a presença de todas as colunas obrigatórias (após `strip`, diferenciando maiúsculas/minúsculas) em qualquer ordem, ignorando colunas extras e lançando `ValueError`/`FileNotFoundError` sem criar nem alterar `saida`.
+- **Filtragem e agregação linha a linha**: aplica `strip` a todos os campos, ignora linhas totalmente vazias, contabiliza em `linhas_invalidas` qualquer linha com número incorreto de campos, `regiao`/`produto` vazio, `quantidade` inválida ou `<= 0`, ou `preco_unitario` inválido, não finito ou `< 0` (independentemente do `status`). Agrega apenas linhas válidas com `status` igual a `concluida` (case-insensitive, sem acento), calculando `quantidade_total`, `total_vendas` arredondado a 2 casas e `produto_mais_vendido` (desempate por ordem alfabética de `str`).
+- **Escrita e retorno**: ordena `regioes` alfabeticamente, calcula `total_geral` como soma dos `total_vendas` regionais arredondada a 2 casas (garantindo tipos `float`/`int`), cria diretórios pais de `saida` se necessário, grava JSON UTF-8 com `ensure_ascii=False` e `indent=2`, e retorna o `dict` resultante.
+
+### Verificação
+- Testado com [vendas_exemplo.csv](file:///tmp/bench-a8ak0_uu/vendas_exemplo.csv) (resultado idêntico ao esperado no enunciado) e com casos de borda: BOM UTF-8, colunas reordenadas/extras, campos entre aspas com vírgulas e quebras de linha, linhas vazias, status acentuado (`concluída`) e cancelado com dados inválidos, desempate de produtos, arredondamento de floats, erros de arquivo/cabeçalho sem modificar `saida`, e criação de diretórios pais.

@@ -1,0 +1,12 @@
+Arquivo [pares.py](file:///tmp/bench-7ufw05r9/pares.py) criado com a função `contar_pares(valores, alvo: int) -> int`.
+
+### Implementação
+- Percorre `valores` em uma única passagem (suportando geradores e sem modificar listas de entrada), acumulando as frequências já vistas em um dicionário local `vistos` (memória $O(k)$ e tempo esperado $O(n)$).
+- Para cada elemento `x`, soma ao total a quantidade já registrada de `alvo - x` antes de incrementar `vistos[x]`, garantindo que apenas pares `(i, j)` com `i < j` sejam contados exatamente uma vez e sem reter estado entre chamadas.
+- Usa apenas biblioteca padrão (`collections.abc.Iterable`) e aritmética exata de inteiros de precisão arbitrária do Python.
+
+### Verificação
+Testes executados com `python3` após a criação de [pares.py](file:///tmp/bench-7ufw05r9/pares.py):
+- Casos básicos, vazios, unitários, duplicatas (`[2, 2, 2]`, alvo `4` → `3`), negativos, não mutação de lista, gerador de uma passagem, inteiros $> 64$ bits e independência entre chamadas: todos passaram.
+- Desempenho em lista de `1.000.000` elementos distintos: `0.1232s` (`< 5s`).
+- Memória com `tracemalloc` em gerador de `1.000.000` elementos com 4 valores distintos: pico de `464 B` (`< 4 MiB`).

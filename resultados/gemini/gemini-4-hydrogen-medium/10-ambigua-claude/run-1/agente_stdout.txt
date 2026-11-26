@@ -1,0 +1,8 @@
+A tarefa foi resolvida com os seguintes arquivos criados no diretório de trabalho:
+
+- [telefones.py](file:///tmp/bench-64dgly4i/telefones.py): implementa `normalizar_telefone(texto: str) -> str` e `extrair_telefones(texto: str) -> list[str]` usando apenas a biblioteca padrão (`re`), validando código do país `55` (opcional, obrigatório quando há `+`), DDD de 2 dígitos sem `0`, celulares de 9 dígitos iniciados por `9` e fixos de 8 dígitos iniciados por `2`–`5`, além de deduplicação preservando a ordem em `extrair_telefones`.
+- [SUPOSICOES.md](file:///tmp/bench-64dgly4i/SUPOSICOES.md): documenta as 8 decisões tomadas para casos não especificados (tipos inválidos/string vazia, posição e obrigatoriedade de `55` com `+`, rejeição de `0` antes do DDD e códigos de operadora, validação de parênteses e caracteres, regras de DDD/segundo dígito de celular, quebras de linha em texto livre, filtragem do padrão de CPF `XXX.XXX.XXX-XX` e fronteiras de separação).
+- [test_telefones.py](file:///tmp/bench-64dgly4i/test_telefones.py): suíte de testes unitários com `unittest` cobrindo os exemplos do enunciado e os casos de borda.
+
+Verificação executada:
+- `python3 -m unittest -v test_telefones.py`: 8 testes executados, todos aprovados (`OK`).

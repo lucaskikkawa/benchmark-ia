@@ -1,0 +1,11 @@
+Implementei [`cliente.py`](file:///tmp/bench-__a8gg0c/cliente.py) preservando [`fake_api.py`](file:///tmp/bench-__a8gg0c/fake_api.py).
+
+### O que foi implementado
+- [`buscar_com_retry`](file:///tmp/bench-__a8gg0c/cliente.py#L9-L31) com a assinatura solicitada (`api, chave: str, *, tentativas: int = 3, timeout: float = 1.0, backoff: float = 0.1, dormir=time.sleep`).
+- Validação prévia antes de qualquer chamada à API ou a `dormir`, levantando `ValueError` se `tentativas < 1`, se `timeout` não for finito ou `<= 0`, ou se `backoff` não for finito ou `< 0`.
+- Repetição exclusivamente para `fake_api.ErroTemporario` e `TimeoutError` (e suas subclasses), chamando `dormir(backoff * 2**indice)` entre tentativas (inclusive quando o atraso é zero) e nunca após sucesso ou na última falha.
+- Propagação imediata de `ErroPermanente`, outras exceções e quaisquer exceções lançadas por `dormir` (mesmo que sejam `TimeoutError` ou `ErroTemporario`), além de propagação da última exceção original ao esgotar as tentativas.
+- Retorno direto do objeto devolvido por `api.get(chave, timeout=timeout)` e passagem intacta da chave (vazia ou Unicode).
+
+### Verificação
+Executei uma suíte de 12 testes unitários em [`test_cliente.py`](file:///home/box/.gemini/antigravity-cli/brain/2d7858da-3425-4778-a933-6ca4031718a9/scratch/test_cliente.py) cobrindo validação prévia, assinatura/padrões, subclasses de exceções transitórias, backoff exponencial até 40 tentativas, `backoff=0`, propagação de erros de `dormir` e integração com `FakeAPI`: todos os 12 testes passaram (`Ran 12 tests in 0.001s - OK`).

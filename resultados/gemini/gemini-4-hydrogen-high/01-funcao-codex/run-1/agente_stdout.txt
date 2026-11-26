@@ -1,0 +1,11 @@
+Arquivo [solucao.py](file:///tmp/bench-s45hzpry/solucao.py) criado conforme especificado em [enunciado.md](file:///tmp/bench-s45hzpry/enunciado.md).
+
+### O que foi implementado
+- **`unir_intervalos(intervalos, *, limites=None) -> list[tuple[int, int]]`** em [solucao.py](file:///tmp/bench-s45hzpry/solucao.py#L8-L59):
+  - Valida `limites` primeiro (`minimo > maximo` lança `ValueError`, mesmo com entrada vazia).
+  - Consome `intervalos` em uma única passagem (suportando listas, geradores e sem mutar a entrada nem `limites`), validando todos os pares originais (`inicio > fim` lança `ValueError`, mesmo quando fora de `limites`).
+  - Quando `limites` é informado, realiza o recorte fechado antes da união, descartando intersecções vazias e mantendo pontos de extremidade.
+  - Ordena os intervalos e executa varredura linear (`O(n log n)` em tempo e `O(n)` em memória) fundindo intervalos sobrepostos ou adjacentes pela extremidade (`inicio <= atual_fim`), preservando precisão arbitrária de inteiros.
+
+### Verificação
+- Executado o script de testes [test_solucao.py](file:///home/box/.gemini/antigravity-cli/brain/88b8dad4-5569-4c52-a5cb-96fa08ac0f8f/scratch/test_solucao.py) com `python3` (Python 3.13.5): todos os casos passaram (exemplo do enunciado, intervalos separados por 1 unidade, duplicatas, imutabilidade, geradores, recorte com `limites`, erros de `ValueError`/`TypeError`, inteiros de precisão arbitrária `10**100` e 100.000 intervalos em `0.0290s`).

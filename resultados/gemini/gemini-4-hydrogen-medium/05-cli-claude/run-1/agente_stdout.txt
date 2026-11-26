@@ -1,0 +1,10 @@
+O script [freq.py](file:///tmp/bench-qrx39sz_/freq.py) foi criado no diretório de trabalho seguindo as especificações de [enunciado.md](file:///tmp/bench-qrx39sz_/enunciado.md).
+
+### O que foi implementado
+- **CLI com `argparse`** (`build_parser` e `positive_int`): suporta `ARQUIVO` (ou `-` para `stdin`), `-n`/`--top`, `-m`/`--min-len`, `-i`/`--ignore-case`, `-x`/`--excluir` (repetível) e `--formato {texto,json}`, retornando código de saída `2` para argumentos inválidos.
+- **Leitura UTF-8 estrita** (`read_utf8_input`): lê os bytes do arquivo ou `sys.stdin.buffer` e decodifica com `utf-8` estrito independente de locale; erros de E/S ou decodificação imprimem uma única linha `erro: ...` em `stderr` e retornam código `1`.
+- **Extração, filtragem e ordenação** (`count_words`): extrai palavras com a regex `[^\W\d_]+`, aplica `str.lower()` apenas quando `-i` está ativo (inclusive às palavras de `-x`), filtra por tamanho mínimo e exclusões, conta com `Counter` e ordena por contagem decrescente e palavra crescente.
+- **Saída**: imprime `palavra\tcontagem` (ou vazio) no formato `texto`, e lista JSON (ou `[]`) no formato `json`.
+
+### Verificação
+- Executada suíte de validação via `python3` cobrindo o exemplo do enunciado, comparação sensível/insensível a maiúsculas (`Straße` vs `STRASSE`), separação por dígitos/underscore/pontuação, leitura via `stdin`, filtros `-m` e `-x`, formatos `texto` e `json` (incluindo saída vazia), códigos de erro `1` e `2` e execução com `LC_ALL=C`: todos os casos passaram (`ALL TESTS PASSED`).

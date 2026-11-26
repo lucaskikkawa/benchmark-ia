@@ -1,0 +1,11 @@
+Implementação concluída em `/tmp/bench-ef9dspis`:
+
+- [organizador.py](file:///tmp/bench-ef9dspis/organizador.py): implementa `organizar_tarefas(tarefas: list[dict]) -> list[dict]` usando apenas a biblioteca padrão, validando os campos obrigatórios (`titulo`, `prioridade` entre `0` e `5` excluindo `bool`, e `concluida`), filtrando apenas `concluida == False`, preservando ocorrências repetidas e criando cópias rasas independentes (`dict.copy()`) organizadas em ordem decrescente de prioridade via agrupamento em buckets (`O(n)`).
+- [SUPOSICOES.md](file:///tmp/bench-ef9dspis/SUPOSICOES.md): documenta as políticas adotadas para desempate (ordenação estável preservando a ordem relativa original) e para validação de entradas inválidas (`TypeError` e `ValueError`).
+
+### Verificação
+Executado script de verificação com `python3` (Python 3.13.5 no ambiente) cobrindo:
+- entrada vazia e lista apenas com tarefas concluídas;
+- ordenação decrescente, preservação de títulos sem normalização, cópia rasa independente (inclusive para referências repetidas ao mesmo `dict`) e preservação da identidade de objetos internos (`etiquetas`);
+- rejeição de tipos e faixas inválidas (`TypeError` e `ValueError`);
+- carga de 30.000 itens executada em `13.39 ms` com todos os `assert` aprovados.

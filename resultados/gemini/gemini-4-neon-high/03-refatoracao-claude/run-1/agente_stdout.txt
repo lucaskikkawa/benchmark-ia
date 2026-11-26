@@ -1,0 +1,13 @@
+O arquivo [relatorio.py](file:///tmp/bench-rx29dagl/relatorio.py) foi refatorado conforme [enunciado.md](file:///tmp/bench-rx29dagl/enunciado.md), preservando integralmente o comportamento observável da implementação original.
+
+### Mudanças realizadas em [relatorio.py](file:///tmp/bench-rx29dagl/relatorio.py)
+- **Constantes no escopo do módulo**: definidas `LIMITE_FAIXA_ALTA = 1000`, `TAXAS_DESCONTO` (`"vip"` e `"atacado"`) e `TAXAS_PADRAO` (`(0.0, 0.02)`), consultadas dinamicamente em `calcular_desconto`.
+- **Funções públicas**:
+  - `calcular_subtotal(itens: list[dict]) -> float`: acumula `preco * qtd` em soma sequencial iniciando em `0` (evitando diferenças de ponto flutuante do `sum()` com soma compensada) e valida `qtd < 0` na mesma ordem de acesso às chaves.
+  - `calcular_desconto(subtotal: float, tipo_cliente: str) -> float`: consulta `TAXAS_DESCONTO`, `TAXAS_PADRAO` e `LIMITE_FAIXA_ALTA` no momento da chamada e retorna `subtotal * taxa` sem atalho para taxa zero, preservando a aritmética IEEE-754 original (incluindo `inf`, `-inf`, `nan`, `-0.0` e valores extremos).
+  - `formatar_relatorio(totais_por_cliente: dict[str, float]) -> str`: ordena os clientes, formata com 2 casas decimais e acumula `total_geral` na ordem ordenada.
+  - `gerar_relatorio(pedidos: list[dict]) -> str`: delega para `calcular_subtotal`, `calcular_desconto` e `formatar_relatorio` via escopo do módulo, mantendo `subtotal - desconto`, a ordem de leitura das chaves e sem mutar a entrada.
+
+### Verificação
+- Validada equivalência caractere a caractere e de tipos de exceção contra a implementação original em casos de borda (`inf`, `-inf`, `nan`, `-0.0`, valores enormes, fronteira exata `1000`, `float`s sensíveis a soma/arredondamento, tipos desconhecidos e entradas malformadas) e em 5.000 casos aleatórios.
+- Confirmadas a imutabilidade da entrada, a leitura dinâmica das constantes do módulo e as chamadas de `gerar_relatorio` às três funções públicas no escopo do módulo.

@@ -1,0 +1,11 @@
+Os arquivos solicitados foram criados no diretório de trabalho:
+
+- [solucao.py](file:///tmp/bench-x8satwap/solucao.py): implementa a função pura `classificar_mensagem(texto: str) -> dict` usando apenas a biblioteca padrão (`re`, `unicodedata`).
+  - Valida `isinstance(texto, str)` levantando `TypeError` para outros tipos (`None`, `bytes`, `bytearray`, `int`, etc.).
+  - Calcula `tamanho` com `len(texto)` diretamente em code points (sem `strip`, sem normalização e sem codificação UTF-8, preservando quebras de linha, `\u00a0`, `\u200b` e surrogates isolados como `"\ud800"`).
+  - Calcula `urgente` via `"URGENTE" in texto` diretamente na string original (sensível a maiúsculas, sem normalização e sem exigir fronteira de palavra).
+  - Trata `texto == ""` retornando `{"categoria": "vazia", "urgente": False, "tamanho": 0}` e garante que qualquer texto não vazio receba uma categoria não vazia diferente de `"vazia"`.
+- [SUPOSICOES.md](file:///tmp/bench-x8satwap/SUPOSICOES.md): documenta em UTF-8 as decisões nos pontos em aberto: categorias (`reclamacao`, `pedido`, `duvida`, `elogio`, `sem_conteudo`, `outro`), sinais e ordem de desempate (`reclamacao` > `pedido` > `duvida` > `elogio`), normalização NFD + remoção de acentos + minúsculas apenas para a categoria, classificação de textos sem caracteres alfanuméricos como `sem_conteudo` (exceto `?` -> `duvida`) e ausência de campos extras no dicionário retornado.
+
+### Verificação
+Um script de verificação executado via `python3` após a criação dos arquivos validou todos os casos de borda do núcleo fechado (`tamanho`, `urgente`, `""`, strings com espaços/`"\u00a0"`/`"\n"`/`"\ud800"`/`"vazia"`, entrada de 100.007 caracteres em 6,88 ms, `TypeError` para tipos não `str`, determinismo e requisitos de formato de [SUPOSICOES.md](file:///tmp/bench-x8satwap/SUPOSICOES.md)), com todas as asserções passando (`ALL CHECKS PASSED`).
